@@ -2,6 +2,8 @@ task . Compile, Build, ImportDebug
 
 Set-StrictMode -Version 4
 
+Import-Module HorkerTemplateEngine
+
 ############################################################
 
 $SOURCE_PATH = "$PSScriptRoot\source\Horker.PSCNTK"
@@ -13,11 +15,15 @@ $MODULE_PATH_DEBUG = "$PSScriptRoot\debug\pscntk"
 $SOLUTION_FILE = "$PSScriptRoot\source\pscntk.sln"
 
 $OBJECT_FILES = @(
+  "Cntk.Core.Managed-2.5.1.dll"
   "Horker.PSCNTK.dll"
   "Horker.PSCNTK.pdb"
 )
 
 $LIB_PATH = "$PSScriptRoot\lib"
+
+$TEMPLATE_INPUT_PATH = "$PSScriptRoot\templates"
+$TEMPLATE_OUTPUT_PATH = "$PSScriptRoot\source\Horker.PSCNTK\Cmdlets"
 
 #$HELP_INPUT =  "$SOURCE_PATH\bin\Release\Horker.Math.dll"
 #$HELP_INTERM = "$SOURCE_PATH\bin\Release\Horker.Data.dll-Help.xml"
@@ -70,6 +76,15 @@ function Remove-Item2 {
 }
 
 ############################################################
+
+task ProcessTemplate {
+  dir $TEMPLATE_INPUT_PATH | foreach {
+    $inFile = $_.FullName
+    $outFile = Join-Path $TEMPLATE_OUTPUT_PATH ($_.Name -replace "\.template\.$", ".")
+    write-host $outFile
+    cat $inFile | Invoke-TemplateEngine | Set-Content $outFile
+  }
+}
 
 task Compile {
   msbuild $SOLUTION_FILE /p:Configuration=Debug /nologo /v:minimal
