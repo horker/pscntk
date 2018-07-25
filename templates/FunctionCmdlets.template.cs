@@ -8,7 +8,7 @@ $EXCLUDES = @(
   "ToSequence"
 )
 
-$definitions = [cntk.cntklib] | gm -static | % Definition | sls "CNTK\.Function"
+$definitions = [cntk.cntklib] | gm -static | % Definition
 
 $sig = New-Object Collections.Generic.List[PSObject]
 
@@ -17,16 +17,12 @@ foreach ($s in $definitions) {
   $overloads = $s -split ", static " -replace "static ", ""
   $longest = ([object[]]$overloads.OrderByDescending({ $args[0].Length }))[0]
 
-  # Examine the range of the number of arguments
-
-  $measures = $overloads | foreach{ ($_ -split ",").Length } | measure-object -min -max
-  $minArgs = $measures.Minimum
-  $maxArgs = $measures.Maximum
-
   $m = $longest -match "^CNTK\.Function (\w+)\(([^)]+)\)$"
   if (!$m) {
-    Write-Host "Not matched: $longest"
-    continue
+    $m = $longest -match "^CNTK.CNTKDictionary (\w+Initializer)\(([^)]+)\)$"
+    if (!$m) {
+      continue
+    }
   }
 
   $name = $matches[1]
@@ -35,6 +31,18 @@ foreach ($s in $definitions) {
   if ($EXCLUDES -contains $name) {
     continue
   }
+
+  # Examine the range of the number of arguments
+
+  $measures = $overloads | foreach{ if ($_ -match "\(\)") { 0 } else { ($_ -split ",").Length } } | measure-object -min -max
+  $minArgs = $measures.Minimum
+  $maxArgs = $measures.Maximum
+
+  # Alias
+
+  $alias = ($Name -replace "Initializer$", "").ToLower()
+
+  # Parameter names and types
 
   $params = $paramlist -split ",\s*"
 
@@ -62,6 +70,7 @@ foreach ($s in $definitions) {
 
   $result = [PSCustomObject]@{
     Name = $name
+    Alias = $alias
     Params = @($defs)
     MinArgs = $minArgs
     MaxArgs = $maxArgs
@@ -79,7 +88,7 @@ foreach ($s in $sig) {
 -%>
 
     [Cmdlet("New", "CNTK<% $s.Name %>")]
-    [Alias("cntk.<% $s.Name.ToLower() %>")]
+    [Alias("cntk.<% $s.Alias %>")]
     public class NewCNTK<% $s.Name %> : PSCmdlet
     {
 <%
@@ -97,7 +106,12 @@ foreach ($s in $sig) {
             var argCount = MyInvocation.BoundParameters.Count;
 <%
     for ($i = $s.MinArgs; $i -le $s.MaxArgs; ++$i) {
-      $args = $s.Params[0..($i - 1)].CastVariable -join ", "
+      if ($i -eq 0) {
+        $args = ""
+      }
+      else {
+        $args = $s.Params[0..($i - 1)].CastVariable -join ", "
+      }
 -%>
 
             if (argCount == <% $i %>)

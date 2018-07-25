@@ -513,6 +513,29 @@ namespace Horker.PSCNTK {
         }
     }
 
+    [Cmdlet("New", "CNTKBilinearInitializer")]
+    [Alias("cntk.bilinear")]
+    public class NewCNTKBilinearInitializer : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public int KernelWidth;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public int KernelHeight;
+
+        protected override void EndProcessing()
+        {
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.BilinearInitializer((uint)KernelWidth, (uint)KernelHeight);
+              WriteObject(result);
+              return;
+            }
+        }
+    }
+
     [Cmdlet("New", "CNTKBinaryCrossEntropy")]
     [Alias("cntk.binarycrossentropy")]
     public class NewCNTKBinaryCrossEntropy : PSCmdlet
@@ -722,6 +745,33 @@ namespace Horker.PSCNTK {
             if (argCount == 2)
             {
               var result = CNTK.CNTKLib.Combine(Operands, Name);
+              WriteObject(result);
+              return;
+            }
+        }
+    }
+
+    [Cmdlet("New", "CNTKConstantInitializer")]
+    [Alias("cntk.constant")]
+    public class NewCNTKConstantInitializer : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = false)]
+        public double Value;
+
+        protected override void EndProcessing()
+        {
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 0)
+            {
+              var result = CNTK.CNTKLib.ConstantInitializer();
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.ConstantInitializer(Value);
               WriteObject(result);
               return;
             }
@@ -1844,6 +1894,120 @@ namespace Horker.PSCNTK {
         }
     }
 
+    [Cmdlet("New", "CNTKGlorotNormalInitializer")]
+    [Alias("cntk.glorotnormal")]
+    public class NewCNTKGlorotNormalInitializer : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = false)]
+        public double Scale;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public int OutputRank;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public int FilterRank;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public int Seed;
+
+        protected override void EndProcessing()
+        {
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 0)
+            {
+              var result = CNTK.CNTKLib.GlorotNormalInitializer();
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.GlorotNormalInitializer(Scale);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.GlorotNormalInitializer(Scale, OutputRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.GlorotNormalInitializer(Scale, OutputRank, FilterRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.GlorotNormalInitializer(Scale, OutputRank, FilterRank, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+        }
+    }
+
+    [Cmdlet("New", "CNTKGlorotUniformInitializer")]
+    [Alias("cntk.glorotuniform")]
+    public class NewCNTKGlorotUniformInitializer : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = false)]
+        public double Scale;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public int OutputRank;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public int FilterRank;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public int Seed;
+
+        protected override void EndProcessing()
+        {
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 0)
+            {
+              var result = CNTK.CNTKLib.GlorotUniformInitializer();
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.GlorotUniformInitializer(Scale);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.GlorotUniformInitializer(Scale, OutputRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.GlorotUniformInitializer(Scale, OutputRank, FilterRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.GlorotUniformInitializer(Scale, OutputRank, FilterRank, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+        }
+    }
+
     [Cmdlet("New", "CNTKGreater")]
     [Alias("cntk.greater")]
     public class NewCNTKGreater : PSCmdlet
@@ -2144,6 +2308,120 @@ namespace Horker.PSCNTK {
             if (argCount == 4)
             {
               var result = CNTK.CNTKLib.HardSigmoid(Operand, Alpha, Beta, Name);
+              WriteObject(result);
+              return;
+            }
+        }
+    }
+
+    [Cmdlet("New", "CNTKHeNormalInitializer")]
+    [Alias("cntk.henormal")]
+    public class NewCNTKHeNormalInitializer : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = false)]
+        public double Scale;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public int OutputRank;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public int FilterRank;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public int Seed;
+
+        protected override void EndProcessing()
+        {
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 0)
+            {
+              var result = CNTK.CNTKLib.HeNormalInitializer();
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.HeNormalInitializer(Scale);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.HeNormalInitializer(Scale, OutputRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.HeNormalInitializer(Scale, OutputRank, FilterRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.HeNormalInitializer(Scale, OutputRank, FilterRank, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+        }
+    }
+
+    [Cmdlet("New", "CNTKHeUniformInitializer")]
+    [Alias("cntk.heuniform")]
+    public class NewCNTKHeUniformInitializer : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = false)]
+        public double Scale;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public int OutputRank;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public int FilterRank;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public int Seed;
+
+        protected override void EndProcessing()
+        {
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 0)
+            {
+              var result = CNTK.CNTKLib.HeUniformInitializer();
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.HeUniformInitializer(Scale);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.HeUniformInitializer(Scale, OutputRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.HeUniformInitializer(Scale, OutputRank, FilterRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.HeUniformInitializer(Scale, OutputRank, FilterRank, (uint)Seed);
               WriteObject(result);
               return;
             }
@@ -2750,6 +3028,56 @@ namespace Horker.PSCNTK {
             if (argCount == 2)
             {
               var result = CNTK.CNTKLib.Negate(Operand, Name);
+              WriteObject(result);
+              return;
+            }
+        }
+    }
+
+    [Cmdlet("New", "CNTKNormalInitializer")]
+    [Alias("cntk.normal")]
+    public class NewCNTKNormalInitializer : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public double Scale;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public int OutputRank;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public int FilterRank;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public int Seed;
+
+        protected override void EndProcessing()
+        {
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.NormalInitializer(Scale);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.NormalInitializer(Scale, OutputRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.NormalInitializer(Scale, OutputRank, FilterRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.NormalInitializer(Scale, OutputRank, FilterRank, (uint)Seed);
               WriteObject(result);
               return;
             }
@@ -5203,6 +5531,73 @@ namespace Horker.PSCNTK {
         }
     }
 
+    [Cmdlet("New", "CNTKTruncatedNormalInitializer")]
+    [Alias("cntk.truncatednormal")]
+    public class NewCNTKTruncatedNormalInitializer : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = false)]
+        public double Scale;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public int Seed;
+
+        protected override void EndProcessing()
+        {
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 0)
+            {
+              var result = CNTK.CNTKLib.TruncatedNormalInitializer();
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.TruncatedNormalInitializer(Scale);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.TruncatedNormalInitializer(Scale, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+        }
+    }
+
+    [Cmdlet("New", "CNTKUniformInitializer")]
+    [Alias("cntk.uniform")]
+    public class NewCNTKUniformInitializer : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public double Scale;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public int Seed;
+
+        protected override void EndProcessing()
+        {
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.UniformInitializer(Scale);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.UniformInitializer(Scale, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+        }
+    }
+
     [Cmdlet("New", "CNTKUniformRandom")]
     [Alias("cntk.uniformrandom")]
     public class NewCNTKUniformRandom : PSCmdlet
@@ -5438,6 +5833,63 @@ namespace Horker.PSCNTK {
             if (argCount == 4)
             {
               var result = CNTK.CNTKLib.WeightedBinaryCrossEntropy(Prediction, Targets, Weights, Name);
+              WriteObject(result);
+              return;
+            }
+        }
+    }
+
+    [Cmdlet("New", "CNTKXavierInitializer")]
+    [Alias("cntk.xavier")]
+    public class NewCNTKXavierInitializer : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = false)]
+        public double Scale;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public int OutputRank;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public int FilterRank;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public int Seed;
+
+        protected override void EndProcessing()
+        {
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 0)
+            {
+              var result = CNTK.CNTKLib.XavierInitializer();
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.XavierInitializer(Scale);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.XavierInitializer(Scale, OutputRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.XavierInitializer(Scale, OutputRank, FilterRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.XavierInitializer(Scale, OutputRank, FilterRank, (uint)Seed);
               WriteObject(result);
               return;
             }
