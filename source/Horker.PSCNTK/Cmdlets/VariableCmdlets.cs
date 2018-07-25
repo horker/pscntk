@@ -102,7 +102,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("Restore", "CNTKFunction")]
-    [Alias("cntk.load")]
+    [Alias("cntk.restore", "cntk.load")]
     public class LoadCNTKFunction : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]

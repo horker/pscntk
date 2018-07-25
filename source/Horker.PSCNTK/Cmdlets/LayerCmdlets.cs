@@ -54,7 +54,7 @@ namespace Horker.PSCNTK
         [Parameter(Position = 1, Mandatory = true)]
         public int HiddenSize;
 
-        [Parameter(Position = 1, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = true)]
         public CNTKDictionary Initializer;
 
         protected override void EndProcessing()

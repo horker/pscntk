@@ -11,12 +11,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Abs(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Abs(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Abs(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -28,12 +41,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Acos(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Acos(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Acos(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -45,12 +71,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Alias(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Alias(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Alias(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -65,12 +104,25 @@ namespace Horker.PSCNTK {
         public CNTK.Axis Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Argmax(Operand, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Argmax(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Argmax(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -85,12 +137,25 @@ namespace Horker.PSCNTK {
         public CNTK.Axis Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Argmin(Operand, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Argmin(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Argmin(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -102,12 +167,25 @@ namespace Horker.PSCNTK {
         public CNTK.Function RootFunction;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.AsComposite(RootFunction, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.AsComposite(RootFunction);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.AsComposite(RootFunction, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -119,12 +197,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Asin(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Asin(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Asin(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -136,12 +227,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Asinh(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Asinh(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Asinh(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -156,12 +260,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Assign(Arg0, Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Assign(Arg0, Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Assign(Arg0, Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -173,12 +290,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Atanh(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Atanh(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Atanh(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -207,28 +337,76 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 6, Mandatory = true)]
         public bool Spatial;
 
-        [Parameter(Position = 7, Mandatory = true)]
+        [Parameter(Position = 7, Mandatory = false)]
         public double NormalizationTimeConstant;
 
-        [Parameter(Position = 8, Mandatory = true)]
+        [Parameter(Position = 8, Mandatory = false)]
         public double BlendTimeConstant;
 
-        [Parameter(Position = 9, Mandatory = true)]
+        [Parameter(Position = 9, Mandatory = false)]
         public double Epsilon;
 
-        [Parameter(Position = 10, Mandatory = true)]
+        [Parameter(Position = 10, Mandatory = false)]
         public bool UseCuDNNEngine;
 
-        [Parameter(Position = 11, Mandatory = true)]
+        [Parameter(Position = 11, Mandatory = false)]
         public bool DisableRegularization;
 
         [Parameter(Position = 12, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.BatchNormalization(Operand, Scale, Bias, RunningMean, RunningInvStd, RunningCount, Spatial, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCuDNNEngine, DisableRegularization, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 7)
+            {
+              var result = CNTK.CNTKLib.BatchNormalization(Operand, Scale, Bias, RunningMean, RunningInvStd, RunningCount, Spatial);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 8)
+            {
+              var result = CNTK.CNTKLib.BatchNormalization(Operand, Scale, Bias, RunningMean, RunningInvStd, RunningCount, Spatial, NormalizationTimeConstant);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 9)
+            {
+              var result = CNTK.CNTKLib.BatchNormalization(Operand, Scale, Bias, RunningMean, RunningInvStd, RunningCount, Spatial, NormalizationTimeConstant, BlendTimeConstant);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 10)
+            {
+              var result = CNTK.CNTKLib.BatchNormalization(Operand, Scale, Bias, RunningMean, RunningInvStd, RunningCount, Spatial, NormalizationTimeConstant, BlendTimeConstant, Epsilon);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 11)
+            {
+              var result = CNTK.CNTKLib.BatchNormalization(Operand, Scale, Bias, RunningMean, RunningInvStd, RunningCount, Spatial, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCuDNNEngine);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 12)
+            {
+              var result = CNTK.CNTKLib.BatchNormalization(Operand, Scale, Bias, RunningMean, RunningInvStd, RunningCount, Spatial, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCuDNNEngine, DisableRegularization);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 13)
+            {
+              var result = CNTK.CNTKLib.BatchNormalization(Operand, Scale, Bias, RunningMean, RunningInvStd, RunningCount, Spatial, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCuDNNEngine, DisableRegularization, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -242,19 +420,46 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.DataType DataType;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public double Mean;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public int Seed;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.BernoulliRandom(Shape, DataType, Mean, (uint)Seed, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.BernoulliRandom(Shape, DataType);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.BernoulliRandom(Shape, DataType, Mean);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.BernoulliRandom(Shape, DataType, Mean, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.BernoulliRandom(Shape, DataType, Mean, (uint)Seed, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -265,19 +470,46 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
 
-        [Parameter(Position = 1, Mandatory = true)]
+        [Parameter(Position = 1, Mandatory = false)]
         public double Mean;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public int Seed;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.BernoulliRandomLike(Operand, Mean, (uint)Seed, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.BernoulliRandomLike(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.BernoulliRandomLike(Operand, Mean);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.BernoulliRandomLike(Operand, Mean, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.BernoulliRandomLike(Operand, Mean, (uint)Seed, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -292,12 +524,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Targets;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.BinaryCrossEntropy(Prediction, Targets, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.BinaryCrossEntropy(Prediction, Targets);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.BinaryCrossEntropy(Prediction, Targets, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -312,12 +557,25 @@ namespace Horker.PSCNTK {
         public CNTK.DataType OutputType;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Cast(NodeInput, OutputType, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Cast(NodeInput, OutputType);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Cast(NodeInput, OutputType, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -329,12 +587,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Ceil(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Ceil(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Ceil(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -348,19 +619,46 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Variable Labels;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public int TopN;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public CNTK.Axis Axis;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ClassificationError(Prediction, Labels, (uint)TopN, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ClassificationError(Prediction, Labels);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ClassificationError(Prediction, Labels, (uint)TopN);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.ClassificationError(Prediction, Labels, (uint)TopN, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.ClassificationError(Prediction, Labels, (uint)TopN, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -378,12 +676,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Max;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Clip(Operand, Min, Max, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Clip(Operand, Min, Max);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.Clip(Operand, Min, Max, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -395,12 +706,25 @@ namespace Horker.PSCNTK {
         public CNTK.VariableVector Operands;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Combine(Operands, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Combine(Operands);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Combine(Operands, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -414,34 +738,96 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Variable Operand;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public CNTK.NDShape Strides;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public CNTK.BoolVector Sharing;
 
-        [Parameter(Position = 4, Mandatory = true)]
+        [Parameter(Position = 4, Mandatory = false)]
         public CNTK.BoolVector AutoPadding;
 
-        [Parameter(Position = 5, Mandatory = true)]
+        [Parameter(Position = 5, Mandatory = false)]
         public CNTK.NDShape Dilation;
 
-        [Parameter(Position = 6, Mandatory = true)]
+        [Parameter(Position = 6, Mandatory = false)]
         public int ReductionRank;
 
-        [Parameter(Position = 7, Mandatory = true)]
+        [Parameter(Position = 7, Mandatory = false)]
         public int Groups;
 
-        [Parameter(Position = 8, Mandatory = true)]
+        [Parameter(Position = 8, Mandatory = false)]
         public int MaxTempMemSizeInSamples;
 
         [Parameter(Position = 9, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, Dilation, (uint)ReductionRank, (uint)Groups, (uint)MaxTempMemSizeInSamples, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, Sharing);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 6)
+            {
+              var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, Dilation);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 7)
+            {
+              var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, Dilation, (uint)ReductionRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 8)
+            {
+              var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, Dilation, (uint)ReductionRank, (uint)Groups);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 9)
+            {
+              var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, Dilation, (uint)ReductionRank, (uint)Groups, (uint)MaxTempMemSizeInSamples);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 10)
+            {
+              var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, Dilation, (uint)ReductionRank, (uint)Groups, (uint)MaxTempMemSizeInSamples, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -455,34 +841,96 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Variable Operand;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public CNTK.NDShape Strides;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public CNTK.BoolVector Sharing;
 
-        [Parameter(Position = 4, Mandatory = true)]
+        [Parameter(Position = 4, Mandatory = false)]
         public CNTK.BoolVector AutoPadding;
 
-        [Parameter(Position = 5, Mandatory = true)]
+        [Parameter(Position = 5, Mandatory = false)]
         public CNTK.NDShape OutputShape;
 
-        [Parameter(Position = 6, Mandatory = true)]
+        [Parameter(Position = 6, Mandatory = false)]
         public CNTK.NDShape Dilation;
 
-        [Parameter(Position = 7, Mandatory = true)]
+        [Parameter(Position = 7, Mandatory = false)]
         public int ReductionRank;
 
-        [Parameter(Position = 8, Mandatory = true)]
+        [Parameter(Position = 8, Mandatory = false)]
         public int MaxTempMemSizeInSamples;
 
         [Parameter(Position = 9, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ConvolutionTranspose(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, OutputShape, Dilation, (uint)ReductionRank, (uint)MaxTempMemSizeInSamples, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ConvolutionTranspose(ConvolutionMap, Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ConvolutionTranspose(ConvolutionMap, Operand, Strides);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.ConvolutionTranspose(ConvolutionMap, Operand, Strides, Sharing);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.ConvolutionTranspose(ConvolutionMap, Operand, Strides, Sharing, AutoPadding);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 6)
+            {
+              var result = CNTK.CNTKLib.ConvolutionTranspose(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, OutputShape);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 7)
+            {
+              var result = CNTK.CNTKLib.ConvolutionTranspose(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, OutputShape, Dilation);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 8)
+            {
+              var result = CNTK.CNTKLib.ConvolutionTranspose(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, OutputShape, Dilation, (uint)ReductionRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 9)
+            {
+              var result = CNTK.CNTKLib.ConvolutionTranspose(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, OutputShape, Dilation, (uint)ReductionRank, (uint)MaxTempMemSizeInSamples);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 10)
+            {
+              var result = CNTK.CNTKLib.ConvolutionTranspose(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, OutputShape, Dilation, (uint)ReductionRank, (uint)MaxTempMemSizeInSamples, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -494,12 +942,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Cos(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Cos(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Cos(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -511,12 +972,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Cosh(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Cosh(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Cosh(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -531,12 +1005,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.CosineDistance(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.CosineDistance(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.CosineDistance(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -557,38 +1044,25 @@ namespace Horker.PSCNTK {
         public int NumberOfNegativeSamples;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.CosineDistanceWithNegativeSamples(LeftOperand, RightOperand, (uint)ShiftWindow, (uint)NumberOfNegativeSamples, Name);
-            WriteObject(result);
-        }
-    }
+            var argCount = MyInvocation.BoundParameters.Count;
 
-    [Cmdlet("New", "CNTKCrop")]
-    [Alias("cntk.crop")]
-    public class NewCNTKCrop : PSCmdlet
-    {
-        [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable NodeInput;
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.CosineDistanceWithNegativeSamples(LeftOperand, RightOperand, (uint)ShiftWindow, (uint)NumberOfNegativeSamples);
+              WriteObject(result);
+              return;
+            }
 
-        [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Variable NodeReferent;
-
-        [Parameter(Position = 2, Mandatory = true)]
-        public int OffsetX;
-
-        [Parameter(Position = 3, Mandatory = true)]
-        public int OffsetY;
-
-        [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
-
-        protected override void EndProcessing()
-        {
-            var result = CNTK.CNTKLib.Crop(NodeInput, NodeReferent, (uint)OffsetX, (uint)OffsetY, Name);
-            WriteObject(result);
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.CosineDistanceWithNegativeSamples(LeftOperand, RightOperand, (uint)ShiftWindow, (uint)NumberOfNegativeSamples, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -602,16 +1076,36 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Variable Labels;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public CNTK.Axis Axis;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.CrossEntropyWithSoftmax(Prediction, Labels, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.CrossEntropyWithSoftmax(Prediction, Labels);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.CrossEntropyWithSoftmax(Prediction, Labels, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.CrossEntropyWithSoftmax(Prediction, Labels, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -626,12 +1120,25 @@ namespace Horker.PSCNTK {
         public int BlockSize;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.DepthToSpace(Operand, (uint)BlockSize, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.DepthToSpace(Operand, (uint)BlockSize);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.DepthToSpace(Operand, (uint)BlockSize, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -645,16 +1152,36 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public double DropoutRate;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public int Seed;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Dropout(Operand, DropoutRate, (uint)Seed, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Dropout(Operand, DropoutRate);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Dropout(Operand, DropoutRate, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.Dropout(Operand, DropoutRate, (uint)Seed, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -684,12 +1211,25 @@ namespace Horker.PSCNTK {
         public CNTK.SizeTVector TokensToIgnore;
 
         [Parameter(Position = 7, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.EditDistanceError(Prediction, Labels, SubstitutionPenalty, DeletionPenalty, InsertionPenalty, SquashInputs, TokensToIgnore, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 7)
+            {
+              var result = CNTK.CNTKLib.EditDistanceError(Prediction, Labels, SubstitutionPenalty, DeletionPenalty, InsertionPenalty, SquashInputs, TokensToIgnore);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 8)
+            {
+              var result = CNTK.CNTKLib.EditDistanceError(Prediction, Labels, SubstitutionPenalty, DeletionPenalty, InsertionPenalty, SquashInputs, TokensToIgnore, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -704,12 +1244,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ElementAnd(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ElementAnd(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ElementAnd(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -724,12 +1277,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ElementDivide(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ElementDivide(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ElementDivide(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -743,13 +1309,19 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Variable RightOperand;
 
-        [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        [Parameter(Position = 2, Mandatory = true)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ElementMax(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ElementMax(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -763,13 +1335,19 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Variable RightOperand;
 
-        [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        [Parameter(Position = 2, Mandatory = true)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ElementMin(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ElementMin(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -781,12 +1359,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ElementNot(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.ElementNot(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ElementNot(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -801,12 +1392,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ElementOr(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ElementOr(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ElementOr(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -824,12 +1428,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable ElseOperand;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ElementSelect(Condition, ThenOperand, ElseOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ElementSelect(Condition, ThenOperand, ElseOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.ElementSelect(Condition, ThenOperand, ElseOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -844,12 +1461,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ElementTimes(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ElementTimes(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ElementTimes(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -864,12 +1494,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ElementXor(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ElementXor(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ElementXor(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -881,12 +1524,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ELU(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.ELU(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ELU(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -901,12 +1557,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Equal(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Equal(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Equal(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -918,12 +1587,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Exp(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Exp(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Exp(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -938,12 +1620,25 @@ namespace Horker.PSCNTK {
         public CNTK.Axis Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ExpandDims(Operand, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ExpandDims(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ExpandDims(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -954,16 +1649,36 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
 
-        [Parameter(Position = 1, Mandatory = true)]
+        [Parameter(Position = 1, Mandatory = false)]
         public CNTK.Axis Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Flatten(Operand, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Flatten(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Flatten(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Flatten(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -975,12 +1690,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Floor(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Floor(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Floor(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1001,12 +1729,25 @@ namespace Horker.PSCNTK {
         public int DelayConstraint;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ForwardBackward(Graph, Features, (uint)BlankTokenId, DelayConstraint, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.ForwardBackward(Graph, Features, (uint)BlankTokenId, DelayConstraint);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.ForwardBackward(Graph, Features, (uint)BlankTokenId, DelayConstraint, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1017,19 +1758,46 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
 
-        [Parameter(Position = 1, Mandatory = true)]
+        [Parameter(Position = 1, Mandatory = false)]
         public CNTK.Variable InitialState;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public int Offset;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.FutureValue(Operand, InitialState, (uint)Offset, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.FutureValue(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.FutureValue(Operand, InitialState);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.FutureValue(Operand, InitialState, (uint)Offset);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.FutureValue(Operand, InitialState, (uint)Offset, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1044,12 +1812,35 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Reference;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public CNTK.Axis Axis;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.GatherOp(Indices, Reference, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.GatherOp(Indices, Reference);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.GatherOp(Indices, Reference, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.GatherOp(Indices, Reference, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1064,12 +1855,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Greater(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Greater(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Greater(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1084,12 +1888,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.GreaterEqual(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.GreaterEqual(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.GreaterEqual(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1122,12 +1939,25 @@ namespace Horker.PSCNTK {
         public int MaxTempMemSizeInSamples;
 
         [Parameter(Position = 8, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.GroupConvolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, Dilation, (uint)Groups, (uint)MaxTempMemSizeInSamples, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 8)
+            {
+              var result = CNTK.CNTKLib.GroupConvolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, Dilation, (uint)Groups, (uint)MaxTempMemSizeInSamples);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 9)
+            {
+              var result = CNTK.CNTKLib.GroupConvolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, Dilation, (uint)Groups, (uint)MaxTempMemSizeInSamples, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1141,22 +1971,56 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.DataType DataType;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public double Loc;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public double Scale;
 
-        [Parameter(Position = 4, Mandatory = true)]
+        [Parameter(Position = 4, Mandatory = false)]
         public int Seed;
 
         [Parameter(Position = 5, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.GumbelRandom(Shape, DataType, Loc, Scale, (uint)Seed, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.GumbelRandom(Shape, DataType);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.GumbelRandom(Shape, DataType, Loc);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.GumbelRandom(Shape, DataType, Loc, Scale);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.GumbelRandom(Shape, DataType, Loc, Scale, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 6)
+            {
+              var result = CNTK.CNTKLib.GumbelRandom(Shape, DataType, Loc, Scale, (uint)Seed, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1167,22 +2031,56 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
 
-        [Parameter(Position = 1, Mandatory = true)]
+        [Parameter(Position = 1, Mandatory = false)]
         public double Loc;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public double Scale;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public int Seed;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.GumbelRandomLike(Operand, Loc, Scale, (uint)Seed, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.GumbelRandomLike(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.GumbelRandomLike(Operand, Loc);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.GumbelRandomLike(Operand, Loc, Scale);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.GumbelRandomLike(Operand, Loc, Scale, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.GumbelRandomLike(Operand, Loc, Scale, (uint)Seed, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1194,12 +2092,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Hardmax(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Hardmax(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Hardmax(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1217,12 +2128,25 @@ namespace Horker.PSCNTK {
         public float Beta;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.HardSigmoid(Operand, Alpha, Beta, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.HardSigmoid(Operand, Alpha, Beta);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.HardSigmoid(Operand, Alpha, Beta, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1239,13 +2163,19 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 2, Mandatory = true)]
         public CNTK.FloatVector Biases;
 
-        [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        [Parameter(Position = 3, Mandatory = true)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ImageScaler(Operand, Scaler, Biases, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.ImageScaler(Operand, Scaler, Biases, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1257,12 +2187,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Labels;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.LabelsToGraph(Labels, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.LabelsToGraph(Labels);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.LabelsToGraph(Labels, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1280,12 +2223,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable GroupId;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.LambdaRank(Prediction, Gains, GroupId, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.LambdaRank(Prediction, Gains, GroupId);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.LambdaRank(Prediction, Gains, GroupId, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1345,12 +2301,25 @@ namespace Horker.PSCNTK {
         public float GammarWordPenalty;
 
         [Parameter(Position = 17, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.LatticeSequenceWithSoftmax(Labels, Prediction, ScaledLogLikelihood, Lattice, SymbolListPath, PhonePath, StateListPath, TransitionProbabilityPath, ConfigFilePath, SmoothingWeight, FrameDropThreshold, DoReferenceAlign, GammarUsesMBR, GammarAMF, GammarLMF, GammarBMMIFactor, GammarWordPenalty, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 17)
+            {
+              var result = CNTK.CNTKLib.LatticeSequenceWithSoftmax(Labels, Prediction, ScaledLogLikelihood, Lattice, SymbolListPath, PhonePath, StateListPath, TransitionProbabilityPath, ConfigFilePath, SmoothingWeight, FrameDropThreshold, DoReferenceAlign, GammarUsesMBR, GammarAMF, GammarLMF, GammarBMMIFactor, GammarWordPenalty);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 18)
+            {
+              var result = CNTK.CNTKLib.LatticeSequenceWithSoftmax(Labels, Prediction, ScaledLogLikelihood, Lattice, SymbolListPath, PhonePath, StateListPath, TransitionProbabilityPath, ConfigFilePath, SmoothingWeight, FrameDropThreshold, DoReferenceAlign, GammarUsesMBR, GammarAMF, GammarLMF, GammarBMMIFactor, GammarWordPenalty, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1365,12 +2334,25 @@ namespace Horker.PSCNTK {
         public double Alpha;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.LeakyReLU(Operand, Alpha, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.LeakyReLU(Operand, Alpha);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.LeakyReLU(Operand, Alpha, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1385,12 +2367,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Less(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Less(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Less(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1405,12 +2400,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.LessEqual(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.LessEqual(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.LessEqual(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1434,12 +2442,25 @@ namespace Horker.PSCNTK {
         public double Beta;
 
         [Parameter(Position = 5, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.LocalResponseNormalization(Operand, (uint)DepthRadius, Bias, Alpha, Beta, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.LocalResponseNormalization(Operand, (uint)DepthRadius, Bias, Alpha, Beta);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 6)
+            {
+              var result = CNTK.CNTKLib.LocalResponseNormalization(Operand, (uint)DepthRadius, Bias, Alpha, Beta, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1451,12 +2472,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Log(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Log(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Log(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1471,12 +2505,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.LogAddExp(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.LogAddExp(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.LogAddExp(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1488,12 +2535,35 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public CNTK.Axis Axis;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.LogSoftmax(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.LogSoftmax(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.LogSoftmax(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.LogSoftmax(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1505,12 +2575,25 @@ namespace Horker.PSCNTK {
         public CNTK.VariableVector Operands;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Mean(Operands, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Mean(Operands);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Mean(Operands, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1521,22 +2604,56 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
 
-        [Parameter(Position = 1, Mandatory = true)]
+        [Parameter(Position = 1, Mandatory = false)]
         public double Epsilon;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public bool UseStatsAcrossChannels;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public bool DoVarianceScaling;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.MeanVarianceNormalization(Operand, Epsilon, UseStatsAcrossChannels, DoVarianceScaling, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.MeanVarianceNormalization(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.MeanVarianceNormalization(Operand, Epsilon);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.MeanVarianceNormalization(Operand, Epsilon, UseStatsAcrossChannels);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.MeanVarianceNormalization(Operand, Epsilon, UseStatsAcrossChannels, DoVarianceScaling);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.MeanVarianceNormalization(Operand, Epsilon, UseStatsAcrossChannels, DoVarianceScaling, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1551,12 +2668,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Minus(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Minus(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Minus(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1574,12 +2704,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable GroupId;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.NDCGAt1(Prediction, Gains, GroupId, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.NDCGAt1(Prediction, Gains, GroupId);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.NDCGAt1(Prediction, Gains, GroupId, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1591,12 +2734,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Negate(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Negate(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Negate(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1610,22 +2766,56 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.DataType DataType;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public double Mean;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public double Scale;
 
-        [Parameter(Position = 4, Mandatory = true)]
+        [Parameter(Position = 4, Mandatory = false)]
         public int Seed;
 
         [Parameter(Position = 5, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.NormalRandom(Shape, DataType, Mean, Scale, (uint)Seed, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.NormalRandom(Shape, DataType);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.NormalRandom(Shape, DataType, Mean);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.NormalRandom(Shape, DataType, Mean, Scale);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.NormalRandom(Shape, DataType, Mean, Scale, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 6)
+            {
+              var result = CNTK.CNTKLib.NormalRandom(Shape, DataType, Mean, Scale, (uint)Seed, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1636,22 +2826,56 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
 
-        [Parameter(Position = 1, Mandatory = true)]
+        [Parameter(Position = 1, Mandatory = false)]
         public double Mean;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public double Scale;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public int Seed;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.NormalRandomLike(Operand, Mean, Scale, (uint)Seed, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.NormalRandomLike(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.NormalRandomLike(Operand, Mean);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.NormalRandomLike(Operand, Mean, Scale);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.NormalRandomLike(Operand, Mean, Scale, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.NormalRandomLike(Operand, Mean, Scale, (uint)Seed, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1666,12 +2890,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.NotEqual(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.NotEqual(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.NotEqual(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1692,12 +2929,25 @@ namespace Horker.PSCNTK {
         public CNTK.Axis Axis;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.OneHotOp(Operand, (uint)NumClass, OutputSparse, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.OneHotOp(Operand, (uint)NumClass, OutputSparse, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.OneHotOp(Operand, (uint)NumClass, OutputSparse, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1709,12 +2959,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.OnesLike(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.OnesLike(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.OnesLike(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1734,16 +2997,36 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 3, Mandatory = true)]
         public CNTK.SizeTVector Foot;
 
-        [Parameter(Position = 4, Mandatory = true)]
+        [Parameter(Position = 4, Mandatory = false)]
         public double ConstantValue;
 
         [Parameter(Position = 5, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Pad(Operand, Mode, Head, Foot, ConstantValue, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.Pad(Operand, Mode, Head, Foot);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.Pad(Operand, Mode, Head, Foot, ConstantValue);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 6)
+            {
+              var result = CNTK.CNTKLib.Pad(Operand, Mode, Head, Foot, ConstantValue, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1754,19 +3037,46 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
 
-        [Parameter(Position = 1, Mandatory = true)]
+        [Parameter(Position = 1, Mandatory = false)]
         public CNTK.Variable InitialState;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public int Offset;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.PastValue(Operand, InitialState, (uint)Offset, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.PastValue(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.PastValue(Operand, InitialState);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.PastValue(Operand, InitialState, (uint)Offset);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.PastValue(Operand, InitialState, (uint)Offset, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1778,18 +3088,31 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Variable Mean;
+        public CNTK.NDArrayView Mean;
 
         [Parameter(Position = 2, Mandatory = true)]
-        public CNTK.Variable InvStdDev;
+        public CNTK.NDArrayView InvStdDev;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.PerDimMeanVarianceNormalize(Operand, Mean, InvStdDev, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.PerDimMeanVarianceNormalize(Operand, Mean, InvStdDev);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.PerDimMeanVarianceNormalize(Operand, Mean, InvStdDev, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1804,12 +3127,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Plus(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Plus(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Plus(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1826,25 +3162,66 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 2, Mandatory = true)]
         public CNTK.NDShape PoolingWindowShape;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public CNTK.NDShape Strides;
 
-        [Parameter(Position = 4, Mandatory = true)]
+        [Parameter(Position = 4, Mandatory = false)]
         public CNTK.BoolVector AutoPadding;
 
-        [Parameter(Position = 5, Mandatory = true)]
+        [Parameter(Position = 5, Mandatory = false)]
         public bool CeilOutDim;
 
-        [Parameter(Position = 6, Mandatory = true)]
+        [Parameter(Position = 6, Mandatory = false)]
         public bool IncludePad;
 
         [Parameter(Position = 7, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Pooling(Operand, PoolingType, PoolingWindowShape, Strides, AutoPadding, CeilOutDim, IncludePad, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Pooling(Operand, PoolingType, PoolingWindowShape);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.Pooling(Operand, PoolingType, PoolingWindowShape, Strides);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.Pooling(Operand, PoolingType, PoolingWindowShape, Strides, AutoPadding);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 6)
+            {
+              var result = CNTK.CNTKLib.Pooling(Operand, PoolingType, PoolingWindowShape, Strides, AutoPadding, CeilOutDim);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 7)
+            {
+              var result = CNTK.CNTKLib.Pooling(Operand, PoolingType, PoolingWindowShape, Strides, AutoPadding, CeilOutDim, IncludePad);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 8)
+            {
+              var result = CNTK.CNTKLib.Pooling(Operand, PoolingType, PoolingWindowShape, Strides, AutoPadding, CeilOutDim, IncludePad, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1859,12 +3236,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Pow(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Pow(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Pow(LeftOperand, RightOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1879,12 +3269,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.PReLU(Alpha, Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.PReLU(Alpha, Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.PReLU(Alpha, Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1901,16 +3304,36 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 2, Mandatory = true)]
         public bool AllowDuplicates;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public int Seed;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.RandomSample(Operand, (uint)NumSamples, AllowDuplicates, (uint)Seed, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.RandomSample(Operand, (uint)NumSamples, AllowDuplicates);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.RandomSample(Operand, (uint)NumSamples, AllowDuplicates, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.RandomSample(Operand, (uint)NumSamples, AllowDuplicates, (uint)Seed, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1927,16 +3350,36 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 2, Mandatory = true)]
         public bool AllowDuplicates;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public int Seed;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.RandomSampleInclusionFrequency(Operand, (uint)NumSamples, AllowDuplicates, (uint)Seed, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.RandomSampleInclusionFrequency(Operand, (uint)NumSamples, AllowDuplicates);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.RandomSampleInclusionFrequency(Operand, (uint)NumSamples, AllowDuplicates, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.RandomSampleInclusionFrequency(Operand, (uint)NumSamples, AllowDuplicates, (uint)Seed, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1948,12 +3391,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Reciprocal(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Reciprocal(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Reciprocal(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1968,12 +3424,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable AxesAsOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReconcileDynamicAxes(Operand, AxesAsOperand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ReconcileDynamicAxes(Operand, AxesAsOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ReconcileDynamicAxes(Operand, AxesAsOperand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -1987,16 +3456,36 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.AxisVector Axes;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public bool KeepDims;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceL1(Operand, Axes, KeepDims, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ReduceL1(Operand, Axes);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ReduceL1(Operand, Axes, KeepDims);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.ReduceL1(Operand, Axes, KeepDims, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2010,16 +3499,36 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.AxisVector Axes;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public bool KeepDims;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceL2(Operand, Axes, KeepDims, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ReduceL2(Operand, Axes);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ReduceL2(Operand, Axes, KeepDims);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.ReduceL2(Operand, Axes, KeepDims, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2031,15 +3540,28 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Axis Axis;
+        public CNTK.AxisVector Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceLogSum(Operand, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ReduceLogSum(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ReduceLogSum(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2051,15 +3573,28 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Axis Axis;
+        public CNTK.AxisVector Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceMax(Operand, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ReduceMax(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ReduceMax(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2071,15 +3606,28 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Axis Axis;
+        public CNTK.AxisVector Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceMean(Operand, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ReduceMean(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ReduceMean(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2091,15 +3639,28 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Axis Axis;
+        public CNTK.AxisVector Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceMin(Operand, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ReduceMin(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ReduceMin(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2111,15 +3672,28 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Axis Axis;
+        public CNTK.AxisVector Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceProd(Operand, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ReduceProd(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ReduceProd(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2131,15 +3705,28 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Axis Axis;
+        public CNTK.AxisVector Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceSum(Operand, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ReduceSum(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ReduceSum(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2153,16 +3740,36 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.AxisVector Axes;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public bool KeepDims;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceSumSquare(Operand, Axes, KeepDims, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ReduceSumSquare(Operand, Axes);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ReduceSumSquare(Operand, Axes, KeepDims);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.ReduceSumSquare(Operand, Axes, KeepDims, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2174,38 +3781,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReLU(Operand, Name);
-            WriteObject(result);
-        }
-    }
+            var argCount = MyInvocation.BoundParameters.Count;
 
-    [Cmdlet("New", "CNTKReshape")]
-    [Alias("cntk.reshape")]
-    public class NewCNTKReshape : PSCmdlet
-    {
-        [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.ReLU(Operand);
+              WriteObject(result);
+              return;
+            }
 
-        [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.NDShape ReplacementShape;
-
-        [Parameter(Position = 2, Mandatory = true)]
-        public CNTK.Axis BeginAxis;
-
-        [Parameter(Position = 3, Mandatory = true)]
-        public CNTK.Axis EndAxis;
-
-        [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
-
-        protected override void EndProcessing()
-        {
-            var result = CNTK.CNTKLib.Reshape(Operand, ReplacementShape, BeginAxis, EndAxis, Name);
-            WriteObject(result);
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ReLU(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2228,13 +3822,19 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 4, Mandatory = true)]
         public double SpatialScale;
 
-        [Parameter(Position = 5, Mandatory = false)]
-        public string Name = "";
+        [Parameter(Position = 5, Mandatory = true)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ROIPooling(Operand, Rois, PoolingType, RoiOutputShape, SpatialScale, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 6)
+            {
+              var result = CNTK.CNTKLib.ROIPooling(Operand, Rois, PoolingType, RoiOutputShape, SpatialScale, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2246,12 +3846,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Round(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Round(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Round(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2262,19 +3875,46 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
 
-        [Parameter(Position = 1, Mandatory = true)]
+        [Parameter(Position = 1, Mandatory = false)]
         public double Gamma;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public double Alpha;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SELU(Operand, Gamma, Alpha, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.SELU(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SELU(Operand, Gamma);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.SELU(Operand, Gamma, Alpha);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.SELU(Operand, Gamma, Alpha, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2289,12 +3929,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable BroadcastAs;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceBroadcastAs(Operand, BroadcastAs, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SequenceBroadcastAs(Operand, BroadcastAs);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.SequenceBroadcastAs(Operand, BroadcastAs, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2306,12 +3959,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceFirst(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.SequenceFirst(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SequenceFirst(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2326,12 +3992,35 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Condition;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public CNTK.PairSizeTInt NewDerivedSequenceAxisScalingAndAdditiveFactor;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceGather(Operand, Condition, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SequenceGather(Operand, Condition);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.SequenceGather(Operand, Condition, NewDerivedSequenceAxisScalingAndAdditiveFactor);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.SequenceGather(Operand, Condition, NewDerivedSequenceAxisScalingAndAdditiveFactor, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2343,12 +4032,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceIsFirst(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.SequenceIsFirst(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SequenceIsFirst(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2360,12 +4062,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceIsLast(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.SequenceIsLast(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SequenceIsLast(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2377,12 +4092,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceLast(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.SequenceLast(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SequenceLast(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2394,12 +4122,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceReduceMax(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.SequenceReduceMax(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SequenceReduceMax(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2411,12 +4152,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceReduceSum(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.SequenceReduceSum(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SequenceReduceSum(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2431,12 +4185,35 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Condition;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public CNTK.PairSizeTInt NewDerivedSequenceAxisScalingAndAdditiveFactor;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceScatter(Operand, Condition, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SequenceScatter(Operand, Condition);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.SequenceScatter(Operand, Condition, NewDerivedSequenceAxisScalingAndAdditiveFactor);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.SequenceScatter(Operand, Condition, NewDerivedSequenceAxisScalingAndAdditiveFactor, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2454,12 +4231,25 @@ namespace Horker.PSCNTK {
         public int EndIndex;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceSlice(Operand, BeginIndex, EndIndex, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.SequenceSlice(Operand, BeginIndex, EndIndex);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.SequenceSlice(Operand, BeginIndex, EndIndex, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2471,12 +4261,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceSoftmax(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.SequenceSoftmax(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SequenceSoftmax(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2494,12 +4297,25 @@ namespace Horker.PSCNTK {
         public bool SupressMaskOutput;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceUnpack(Operand, PaddingValue, SupressMaskOutput, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.SequenceUnpack(Operand, PaddingValue, SupressMaskOutput);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.SequenceUnpack(Operand, PaddingValue, SupressMaskOutput, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2511,12 +4327,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Condition;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SequenceWhere(Condition, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.SequenceWhere(Condition);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SequenceWhere(Condition, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2528,12 +4357,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Sigmoid(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Sigmoid(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Sigmoid(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2545,12 +4387,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Sin(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Sin(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Sin(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2561,10 +4416,26 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
 
+        [Parameter(Position = 1, Mandatory = false)]
+        public string Name;
+
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Sinh(Operand);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Sinh(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Sinh(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2585,12 +4456,35 @@ namespace Horker.PSCNTK {
         public CNTK.IntVector EndIndex;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public CNTK.IntVector Strides;
+
+        [Parameter(Position = 5, Mandatory = false)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Slice(Operand, Axis, BeginIndex, EndIndex, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.Slice(Operand, Axis, BeginIndex, EndIndex);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.Slice(Operand, Axis, BeginIndex, EndIndex, Strides);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 6)
+            {
+              var result = CNTK.CNTKLib.Slice(Operand, Axis, BeginIndex, EndIndex, Strides, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2602,12 +4496,35 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public CNTK.Axis Axis;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Softmax(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Softmax(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Softmax(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Softmax(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2619,12 +4536,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Softplus(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Softplus(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Softplus(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2636,12 +4566,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Softsign(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Softsign(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Softsign(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2656,12 +4599,25 @@ namespace Horker.PSCNTK {
         public int BlockSize;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SpaceToDepth(Operand, (uint)BlockSize, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SpaceToDepth(Operand, (uint)BlockSize);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.SpaceToDepth(Operand, (uint)BlockSize, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2691,12 +4647,25 @@ namespace Horker.PSCNTK {
         public int MaxTempMemSizeInSamples;
 
         [Parameter(Position = 7, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SpatialConvolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, Dilation, (uint)MaxTempMemSizeInSamples, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 7)
+            {
+              var result = CNTK.CNTKLib.SpatialConvolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, Dilation, (uint)MaxTempMemSizeInSamples);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 8)
+            {
+              var result = CNTK.CNTKLib.SpatialConvolution(ConvolutionMap, Operand, Strides, Sharing, AutoPadding, Dilation, (uint)MaxTempMemSizeInSamples, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2711,12 +4680,25 @@ namespace Horker.PSCNTK {
         public CNTK.Axis Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Splice(Operands, Axis, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Splice(Operands, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Splice(Operands, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2728,12 +4710,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Sqrt(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Sqrt(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Sqrt(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2745,12 +4740,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Square(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Square(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Square(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2765,12 +4773,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Targets;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.SquaredError(Prediction, Targets, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.SquaredError(Prediction, Targets);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.SquaredError(Prediction, Targets, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2782,12 +4803,35 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public CNTK.AxisVector Axis;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Squeeze(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Squeeze(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Squeeze(Operand, Axis);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Squeeze(Operand, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2799,12 +4843,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.StopGradient(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.StopGradient(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.StopGradient(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2816,12 +4873,25 @@ namespace Horker.PSCNTK {
         public CNTK.VariableVector Operands;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Sum(Operands, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Sum(Operands);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Sum(Operands, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2833,12 +4903,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Tanh(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Tanh(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Tanh(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2852,19 +4935,46 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Variable RightOperand;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public int OutputRank;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public int InferInputRankToMap;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Times(LeftOperand, RightOperand, (uint)OutputRank, InferInputRankToMap, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Times(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Times(LeftOperand, RightOperand, (uint)OutputRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.Times(LeftOperand, RightOperand, (uint)OutputRank, InferInputRankToMap);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.Times(LeftOperand, RightOperand, (uint)OutputRank, InferInputRankToMap, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2876,12 +4986,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ToBatch(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.ToBatch(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ToBatch(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2896,32 +5019,35 @@ namespace Horker.PSCNTK {
         public int K;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public CNTK.Axis Axis;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.TopK(Operand, (uint)K, Name);
-            WriteObject(result);
-        }
-    }
+            var argCount = MyInvocation.BoundParameters.Count;
 
-    [Cmdlet("New", "CNTKToSequence")]
-    [Alias("cntk.tosequence")]
-    public class NewCNTKToSequence : PSCmdlet
-    {
-        [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.TopK(Operand, (uint)K);
+              WriteObject(result);
+              return;
+            }
 
-        [Parameter(Position = 1, Mandatory = true)]
-        public string SequenceAxisNamePrefix;
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.TopK(Operand, (uint)K, Axis);
+              WriteObject(result);
+              return;
+            }
 
-        [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
-
-        protected override void EndProcessing()
-        {
-            var result = CNTK.CNTKLib.ToSequence(Operand, SequenceAxisNamePrefix, Name);
-            WriteObject(result);
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.TopK(Operand, (uint)K, Axis, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2936,12 +5062,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable DynamicAxesLike;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ToSequenceLike(Operand, DynamicAxesLike, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ToSequenceLike(Operand, DynamicAxesLike);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.ToSequenceLike(Operand, DynamicAxesLike, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2953,12 +5092,35 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public CNTK.AxisVector Permutation;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Transpose(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.Transpose(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.Transpose(Operand, Permutation);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.Transpose(Operand, Permutation, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2976,12 +5138,25 @@ namespace Horker.PSCNTK {
         public CNTK.Axis Axis2;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.TransposeAxes(Operand, Axis1, Axis2, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.TransposeAxes(Operand, Axis1, Axis2);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.TransposeAxes(Operand, Axis1, Axis2, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -2995,16 +5170,36 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Variable RightOperand;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public int OutputRank;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.TransposeTimes(LeftOperand, RightOperand, (uint)OutputRank, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.TransposeTimes(LeftOperand, RightOperand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.TransposeTimes(LeftOperand, RightOperand, (uint)OutputRank);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.TransposeTimes(LeftOperand, RightOperand, (uint)OutputRank, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -3018,22 +5213,56 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.DataType DataType;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public double Low;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public double High;
 
-        [Parameter(Position = 4, Mandatory = true)]
+        [Parameter(Position = 4, Mandatory = false)]
         public int Seed;
 
         [Parameter(Position = 5, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.UniformRandom(Shape, DataType, Low, High, (uint)Seed, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.UniformRandom(Shape, DataType);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.UniformRandom(Shape, DataType, Low);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.UniformRandom(Shape, DataType, Low, High);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.UniformRandom(Shape, DataType, Low, High, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 6)
+            {
+              var result = CNTK.CNTKLib.UniformRandom(Shape, DataType, Low, High, (uint)Seed, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -3044,22 +5273,56 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
 
-        [Parameter(Position = 1, Mandatory = true)]
+        [Parameter(Position = 1, Mandatory = false)]
         public double Low;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public double High;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public int Seed;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.UniformRandomLike(Operand, Low, High, (uint)Seed, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.UniformRandomLike(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.UniformRandomLike(Operand, Low);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.UniformRandomLike(Operand, Low, High);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.UniformRandomLike(Operand, Low, High, (uint)Seed);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.UniformRandomLike(Operand, Low, High, (uint)Seed, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -3070,13 +5333,19 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
 
-        [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        [Parameter(Position = 1, Mandatory = true)]
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.UnpackBatch(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.UnpackBatch(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -3096,19 +5365,46 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 3, Mandatory = true)]
         public CNTK.NDShape UnpoolingWindowShape;
 
-        [Parameter(Position = 4, Mandatory = true)]
+        [Parameter(Position = 4, Mandatory = false)]
         public CNTK.NDShape Strides;
 
-        [Parameter(Position = 5, Mandatory = true)]
+        [Parameter(Position = 5, Mandatory = false)]
         public CNTK.BoolVector AutoPadding;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Unpooling(Operand, PoolingInput, UnpoolingType, UnpoolingWindowShape, Strides, AutoPadding, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.Unpooling(Operand, PoolingInput, UnpoolingType, UnpoolingWindowShape);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 5)
+            {
+              var result = CNTK.CNTKLib.Unpooling(Operand, PoolingInput, UnpoolingType, UnpoolingWindowShape, Strides);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 6)
+            {
+              var result = CNTK.CNTKLib.Unpooling(Operand, PoolingInput, UnpoolingType, UnpoolingWindowShape, Strides, AutoPadding);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 7)
+            {
+              var result = CNTK.CNTKLib.Unpooling(Operand, PoolingInput, UnpoolingType, UnpoolingWindowShape, Strides, AutoPadding, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -3126,12 +5422,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Weights;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.WeightedBinaryCrossEntropy(Prediction, Targets, Weights, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 3)
+            {
+              var result = CNTK.CNTKLib.WeightedBinaryCrossEntropy(Prediction, Targets, Weights);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 4)
+            {
+              var result = CNTK.CNTKLib.WeightedBinaryCrossEntropy(Prediction, Targets, Weights, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 
@@ -3143,12 +5452,25 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public string Name = "";
+        public string Name;
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ZerosLike(Operand, Name);
-            WriteObject(result);
+            var argCount = MyInvocation.BoundParameters.Count;
+
+            if (argCount == 1)
+            {
+              var result = CNTK.CNTKLib.ZerosLike(Operand);
+              WriteObject(result);
+              return;
+            }
+
+            if (argCount == 2)
+            {
+              var result = CNTK.CNTKLib.ZerosLike(Operand, Name);
+              WriteObject(result);
+              return;
+            }
         }
     }
 }

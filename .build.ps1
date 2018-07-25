@@ -3,6 +3,7 @@ task . Compile, Build, ImportDebug
 Set-StrictMode -Version 4
 
 Import-Module HorkerTemplateEngine
+Import-Module psmath
 
 ############################################################
 
@@ -80,8 +81,7 @@ function Remove-Item2 {
 task ProcessTemplate {
   dir $TEMPLATE_INPUT_PATH | foreach {
     $inFile = $_.FullName
-    $outFile = Join-Path $TEMPLATE_OUTPUT_PATH ($_.Name -replace "\.template\.$", ".")
-    write-host $outFile
+    $outFile = Join-Path $TEMPLATE_OUTPUT_PATH ($_.Name -replace "\.template\.", ".")
     cat $inFile | Invoke-TemplateEngine | Set-Content $outFile
   }
 }
