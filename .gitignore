@@ -1,0 +1,14 @@
+pscntk/
+debug/
+
+.vs/
+bin/
+obj/
+packages/
+*.user
+
+private/
+lib/
+vendor/
+data/
+CNTK/
