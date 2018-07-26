@@ -4,7 +4,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKOptimizedRNNStack")]
-    [Alias("cntk.rnn")]
+    [Alias("cntk.rnnstack")]
     public class NewCNTKOptimizedRNNStack : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]

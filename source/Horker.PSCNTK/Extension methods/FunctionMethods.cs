@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Management.Automation;
 using System.Collections;
 
@@ -46,26 +44,14 @@ namespace Horker.PSCNTK
                     key = va;
                 }
 
-                var v = entry.Value;
-                if (v is CNTK.Value)
-                    value = v as CNTK.Value;
-                else if (v is DataSource<float>)
-                    value = (v as DataSource<float>).ToValue();
-                else if (v is object[])
-                {
-                    var values = (v as object[]).Select(x => Convert.ToSingle(x)).ToArray();
-                    value = new DataSource<float>(values, new int[] { values.Length }).ToValue();
-                }
-                else
-                {
-                    value = new DataSource<float>(new float[] { Convert.ToSingle(v) }, new int[] { 1 }).ToValue();
-                }
+                value = Converter.ToValue(entry.Value);
 
                 inputs.Add(key, value);
             }
 
             // TODO: multiple outputs
             var output = new Dictionary<CNTK.Variable, CNTK.Value>();
+
             output.Add(f.Output, null);
 
             if (device == null)

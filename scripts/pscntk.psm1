@@ -80,6 +80,15 @@ $METHOD_LIST = @(
       "Invoke"
     )
   }
+
+  [PSCustomObject]@{
+    TargetClass = "CNTK.Value"
+    ClassInfo = [Horker.PSCNTK.ValueMethods]
+    MethodNames = @(
+      "AsString"
+      "ToDataSource"
+    )
+  }
 )
 
 foreach ($l in $METHOD_LIST) {

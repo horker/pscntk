@@ -10,6 +10,8 @@ namespace Horker.PSCNTK
         public Shape Shape;
         public IList<T> Data;
 
+        #region Constructors and factories
+
         public DataSource(IList<T> data, int[] dimensions, bool ensureCopy = false)
         {
             Shape = new Shape(dimensions, data.Count);
@@ -91,33 +93,17 @@ namespace Horker.PSCNTK
 
         public static DataSource<float> FromValue(CNTK.Value value)
         {
-            if (value.IsSparse)
-                throw new NotImplementedException("Sparse value is not supported yet");
-
-            if (value.DataType != CNTK.DataType.Float)
-                throw new NotImplementedException("Only float value is supported");
-
-            var variable = CNTK.Variable.InputVariable(value.Shape, CNTK.DataType.Float);
-            var result = value.GetDenseData<float>(variable);
-
-            return new DataSource<float>(result[0], value.Shape.Dimensions.ToArray());
+            return Converter.ValueToDataSource(value);
         }
 
         public static DataSource<float> FromVariable(CNTK.Variable variable)
         {
-            var array = variable.GetValue();
-
-            if (array.IsSparse)
-                throw new NotImplementedException("Sparse value is not supported yet");
-
-            if (array.DataType != CNTK.DataType.Float)
-                throw new NotImplementedException("Only float value is supported");
-
-            var value = new CNTK.Value(array);
-            var result = value.GetDenseData<float>(variable);
-
-            return new DataSource<float>(result[0], value.Shape.Dimensions.ToArray());
+            return Converter.VariableToDataSource(variable);
         }
+
+        #endregion
+
+        #region Accessors
 
         public T this[params int[] indexes]
         {
@@ -125,10 +111,43 @@ namespace Horker.PSCNTK
             set { Data[Shape.GetSequentialIndex(indexes)] = value; }
         }
 
+        #endregion
+
+        #region Converters
+
+        public override string ToString()
+        {
+            return Converter.ArrayToString("DataSource", this.Data, this.Shape, false);
+        }
+
+        public string AsString()
+        {
+            return Converter.ArrayToString("DataSource", this.Data, this.Shape, true);
+        }
+
+        public T[] ToArray()
+        {
+            return Data.ToArray();
+        }
+
         public static implicit operator T[] (DataSource<T> source)
         {
             return source.Data.ToArray();
         }
+
+        public CNTK.NDArrayView ToNDArrayView(CNTK.DeviceDescriptor device = null)
+        {
+            return Converter.ArrayToNDArrayView(Data.Select(x => Convert.ToSingle(x)).ToArray(), Shape.Dimensions, device);
+        }
+
+        public CNTK.Value ToValue(CNTK.DeviceDescriptor device = null)
+        {
+            return new CNTK.Value(ToNDArrayView(device));
+        }
+
+        #endregion
+
+        #region Manipulators
 
         public void Reshape(params int[] dimensions)
         {
@@ -317,95 +336,6 @@ namespace Horker.PSCNTK
             return results.ToArray();
         }
 
-        public static string ConvertToString<V>(string className, IList<V> data, Shape shape, bool longFormat)
-        {
-            var result = new StringBuilder();
-
-            if (!string.IsNullOrEmpty(className))
-            {
-                result.Append(className);
-                result.Append(" ");
-            }
-
-            result.Append(shape.ToString());
-
-            if (longFormat)
-                result.AppendLine();
-
-            var sizes = new int[shape.Rank];
-            sizes[0] = shape[0];
-            for (var i = 1; i < shape.Rank; ++i)
-                sizes[i] = sizes[i - 1] * shape[i];
-
-            for (var i = 0; i < data.Count; ++i)
-            {
-                bool open = false;
-                for (var j = 0; j < shape.Rank; ++j)
-                {
-                    if (i % sizes[j] == 0)
-                    {
-                        result.Append(" [");
-                        open = true;
-                    }
-                }
-
-                if (!open)
-                    result.Append(" ");
-
-                result.Append(data[i]);
-
-                var close = false;
-                var newline = false;
-                for (var j = 0; j < shape.Rank; ++j)
-                {
-                    if ((i + 1) % sizes[j] == 0)
-                    {
-                        if (close)
-                            result.Append(" ");
-                        result.Append("]");
-                        close = true;
-
-                        if (j == shape.Rank - 2)
-                            newline = true;
-                    }
-                }
-
-                if (i < data.Count - 1 && longFormat && newline)
-                {
-                    result.AppendLine();
-                    result.Append("  ");
-                }
-            }
-
-            return result.ToString();
-        }
-
-        public override string ToString()
-        {
-            return ConvertToString("DataSource", this.Data, this.Shape, false);
-        }
-
-        public string AsString()
-        {
-            return ConvertToString("DataSource", this.Data, this.Shape, true);
-        }
-
-        public T[] ToArray()
-        {
-            return Data.ToArray();
-        }
-
-        public CNTK.NDArrayView ToNDArrayView(CNTK.DeviceDescriptor device = null)
-        {
-            if (device == null)
-                device = CNTK.DeviceDescriptor.UseDefaultDevice();
-
-            return new CNTK.NDArrayView(Shape.Dimensions, Data.Select(x => Convert.ToSingle(x)).ToArray(), device);
-        }
-
-        public CNTK.Value ToValue(CNTK.DeviceDescriptor device = null)
-        {
-            return new CNTK.Value(ToNDArrayView(device));
-        }
+        #endregion
     }
 }
