@@ -1,4 +1,5 @@
 #requires -PSEdition Desktop
+
 Set-StrictMode -Version 4
 
 ############################################################
@@ -87,3 +88,9 @@ foreach ($l in $METHOD_LIST) {
     Update-TypeData -TypeName $target -MemberName $m -MemberType CodeMethod -Value $mi -Force
   }
 }
+
+############################################################
+# Settings
+############################################################
+
+[CNTK.CNTKLib]::SetTraceLevel("Error")
