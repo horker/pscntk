@@ -6,6 +6,8 @@ Import-Module HorkerTemplateEngine
 Import-Module psmath
 
 ############################################################
+# Settings
+############################################################
 
 $SOURCE_PATH = "$PSScriptRoot\source\Horker.PSCNTK"
 $SCRIPT_PATH = "$PSScriptRoot\scripts"
@@ -31,6 +33,8 @@ $TEMPLATE_OUTPUT_PATH = "$PSScriptRoot\source\Horker.PSCNTK\Cmdlets"
 #$HELP_OUTPUT = "$MODULE_PATH\Horker.Data.dll-Help.xml"
 #$HELPGEN = "$PSScriptRoot\vendor\XmlDoc2CmdletDoc.0.2.10\tools\XmlDoc2CmdletDoc.exe"
 
+############################################################
+# Helper cmdlets
 ############################################################
 
 function New-Folder2 {
@@ -77,14 +81,8 @@ function Remove-Item2 {
 }
 
 ############################################################
-
-task ProcessTemplate {
-  dir $TEMPLATE_INPUT_PATH | foreach {
-    $inFile = $_.FullName
-    $outFile = Join-Path $TEMPLATE_OUTPUT_PATH ($_.Name -replace "\.template\.", ".")
-    cat $inFile | Invoke-TemplateEngine | Set-Content $outFile
-  }
-}
+# Tasks
+############################################################
 
 task Compile {
   msbuild $SOLUTION_FILE /p:Configuration=Debug /nologo /v:minimal
@@ -113,8 +111,6 @@ task Build {
     Copy-ObjectFiles $MODULE_PATH "$SOURCE_PATH\bin\Release"
     Copy-ObjectFiles $MODULE_PATH_DEBUG "$SOURCE_PATH\bin\Debug"
 
-    Copy-Item2 "$LIB_PATH\*.dll" "$MODULE_PATH\lib"
-    Copy-Item2 "$LIB_PATH\*.dll" "$MODULE_PATH_DEBUG\lib"
   }
 }
 
@@ -138,4 +134,17 @@ task ImportDebug {
 task Clean {
   Remove-Item2 "$MODULE_PATH\*" -Force -Recurse -EA Continue
   Remove-Item2 "$MODULE_PATH_DEBUG\*" -Force -Recurse -EA Continue
+}
+
+task ProcessTemplate {
+  dir $TEMPLATE_INPUT_PATH | foreach {
+    $inFile = $_.FullName
+    $outFile = Join-Path $TEMPLATE_OUTPUT_PATH ($_.Name -replace "\.template\.", ".")
+    cat $inFile | Invoke-TemplateEngine | Set-Content $outFile
+  }
+}
+
+task CopyLib {
+    Copy-Item2 "$LIB_PATH\*.dll" "$MODULE_PATH\lib"
+    Copy-Item2 "$LIB_PATH\*.dll" "$MODULE_PATH_DEBUG\lib"
 }

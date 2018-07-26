@@ -94,7 +94,7 @@ namespace Horker.PSCNTK
             if (value.IsSparse)
                 throw new NotImplementedException("Sparse value is not supported yet");
 
-            if (value.GetType() != typeof(float))
+            if (value.DataType != CNTK.DataType.Float)
                 throw new NotImplementedException("Only float value is supported");
 
             var variable = CNTK.Variable.InputVariable(value.Shape, CNTK.DataType.Float);
@@ -110,7 +110,7 @@ namespace Horker.PSCNTK
             if (array.IsSparse)
                 throw new NotImplementedException("Sparse value is not supported yet");
 
-            if (array.GetType() != typeof(float))
+            if (array.DataType != CNTK.DataType.Float)
                 throw new NotImplementedException("Only float value is supported");
 
             var value = new CNTK.Value(array);

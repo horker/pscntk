@@ -4,6 +4,8 @@ Set-StrictMode -Version 4
 # DLLs to import
 ############################################################
 
+# The order of the files is significant
+
 $script:NATIVE_LIBS = @(
   "cublas64_90.dll"
   "cudart64_90.dll"
@@ -42,12 +44,12 @@ $LIB_DIR = "$PSScriptRoot\lib"
 # Import dlls
 ############################################################
 
-$loader = add-type -pass -name Dll2 -memberDefinition @"
+$loader = add-type -pass -name Dll -memberDefinition @"
   [DllImport("kernel32.dll", CharSet=CharSet.Unicode)]
   public static extern IntPtr LoadLibrary(string dllToLoad);
 "@
 
-# Native
+# Native modules
 
 foreach ($l in $NATIVE_LIBS) {
   $file = Join-Path $LIB_DIR $l
@@ -58,29 +60,33 @@ foreach ($l in $NATIVE_LIBS) {
   }
 }
 
-# Managed
+# Managed modules
 
 foreach ($l in $MANAGED_LIBS) {
   $file = Join-Path $LIB_DIR $l
   [System.Reflection.Assembly]::LoadFrom($file)
 }
 
-#$METHOD_LIST = @(
-#  [PSCustomObject]@{
-#    ClassInfo = [Horker.Math.ArrayMethods.AdditionalMethods]
-#    MethodNames = @(
-#      "Split"
-#      "Shuffle"
-#      "DropNa"
-#      "DropNaN"
-#    )
-#  }
-#)
-#
-#foreach ($l in $METHOD_LIST) {
-#  $ci = $l.ClassInfo
-#  foreach ($m in $l.MethodNames) {
-#    $mi = $ci.GetMethod($m)
-#    Update-TypeData -TypeName System.Array -MemberName $m -MemberType CodeMethod -Value $mi -Force
-#  }
-#}
+############################################################
+# Extension methods
+############################################################
+
+$METHOD_LIST = @(
+  [PSCustomObject]@{
+    TargetClass = "CNTK.Function"
+    ClassInfo = [Horker.PSCNTK.FunctionMethods]
+    MethodNames = @(
+      "Get"
+      "Invoke"
+    )
+  }
+)
+
+foreach ($l in $METHOD_LIST) {
+  $ci = $l.ClassInfo
+  $target = $l.TargetClass
+  foreach ($m in $l.MethodNames) {
+    $mi = $ci.GetMethod($m)
+    Update-TypeData -TypeName $target -MemberName $m -MemberType CodeMethod -Value $mi -Force
+  }
+}
