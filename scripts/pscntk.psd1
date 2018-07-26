@@ -15,7 +15,7 @@ RootModule = 'pscntk.psm1'
 ModuleVersion = '0.1.0'
 
 # Supported PSEditions
-# CompatiblePSEditions = ''
+CompatiblePSEditions = 'Desktop'
 
 # ID used to uniquely identify this module
 GUID = '58bfaf42-c13b-445b-a7b3-ce5dbeb4d414'
@@ -47,10 +47,10 @@ TBD
 DotNetFrameworkVersion = '4.5.2'
 
 # Minimum version of the common language runtime (CLR) required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
-# CLRVersion = ''
+CLRVersion = '4.0'
 
 # Processor architecture (None, X86, Amd64) required by this module
-# ProcessorArchitecture = ''
+ProcessorArchitecture = 'Amd64'
 
 # Modules that must be imported into the global environment prior to importing this module
 # RequiredModules = @()

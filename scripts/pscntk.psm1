@@ -1,7 +1,8 @@
+#requires -PSEdition Desktop
 Set-StrictMode -Version 4
 
 ############################################################
-# DLLs to import
+# Unmanaged DLLs to import
 ############################################################
 
 # The order of the files is significant
@@ -34,22 +35,16 @@ $script:NATIVE_LIBS = @(
   "Cntk.Core.CSBinding-2.5.1.dll"
 )
 
-$script:MANAGED_LIBS = @(
-  "Cntk.Core.Managed-2.5.1.dll"
-)
-
 $LIB_DIR = "$PSScriptRoot\lib"
 
 ############################################################
-# Import dlls
+# Import unmanaged DLLs
 ############################################################
 
 $loader = add-type -pass -name Dll -memberDefinition @"
   [DllImport("kernel32.dll", CharSet=CharSet.Unicode)]
   public static extern IntPtr LoadLibrary(string dllToLoad);
 "@
-
-# Native modules
 
 foreach ($l in $NATIVE_LIBS) {
   $file = Join-Path $LIB_DIR $l
@@ -58,13 +53,6 @@ foreach ($l in $NATIVE_LIBS) {
   if ($pDll -eq [IntPtr]::Zero) {
     Write-Error "Failed to load $file"
   }
-}
-
-# Managed modules
-
-foreach ($l in $MANAGED_LIBS) {
-  $file = Join-Path $LIB_DIR $l
-  [System.Reflection.Assembly]::LoadFrom($file)
 }
 
 ############################################################
