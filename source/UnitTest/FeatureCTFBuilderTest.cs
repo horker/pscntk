@@ -12,15 +12,15 @@ namespace UnitTest
         {
             var builder = new FeatureCTFBuilder();
 
-            builder.AddDenseFeature("by_sequence", new double[] { 1, 2, 3, 4, 5, 6, 7 }, 3);
+            builder.AddDenseFeature("by_sequence", new float[] { 1, 2, 3, 4, 5, 6, 7 }, 3);
 
-            builder.AddDenseFeature("by_array_of_array", new double[][] {
-                new double[] { 1, 2 }, new double[] { 3, 4, 5 }, new double[] { 6, 7, 8, 9 }
+            builder.AddDenseFeature("by_array_of_array", new float[][] {
+                new float[] { 1, 2 }, new float[] { 3, 4, 5 }, new float[] { 6, 7, 8, 9 }
             });
 
             builder.AddDenseFeature("step_by_step");
-            builder.AddDenseSample(new double[] { 10, 20, 30 });
-            builder.AddDenseSample(new double[] { 40, 50, 60 });
+            builder.AddDenseSample(new float[] { 10, 20, 30 });
+            builder.AddDenseSample(new float[] { 40, 50, 60 });
 
             var writer = new StringWriter();
             builder.Write(writer);
@@ -87,7 +87,7 @@ namespace UnitTest
             var builder = new FeatureCTFBuilder();
 
             builder.AddComment(new string[] { "hello", "world", "!" });
-            builder.AddDenseFeature("dense", new double[] { 1, 2, 3 }, 1);
+            builder.AddDenseFeature("dense", new float[] { 1, 2, 3 }, 1);
 
             var writer = new StringWriter();
             builder.Write(writer);

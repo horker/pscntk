@@ -12,8 +12,8 @@ namespace Horker.PSCNTK
     {
         private int _lookback;
 
-        private IDictionary<string, IReadOnlyList<double>> _featureMap;
-        private IDictionary<string, IReadOnlyList<double>> _labelMap;
+        private IDictionary<string, IReadOnlyList<float>> _featureMap;
+        private IDictionary<string, IReadOnlyList<float>> _labelMap;
 
         public SeriesCTFBuilder(int lookback)
         {
@@ -23,17 +23,17 @@ namespace Horker.PSCNTK
 
             _lookback = lookback;
 
-            _featureMap = new Dictionary<string, IReadOnlyList<double>>();
-            _labelMap = new Dictionary<string, IReadOnlyList<double>>();
+            _featureMap = new Dictionary<string, IReadOnlyList<float>>();
+            _labelMap = new Dictionary<string, IReadOnlyList<float>>();
         }
 
-        public void AddFeature(string name, IReadOnlyList<double> data)
+        public void AddFeature(string name, IReadOnlyList<float> data)
         {
             CNTKBuilderHelper.CheckFeatureName(name);
             _featureMap.Add(name, data);
         }
 
-        public void AddLabel(string name, IReadOnlyList<double> data)
+        public void AddLabel(string name, IReadOnlyList<float> data)
         {
             CNTKBuilderHelper.CheckFeatureName(name);
             _labelMap.Add(name, data);
@@ -54,12 +54,12 @@ namespace Horker.PSCNTK
             for (var seq = 0; seq < total - _lookback + 1; ++seq) {
                 for (var i = 0; i < _lookback; ++i) {
                     foreach (var d in _featureMap) {
-                        builder.AddDenseSample(d.Key, new double[] { d.Value[seq + i] });
+                        builder.AddDenseSample(d.Key, new float[] { d.Value[seq + i] });
                     }
 
                     if (i == _lookback - 1) {
                         foreach (var d in _labelMap) {
-                            builder.AddDenseSample(d.Key, new double[] { d.Value[seq + i] });
+                            builder.AddDenseSample(d.Key, new float[] { d.Value[seq + i] });
                         }
                     }
 

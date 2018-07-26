@@ -44,18 +44,18 @@ namespace Horker.PSCNTK
 
     internal class DenseSample : Sample
     {
-        private List<double> _values;
+        private List<float> _values;
 
-        public DenseSample(string name, IEnumerable<double> values = null)
+        public DenseSample(string name, IEnumerable<float> values = null)
             : base(name)
         {
-            _values = new List<double>();
+            _values = new List<float>();
             if (values != null) {
                 _values.AddRange(values);
             }
         }
 
-        public void AddValue(double value)
+        public void AddValue(float value)
         {
             _values.Add(value);
         }
@@ -78,9 +78,9 @@ namespace Horker.PSCNTK
     internal class IndexValue
     {
         public int Index;
-        public double Value;
+        public float Value;
 
-        public IndexValue(int index, double value)
+        public IndexValue(int index, float value)
         {
             Index = index;
             Value = value;
@@ -97,7 +97,7 @@ namespace Horker.PSCNTK
             _values = new List<IndexValue>();
         }
 
-        public void AddValue(int index, double value)
+        public void AddValue(int index, float value)
         {
             _values.Add(new IndexValue(index, value));
         }
@@ -239,13 +239,13 @@ namespace Horker.PSCNTK
             _sample = null;
         }
 
-        public void AddDenseSample(string name, IEnumerable<double> values = null)
+        public void AddDenseSample(string name, IEnumerable<float> values = null)
         {
             FlushSample();
             _sample = new DenseSample(name, values);
         }
 
-        public void AddDenseValue(double value)
+        public void AddDenseValue(float value)
         {
             ((DenseSample)_sample).AddValue(value);
         }
@@ -257,7 +257,7 @@ namespace Horker.PSCNTK
             _sample = new SparseSample(name);
         }
 
-        public void AddSparseValue(int index, double value)
+        public void AddSparseValue(int index, float value)
         {
             ((SparseSample)_sample).AddValue(index, value);
         }

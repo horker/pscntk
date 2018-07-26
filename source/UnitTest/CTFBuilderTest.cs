@@ -13,8 +13,8 @@ namespace UnitTest
             var writer = new StringWriter();
             var builder = new CTFBuilder(writer);
 
-            builder.AddDenseSample("a", new double[] { 1, 2, 3 });
-            builder.AddDenseSample("b", new double[] { 3.14 });
+            builder.AddDenseSample("a", new float[] { 1, 2, 3 });
+            builder.AddDenseSample("b", new float[] { 3.14f });
 
             builder.Finish();
 
@@ -28,9 +28,9 @@ namespace UnitTest
             var writer = new StringWriter();
             var builder = new CTFBuilder(writer);
 
-            builder.AddDenseSample("a", new double[] { 1, 2, 3 });
+            builder.AddDenseSample("a", new float[] { 1, 2, 3 });
             builder.NextLine();
-            builder.AddDenseSample("b", new double[] { 3.14 });
+            builder.AddDenseSample("b", new float[] { 3.14f });
 
             builder.Finish();
 
@@ -44,13 +44,13 @@ namespace UnitTest
             var writer = new StringWriter();
             var builder = new CTFBuilder(writer, false);
 
-            builder.AddDenseSample("a", new double[] { 1, 2, 3 });
+            builder.AddDenseSample("a", new float[] { 1, 2, 3 });
             builder.NextLine();
-            builder.AddDenseSample("b", new double[] { 3.14 });
+            builder.AddDenseSample("b", new float[] { 3.14f });
             builder.NextLine();
             builder.NextSequence();
-            builder.AddDenseSample("c", new double[] { 5 });
-            builder.AddDenseSample("d", new double[] { 10 });
+            builder.AddDenseSample("c", new float[] { 5 });
+            builder.AddDenseSample("d", new float[] { 10 });
             builder.NextLine();
 
             builder.Finish();
@@ -82,7 +82,7 @@ namespace UnitTest
             var builder = new CTFBuilder(writer, false);
 
             builder.AddComment("hello world");
-            builder.AddDenseSample("a", new double[] { 1, 2 });
+            builder.AddDenseSample("a", new float[] { 1, 2 });
 
             builder.Finish();
 

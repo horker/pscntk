@@ -12,9 +12,9 @@ namespace UnitTest
         {
             var builder = new SeriesCTFBuilder(3);
 
-            builder.AddFeature("a", new double[] { 1, 2, 3, 4, 5 });
-            builder.AddFeature("b", new double[] { 10, 20, 30, 40, 50 });
-            builder.AddLabel("label", new double[] { -1, -2, -3, -4, -5, -6, -7, -8, -9, -10 });
+            builder.AddFeature("a", new float[] { 1, 2, 3, 4, 5 });
+            builder.AddFeature("b", new float[] { 10, 20, 30, 40, 50 });
+            builder.AddLabel("label", new float[] { -1, -2, -3, -4, -5, -6, -7, -8, -9, -10 });
 
             var writer = new StringWriter();
             builder.Write(writer);

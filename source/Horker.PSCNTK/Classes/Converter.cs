@@ -97,7 +97,7 @@ namespace Horker.PSCNTK
 
             var result = value.GetDenseData<float>(variable);
 
-            return new DataSource<float>(result[0], value.Shape.Dimensions.ToArray());
+            return new DataSource<float>(result[0].ToArray(), value.Shape.Dimensions.ToArray());
         }
 
         public static DataSource<float> VariableToDataSource(CNTK.Variable variable)
@@ -114,7 +114,7 @@ namespace Horker.PSCNTK
 
             var result = value.GetDenseData<float>(variable);
 
-            return new DataSource<float>(result[0], value.Shape.Dimensions.ToArray());
+            return new DataSource<float>(result[0].ToArray(), value.Shape.Dimensions.ToArray());
         }
 
         public static CNTK.Value DataSourceToValue(DataSource<float> ds)

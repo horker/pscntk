@@ -8,17 +8,17 @@ namespace Horker.PSCNTK
     public class DataSource<T>
     {
         public Shape Shape;
-        public IList<T> Data;
+        public T[] Data;
 
         #region Constructors and factories
 
-        public DataSource(IList<T> data, int[] dimensions, bool ensureCopy = false)
+        public DataSource(T[] data, int[] dimensions, bool ensureCopy = false)
         {
-            Shape = new Shape(dimensions, data.Count);
+            Shape = new Shape(dimensions, data.Length);
 
             if (ensureCopy)
             {
-                var buffer = new T[data.Count];
+                var buffer = new T[data.Length];
                 int i = 0;
                 foreach (var value in data)
                 {
@@ -111,6 +111,14 @@ namespace Horker.PSCNTK
             set { Data[Shape.GetSequentialIndex(indexes)] = value; }
         }
 
+        public CNTK.StreamConfiguration GetStreamConfiguration(string name)
+        {
+            if (Shape.Rank < 3)
+                throw new NotSupportedException("Shape should contain sequence and batch axes as the last two");
+
+            return new CNTK.StreamConfiguration(name, Shape.GetSize(Shape.Rank - 3), false, name, false);
+        }
+
         #endregion
 
         #region Converters
@@ -151,7 +159,7 @@ namespace Horker.PSCNTK
 
         public void Reshape(params int[] dimensions)
         {
-            Shape.Reshape(dimensions, Data.Count);
+            Shape.Reshape(dimensions, Data.Length);
         }
 
         private static void Copy(IList<T> from, int fromOffset, IList<T> to, int toOffset, int size)
@@ -215,7 +223,7 @@ namespace Horker.PSCNTK
 
                 var newChunkSize = d.Shape.GetSize(axis - 1) * newShape.Dimensions[axis];
 
-                var chunkCount = d.Data.Count / chunkSize;
+                var chunkCount = d.Data.Length / chunkSize;
 
                 for (var i = 0; i < chunkCount; ++i)
                 {

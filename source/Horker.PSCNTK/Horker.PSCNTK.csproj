@@ -52,10 +52,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\CNTKFunctionHelper.cs" />
     <Compile Include="Classes\Converter.cs" />
     <Compile Include="Classes\CTFBuilder.cs" />
     <Compile Include="Classes\DataSource.cs" />
+    <Compile Include="Classes\DataSourceCTFBuilder.cs" />
     <Compile Include="Classes\FeatureCTFBuilder.cs" />
+    <Compile Include="Classes\TrainingSession.cs" />
+    <Compile Include="Cmdlets\CTFCmdlets.cs" />
+    <Compile Include="Cmdlets\LearnerCmdlets.cs" />
+    <Compile Include="Cmdlets\MinibatchSourceCmdlets.cs" />
+    <Compile Include="Cmdlets\TrainerCmdlets.cs" />
     <Compile Include="Extension methods\FunctionMethods.cs" />
     <Compile Include="Cmdlets\DataSourceCmdlets.cs" />
     <Compile Include="Cmdlets\FunctionCmdlets.cs" />

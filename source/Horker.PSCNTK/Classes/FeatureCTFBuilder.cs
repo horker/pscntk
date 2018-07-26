@@ -20,11 +20,11 @@ namespace Horker.PSCNTK
 
     internal class DenseFeatureBySequence : FeatureBase
     {
-        private IEnumerable<double> _data;
+        private IEnumerable<float> _data;
         private int _dimension;
-        private IEnumerator<double> _cursor;
+        private IEnumerator<float> _cursor;
 
-        public DenseFeatureBySequence(string name, IEnumerable<double> data, int dimension)
+        public DenseFeatureBySequence(string name, IEnumerable<float> data, int dimension)
             : base(name)
         {
             if (dimension <= 0) {
@@ -62,26 +62,26 @@ namespace Horker.PSCNTK
 
     internal class DenseFeatureByArrayOfArray : FeatureBase
     {
-        private List<List<double>> _data;
-        private IEnumerator<List<double>> _cursor;
+        private List<List<float>> _data;
+        private IEnumerator<List<float>> _cursor;
 
         public DenseFeatureByArrayOfArray(string name)
             : base(name)
         {
-            _data = new List<List<double>>();
+            _data = new List<List<float>>();
             _cursor = null;
         }
 
-        public void AddSample(IEnumerable<double> sample)
+        public void AddSample(IEnumerable<float> sample)
         {
-            var l = new List<double>(sample);
+            var l = new List<float>(sample);
             _data.Add(l);
         }
 
-        public void AddAllSamples(double[][] samples)
+        public void AddAllSamples(float[][] samples)
         {
             for (var i = 0; i < samples.Length; ++i) {
-                var l = new List<double>(samples[i]);
+                var l = new List<float>(samples[i]);
                 _data.Add(l);
             }
         }
@@ -104,28 +104,28 @@ namespace Horker.PSCNTK
 
     internal class SparseFeature : FeatureBase
     {
-        private List<List<Tuple<int, double>>> _data;
-        private IEnumerator<List<Tuple<int, double>>> _cursor;
+        private List<List<Tuple<int, float>>> _data;
+        private IEnumerator<List<Tuple<int, float>>> _cursor;
 
         public SparseFeature(string name)
             : base(name)
         {
-            _data = new List<List<Tuple<int, double>>>();
+            _data = new List<List<Tuple<int, float>>>();
             _cursor = null;
         }
 
         public void AddNewSample()
         {
-            _data.Add(new List<Tuple<int, double>>());
+            _data.Add(new List<Tuple<int, float>>());
         }
 
-        public void AddValue(int index, double value)
+        public void AddValue(int index, float value)
         {
             if (index < 0) {
                 throw new ArgumentException("index should be greater than or equal to 0");
             }
 
-            _data.Last().Add(new Tuple<int, double>(index, value));
+            _data.Last().Add(new Tuple<int, float>(index, value));
         }
 
         public override bool Write(CTFBuilder builder)
@@ -221,12 +221,12 @@ namespace Horker.PSCNTK
             _features = new List<FeatureBase>();
         }
 
-        public void AddDenseFeature(string name, IReadOnlyList<double> data, int dimension)
+        public void AddDenseFeature(string name, IReadOnlyList<float> data, int dimension)
         {
             _features.Add(new DenseFeatureBySequence(name, data, dimension));
         }
 
-        public void AddDenseFeature(string name, double[][] data)
+        public void AddDenseFeature(string name, float[][] data)
         {
             var l = new DenseFeatureByArrayOfArray(name);
             l.AddAllSamples(data);
@@ -239,7 +239,7 @@ namespace Horker.PSCNTK
             _features.Add(l);
         }
 
-        public void AddDenseSample(IEnumerable<double> sample)
+        public void AddDenseSample(IEnumerable<float> sample)
         {
             var l = _features.Last();
             ((DenseFeatureByArrayOfArray)l).AddSample(sample);
@@ -256,7 +256,7 @@ namespace Horker.PSCNTK
             ((SparseFeature)l).AddNewSample();
         }
 
-        public void AddSparseValue(int index, double value)
+        public void AddSparseValue(int index, float value)
         {
             var l = _features.Last();
             ((SparseFeature)l).AddValue(index, value);

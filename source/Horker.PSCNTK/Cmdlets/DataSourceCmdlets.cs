@@ -37,7 +37,13 @@ namespace Horker.PSCNTK
             var data = new List<float[]>();
             foreach (var row in Rows)
             {
-                data.Add(row.Select(x => Convert.ToSingle(x)).ToArray());
+                var r = row.Select(x => {
+                    if (x is PSObject)
+                        x = (x as PSObject).BaseObject;
+
+                    return Convert.ToSingle(x);
+                });
+                data.Add(r.ToArray());
             }
 
             var result = DataSource<float>.FromRows(data.ToArray());
@@ -57,7 +63,13 @@ namespace Horker.PSCNTK
             var data = new List<float[]>();
             foreach (var column in Columns)
             {
-                data.Add(column.Select(x => Convert.ToSingle(x)).ToArray());
+                var c = column.Select(x => {
+                    if (x is PSObject)
+                        x = (x as PSObject).BaseObject;
+
+                    return Convert.ToSingle(x);
+                });
+                data.Add(c.ToArray());
             }
 
             var result = DataSource<float>.FromColumns(data.ToArray());
