@@ -37,7 +37,7 @@ $out = cntk.sigmoid $h
 $label = cntk.input $OUTPUT_CLASSES -Name "label"
 
 ############################################################
-# Prepare data
+# Start training
 ############################################################
 
 $learner = cntk.momentumsgd $out .01 .9
@@ -45,3 +45,5 @@ $learner = cntk.momentumsgd $out .01 .9
 $trainer = cntk.trainer $out $label BinaryCrossEntropy ClassificationError $learner
 
 cntk.starttraining $trainer $source 20 -MaxIteration 1000 -ProgressOutputStep 50
+
+$out.Save("$PSScriptRoot\logistic.dnn")

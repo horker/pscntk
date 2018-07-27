@@ -12,3 +12,5 @@ lib/
 vendor/
 data/
 CNTK/
+
+*.dnn
