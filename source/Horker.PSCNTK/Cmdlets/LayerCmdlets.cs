@@ -28,17 +28,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var dim = Input.Shape.Dimensions[0];
-
-            var weightSize = (dim - 1) * 4 * HiddenSize;
-            weightSize += (LayerSize - 1) * (8 * HiddenSize * HiddenSize + 8 * HiddenSize);
-            weightSize += 4 * HiddenSize * HiddenSize + 12 * HiddenSize;
-
-            var w = new Parameter(new int[] { weightSize }, DataType.Float, CNTKLib.GlorotUniformInitializer());
-
-            var rnn = CNTKLib.OptimizedRNNStack(Input, w, (uint)HiddenSize, (uint)LayerSize, Bidirectional, CellType, Name);
-
-            var output = CNTKLib.SequenceLast(rnn);
+            var output = Layers.OptimizedRNNStack(Input, HiddenSize, LayerSize, Bidirectional, CellType, Name);
 
             WriteObject(output);
         }
@@ -59,12 +49,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var inDim = Input.Shape.Dimensions[0];
-
-            var weight = new Parameter(new int[] { HiddenSize, inDim }, DataType.Float, Initializer);
-            var bias = new Parameter(new int[] { HiddenSize }, DataType.Float, Initializer);
-
-            var output = CNTKLib.Plus(CNTKLib.Times(weight, Input), bias);
+            var output = Layers.Dense(Input, HiddenSize, Initializer);
 
             WriteObject(output);
         }
