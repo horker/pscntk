@@ -47,6 +47,7 @@ namespace Horker.PSCNTK
             // Bulid configuration
 
             var configs = new List<StreamConfiguration>();
+            var sampleCount = -1;
 
             foreach (DictionaryEntry entry in DataSources)
             {
@@ -57,6 +58,13 @@ namespace Horker.PSCNTK
                     ds = (DataSource<float>)(entry.Value as PSObject).BaseObject;
                 else
                     ds = (DataSource<float>)entry.Value;
+
+                var count = ds.Shape[ds.Shape.Rank - 1];
+                if (sampleCount == -1)
+                    sampleCount = count;
+                else
+                    if (count != sampleCount)
+                        throw new ArgumentException("Batch counts are different");
 
                 var config = ds.GetStreamConfiguration(name);
                 configs.Add(config);

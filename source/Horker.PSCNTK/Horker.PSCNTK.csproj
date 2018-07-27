@@ -58,7 +58,9 @@
     <Compile Include="Classes\DataSource.cs" />
     <Compile Include="Classes\DataSourceCTFBuilder.cs" />
     <Compile Include="Classes\FeatureCTFBuilder.cs" />
+    <Compile Include="Classes\Layers.cs" />
     <Compile Include="Classes\TrainingSession.cs" />
+    <Compile Include="Classes\UnmanagedDllLoader.cs" />
     <Compile Include="Cmdlets\CTFCmdlets.cs" />
     <Compile Include="Cmdlets\LearnerCmdlets.cs" />
     <Compile Include="Cmdlets\MinibatchSourceCmdlets.cs" />

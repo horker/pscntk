@@ -66,6 +66,7 @@ namespace Horker.PSCNTK
         public UInt32 SampleCount;
         public double Loss;
         public double Metric;
+        public double Validation;
     }
 
     [Cmdlet("Start", "CNTKTraining")]
@@ -76,27 +77,34 @@ namespace Horker.PSCNTK
         public Trainer Trainer;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public MinibatchSource MinibatchSource;
+        public MinibatchSource TrainingData;
 
         [Parameter(Position = 2, Mandatory = true)]
+        public Dictionary<object, Value> ValidationData;
+
+        [Parameter(Position = 3, Mandatory = true)]
         public UInt32 MinibatchSize;
 
-        [Parameter(Position = 3, Mandatory = false)]
+        [Parameter(Position = 4, Mandatory = true)]
+        public int ValidationSampleSize;
+
+        [Parameter(Position = 5, Mandatory = false)]
         public Hashtable ParameterMap = null;
 
-        [Parameter(Position = 4, Mandatory = false)]
+        [Parameter(Position = 6, Mandatory = false)]
         public int MaxIteration = 10000;
 
-        [Parameter(Position = 4, Mandatory = false)]
+        [Parameter(Position = 7, Mandatory = false)]
         public int ProgressOutputStep = 100;
 
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Trainer, MinibatchSource, MinibatchSize, ParameterMap);
+            var session = new TrainingSession(Trainer, TrainingData, ValidationData, MinibatchSize, ValidationSampleSize, ParameterMap);
 
             UInt32 sampleCount = 0;
             var loss = 0.0;
             var metric = 0.0;
+
             foreach (var t in session.GetSession(MaxIteration))
             {
                 sampleCount += t.SampleCount;
@@ -108,8 +116,9 @@ namespace Horker.PSCNTK
                     p.Epoch = t.Epoch;
                     p.Iteration = t.Iteration;
                     p.SampleCount = sampleCount;
-                    p.Loss = loss / ProgressOutputStep;
-                    p.Metric = metric / ProgressOutputStep;
+                    p.Loss = Math.Round(loss / ProgressOutputStep, 5);
+                    p.Metric = Math.Round(metric / ProgressOutputStep, 5);
+                    p.Validation = t.GetValidationMetric();
                     WriteObject(p);
 
                     sampleCount = 0;
@@ -117,6 +126,36 @@ namespace Horker.PSCNTK
                     metric = 0.0;
                 }
             }
+        }
+    }
+
+    [Cmdlet("New", "CNTKTrainingSession")]
+    [Alias("cntk.trainingsession")]
+    public class NewCNTKTrainingSession : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public Trainer Trainer;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public MinibatchSource TrainingData;
+
+        [Parameter(Position = 2, Mandatory = true)]
+        public Dictionary<object, Value> ValidationData;
+
+        [Parameter(Position = 3, Mandatory = true)]
+        public UInt32 MinibatchSize;
+
+        [Parameter(Position = 4, Mandatory = false)]
+        public int ValidationSampleSize = 0;
+
+        [Parameter(Position = 5, Mandatory = false)]
+        public Hashtable ParameterMap = null;
+
+        protected override void EndProcessing()
+        {
+            var session = new TrainingSession(Trainer, TrainingData, ValidationData, MinibatchSize, ValidationSampleSize, ParameterMap).GetSession();
+
+            WriteObject(session);
         }
     }
 }

@@ -145,12 +145,20 @@ namespace Horker.PSCNTK
 
         public CNTK.NDArrayView ToNDArrayView(CNTK.DeviceDescriptor device = null)
         {
+            if (device == null)
+                device = CNTK.DeviceDescriptor.UseDefaultDevice();
+
             return Converter.ArrayToNDArrayView(Data.Select(x => Convert.ToSingle(x)).ToArray(), Shape.Dimensions, device);
         }
 
         public CNTK.Value ToValue(CNTK.DeviceDescriptor device = null)
         {
             return new CNTK.Value(ToNDArrayView(device));
+        }
+
+        public CNTK.Variable ToVariable(CNTK.DeviceDescriptor device = null)
+        {
+            return new CNTK.Constant(ToNDArrayView(device));
         }
 
         #endregion
