@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+using System.Text;
 
 namespace Horker.PSCNTK
 {
@@ -46,7 +47,6 @@ namespace Horker.PSCNTK
 
             // TODO: multiple outputs
             var output = new Dictionary<CNTK.Variable, CNTK.Value>();
-
             output.Add(func.Output, null);
 
             if (device == null)
@@ -55,6 +55,62 @@ namespace Horker.PSCNTK
             func.Evaluate(inputs, output, true, device);
 
             return output[func.Output];
+        }
+
+        static public string ToString(CNTK.Function func)
+        {
+            var visitedVariables = new HashSet<string>();
+            var output = new StringBuilder();
+
+            ToStringInternal(func, output, visitedVariables, 0);
+
+            return output.ToString();
+        }
+
+        static private void ToStringInternal(object node, StringBuilder output, HashSet<string> visitedVariables, int depth)
+        {
+            var indent = new string(' ', depth * 2);
+
+            if (node is CNTK.Function)
+            {
+                var func = node as CNTK.Function;
+                var name = string.IsNullOrEmpty(func.Name) ? func.Uid : func.Name + ":" + func.Uid;
+                var args = string.Join(", ", func.Arguments.Select(arg => string.IsNullOrEmpty(arg.Name) ? arg.Uid : arg.Name));
+
+                var visited = visitedVariables.Contains(func.Uid);
+                var v = visited ? " *" : "";
+
+                output.AppendFormat("{0}{1} {2}({3}) <{4}>{5}\r\n", indent, depth, func.OpName, args, name, v);
+
+                if (visited)
+                    return;
+
+                foreach (var arg in func.Arguments)
+                    ToStringInternal(arg, output, visitedVariables, depth + 1);
+            }
+            else if (node is CNTK.Variable)
+            {
+                var va = node as CNTK.Variable;
+                var name = string.IsNullOrEmpty(va.Name) ? va.Uid : va.Name + ":" + va.Uid;
+
+                var visited = visitedVariables.Contains(va.Uid);
+                var v = visited ? " *" : "";
+
+                var shape = string.Join("x", va.Shape.Dimensions);
+                output.AppendFormat("{0}{1} @{2} [{3}] <{4}>{5}\r\n", indent, depth, va.Kind, shape, name, v);
+
+                if (visited)
+                    return;
+
+                visitedVariables.Add(va.Uid);
+
+                if (va.Owner != null)
+                    ToStringInternal(va.Owner, output, visitedVariables, depth + 1);
+            }
+            else
+            {
+                output.AppendFormat("unknown: {0}\r\n", node.GetType().FullName);
+            }
         }
     }
 }
