@@ -229,7 +229,11 @@ namespace Horker.PSCNTK
 
                 chunkSize = d.Shape.GetSize(axis);
 
-                var newChunkSize = d.Shape.GetSize(axis - 1) * newShape.Dimensions[axis];
+                var size = 1;
+                if (axis > 0)
+                    size = d.Shape.GetSize(axis - 1);
+
+                var newChunkSize = size * newShape.Dimensions[axis];
 
                 var chunkCount = d.Data.Length / chunkSize;
 

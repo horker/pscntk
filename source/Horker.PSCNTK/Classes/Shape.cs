@@ -10,7 +10,19 @@ namespace Horker.PSCNTK
 
         public int this[int i]
         {
-            get => Dimensions[i];
+            get
+            {
+                if (i < 0)
+                    i = Rank + i;
+                return Dimensions[i];
+            }
+
+            set
+            {
+                if (i < 0)
+                    i = Rank + i;
+                Dimensions[i] = value;
+            }
         }
 
         public Shape(int[] dimensions, int dataCount = -1)
@@ -20,6 +32,9 @@ namespace Horker.PSCNTK
 
         public int GetSize(int toAxis)
         {
+            if (toAxis < 0)
+                toAxis = Rank + 1 - toAxis;
+
             var size = 1;
             for (var i = 0; i <= toAxis; ++i)
                 size *= Dimensions[i];
@@ -101,6 +116,32 @@ namespace Horker.PSCNTK
 
                 return dimensions.Clone() as int[];
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Shape))
+                return false;
+
+            var other = obj as Shape;
+
+            if (this.Rank != other.Rank)
+                return false;
+
+            for (var i = 0; i < this.Rank; ++i)
+                if (this.Dimensions[i] != other.Dimensions[i])
+                    return false;
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 123456789;
+            for (var i = 0; i < Rank; ++i)
+                hash ^= Dimensions[i];
+
+            return hash;
         }
 
         public override string ToString()
