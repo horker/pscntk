@@ -8,6 +8,16 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
+    public class TrainingProgress
+    {
+        public int Epoch;
+        public int Iteration;
+        public int SampleCount;
+        public double Loss;
+        public double Metric;
+        public double Validation;
+    }
+
     [Cmdlet("Start", "CNTKTraining2")]
     [Alias("cntk.starttraining2")]
     public class StartCNTKTraining2 : PSCmdlet
