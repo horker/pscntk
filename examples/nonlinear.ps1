@@ -1,4 +1,4 @@
-Set-StrictMode -Version Latest
+Set-StrictMode -Version latest
 
 Import-Module psmath
 #Import-Module oxyplotcli
@@ -7,8 +7,8 @@ Import-Module psmath
 # Prepare data
 ############################################################
 
-$dataA = seq 1000 -NoSeq -func { (st.norm).gen() }, { (st.norm).gen() }, { "A" }
-$dataB = seq 1000 -NoSeq -func { (st.norm 5).gen() }, { (st.norm 3).gen() }, { "B" }
+$dataA = seq 0 (math.pi) 0.01 -func { (math.sin $x) + (st.norm 0 .1).gen() }, { (math.cos $x) + (st.norm 0 .1).gen() }, { "A" }
+$dataB = seq (math.pi) (2 * (math.pi)) 0.01 -func { .7 + (math.sin $x) + (st.norm 0 .1).gen() }, { 1 + (math.cos $x) + (st.norm 0 .1).gen() }, { "B" }
 $data = $dataA + $dataB
 
 #$data | oxyscat -xname y0 -yname y1 -groupname y2 | show-oxyplot
@@ -26,11 +26,15 @@ $minibatchDef = cntk.minibatchdef @{ input = $features; label = $labels } 20 .3
 # Build a model
 ############################################################
 
-$HIDDEN_NODES = 2
+$INPUT_DIM = 2
 $OUTPUT_CLASSES = 2
+$HIDDEN_NODES = 100
 
-$in = cntk.input 2 -Name "input"
+$in  = cntk.input $INPUT_DIM -Name "input"
+
 $n = $in
+$n = cntk.dense $n $HIDDEN_NODES (cntk.henormal)
+$n = cntk.relu $n
 $n = cntk.dense $n $OUTPUT_CLASSES (cntk.glorotnormal)
 $n = cntk.sigmoid $n
 $out = $n
@@ -41,10 +45,10 @@ $label = cntk.input $OUTPUT_CLASSES -Name "label"
 # Start training
 ############################################################
 
-$learner = cntk.momentumsgd $out .01 .9
+$learner = cntk.momentumsgd $out .01 .5
 
 $trainer = cntk.trainer $out $label BinaryCrossEntropy ClassificationError $learner
 
-cntk.starttraining $trainer $minibatchDef -MaxIteration 1000 -ProgressOutputStep 100
+cntk.starttraining $trainer $minibatchdef -MaxIteration 10000 -ProgressOutputStep 100
 
-$out.Save("$PSScriptRoot\logistic.cntkmodel")
+$out.Save("$PSScriptRoot\nonlinear.cntkmodel")
