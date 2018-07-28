@@ -28,11 +28,11 @@ $minibatchDef = cntk.minibatchdef @{ input = $features; label = $labels } 20 .3
 $HIDDEN_NODES = 2
 $OUTPUT_CLASSES = 2
 
-$in  = cntk.input 2 -Name "input"
-$h   = cntk.dense $in $HIDDEN_NODES (cntk.henormal)
-$h   = cntk.relu $in
-$h   = cntk.dense $h $OUTPUT_CLASSES (cntk.glorotnormal)
-$out = cntk.sigmoid $h
+$in = cntk.input 2 -Name "input"
+$n = $in
+$n = cntk.dense $n $OUTPUT_CLASSES (cntk.glorotnormal)
+$n = cntk.sigmoid $n
+$out = $n
 
 $label = cntk.input $OUTPUT_CLASSES -Name "label"
 
