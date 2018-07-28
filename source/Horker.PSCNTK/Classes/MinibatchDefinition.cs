@@ -147,6 +147,9 @@ namespace Horker.PSCNTK
         {
             var batchSize = Total - _validationStart;
 
+            if (batchSize == 0)
+                return null;
+
             var batch = new Minibatch();
 
             foreach (var entry in Features)

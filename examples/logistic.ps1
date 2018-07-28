@@ -12,22 +12,14 @@ $data = $dataA + $dataB
 
 #$data | oxyscat -xname y0 -yname y1 -groupname y2 | show-oxyplot
 
-$feature = ds.fromrows $data.y0, $data.y1
-$feature.Reshape(2, 1, -1)
-
-$trainFeature, $validateFeature = $feature.Split(.8)
+$features = ds.fromrows $data.y0, $data.y1
+$features.Reshape(2, 1, -1)
 
 $l = pso.onehot $data.y2
-$label = ds.fromrows $l.A, $l.B
-$label.Reshape(2, 1, -1)
+$labels = ds.fromrows $l.A, $l.B
+$labels.Reshape(2, 1, -1)
 
-$trainLabel, $validateLabel = $label.Split(.8)
-
-$trainingData = cntk.minibatchsource @{ input = $trainFeature; label = $trainLabel }
-
-$validateData = new-object "Collections.Generic.Dictionary[object, CNTK.Value]"
-$validateData.Add("input", $validateFeature.ToValue())
-$validateData.Add("label", $validateLabel.ToValue())
+$minibatchDef = cntk.minibatchdef @{ input = $features; label = $labels } 20 .3
 
 ############################################################
 # Build a model
@@ -52,6 +44,6 @@ $learner = cntk.momentumsgd $out .01 .9
 
 $trainer = cntk.trainer $out $label BinaryCrossEntropy ClassificationError $learner
 
-cntk.starttraining $trainer $trainingData $validateData 20 -MaxIteration 1000 -ProgressOutputStep 1
+cntk.starttraining $trainer $minibatchDef -MaxIteration 1000 -ProgressOutputStep 100
 
-$out.Save("$PSScriptRoot\logistic.dnn")
+$trainer.Model().Save("$PSScriptRoot\logistic.dnn")

@@ -61,7 +61,7 @@ namespace Horker.PSCNTK
                     p.SampleCount = sampleCount;
                     p.Loss = Math.Round(loss / ProgressOutputStep, 5);
                     p.Metric = Math.Round(metric / ProgressOutputStep, 5);
-                    p.Validation = t.GetValidationMetric();
+                    p.Validation = Math.Round(t.GetValidationMetric(), 5);
                     WriteObject(p);
 
                     sampleCount = 0;

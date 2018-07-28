@@ -64,6 +64,7 @@
     <Compile Include="Classes\UnmanagedDllLoader.cs" />
     <Compile Include="Cmdlets\CTFCmdlets.cs" />
     <Compile Include="Cmdlets\LearnerCmdlets.cs" />
+    <Compile Include="Cmdlets\MinibatchDefinitionCmdlets.cs" />
     <Compile Include="Cmdlets\MinibatchSourceCmdlets.cs" />
     <Compile Include="Cmdlets\TrainerCmdlets.cs" />
     <Compile Include="Cmdlets\TrainingSessionCmdlet.cs" />

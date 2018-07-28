@@ -84,7 +84,7 @@ namespace Horker.PSCNTK
 
         public IEnumerable<TrainingSession> GetSession(int maxIteration = int.MaxValue)
         {
-            Epoch = 0;
+            Epoch = 1;
 
             for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
             {
@@ -111,7 +111,10 @@ namespace Horker.PSCNTK
         {
             if (_validationData == null)
             {
-                var batch = Minibatch.GetNextBatch();
+                var batch = Minibatch.GetValidationBatch();
+
+                if (batch == null)
+                    return 0.0;
 
                 _validationData = new UnorderedMapVariableMinibatchData();
                 foreach (var entry in batch.Features)
