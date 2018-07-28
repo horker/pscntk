@@ -33,7 +33,7 @@ namespace Horker.PSCNTK
         public int GetSize(int toAxis)
         {
             if (toAxis < 0)
-                toAxis = Rank + 1 - toAxis;
+                toAxis = Rank + toAxis;
 
             var size = 1;
             for (var i = 0; i <= toAxis; ++i)

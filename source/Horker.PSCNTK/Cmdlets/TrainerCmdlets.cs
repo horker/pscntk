@@ -63,7 +63,7 @@ namespace Horker.PSCNTK
     {
         public int Epoch;
         public int Iteration;
-        public UInt32 SampleCount;
+        public int SampleCount;
         public double Loss;
         public double Metric;
         public double Validation;
@@ -115,7 +115,7 @@ namespace Horker.PSCNTK
                     var p = new TrainingProgress();
                     p.Epoch = t.Epoch;
                     p.Iteration = t.Iteration;
-                    p.SampleCount = sampleCount;
+                    p.SampleCount = (int)sampleCount;
                     p.Loss = Math.Round(loss / ProgressOutputStep, 5);
                     p.Metric = Math.Round(metric / ProgressOutputStep, 5);
                     p.Validation = t.GetValidationMetric();

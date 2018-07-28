@@ -60,6 +60,7 @@
     <Compile Include="DataSourceTest.cs" />
     <Compile Include="FeatureCTFBuilderTest.cs" />
     <Compile Include="FunctionMethodsTest.cs" />
+    <Compile Include="MinibatchDefinitionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeriesCTFBuilderTest.cs" />
     <Compile Include="TrainingSessionTest.cs" />
