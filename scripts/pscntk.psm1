@@ -3,58 +3,12 @@
 Set-StrictMode -Version 4
 
 ############################################################
-# Unmanaged DLLs to import
-############################################################
-
-# The order of the files is significant
-
-$script:NATIVE_LIBS = @(
-  "cublas64_90.dll"
-  "cudart64_90.dll"
-  "cudnn64_7.dll"
-  "curand64_90.dll"
-  "cusparse64_90.dll"
-  "libiomp5md.dll"
-  "nvml.dll"
-  "opencv_world310.dll"
-  "zip.dll"
-  "zlib.dll"
-
-  "mklml.dll"
-  "mkldnn.dll"
-
-  "Cntk.Math-2.5.1.dll"
-  "Cntk.PerformanceProfiler-2.5.1.dll"
-
-  "Cntk.Core-2.5.1.dll"
-
-  "Cntk.Deserializers.Binary-2.5.1.dll"
-  "Cntk.Deserializers.HTK-2.5.1.dll"
-  "Cntk.Deserializers.Image-2.5.1.dll"
-  "Cntk.Deserializers.TextFormat-2.5.1.dll"
-  "Cntk.Composite-2.5.1.dll"
-  "Cntk.Core.CSBinding-2.5.1.dll"
-)
-
-$LIB_DIR = "$PSScriptRoot\lib"
-
-############################################################
 # Import unmanaged DLLs
 ############################################################
 
-$loader = add-type -pass -name Dll -memberDefinition @"
-  [DllImport("kernel32.dll", CharSet=CharSet.Unicode)]
-  public static extern IntPtr LoadLibrary(string dllToLoad);
-"@
+$LIB_DIR = "$PSScriptRoot\lib"
 
-foreach ($l in $NATIVE_LIBS) {
-  $file = Join-Path $LIB_DIR $l
-  $pDll = $loader::LoadLibrary($file)
-
-  if ($pDll -eq [IntPtr]::Zero) {
-    Write-Error "Failed to load $file"
-  }
-}
+[Horker.PSCNTK.UnmanagedDllLoader]::Load($LIB_DIR)
 
 ############################################################
 # Extension methods
