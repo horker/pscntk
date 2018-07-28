@@ -20,7 +20,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var result = new DataSource<float>(Data.Select(x => Convert.ToSingle(x)).ToArray(), Dimensions);
+            var result = new DataSource<float>(Data.Select(x => Converter.ToFloat(x)).ToArray(), Dimensions);
             WriteObject(result);
         }
     }

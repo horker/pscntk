@@ -24,6 +24,7 @@ namespace Horker.PSCNTK
         public DeviceDescriptor Device;
 
         public int MinibatchSize;
+        public bool IsSeriesData;
         public bool Randomized;
 
         public int Total;
@@ -43,8 +44,13 @@ namespace Horker.PSCNTK
                 throw new ArgumentException("Sample size is smaller than minibatch size");
 
             foreach (var entry in features)
-                if (entry.Value.Shape[-1] != f.Shape[-1] || entry.Value.Shape[-2] != f.Shape[-2])
-                    throw new ArgumentException("Features should have the same sequence length and sample size");
+            {
+                if (entry.Value.Shape[-1] != f.Shape[-1])
+                    throw new ArgumentException("Features should have the same sample size");
+
+                if (entry.Value.Shape[-2] > 1)
+                    IsSeriesData = true;
+            }
 
             _validationStart = (int)(f.Shape[-1] * (1 - validationRate));
 
@@ -60,7 +66,7 @@ namespace Horker.PSCNTK
             Total = f.Shape[-1];
             Current = 0;
 
-            // Randomize data
+            // Sample order
 
             _order = new int[f.Shape[-1]];
             for (var i = 0; i < f.Shape[-1]; ++i)
@@ -78,7 +84,7 @@ namespace Horker.PSCNTK
             var randomEnd = f.Shape[-1];
 
             // for series data, validation data always keeps its order and is obtained from the latest portion
-            if (f.Shape[-2] >= 2)
+            if (IsSeriesData)
                 randomEnd = _validationStart;
 
             var random = new Random();

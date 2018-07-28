@@ -102,5 +102,18 @@ namespace UnitTest
             Assert.AreEqual((uint)2, data.numberOfSequences);
             Assert.AreEqual(true, data.sweepEnd);
         }
+
+        [TestMethod]
+        public void TestSequenceRandomization()
+        {
+            var features = new DataSource<float>(new float[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new int[] { 1, 2, -1 });
+
+            var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
+            var minibatchDef = new MinibatchDefinition(ds, 2, .5, true);
+
+            var batch = minibatchDef.GetValidationBatch();
+            var data = batch.Features["input"];
+            CollectionAssert.AreEqual(new float[] { 4, 5, 6, 7 }, DataSource<float>.FromValue(data.data).Data);
+        }
     }
 }

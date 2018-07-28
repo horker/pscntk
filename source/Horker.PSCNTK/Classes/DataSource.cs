@@ -170,6 +170,14 @@ namespace Horker.PSCNTK
             return new CNTK.Constant(ToNDArrayView(device));
         }
 
+        public CNTK.MinibatchData ToMinibatchData(bool sweepEnd = false)
+        {
+            if (Shape.Rank < 3)
+                throw new ArgumentException("To make a minibatch data, sequence and batch axis is necessary");
+
+            return new CNTK.MinibatchData(ToValue(), (uint)Shape[-1], (uint)(Shape[-1] * Shape[-2]), sweepEnd);
+        }
+
         #endregion
 
         #region Manipulators
