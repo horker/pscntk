@@ -31,6 +31,7 @@ $METHOD_LIST = @(
     MethodNames = @(
       "AsString"
       "ToDataSource"
+      "ToArray"
     )
   }
 )

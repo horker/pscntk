@@ -85,7 +85,7 @@ namespace Horker.PSCNTK
             return new CNTK.Value(ArrayToNDArrayView(data, dimensions, device));
         }
 
-        public static DataSource<float> ValueToDataSource(CNTK.Value value)
+        public static float[] ValueToArray(CNTK.Value value)
         {
             if (value.IsSparse)
                 throw new NotImplementedException("Sparse value is not supported yet");
@@ -97,7 +97,12 @@ namespace Horker.PSCNTK
 
             var result = value.GetDenseData<float>(variable);
 
-            return new DataSource<float>(result[0].ToArray(), value.Shape.Dimensions.ToArray());
+            return result[0].ToArray();
+        }
+
+        public static DataSource<float> ValueToDataSource(CNTK.Value value)
+        {
+            return new DataSource<float>(ValueToArray(value), value.Shape.Dimensions.ToArray());
         }
 
         public static DataSource<float> VariableToDataSource(CNTK.Variable variable)
@@ -135,12 +140,12 @@ namespace Horker.PSCNTK
 
             if (value is object[])
             {
-                var values = (value as object[]).Select(x => Convert.ToSingle(x)).ToArray();
+                var values = (value as object[]).Select(x => Convert.ToSingle(x is PSObject ? (x as PSObject).BaseObject : x)).ToArray();
                 return ArrayToValue(values, new int[] { values.Length });
             }
 
             // single element value
-            return new DataSource<float>(new float[] { Convert.ToSingle(value) }, new int[] { 1 }).ToValue();
+            return new DataSource<float>(new float[] { Convert.ToSingle(value is PSObject ? (value as PSObject).BaseObject : value) }, new int[] { 1 }).ToValue();
         }
     }
 }

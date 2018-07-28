@@ -22,5 +22,11 @@ namespace Horker.PSCNTK
 
             return DataSource<float>.FromValue(v);
         }
+
+        public static float[] ToArray(PSObject value)
+        {
+            var v = value.BaseObject as CNTK.Value;
+            return Converter.ValueToArray(v);
+        }
     }
 }
