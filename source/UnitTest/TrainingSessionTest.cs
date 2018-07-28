@@ -53,7 +53,7 @@ namespace UnitTest
 
             var trainer = Trainer.CreateTrainer(output, loss, error, new List<Learner>() { learner });
 
-            var session = new TrainingSession2(trainer, minibatch);
+            var session = new TrainingSession(trainer, minibatch);
             var iteration = session.GetSession().GetEnumerator();
 
             for (var i = 0; i < 1000; ++i)

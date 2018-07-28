@@ -60,7 +60,7 @@
     <Compile Include="Classes\FeatureCTFBuilder.cs" />
     <Compile Include="Classes\Layers.cs" />
     <Compile Include="Classes\MinibatchDefinition.cs" />
-    <Compile Include="Classes\TrainingSession2.cs" />
+    <Compile Include="Classes\TrainingSession.cs" />
     <Compile Include="Classes\UnmanagedDllLoader.cs" />
     <Compile Include="Cmdlets\CTFCmdlets.cs" />
     <Compile Include="Cmdlets\LearnerCmdlets.cs" />

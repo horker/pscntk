@@ -6,7 +6,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class TrainingSession2
+    public class TrainingSession
     {
         public Trainer Trainer { get; private set; }
         public MinibatchDefinition Minibatch { get; private set; }
@@ -22,7 +22,7 @@ namespace Horker.PSCNTK
 
         private UnorderedMapVariableMinibatchData _validationData;
 
-        public TrainingSession2(Trainer trainer, MinibatchDefinition minibatch, Hashtable parameterMap = null, DeviceDescriptor device = null)
+        public TrainingSession(Trainer trainer, MinibatchDefinition minibatch, Hashtable parameterMap = null, DeviceDescriptor device = null)
         {
             Trainer = trainer;
             Minibatch = minibatch;
@@ -82,7 +82,7 @@ namespace Horker.PSCNTK
             return null;
         }
 
-        public IEnumerable<TrainingSession2> GetSession(int maxIteration = int.MaxValue)
+        public IEnumerable<TrainingSession> GetSession(int maxIteration = int.MaxValue)
         {
             Epoch = 0;
 

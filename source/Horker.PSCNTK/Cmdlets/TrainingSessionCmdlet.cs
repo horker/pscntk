@@ -18,9 +18,9 @@ namespace Horker.PSCNTK
         public double Validation;
     }
 
-    [Cmdlet("Start", "CNTKTraining2")]
-    [Alias("cntk.starttraining2")]
-    public class StartCNTKTraining2 : PSCmdlet
+    [Cmdlet("Start", "CNTKTraining")]
+    [Alias("cntk.starttraining")]
+    public class StartCNTKTraining : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
         public Trainer Trainer;
@@ -42,7 +42,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var session = new TrainingSession2(Trainer, MinibatchDefinition, ParameterMap, Device);
+            var session = new TrainingSession(Trainer, MinibatchDefinition, ParameterMap, Device);
 
             int sampleCount = 0;
             var loss = 0.0;
@@ -72,9 +72,9 @@ namespace Horker.PSCNTK
         }
     }
 
-    [Cmdlet("New", "CNTKTrainingSession2")]
-    [Alias("cntk.trainingsession2")]
-    public class NewCNTKTrainingSession2 : PSCmdlet
+    [Cmdlet("New", "CNTKTrainingSession")]
+    [Alias("cntk.trainingsession")]
+    public class NewCNTKTrainingSession : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
         public Trainer Trainer;
@@ -90,7 +90,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var session = new TrainingSession2(Trainer, MinibatchDefinition, ParameterMap, Device);
+            var session = new TrainingSession(Trainer, MinibatchDefinition, ParameterMap, Device);
 
             WriteObject(session);
         }
