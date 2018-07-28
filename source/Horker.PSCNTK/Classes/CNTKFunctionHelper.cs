@@ -57,17 +57,17 @@ namespace Horker.PSCNTK
             return output[func.Output];
         }
 
-        static public string ToString(CNTK.Function func)
+        static public string AsTree(CNTK.Function func)
         {
             var visitedVariables = new HashSet<string>();
             var output = new StringBuilder();
 
-            ToStringInternal(func, output, visitedVariables, 0);
+            AsTreeInternal(func, output, visitedVariables, 0);
 
             return output.ToString();
         }
 
-        static private void ToStringInternal(object node, StringBuilder output, HashSet<string> visitedVariables, int depth)
+        static private void AsTreeInternal(object node, StringBuilder output, HashSet<string> visitedVariables, int depth)
         {
             var indent = new string(' ', depth * 2);
 
@@ -86,7 +86,7 @@ namespace Horker.PSCNTK
                     return;
 
                 foreach (var arg in func.Arguments)
-                    ToStringInternal(arg, output, visitedVariables, depth + 1);
+                    AsTreeInternal(arg, output, visitedVariables, depth + 1);
             }
             else if (node is CNTK.Variable)
             {
@@ -105,7 +105,7 @@ namespace Horker.PSCNTK
                 visitedVariables.Add(va.Uid);
 
                 if (va.Owner != null)
-                    ToStringInternal(va.Owner, output, visitedVariables, depth + 1);
+                    AsTreeInternal(va.Owner, output, visitedVariables, depth + 1);
             }
             else
             {

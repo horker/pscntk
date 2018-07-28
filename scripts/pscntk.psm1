@@ -67,6 +67,7 @@ $METHOD_LIST = @(
     MethodNames = @(
       "Get"
       "Invoke"
+      "AsTree"
     )
   }
 
