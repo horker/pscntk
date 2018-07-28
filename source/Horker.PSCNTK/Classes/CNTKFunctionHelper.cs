@@ -10,7 +10,7 @@ namespace Horker.PSCNTK
     {
         public static CNTK.Variable Get(CNTK.Function func, string name)
         {
-            var vas = func.Inputs.Where(v => v.Name == name).ToArray();
+            var vas = func.Inputs.Where(v => v.Name == name || v.Uid == name).ToArray();
             if (vas.Length > 0)
                 return vas[0];
 
