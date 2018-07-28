@@ -132,7 +132,7 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestDataExpansion1()
+        public void TestSubsequence1()
         {
             var a = new DataSource<float>(new float[] { 1, 2, 3, 4 }, new int[] { 1, 4, 1 });
 
@@ -149,7 +149,7 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestDataExpansion2()
+        public void TestSubsequence2()
         {
             var a = new DataSource<float>(new float[] { 11, 12, 21, 22, 31, 32, 41, 42 }, new int[] { 2, 4, 1 });
 
@@ -167,7 +167,7 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestDataExpansion3()
+        public void TestSubsequence3()
         {
             var a = new DataSource<float>(new float[] { 11, 21, 31, 41, 12, 22, 32, 42 }, new int[] { 1, 4, 2 });
 
@@ -186,16 +186,16 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestDataExpansion4()
+        public void TestSubsequence5()
         {
-            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3, 1 });
+            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 1, 2, 6, 1 });
 
-            var result = a.GetSubsequences(2);
+            var result = a.GetSubsequences(2, 2);
 
-            var newShape = new int[] { 2, 2, 2, 2 };
+            var newShape = new int[] { 1, 2, 2, 3 };
             var newData = new float[] {
                 1, 2, 3, 4, 5, 6, 7, 8,
-                5, 6, 7, 8, 9, 10, 11, 12
+                9, 10, 11, 12
             };
 
             CollectionAssert.AreEqual(newShape, result.Shape.Dimensions);

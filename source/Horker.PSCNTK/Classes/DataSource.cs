@@ -257,7 +257,7 @@ namespace Horker.PSCNTK
             return new DataSource<T>(newData, newShape);
         }
 
-        public DataSource<T> GetSubsequences(int subseqLength, int sequenceAxis = -1)
+        public DataSource<T> GetSubsequences(int subseqLength, int step = 1, int sequenceAxis = -1)
         {
             if (sequenceAxis == -1)
                 sequenceAxis = Shape.Rank - 2;
@@ -266,12 +266,12 @@ namespace Horker.PSCNTK
             var sampleAxis = Shape.Rank - 1;
             var sampleDim = Shape.Dimensions[sampleAxis];
 
-            var repeatLength = seqDim - subseqLength + 1;
+            var repeatLength = (seqDim - subseqLength) / step + 1;
             if (repeatLength < 1)
                 throw new ArgumentException("Sequence too short");
 
-            var valueSize = Shape.GetSize((int)(sequenceAxis - 1));
-            var sampleSize = Shape.GetSize((int)sequenceAxis);
+            var valueSize = Shape.GetSize(sequenceAxis - 1);
+            var sampleSize = Shape.GetSize(sequenceAxis);
 
             var newSampleSize = valueSize * subseqLength * repeatLength;
 
@@ -289,7 +289,7 @@ namespace Horker.PSCNTK
                     {
                         Copy(
                             Data,
-                            sampleCount * sampleSize + (seqCount + offset) * valueSize,
+                            sampleCount * sampleSize + (seqCount * step + offset) * valueSize,
                             newData,
                             sampleCount * newSampleSize + (seqCount * subseqLength + offset) * valueSize,
                             valueSize
