@@ -136,7 +136,7 @@ namespace UnitTest
         {
             var a = new DataSource<float>(new float[] { 1, 2, 3, 4 }, new int[] { 1, 4, 1 });
 
-            var result = DataSource<float>.GetSubsequences(a, 3);
+            var result = a.GetSubsequences(3);
 
             var newShape = new int[] { 1, 3, 2 };
             var newData = new float[] {
@@ -153,7 +153,7 @@ namespace UnitTest
         {
             var a = new DataSource<float>(new float[] { 11, 12, 21, 22, 31, 32, 41, 42 }, new int[] { 2, 4, 1 });
 
-            var result = DataSource<float>.GetSubsequences(a, 2);
+            var result = a.GetSubsequences(2);
 
             var newShape = new int[] { 2, 2, 3 };
             var newData = new float[] {
@@ -171,7 +171,7 @@ namespace UnitTest
         {
             var a = new DataSource<float>(new float[] { 11, 21, 31, 41, 12, 22, 32, 42 }, new int[] { 1, 4, 2 });
 
-            var result = DataSource<float>.GetSubsequences(a, 3);
+            var result = a.GetSubsequences(3);
 
             var newShape = new int[] { 1, 3, 4 };
             var newData = new float[] {
@@ -190,7 +190,7 @@ namespace UnitTest
         {
             var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3, 1 });
 
-            var result = DataSource<float>.GetSubsequences(a, 2);
+            var result = a.GetSubsequences(2);
 
             var newShape = new int[] { 2, 2, 2, 2 };
             var newData = new float[] {

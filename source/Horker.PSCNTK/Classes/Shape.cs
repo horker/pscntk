@@ -6,7 +6,7 @@ namespace Horker.PSCNTK
     {
         public int[] Dimensions;
         public int Rank => Dimensions.Length;
-        public int TotalSize => GetSize(Dimensions.Length - 1);
+        public int TotalSize => GetSize(Rank - 1);
 
         public int this[int i]
         {
@@ -85,10 +85,11 @@ namespace Horker.PSCNTK
             {
                 if (dimensions[i] <= 0)
                 {
-                    if (dimensions[i] == -1 && inferredIndex == -1)
-                        inferredIndex = i;
-                    else
-                        throw new ArgumentException("invalid dimensions");
+                    if (dimensions[i] == -1)
+                        if (inferredIndex == -1)
+                            inferredIndex = i;
+                        else
+                            throw new ArgumentException("Multiple dimensions specified to infer");
                 }
                 else
                 {
@@ -99,10 +100,10 @@ namespace Horker.PSCNTK
             if (inferredIndex != -1)
             {
                 if (dataCount == -1)
-                    throw new ArgumentException("data count must be specified to infer a dimension");
+                    throw new ArgumentException("Data count must be specified to infer a dimension");
 
                 if (total == 0 || dataCount % total != 0)
-                    throw new ArgumentException("dimensions are inconsistent with the data size");
+                    throw new ArgumentException("Dimensions are inconsistent with the data size");
 
                 var newDimensions = dimensions.Clone() as int[];
                 newDimensions[inferredIndex] = dataCount / total;
@@ -112,7 +113,7 @@ namespace Horker.PSCNTK
             else
             {
                 if (dataCount != -1 && dataCount != total)
-                    throw new ArgumentException("dimensions are inconsistent with the data size");
+                    throw new ArgumentException("Dimensions are inconsistent with the data size");
 
                 return dimensions.Clone() as int[];
             }

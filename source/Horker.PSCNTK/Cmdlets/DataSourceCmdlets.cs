@@ -15,8 +15,8 @@ namespace Horker.PSCNTK
         [Parameter(Position = 0, Mandatory = true)]
         public object[] Data;
 
-        [Parameter(Position = 1, Mandatory = true)]
-        public int[] Dimensions;
+        [Parameter(Position = 1, Mandatory = false)]
+        public int[] Dimensions = null;
 
         protected override void EndProcessing()
         {

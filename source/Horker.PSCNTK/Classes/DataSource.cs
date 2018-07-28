@@ -12,8 +12,11 @@ namespace Horker.PSCNTK
 
         #region Constructors and factories
 
-        public DataSource(T[] data, int[] dimensions, bool ensureCopy = false)
+        public DataSource(T[] data, int[] dimensions = null, bool ensureCopy = false)
         {
+            if (dimensions == null)
+                dimensions = new int[] { data.Length };
+
             Shape = new Shape(dimensions, data.Length);
 
             if (ensureCopy)
@@ -117,12 +120,12 @@ namespace Horker.PSCNTK
             set { Data[Shape.GetSequentialIndex(indexes)] = value; }
         }
 
-        public CNTK.StreamConfiguration GetStreamConfiguration(string name)
+        public CNTK.StreamConfiguration GetStreamConfiguration(string name, string alias = "")
         {
             if (Shape.Rank < 3)
                 throw new NotSupportedException("Shape should contain sequence and batch axes as the last two");
 
-            return new CNTK.StreamConfiguration(name, Shape.GetSize(Shape.Rank - 3), false, name, false);
+            return new CNTK.StreamConfiguration(name, Shape.GetSize(Shape.Rank - 3), false, alias, false);
         }
 
         #endregion
@@ -254,27 +257,27 @@ namespace Horker.PSCNTK
             return new DataSource<T>(newData, newShape);
         }
 
-        public static DataSource<T> GetSubsequences(DataSource<T> dataSource, int subseqLength, int sequenceAxis = -1)
+        public DataSource<T> GetSubsequences(int subseqLength, int sequenceAxis = -1)
         {
-            var seqAxis = sequenceAxis;
             if (sequenceAxis == -1)
-            {
-                seqAxis = dataSource.Shape.Rank - 2;
-            }
+                sequenceAxis = Shape.Rank - 2;
 
-            var seqDim = dataSource.Shape.Dimensions[seqAxis];
-            var sampleAxis = dataSource.Shape.Rank - 1;
-            var sampleDim = dataSource.Shape.Dimensions[sampleAxis];
-
-            var valueSize = dataSource.Shape.GetSize(seqAxis - 1);
-            var sampleSize = dataSource.Shape.GetSize(seqAxis);
+            var seqDim = Shape.Dimensions[sequenceAxis];
+            var sampleAxis = Shape.Rank - 1;
+            var sampleDim = Shape.Dimensions[sampleAxis];
 
             var repeatLength = seqDim - subseqLength + 1;
+            if (repeatLength < 1)
+                throw new ArgumentException("Sequence too short");
+
+            var valueSize = Shape.GetSize((int)(sequenceAxis - 1));
+            var sampleSize = Shape.GetSize((int)sequenceAxis);
+
             var newSampleSize = valueSize * subseqLength * repeatLength;
 
-            var newDims = dataSource.Shape.Dimensions.Clone() as int[];
+            var newDims = Shape.Dimensions.Clone() as int[];
             newDims[sampleAxis] = sampleDim * repeatLength;
-            newDims[seqAxis] = subseqLength;
+            newDims[sequenceAxis] = subseqLength;
 
             var newData = new T[new Shape(newDims).TotalSize];
 
@@ -285,7 +288,7 @@ namespace Horker.PSCNTK
                     for (var offset = 0; offset < subseqLength; ++offset)
                     {
                         Copy(
-                            dataSource.Data,
+                            Data,
                             sampleCount * sampleSize + (seqCount + offset) * valueSize,
                             newData,
                             sampleCount * newSampleSize + (seqCount * subseqLength + offset) * valueSize,
