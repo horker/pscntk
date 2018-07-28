@@ -32,6 +32,9 @@ namespace Horker.PSCNTK
         [Parameter(Position = 0, Mandatory = true)]
         public object[][] Rows;
 
+        [Parameter(Position = 1, Mandatory = false)]
+        public int[] Dimensions = null;
+
         protected override void EndProcessing()
         {
             var data = new List<float[]>();
@@ -46,7 +49,7 @@ namespace Horker.PSCNTK
                 data.Add(r.ToArray());
             }
 
-            var result = DataSource<float>.FromRows(data.ToArray());
+            var result = DataSource<float>.FromRows(data.ToArray(), Dimensions);
             WriteObject(result);
         }
     }
@@ -57,6 +60,9 @@ namespace Horker.PSCNTK
     {
         [Parameter(Position = 0, Mandatory = true)]
         public object[][] Columns;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public int[] Dimensions = null;
 
         protected override void EndProcessing()
         {
@@ -72,7 +78,7 @@ namespace Horker.PSCNTK
                 data.Add(c.ToArray());
             }
 
-            var result = DataSource<float>.FromColumns(data.ToArray());
+            var result = DataSource<float>.FromColumns(data.ToArray(), Dimensions);
             WriteObject(result);
         }
     }

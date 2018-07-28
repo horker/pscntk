@@ -51,7 +51,7 @@ namespace Horker.PSCNTK
             return new DataSource<T>(data, dimensions);
         }
 
-        public static DataSource<T> FromRows(IReadOnlyList<T>[] rows)
+        public static DataSource<T> FromRows(IReadOnlyList<T>[] rows, int[] dimensions = null)
         {
             int columnCount = rows.Max(x => x.Count);
 
@@ -68,10 +68,13 @@ namespace Horker.PSCNTK
                     data[column * rows.Length + row] = default(T);
             }
 
-            return new DataSource<T>(data, new int[] { rows.Length, columnCount });
+            if (dimensions == null)
+                dimensions = new int[] { rows.Length, columnCount };
+
+            return new DataSource<T>(data, dimensions);
         }
 
-        public static DataSource<T> FromColumns(IReadOnlyList<T>[] columns)
+        public static DataSource<T> FromColumns(IReadOnlyList<T>[] columns, int[] dimensions = null)
         {
             int rowCount = columns.Max(x => x.Count);
 
@@ -88,7 +91,10 @@ namespace Horker.PSCNTK
                     data[column * rowCount + row] = default(T);
             }
 
-            return new DataSource<T>(data, new int[] { rowCount, columns.Length });
+            if (dimensions == null)
+                dimensions = new int[] { rowCount, columns.Length };
+
+            return new DataSource<T>(data, dimensions);
         }
 
         public static DataSource<float> FromValue(CNTK.Value value)
