@@ -86,6 +86,19 @@ namespace Horker.PSCNTK
             Serializer.Serialize(this, path);
         }
 
+        private void InitializeOrder()
+        {
+            if (_order == null)
+            {
+                var f = Features.Values.First();
+                _order = new int[f.Shape[-1]];
+                for (var i = 0; i < f.Shape[-1]; ++i)
+                    _order[i] = i;
+
+                Randomize();
+            }
+        }
+
         private void Randomize()
         {
             if (!Randomized)
@@ -137,15 +150,7 @@ namespace Horker.PSCNTK
 
         public Minibatch GetNextBatch(DeviceDescriptor device = null)
         {
-            if (_order == null)
-            {
-                var f = Features.Values.First();
-                _order = new int[f.Shape[-1]];
-                for (var i = 0; i < f.Shape[-1]; ++i)
-                    _order[i] = i;
-
-                Randomize();
-            }
+            InitializeOrder();
 
             bool sweepEnd = false;
 
@@ -179,6 +184,8 @@ namespace Horker.PSCNTK
 
             if (batchSize == 0)
                 return null;
+
+            InitializeOrder();
 
             var batch = new Minibatch();
 
