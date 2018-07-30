@@ -23,12 +23,14 @@ namespace Horker.PSCNTK
     {
         public Dictionary<string, DataSource<float>> Features;
 
-        public int MinibatchSize;
-        public bool IsSeriesData;
-        public bool Randomized;
+        // TODO: make changeable
+        public int MinibatchSize { get; set; }
+        public double ValidationRate { get; private set; }
+        public bool Randomized { get; private set; }
 
-        public int Total;
-        public int Current;
+        public bool IsSeriesData { get; private set; }
+        public int Total { get; private set; }
+        public int Current { get; private set; }
 
         private int _validationStart;
         private int[] _order;
@@ -58,9 +60,9 @@ namespace Horker.PSCNTK
             _validationStart = (int)(f.Shape[-1] * (1 - validationRate));
 
             Features = features;
-            Randomized = randomize;
-
             MinibatchSize = minibatchSize;
+            ValidationRate = validationRate;
+            Randomized = randomize;
 
             Total = f.Shape[-1];
             Current = 0;
