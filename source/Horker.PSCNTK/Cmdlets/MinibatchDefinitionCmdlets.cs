@@ -7,39 +7,54 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKMinibatchDefinition")]
-    [Alias("CNTK.minibatchdef")]
+    [CmdletBinding(DefaultParameterSetName = "new")]
+    [Alias("cntk.minibatchdef")]
     public class NewCNTKMinibatchDefinition : PSCmdlet
     {
-        [Parameter(Position = 0, Mandatory = true)]
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "new")]
         public Hashtable DataSources;
 
-        [Parameter(Position = 1, Mandatory = false)]
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "new")]
         public int MinibatchSize = 32;
 
-        [Parameter(Position = 2, Mandatory = false)]
+        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "new")]
         public double ValidationRate = 0.0;
 
-        [Parameter(Position = 4, Mandatory = false)]
+        [Parameter(Position = 4, Mandatory = false, ParameterSetName = "new")]
         public SwitchParameter NoRandomize = false;
 
-        [Parameter(Position = 5, Mandatory = false)]
-        public DeviceDescriptor Device = null;
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "load")]
+        public string Path;
 
         protected override void EndProcessing()
         {
-            var ds = new Dictionary<string, DataSource<float>>();
-            foreach (DictionaryEntry entry in DataSources)
+            if (ParameterSetName == "load")
             {
-                var value = entry.Value;
-                if (value is PSObject)
-                    value = (value as PSObject).BaseObject;
+                if (!System.IO.Path.IsPathRooted(Path))
+                {
+                    var current = SessionState.Path.CurrentFileSystemLocation;
+                    Path = SessionState.Path.Combine(current.ToString(), Path);
+                }
 
-                ds.Add(entry.Key.ToString(), (DataSource<float>)value);
+                var result = MinibatchDefinition.Load(Path);
+                WriteObject(result);
             }
+            else
+            {
+                var ds = new Dictionary<string, DataSource<float>>();
+                foreach (DictionaryEntry entry in DataSources)
+                {
+                    var value = entry.Value;
+                    if (value is PSObject)
+                        value = (value as PSObject).BaseObject;
 
-            var minibatchDef = new MinibatchDefinition(ds, MinibatchSize, ValidationRate, !NoRandomize, Device);
+                    ds.Add(entry.Key.ToString(), (DataSource<float>)value);
+                }
 
-            WriteObject(minibatchDef);
+                var minibatchDef = new MinibatchDefinition(ds, MinibatchSize, ValidationRate, !NoRandomize);
+
+                WriteObject(minibatchDef);
+            }
         }
     }
 }

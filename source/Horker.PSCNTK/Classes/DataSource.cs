@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Horker.PSCNTK
 {
+    [Serializable]
     public class DataSource<T>
     {
         public Shape Shape;
@@ -110,6 +111,16 @@ namespace Horker.PSCNTK
             return Converter.VariableToDataSource(variable);
         }
 
+        public static DataSource<T> Load(byte[] data)
+        {
+            return Serializer.Deserialize<DataSource<T>>(data);
+        }
+
+        public static DataSource<T> Load(string path)
+        {
+            return Serializer.Deserialize<DataSource<T>>(path);
+        }
+
         #endregion
 
         #region Accessors
@@ -182,6 +193,16 @@ namespace Horker.PSCNTK
         {
             var data = Data.Select(x => Convert.ToSingle(x)).ToArray();
             return new DataSource<float>(data, Shape);
+        }
+
+        public byte[] Serialize()
+        {
+            return Serializer.Serialize(this);
+        }
+
+        public void Save(string path)
+        {
+            Serializer.Serialize(this, path);
         }
 
         #endregion

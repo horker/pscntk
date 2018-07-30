@@ -9,19 +9,37 @@ using Horker.PSCNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKDataSource")]
+    [CmdletBinding(DefaultParameterSetName = "new")]
     [Alias("ds")]
     public class NewCNTKDataSource : PSCmdlet
     {
-        [Parameter(Position = 0, Mandatory = true)]
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "new")]
         public object[] Data;
 
-        [Parameter(Position = 1, Mandatory = false)]
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "new")]
         public int[] Dimensions = null;
+
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "load")]
+        public string Path;
 
         protected override void EndProcessing()
         {
-            var result = new DataSource<float>(Data.Select(x => Converter.ToFloat(x)).ToArray(), Dimensions);
-            WriteObject(result);
+            if (ParameterSetName == "load")
+            {
+                if (!System.IO.Path.IsPathRooted(Path))
+                {
+                    var current = SessionState.Path.CurrentFileSystemLocation;
+                    Path = SessionState.Path.Combine(current.ToString(), Path);
+                }
+
+                var result = DataSource<float>.Load(Path);
+                WriteObject(result);
+            }
+            else
+            {
+                var result = new DataSource<float>(Data.Select(x => Converter.ToFloat(x)).ToArray(), Dimensions);
+                WriteObject(result);
+            }
         }
     }
 

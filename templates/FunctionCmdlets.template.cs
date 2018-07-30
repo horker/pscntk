@@ -60,6 +60,9 @@ foreach ($s in $definitions) {
       $type = "int"
       $cast = "(uint)"
     }
+    elseif ($type -eq "CNTK.NDShape") {
+      $type = "int[]"
+    }
 
     [PSCustomObject]@{
       Type = $type

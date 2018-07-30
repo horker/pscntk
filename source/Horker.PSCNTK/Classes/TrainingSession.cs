@@ -82,13 +82,13 @@ namespace Horker.PSCNTK
             return null;
         }
 
-        public IEnumerable<TrainingSession> GetSession(int maxIteration = int.MaxValue)
+        public IEnumerable<TrainingSession> GetSession(int maxIteration = int.MaxValue, DeviceDescriptor device = null)
         {
             Epoch = 1;
 
             for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
             {
-                var batch = Minibatch.GetNextBatch();
+                var batch = Minibatch.GetNextBatch(device);
 
                 var arguments = new Dictionary<Variable, MinibatchData>();
                 foreach (var entry in batch.Features)
@@ -107,11 +107,11 @@ namespace Horker.PSCNTK
             }
         }
 
-        public double GetValidationMetric()
+        public double GetValidationMetric(DeviceDescriptor device = null)
         {
             if (_validationData == null)
             {
-                var batch = Minibatch.GetValidationBatch();
+                var batch = Minibatch.GetValidationBatch(device);
 
                 if (batch == null)
                     return 0.0;

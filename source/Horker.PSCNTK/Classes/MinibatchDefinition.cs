@@ -18,10 +18,10 @@ namespace Horker.PSCNTK
         }
     }
 
+    [Serializable]
     public class MinibatchDefinition
     {
         public Dictionary<string, DataSource<float>> Features;
-        public DeviceDescriptor Device;
 
         public int MinibatchSize;
         public bool IsSeriesData;
@@ -33,7 +33,7 @@ namespace Horker.PSCNTK
         private int _validationStart;
         private int[] _order;
 
-        public MinibatchDefinition(Dictionary<string, DataSource<float>> features, int minibatchSize, double validationRate = .3, bool randomize = true, DeviceDescriptor device = null)
+        public MinibatchDefinition(Dictionary<string, DataSource<float>> features, int minibatchSize, double validationRate = .3, bool randomize = true)
         {
             var f = features.Values.First();
 
@@ -42,6 +42,9 @@ namespace Horker.PSCNTK
 
             if (f.Shape[-1] < minibatchSize)
                 throw new ArgumentException("Sample size is smaller than minibatch size");
+
+            if (minibatchSize < 1)
+                throw new ArgumentException("Minibatch size should be greater than zero");
 
             foreach (var entry in features)
             {
@@ -57,22 +60,30 @@ namespace Horker.PSCNTK
             Features = features;
             Randomized = randomize;
 
-            if (device == null)
-                device = DeviceDescriptor.UseDefaultDevice();
-            Device = device;
-
             MinibatchSize = minibatchSize;
 
             Total = f.Shape[-1];
             Current = 0;
+        }
 
-            // Sample order
+        public static MinibatchDefinition Load(byte[] data)
+        {
+            return Serializer.Deserialize<MinibatchDefinition>(data);
+        }
 
-            _order = new int[f.Shape[-1]];
-            for (var i = 0; i < f.Shape[-1]; ++i)
-                _order[i] = i;
+        public static MinibatchDefinition Load(string path)
+        {
+            return Serializer.Deserialize<MinibatchDefinition>(path);
+        }
 
-            Randomize();
+        public byte[] Serialize()
+        {
+            return Serializer.Serialize(this);
+        }
+
+        public void Save(string path)
+        {
+            Serializer.Serialize(this, path);
         }
 
         private void Randomize()
@@ -97,7 +108,7 @@ namespace Horker.PSCNTK
             }
         }
 
-        private MinibatchData GetBatch(DataSource<float> feature, int cur, int batchSize, bool sweepEnd)
+        private MinibatchData GetBatch(DataSource<float> feature, int cur, int batchSize, bool sweepEnd, DeviceDescriptor device)
         {
             var chunkSize = feature.Shape.GetSize(-2);
 
@@ -115,14 +126,27 @@ namespace Horker.PSCNTK
             var shape = feature.Shape.Clone();
             shape[-1] = batchSize;
 
-            var value = new Value(new NDArrayView(shape.Dimensions, buffer, Device, true));
+            if (device == null)
+                device = DeviceDescriptor.UseDefaultDevice();
+
+            var value = new Value(new NDArrayView(shape.Dimensions, buffer, device, true));
             var batch = new MinibatchData(value, (uint)batchSize, (uint)(batchSize * feature.Shape[-2]), sweepEnd);
 
             return batch;
         }
 
-        public Minibatch GetNextBatch()
+        public Minibatch GetNextBatch(DeviceDescriptor device = null)
         {
+            if (_order == null)
+            {
+                var f = Features.Values.First();
+                _order = new int[f.Shape[-1]];
+                for (var i = 0; i < f.Shape[-1]; ++i)
+                    _order[i] = i;
+
+                Randomize();
+            }
+
             bool sweepEnd = false;
 
             if (Current + MinibatchSize > _validationStart)
@@ -138,7 +162,7 @@ namespace Horker.PSCNTK
 
             foreach (var entry in Features)
             {
-                var b = GetBatch(entry.Value, Current, MinibatchSize, sweepEnd);
+                var b = GetBatch(entry.Value, Current, MinibatchSize, sweepEnd, device);
                 batch.Features.Add(entry.Key, b);
             }
 
@@ -149,7 +173,7 @@ namespace Horker.PSCNTK
             return batch;
         }
 
-        public Minibatch GetValidationBatch()
+        public Minibatch GetValidationBatch(DeviceDescriptor device = null)
         {
             var batchSize = Total - _validationStart;
 
@@ -160,7 +184,7 @@ namespace Horker.PSCNTK
 
             foreach (var entry in Features)
             {
-                var b = GetBatch(entry.Value, _validationStart, batchSize, false);
+                var b = GetBatch(entry.Value, _validationStart, batchSize, false, device);
                 batch.Features.Add(entry.Key, b);
             }
 

@@ -2,6 +2,7 @@
 
 namespace Horker.PSCNTK
 {
+    [Serializable]
     public class Shape
     {
         public int[] Dimensions;

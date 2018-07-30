@@ -415,7 +415,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKBernoulliRandom : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.NDShape Shape;
+        public int[] Shape;
 
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.DataType DataType;
@@ -789,7 +789,7 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public CNTK.NDShape Strides;
+        public int[] Strides;
 
         [Parameter(Position = 3, Mandatory = false)]
         public CNTK.BoolVector Sharing;
@@ -798,7 +798,7 @@ namespace Horker.PSCNTK {
         public CNTK.BoolVector AutoPadding;
 
         [Parameter(Position = 5, Mandatory = false)]
-        public CNTK.NDShape Dilation;
+        public int[] Dilation;
 
         [Parameter(Position = 6, Mandatory = false)]
         public int ReductionRank;
@@ -892,7 +892,7 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public CNTK.NDShape Strides;
+        public int[] Strides;
 
         [Parameter(Position = 3, Mandatory = false)]
         public CNTK.BoolVector Sharing;
@@ -901,10 +901,10 @@ namespace Horker.PSCNTK {
         public CNTK.BoolVector AutoPadding;
 
         [Parameter(Position = 5, Mandatory = false)]
-        public CNTK.NDShape OutputShape;
+        public int[] OutputShape;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public CNTK.NDShape Dilation;
+        public int[] Dilation;
 
         [Parameter(Position = 7, Mandatory = false)]
         public int ReductionRank;
@@ -2085,7 +2085,7 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 2, Mandatory = true)]
-        public CNTK.NDShape Strides;
+        public int[] Strides;
 
         [Parameter(Position = 3, Mandatory = true)]
         public CNTK.BoolVector Sharing;
@@ -2094,7 +2094,7 @@ namespace Horker.PSCNTK {
         public CNTK.BoolVector AutoPadding;
 
         [Parameter(Position = 5, Mandatory = true)]
-        public CNTK.NDShape Dilation;
+        public int[] Dilation;
 
         [Parameter(Position = 6, Mandatory = true)]
         public int Groups;
@@ -2130,7 +2130,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKGumbelRandom : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.NDShape Shape;
+        public int[] Shape;
 
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.DataType DataType;
@@ -3089,7 +3089,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKNormalRandom : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.NDShape Shape;
+        public int[] Shape;
 
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.DataType DataType;
@@ -3488,10 +3488,10 @@ namespace Horker.PSCNTK {
         public CNTK.PoolingType PoolingType;
 
         [Parameter(Position = 2, Mandatory = true)]
-        public CNTK.NDShape PoolingWindowShape;
+        public int[] PoolingWindowShape;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public CNTK.NDShape Strides;
+        public int[] Strides;
 
         [Parameter(Position = 4, Mandatory = false)]
         public CNTK.BoolVector AutoPadding;
@@ -4145,7 +4145,7 @@ namespace Horker.PSCNTK {
         public CNTK.PoolingType PoolingType;
 
         [Parameter(Position = 3, Mandatory = true)]
-        public CNTK.NDShape RoiOutputShape;
+        public int[] RoiOutputShape;
 
         [Parameter(Position = 4, Mandatory = true)]
         public double SpatialScale;
@@ -4960,7 +4960,7 @@ namespace Horker.PSCNTK {
         public CNTK.Variable Operand;
 
         [Parameter(Position = 2, Mandatory = true)]
-        public CNTK.NDShape Strides;
+        public int[] Strides;
 
         [Parameter(Position = 3, Mandatory = true)]
         public CNTK.BoolVector Sharing;
@@ -4969,7 +4969,7 @@ namespace Horker.PSCNTK {
         public CNTK.BoolVector AutoPadding;
 
         [Parameter(Position = 5, Mandatory = true)]
-        public CNTK.NDShape Dilation;
+        public int[] Dilation;
 
         [Parameter(Position = 6, Mandatory = true)]
         public int MaxTempMemSizeInSamples;
@@ -5603,7 +5603,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKUniformRandom : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.NDShape Shape;
+        public int[] Shape;
 
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.DataType DataType;
@@ -5758,10 +5758,10 @@ namespace Horker.PSCNTK {
         public CNTK.PoolingType UnpoolingType;
 
         [Parameter(Position = 3, Mandatory = true)]
-        public CNTK.NDShape UnpoolingWindowShape;
+        public int[] UnpoolingWindowShape;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public CNTK.NDShape Strides;
+        public int[] Strides;
 
         [Parameter(Position = 5, Mandatory = false)]
         public CNTK.BoolVector AutoPadding;
