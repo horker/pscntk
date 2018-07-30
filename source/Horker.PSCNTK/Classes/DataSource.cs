@@ -178,6 +178,12 @@ namespace Horker.PSCNTK
             return new CNTK.MinibatchData(ToValue(), (uint)Shape[-1], (uint)(Shape[-1] * Shape[-2]), sweepEnd);
         }
 
+        public DataSource<float> ToDataSourceFloat()
+        {
+            var data = Data.Select(x => Convert.ToSingle(x)).ToArray();
+            return new DataSource<float>(data, Shape);
+        }
+
         #endregion
 
         #region Manipulators
@@ -185,6 +191,12 @@ namespace Horker.PSCNTK
         public void Reshape(params int[] dimensions)
         {
             Shape.Reshape(dimensions, Data.Length);
+        }
+
+        public void ApplyInPlace(Func<int, T, T> func)
+        {
+            for (var i = 0; i < Data.Length; ++i)
+                Data[i] = func.Invoke(i, Data[i]);
         }
 
         private static void Copy(IList<T> from, int fromOffset, IList<T> to, int toOffset, int size)
