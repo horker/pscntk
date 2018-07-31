@@ -137,10 +137,12 @@ task Clean {
 }
 
 task ProcessTemplate {
+#  .\tools\Extract-FunctionSignature.ps1
+
   dir $TEMPLATE_INPUT_PATH | foreach {
     $inFile = $_.FullName
     $outFile = Join-Path $TEMPLATE_OUTPUT_PATH ($_.Name -replace "\.template\.", ".")
-    cat $inFile | Invoke-TemplateEngine | Set-Content $outFile
+    Get-Content $inFile | Invoke-TemplateEngine | Set-Content $outFile
   }
 }
 

@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\CNTKFunctionHelper.cs" />
+    <Compile Include="Classes\Constants.cs" />
     <Compile Include="Classes\Converter.cs" />
     <Compile Include="Classes\CTFBuilder.cs" />
     <Compile Include="Classes\DataSource.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Classes\TrainingSession.cs" />
     <Compile Include="Classes\UnmanagedDllLoader.cs" />
     <Compile Include="Cmdlets\CTFCmdlets.cs" />
+    <Compile Include="Cmdlets\FunctionCmdletsByHand.cs" />
     <Compile Include="Cmdlets\LearnerCmdlets.cs" />
     <Compile Include="Cmdlets\MinibatchDefinitionCmdlets.cs" />
     <Compile Include="Cmdlets\MinibatchSourceCmdlets.cs" />

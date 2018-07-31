@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-Import-Module psmath
+#Import-Module psmath
 #Import-Module oxyplotcli
 
 ############################################################

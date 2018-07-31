@@ -1,131 +1,135 @@
-<%
+<% # -*- ft=ps1 -*-
 Set-StrictMode -Version latest
 
-$EXCLUDES = @(
-  "OptimizedRNNStack"
-  "Crop"
-  "Reshape"
-  "ToSequence"
+$funcs = Import-CliXml "tools\cntkfuncs.clixml"
+#$funcs = Import-CliXml "tools\dupfuncs.clixml"
+
+$TYPE_MAP = @{
+  "Axis&" = "CNTK.Axis"
+  "bool" = "bool"
+  "const Axis&" = "CNTK.Axis"
+  "const bool" = "bool"
+  "const Constant&" = "CNTK.Constant"
+  "const FunctionPtr&" = "CNTK.Function"
+  "const NDArrayViewPtr&" = "CNTK.NDArrayView"
+  "const NDShape&" = "int[]"
+  "const std::vector<Axis>&" = "CNTK.Axis[]"
+  "const std::vector<bool>&" = "bool[]"
+  "const std::vector<int>&" = "int[]"
+  "const std::vector<size_t>&" = "UInt32[]"
+  "const std::vector<Variable>&" = "CNTK.Variable[]"
+  "const std::wstring&" = "string"
+  "const Variable&" = "CNTK.Variable"
+  "DataType" = "CNTK.DataType"
+  "double" = "double"
+  "float" = "float"
+  "int" = "int"
+  "PaddingMode" = "CNTK.PaddingMode"
+  "ParameterCloningMethod" = "CNTK.ParameterCloningMethod"
+  "PoolingType" = "CNTK.PoolingType"
+  "size_t" = "UInt32"
+  "std::vector<float>" = "float[]"
+  "unsigned long" = "UInt32"
+  "Variable&" = "CNTK.Variable"
+}
+
+$CAST_MAP = @{
+  "CNTK.Axis[]" = "CNTK.AxisVector"
+  "bool[]" = "CNTK.BoolVector"
+  "float[]" = "CNTK.FloatVector"
+  "UInt32[]" = "CNTK.SizeTVector"
+  "CNTK.Variable[]" = "CNTK.VariableVector"
+}
+
+$VALUE_MAP = @(
+  @{ Re = '^{\s*(\d)+\s*}$'; To = 'new int[] { $1 }' }
+  @{ Re = '^{\s*(true|false)\s*}$'; To = 'new bool[] { $1 }' }
+  @{ Re = '^([\d\.]+)$'; To = '$1' }
+  @{ Re = '^(true|false)$'; To = '$1' }
+  @{ Re = '^L"(.*)"(\*/)?$'; To = '"$1"' }
+  @{ Re = '^ParameterCloningMethod::(\w+)$'; To = 'CNTK.ParameterCloningMethod.$1' }
+  @{ Re = '^SentinelValueForAutoSelectRandomSeed$'; To = 'Constants.SentinelValueForAutoSelectRandomSeed' }
+  @{ Re = '^SentinelValueForInferParamInitRank$'; To = 'Constants.SentinelValueForInferParamInitRank' }
+  @{ Re = '^DefaultParamInitScale$'; To = 'Constants.DefaultParamInitScale' }
+  @{ Re = '^DefaultParamInitOutputRank$'; To = 'Constants.DefaultParamInitOutputRank' }
+  @{ Re = '^DefaultParamInitFilterRank$'; To = 'Constants.DefaultParamInitFilterRank' }
 )
 
-$definitions = [cntk.cntklib] | gm -static | % Definition
+function Convert-Value {
+  param([string]$value)
 
-$sig = New-Object Collections.Generic.List[PSObject]
+  if ([string]::IsNullOrEmpty($value)) {
+    return $value
+  }
 
-foreach ($s in $definitions) {
-
-  $overloads = $s -split ", static " -replace "static ", ""
-  $longest = ([object[]]$overloads.OrderByDescending({ $args[0].Length }))[0]
-
-  $m = $longest -match "^CNTK\.Function (\w+)\(([^)]+)\)$"
-  if (!$m) {
-    $m = $longest -match "^CNTK.CNTKDictionary (\w+Initializer)\(([^)]+)\)$"
-    if (!$m) {
-      continue
+  foreach ($vm in $VALUE_MAP) {
+    if ($value -match $vm.Re) {
+      return $value -replace $vm.Re, $vm.To
     }
   }
 
-  $name = $matches[1]
-  $paramlist = $matches[2]
-
-  if ($EXCLUDES -contains $name) {
-    continue
-  }
-
-  # Examine the range of the number of arguments
-
-  $measures = $overloads | foreach{ if ($_ -match "\(\)") { 0 } else { ($_ -split ",").Length } } | measure-object -min -max
-  $minArgs = $measures.Minimum
-  $maxArgs = $measures.Maximum
-
-  # Alias
-
-  $alias = ($Name -replace "Initializer$", "").ToLower()
-
-  # Parameter names and types
-
-  $params = $paramlist -split ",\s*"
-
-  $defs = $params | foreach {
-    $type, $var = $_ -split "\s+"
-
-    $var = $var.Substring(0, 1).ToUpper() + $var.Substring(1)
-    $defaultValue = $null
-    if ($type -eq "string" -and $var -eq "name") {
-      $defaultValue = '""'
-    }
-
-    $cast = ""
-    if ($type -eq "uint32") {
-      $type = "int"
-      $cast = "(uint)"
-    }
-    elseif ($type -eq "CNTK.NDShape") {
-      $type = "int[]"
-    }
-
-    [PSCustomObject]@{
-      Type = $type
-      Variable = $var
-      CastVariable = $cast + $var
-    }
-  }
-
-  $result = [PSCustomObject]@{
-    Name = $name
-    Alias = $alias
-    Params = @($defs)
-    MinArgs = $minArgs
-    MaxArgs = $maxArgs
-  }
-
-  $sig.Add($result);
+  Write-Error "Unknown value: '$value'"
 }
+
+function ConvertTo-TitleCase {
+  param([string]$s)
+
+  $t = $s.Substring(0, 1).ToUpper()
+  $s -replace "^.", $t
+}
+
 -%>
 using System;
 using System.Management.Automation;
 
+// DO NOT EDIT
+// This file was automatically generated at <% (Get-Date).ToString("yyyy/MM/dd HH:mm:ss") %>
+
 namespace Horker.PSCNTK {
 <%
-foreach ($s in $sig) {
+foreach ($func in $funcs) {
+  $alias = $func.Name.ToLower()
+  if ($alias -match "initializer$") {
+    $alias = $alias -replace "initializer$", ""
+    if ($alias -match "^(he|glorot|xavier)") {
+      $alias = ($alias -replace "^", "init."), $alias
+    }
+    else {
+      $alias = $alias -replace "^", "init."
+    }
+  }
+  $alias = $alias | foreach { "cntk." + $_ }
 -%>
 
-    [Cmdlet("New", "CNTK<% $s.Name %>")]
-    [Alias("cntk.<% $s.Alias %>")]
-    public class NewCNTK<% $s.Name %> : PSCmdlet
+    [Cmdlet("New", "CNTK<% $func.Name %>")]
+    [Alias("<% $alias -join '", "' %>")]
+    public class NewCNTK<% $func.Name %> : PSCmdlet
     {
 <%
-  for ($i = 0; $i -lt $s.Params.Length; ++$i) {
-    $p = $s.Params[$i]
+  $arglist = @()
+  for ($i = 0; $i -lt $func.Args.Count; ++$i) {
+    $arg = $func.Args[$i]
+    $type = $TYPE_MAP[$arg.Type]
+    $variable = ConvertTo-TitleCase $arg.Variable
+    $value = Convert-Value $arg.Value
+
+    $casted = $variable
+    if ($CAST_MAP.ContainsKey($type)) {
+      $casted = "new " + $CAST_MAP[$type] + "(" + $variable + ")"
+    }
+
+    $arglist += $casted
 -%>
-        [Parameter(Position = <% $i %>, Mandatory = <% if ($i -ge $s.MinArgs) { %>false<% } else { %>true<% } %>)]
-        public <% $p.Type %> <% $p.Variable %>;
+        [Parameter(Position = <% $i %>, Mandatory = <% if ([string]::IsNullOrEmpty($arg.Value)) { %>true<% } else { %>false<% } %>)]
+        public <% $type %> <% $variable %><% if (![string]::IsNullOrEmpty($value)) { %> = <% $value } %>;
 
 <%
   }
 -%>
         protected override void EndProcessing()
         {
-            var argCount = MyInvocation.BoundParameters.Count;
-<%
-    for ($i = $s.MinArgs; $i -le $s.MaxArgs; ++$i) {
-      if ($i -eq 0) {
-        $args = ""
-      }
-      else {
-        $args = $s.Params[0..($i - 1)].CastVariable -join ", "
-      }
--%>
-
-            if (argCount == <% $i %>)
-            {
-              var result = CNTK.CNTKLib.<% $s.Name %>(<% $args %>);
-              WriteObject(result);
-              return;
-            }
-<%
-    }
--%>
+            var result = CNTK.CNTKLib.<% $func.Name %>(<% $arglist -join ", " %>);
+            WriteObject(result);
         }
     }
 <%
