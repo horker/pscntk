@@ -2,7 +2,7 @@ using System;
 using System.Management.Automation;
 
 // DO NOT EDIT
-// This file was automatically generated at 2018/08/01 02:34:24
+// This file was automatically generated at 2018/08/02 05:17:29
 
 namespace Horker.PSCNTK {
 
@@ -1491,7 +1491,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKNormalInitializer")]
-    [Alias("cntk.init.normal")]
+    [Alias("cntk.init.normal", "cntk.normal")]
     public class NewCNTKNormalInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2290,7 +2290,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKTruncatedNormalInitializer")]
-    [Alias("cntk.init.truncatednormal")]
+    [Alias("cntk.init.truncatednormal", "cntk.truncatednormal")]
     public class NewCNTKTruncatedNormalInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = false)]
@@ -2307,7 +2307,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKUniformInitializer")]
-    [Alias("cntk.init.uniform")]
+    [Alias("cntk.init.uniform", "cntk.uniform")]
     public class NewCNTKUniformInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]

@@ -56,34 +56,36 @@ $in = cntk.input 28, 28, 1 -Name input
 $n = $in
 
 if ($Conv) {
-  # conv1: 28 x 28 x 1 -> 28 x 28 x 4
-  $n = cntk.convolution -ConvolutionMap (cntk.parameter 3, 3, 1, 4 (cntk.heuniform)) -Operand $n -Strides 1, 1, 1
+  # conv1: 28 x 28 x 1 -> 28 x 28 x 8
+  $w = cntk.parameter 3, 3, 1, 8 (cntk.truncatednormal .1)
+  $n = cntk.convolution -ConvolutionMap $w -Operand $n -Strides 1, 1, 1
   $n = cntk.relu $n
 
-  # pool1: 28 x 28 x 4 -> 14 x 14 x 4
-  $n = cntk.pooling -Operand $n -PoolingType Max -PoolingWindowShape 3, 3 -Strides 2, 2 -AutoPadding @($true, $true, $false)
+  # pool1: 28 x 28 x 8 -> 14 x 14 x 8
+  $n = cntk.pooling -Operand $n -PoolingType Max -PoolingWindowShape 3, 3 -Strides 2, 2 -AutoPadding $true
 
-  # conv2: 14 x 14 x 4 -> 14 x 14 x 8
-  $n = cntk.convolution (cntk.parameter 3, 3, 4, 8 (cntk.heuniform)) $n 1, 1, 4
+  # conv2: 14 x 14 x 8 -> 14 x 14 x 32
+  $w = cntk.parameter 3, 3, 8, 32 (cntk.truncatednormal .1)
+  $n = cntk.convolution $w $n 1, 1, 8
   $n = cntk.relu $n
 
-  # pool2: 14 x 14 x 8 -> 7 x 7 x 8
-  $n = cntk.pooling $n Max (3, 3) (2, 2) @($true, $true, $false)
+  # pool2: 14 x 14 x 32 -> 7 x 7 x 32
+  $n = cntk.pooling $n Max (3, 3) (2, 2) $true
 
   # fc
-  $n = cntk.dense $n $OUT_CLASS (cntk.glorotuniform)
+  $n = cntk.dense $n $OUT_CLASS (cntk.glorotuniform .1)
 }
 else {
-  $n = cntk.dense $n 1000 (cntk.heuniform)
+  $n = cntk.dense $n 1000 (cntk.heuniform .1)
   $n = cntk.relu $n
 
-  $n = cntk.dense $n 1000 (cntk.heuniform)
+  $n = cntk.dense $n 1000 (cntk.heuniform .1)
   $n = cntk.relu $n
 
-  $n = cntk.dense $n 1000 (cntk.heuniform)
+  $n = cntk.dense $n 1000 (cntk.heuniform .1)
   $n = cntk.relu $n
 
-  $n = cntk.dense $n $OUT_CLASS (cntk.glorotuniform)
+  $n = cntk.dense $n $OUT_CLASS (cntk.glorotuniform .1)
 }
 
 $out = $n

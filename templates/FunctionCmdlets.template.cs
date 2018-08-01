@@ -91,7 +91,7 @@ foreach ($func in $funcs) {
   $alias = $func.Name.ToLower()
   if ($alias -match "initializer$") {
     $alias = $alias -replace "initializer$", ""
-    if ($alias -match "^(he|glorot|xavier)") {
+    if ($alias -match "^(he|glorot|xavier|normal|truncated|uniform)") {
       $alias = ($alias -replace "^", "init."), $alias
     }
     else {
