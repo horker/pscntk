@@ -243,5 +243,31 @@ namespace UnitTest
 
             Assert.AreEqual(expected, s);
         }
+
+        [TestMethod]
+        public void TestSerialization()
+        {
+            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
+
+            var bytes = a.Serialize(false);
+
+            var b = DataSource<float>.Load(bytes, false);
+
+            Assert.AreEqual(a.Shape, b.Shape);
+            CollectionAssert.AreEqual(a.Data, b.Data);
+        }
+
+        [TestMethod]
+        public void TestCompression()
+        {
+            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
+
+            var bytes = a.Serialize(true);
+
+            var b = DataSource<float>.Load(bytes, true);
+
+            Assert.AreEqual(a.Shape, b.Shape);
+            CollectionAssert.AreEqual(a.Data, b.Data);
+        }
     }
 }

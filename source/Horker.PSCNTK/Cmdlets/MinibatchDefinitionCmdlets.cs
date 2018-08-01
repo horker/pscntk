@@ -26,6 +26,9 @@ namespace Horker.PSCNTK
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "load")]
         public string Path;
 
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "load")]
+        public SwitchParameter NoDecompress;
+
         protected override void EndProcessing()
         {
             if (ParameterSetName == "load")
@@ -36,7 +39,7 @@ namespace Horker.PSCNTK
                     Path = SessionState.Path.Combine(current.ToString(), Path);
                 }
 
-                var result = MinibatchDefinition.Load(Path);
+                var result = MinibatchDefinition.Load(Path, !NoDecompress);
                 WriteObject(result);
             }
             else

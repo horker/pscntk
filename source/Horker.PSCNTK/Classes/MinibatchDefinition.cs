@@ -86,24 +86,24 @@ namespace Horker.PSCNTK
             _randomized = randomize;
         }
 
-        public static MinibatchDefinition Load(byte[] data)
+        public static MinibatchDefinition Load(byte[] data, bool decompress = true)
         {
-            return Serializer.Deserialize<MinibatchDefinition>(data);
+            return Serializer.Deserialize<MinibatchDefinition>(data, decompress);
         }
 
-        public static MinibatchDefinition Load(string path)
+        public static MinibatchDefinition Load(string path, bool compress = true)
         {
-            return Serializer.Deserialize<MinibatchDefinition>(path);
+            return Serializer.Deserialize<MinibatchDefinition>(path, compress);
         }
 
-        public byte[] Serialize()
+        public byte[] Serialize(bool compress = true)
         {
-            return Serializer.Serialize(this);
+            return Serializer.Serialize(this, compress);
         }
 
-        public void Save(string path)
+        public void Save(string path, bool compress = true)
         {
-            Serializer.Serialize(this, path);
+            Serializer.Serialize(this, path, compress);
         }
 
         private void ResetInternalState()

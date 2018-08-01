@@ -111,14 +111,14 @@ namespace Horker.PSCNTK
             return Converter.VariableToDataSource(variable);
         }
 
-        public static DataSource<T> Load(byte[] data)
+        public static DataSource<T> Load(byte[] data, bool decompress = true)
         {
-            return Serializer.Deserialize<DataSource<T>>(data);
+            return Serializer.Deserialize<DataSource<T>>(data, decompress);
         }
 
-        public static DataSource<T> Load(string path)
+        public static DataSource<T> Load(string path, bool decompress = true)
         {
-            return Serializer.Deserialize<DataSource<T>>(path);
+            return Serializer.Deserialize<DataSource<T>>(path, decompress);
         }
 
         #endregion
@@ -195,14 +195,14 @@ namespace Horker.PSCNTK
             return new DataSource<float>(data, Shape);
         }
 
-        public byte[] Serialize()
+        public byte[] Serialize(bool compress = true)
         {
-            return Serializer.Serialize(this);
+            return Serializer.Serialize(this, compress);
         }
 
-        public void Save(string path)
+        public void Save(string path, bool compress = true)
         {
-            Serializer.Serialize(this, path);
+            Serializer.Serialize(this, path, compress);
         }
 
         #endregion
