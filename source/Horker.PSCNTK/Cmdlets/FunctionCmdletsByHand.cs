@@ -496,9 +496,9 @@ namespace Horker.PSCNTK {
         }
     }
 
-    [Cmdlet("New", "CNTKReshape")]
-    [Alias("cntk.reshape")]
-    public class NewCNTKReshape : PSCmdlet
+    [Cmdlet("New", "CNTKReshape2")]
+    [Alias("cntk.reshape2")]
+    public class NewCNTKReshape2 : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
@@ -522,9 +522,9 @@ namespace Horker.PSCNTK {
         }
     }
 
-    [Cmdlet("New", "CNTKReshape2")]
-    [Alias("cntk.reshape2")]
-    public class NewCNTKReshape2 : PSCmdlet
+    [Cmdlet("New", "CNTKReshape")]
+    [Alias("cntk.reshape")]
+    public class NewCNTKReshape : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Operand;
