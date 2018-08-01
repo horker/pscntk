@@ -1,4 +1,5 @@
-﻿using CNTK;
+﻿using System.Linq;
+using CNTK;
 
 namespace Horker.PSCNTK
 {
@@ -6,6 +7,12 @@ namespace Horker.PSCNTK
     {
         public static Function Dense(Variable input, int hiddenSize, CNTKDictionary initializer)
         {
+            if (input.Shape.Rank > 1)
+            {
+                int newDim = input.Shape.Dimensions.Aggregate((d1, d2) => d1 * d2);
+                input = CNTKLib.Reshape(input, new int[] { newDim });
+            }
+
             var inDim = input.Shape.Dimensions[0];
 
             var weight = new Parameter(new int[] { hiddenSize, inDim }, DataType.Float, initializer);
