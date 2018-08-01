@@ -20,7 +20,7 @@ if (Test-Path $MNIST_CACHE_FILE) {
   $minibatchDef = cntk.minibatchdef -Path $MNIST_CACHE_FILE
 }
 else {
-  Write-Host "Loading image file..."
+  Write-Host "Loading MNIST image file..."
   $data = [System.IO.File]::ReadAllBytes($MNIST_IMAGE_FILE)
 
   Write-Host "Preprocessing images..."
@@ -28,7 +28,7 @@ else {
   $data = $data.Scale(0, 255, 0, 1.0)
   $data = ds $data 28, 28, 1, 1, -1
 
-  Write-Host "Loading label file..."
+  Write-Host "Loading MNIST label file..."
   $label = [System.IO.File]::ReadAllBytes($MNIST_LABEL_FILE)
 
   Write-Host "Preprocessing labels..."
@@ -36,7 +36,7 @@ else {
   $label = (mat $label).OneHot(10).ToFlatArray($true)
   $label = ds $label 10, 1, -1
 
-  Write-Host "Saving labels..."
+  Write-Host "Saving..."
   $minibatchDef = cntk.minibatchdef @{ input = $data; label = $label } 64 .2
   $minibatchDef.Save($MNIST_CACHE_FILE)
 }
