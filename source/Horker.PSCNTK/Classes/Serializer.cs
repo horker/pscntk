@@ -18,8 +18,6 @@ namespace Horker.PSCNTK
                 (new BinaryFormatter()).Serialize(stream, obj);
                 return stream.ToArray();
             }
-
-
         }
 
         public static void Serialize(object obj, string path)

@@ -21,16 +21,39 @@ namespace Horker.PSCNTK
     [Serializable]
     public class MinibatchDefinition
     {
-        public Dictionary<string, DataSource<float>> Features;
+        public Dictionary<string, DataSource<float>> Features
+        {
+            get => _features;
+            private set { _features = value; }
+        }
 
-        // TODO: make changeable
-        public int MinibatchSize { get; set; }
-        public double ValidationRate { get; private set; }
-        public bool Randomized { get; private set; }
+        public int MinibatchSize
+        {
+            get => _minibatchSize;
+            set { ResetInternalState(); _minibatchSize = value; }
+        }
+
+        public double ValidationRate
+        {
+            get => _validationRate;
+            set { ResetInternalState(); _validationRate = value; }
+        }
+
+        public bool Randomized
+        {
+            get => _randomized;
+            set { ResetInternalState(); _randomized = value; }
+        }
 
         public bool IsSeriesData { get; private set; }
         public int Total { get; private set; }
         public int Current { get; private set; }
+
+        private Dictionary<string, DataSource<float>> _features;
+
+        private int _minibatchSize;
+        private double _validationRate;
+        private bool _randomized;
 
         private int _validationStart;
         private int[] _order;
@@ -57,15 +80,10 @@ namespace Horker.PSCNTK
                     IsSeriesData = true;
             }
 
-            _validationStart = (int)(f.Shape[-1] * (1 - validationRate));
-
-            Features = features;
-            MinibatchSize = minibatchSize;
-            ValidationRate = validationRate;
-            Randomized = randomize;
-
-            Total = f.Shape[-1];
-            Current = 0;
+            _features = features;
+            _minibatchSize = minibatchSize;
+            _validationRate = validationRate;
+            _randomized = randomize;
         }
 
         public static MinibatchDefinition Load(byte[] data)
@@ -88,11 +106,23 @@ namespace Horker.PSCNTK
             Serializer.Serialize(this, path);
         }
 
+        private void ResetInternalState()
+        {
+            _order = null;
+            Current = 0;
+        }
+
         private void InitializeOrder()
         {
             if (_order == null)
             {
-                var f = Features.Values.First();
+                var f = _features.Values.First();
+
+                Total = f.Shape[-1];
+                Current = 0;
+
+                _validationStart = (int)(f.Shape[-1] * (1 - _validationRate));
+
                 _order = new int[f.Shape[-1]];
                 for (var i = 0; i < f.Shape[-1]; ++i)
                     _order[i] = i;
@@ -103,10 +133,10 @@ namespace Horker.PSCNTK
 
         private void Randomize()
         {
-            if (!Randomized)
+            if (!_randomized)
                 return;
 
-            var f = Features.Values.First();
+            var f = _features.Values.First();
             var randomEnd = f.Shape[-1];
 
             // for series data, validation data always keeps its order and is obtained from the latest portion
@@ -156,42 +186,42 @@ namespace Horker.PSCNTK
 
             bool sweepEnd = false;
 
-            if (Current + MinibatchSize > _validationStart)
+            if (Current + _minibatchSize > _validationStart)
             {
                 Randomize();
                 Current = 0;
             }
 
-            if (Current + MinibatchSize * 2 > _validationStart)
+            if (Current + _minibatchSize * 2 > _validationStart)
                 sweepEnd = true;
 
             var batch = new Minibatch();
 
-            foreach (var entry in Features)
+            foreach (var entry in _features)
             {
-                var b = GetBatch(entry.Value, Current, MinibatchSize, sweepEnd, device);
+                var b = GetBatch(entry.Value, Current, _minibatchSize, sweepEnd, device);
                 batch.Features.Add(entry.Key, b);
             }
 
             batch.SweepEnd = sweepEnd;
 
-            Current += MinibatchSize;
+            Current += _minibatchSize;
 
             return batch;
         }
 
         public Minibatch GetValidationBatch(DeviceDescriptor device = null)
         {
+            InitializeOrder();
+
             var batchSize = Total - _validationStart;
 
             if (batchSize == 0)
                 return null;
 
-            InitializeOrder();
-
             var batch = new Minibatch();
 
-            foreach (var entry in Features)
+            foreach (var entry in _features)
             {
                 var b = GetBatch(entry.Value, _validationStart, batchSize, false, device);
                 batch.Features.Add(entry.Key, b);
