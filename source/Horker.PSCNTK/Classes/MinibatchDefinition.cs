@@ -7,19 +7,8 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class Minibatch
-    {
-        public Dictionary<string, MinibatchData> Features;
-        public bool SweepEnd;
-
-        public Minibatch()
-        {
-            Features = new Dictionary<string, MinibatchData>();
-        }
-    }
-
     [Serializable]
-    public class MinibatchDefinition
+    public class MinibatchDefinition : IMinibatchDefinition
     {
         public Dictionary<string, DataSource<float>> Features
         {

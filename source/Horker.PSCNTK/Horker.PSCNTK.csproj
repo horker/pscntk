@@ -58,9 +58,12 @@
     <Compile Include="Classes\CTFBuilder.cs" />
     <Compile Include="Classes\DataSource.cs" />
     <Compile Include="Classes\DataSourceCTFBuilder.cs" />
+    <Compile Include="Classes\DataSourceSet.cs" />
     <Compile Include="Classes\FeatureCTFBuilder.cs" />
+    <Compile Include="Classes\IMinibatchDefinition.cs" />
     <Compile Include="Classes\Layers.cs" />
     <Compile Include="Classes\MinibatchDefinition.cs" />
+    <Compile Include="Classes\ProgressiveMinibatchDefinition.cs" />
     <Compile Include="Classes\Serializer.cs" />
     <Compile Include="Classes\TrainingSession.cs" />
     <Compile Include="Classes\UnmanagedDllLoader.cs" />

@@ -209,15 +209,16 @@ namespace Horker.PSCNTK
 
         #region Manipulators
 
+        public void Reshape(params int[] dimensions)
+        {
+            Shape.Reshape(dimensions, Data.Length);
+        }
+
         public void ApplyInPlace(Func<int, T, T> func)
         {
             for (var i = 0; i < Data.Length; ++i)
                 Data[i] = func.Invoke(i, Data[i]);
         }
-
-        #endregion
-
-        #region Reshapers
 
         private static void Copy(IList<T> from, int fromOffset, IList<T> to, int toOffset, int size)
         {
@@ -225,11 +226,6 @@ namespace Horker.PSCNTK
             {
                 to[toOffset + i] = from[fromOffset + i];
             }
-        }
-
-        public void Reshape(params int[] dimensions)
-        {
-            Shape.Reshape(dimensions, Data.Length);
         }
 
         public static DataSource<T> Combine(DataSource<T>[] dataSources, int axis)
@@ -365,6 +361,22 @@ namespace Horker.PSCNTK
                 Copy(Data, j * chunkSize, Data, i * chunkSize, chunkSize);
                 Copy(temp, 0, Data, j * chunkSize, chunkSize);
             }
+        }
+
+        public DataSource<T> Slice(int from, int to)
+        {
+            if (to - from <= 0)
+                throw new ArgumentException("Range must not be zero or negative");
+
+            int chunkSize = Shape.GetSize(Shape.Rank - 2);
+
+            var data = new T[chunkSize * (to - from)];
+            Array.Copy(Data, chunkSize * from, data, 0, data.Length);
+
+            var shape = Shape.Clone();
+            shape[-1] = to - from;
+
+            return new DataSource<T>(data, shape);
         }
 
         public DataSource<T>[] Split(params double[] rates)
