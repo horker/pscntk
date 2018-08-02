@@ -209,16 +209,15 @@ namespace Horker.PSCNTK
 
         #region Manipulators
 
-        public void Reshape(params int[] dimensions)
-        {
-            Shape.Reshape(dimensions, Data.Length);
-        }
-
         public void ApplyInPlace(Func<int, T, T> func)
         {
             for (var i = 0; i < Data.Length; ++i)
                 Data[i] = func.Invoke(i, Data[i]);
         }
+
+        #endregion
+
+        #region Reshapers
 
         private static void Copy(IList<T> from, int fromOffset, IList<T> to, int toOffset, int size)
         {
@@ -226,6 +225,11 @@ namespace Horker.PSCNTK
             {
                 to[toOffset + i] = from[fromOffset + i];
             }
+        }
+
+        public void Reshape(params int[] dimensions)
+        {
+            Shape.Reshape(dimensions, Data.Length);
         }
 
         public static DataSource<T> Combine(DataSource<T>[] dataSources, int axis)
