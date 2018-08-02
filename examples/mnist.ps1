@@ -37,9 +37,12 @@ else {
   $label = ds $label 10, 1, -1
 
   Write-Host "Saving..."
-  $minibatchDef = cntk.minibatchdef @{ input = $data; label = $label } 64 .2
+  $minibatchDef = cntk.minibatchdef @{ input = $data; label = $label }
   $minibatchDef.Save($MNIST_CACHE_FILE)
 }
+
+$minibatchDef.MinibatchSize = 64
+$minibatchDef.ValidationRate = .2
 
 ############################################################
 # Model
