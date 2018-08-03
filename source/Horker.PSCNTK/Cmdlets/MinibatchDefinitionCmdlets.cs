@@ -60,4 +60,62 @@ namespace Horker.PSCNTK
             }
         }
     }
+
+    [Cmdlet("New", "CNTKProgressiveMinibatchDefinition")]
+    [CmdletBinding(DefaultParameterSetName = "new")]
+    [Alias("cntk.progminibatchdef")]
+    public class NewCNTKProgressiveMinibatchDefinition : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "new")]
+        public Hashtable DataSources;
+
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "new")]
+        public int MinibatchSize = 32;
+
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "new")]
+        public int SampleCountPerEpoch = 3200;
+
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "new")]
+        public int ValidationSize = 100;
+
+        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "new")]
+        public int QueueSize = 50;
+
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "load")]
+        public string Path;
+
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "load")]
+        public SwitchParameter NoDecompress;
+
+        protected override void EndProcessing()
+        {
+            if (ParameterSetName == "load")
+            {
+                if (!System.IO.Path.IsPathRooted(Path))
+                {
+                    var current = SessionState.Path.CurrentFileSystemLocation;
+                    Path = SessionState.Path.Combine(current.ToString(), Path);
+                }
+
+                var result = MinibatchDefinition.Load(Path, !NoDecompress);
+                WriteObject(result);
+            }
+            else
+            {
+                var ds = new DataSourceSet();
+                foreach (DictionaryEntry entry in DataSources)
+                {
+                    var value = entry.Value;
+                    if (value is PSObject)
+                        value = (value as PSObject).BaseObject;
+
+                    ds.Add(entry.Key.ToString(), (DataSource<float>)value);
+                }
+
+                var minibatchDef = new ProgressiveMinibatchDefinition(MinibatchSize, SampleCountPerEpoch, ValidationSize, QueueSize);
+
+                WriteObject(minibatchDef);
+            }
+        }
+    }
 }
