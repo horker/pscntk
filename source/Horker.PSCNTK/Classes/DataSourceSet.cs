@@ -22,6 +22,16 @@ namespace Horker.PSCNTK
                 Add(entry.Key, entry.Value);
         }
 
+        public static DataSourceSet Load(byte[] data, bool decompress = true)
+        {
+            return Serializer.Deserialize<DataSourceSet>(data, decompress);
+        }
+
+        public static DataSourceSet Load(string path, bool decompress = true)
+        {
+            return Serializer.Deserialize<DataSourceSet>(path, decompress);
+        }
+
         public DataSource<float> this[string name]
         {
             get => _data[name];
@@ -42,6 +52,16 @@ namespace Horker.PSCNTK
             }
 
             _data.Add(name, data);
+        }
+
+        public byte[] Save(bool compress = true)
+        {
+            return Serializer.Serialize(this, compress);
+        }
+
+        public void Save(string path, bool compress = true)
+        {
+            Serializer.Serialize(this, path, compress);
         }
 
         public IEnumerator<KeyValuePair<string, DataSource<float>>> GetEnumerator()
