@@ -238,7 +238,7 @@ namespace Horker.PSCNTK
             _totalSampleCount += _minibatchSize;
 
             var sweepEnd = false;
-            if (_totalSampleCount / _sampleCountPerEpoch > _epoch)
+            if ((int)Math.Floor((double)_totalSampleCount / _sampleCountPerEpoch) > _epoch)
             {
                 ++_epoch;
                 sweepEnd = true;
