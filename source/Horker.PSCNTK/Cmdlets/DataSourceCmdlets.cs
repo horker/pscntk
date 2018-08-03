@@ -10,13 +10,15 @@ namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKDataSource")]
     [CmdletBinding(DefaultParameterSetName = "new")]
-    [Alias("ds")]
+    [Alias("cntk.datasource")]
     public class NewCNTKDataSource : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "new")]
         public object[] Data;
 
         [Parameter(Position = 1, Mandatory = false, ParameterSetName = "new")]
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "rows")]
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "columns")]
         public int[] Dimensions = null;
 
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "load")]
@@ -24,6 +26,12 @@ namespace Horker.PSCNTK
 
         [Parameter(Position = 1, Mandatory = false, ParameterSetName = "load")]
         public SwitchParameter NoDecompress;
+
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "rows")]
+        public object[][] Rows;
+
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "columns")]
+        public object[][] Columns;
 
         protected override void EndProcessing()
         {
@@ -38,8 +46,43 @@ namespace Horker.PSCNTK
                 var result = DataSource<float>.Load(Path, !NoDecompress);
                 WriteObject(result);
             }
+            else if (ParameterSetName == "rows")
+            {
+                var data = new List<float[]>();
+                foreach (var row in Rows)
+                {
+                    var r = row.Select(x => {
+                        if (x is PSObject)
+                            x = (x as PSObject).BaseObject;
+
+                        return Convert.ToSingle(x);
+                    });
+                    data.Add(r.ToArray());
+                }
+
+                var result = DataSource<float>.FromRows(data.ToArray(), Dimensions);
+                WriteObject(result);
+            }
+            else if (ParameterSetName == "columns")
+            {
+                var data = new List<float[]>();
+                foreach (var column in Columns)
+                {
+                    var c = column.Select(x => {
+                        if (x is PSObject)
+                            x = (x as PSObject).BaseObject;
+
+                        return Convert.ToSingle(x);
+                    });
+                    data.Add(c.ToArray());
+                }
+
+                var result = DataSource<float>.FromColumns(data.ToArray(), Dimensions);
+                WriteObject(result);
+            }
             else
             {
+                // new
                 var result = new DataSource<float>(Data.Select(x => Converter.ToFloat(x)).ToArray(), Dimensions);
                 WriteObject(result);
             }
@@ -47,7 +90,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKDataSourceFromRows")]
-    [Alias("ds.fromrows")]
+    [Alias("cntk.fromrows")]
     public class NewCNTKDataSourceFromRows : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -76,7 +119,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKDataSourceFromColumns")]
-    [Alias("ds.fromcolumns")]
+    [Alias("cntk.fromcolumns")]
     public class NewCNTKDataSourceFromColumns : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
