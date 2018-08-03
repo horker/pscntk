@@ -26,7 +26,7 @@ else {
   Write-Host "Preprocessing images..."
   $data = $data.Slice(@(16, 0)) # Skip header
   $data = $data.Scale(0, 255, 0, 1.0)
-  $data = ds $data 28, 28, 1, 1, -1
+  $data = cntk.datasource $data 28, 28, 1, 1, -1
 
   Write-Host "Loading MNIST label file..."
   $label = [System.IO.File]::ReadAllBytes($MNIST_LABEL_FILE)
@@ -34,7 +34,7 @@ else {
   Write-Host "Preprocessing labels..."
   $label = $label.Slice(@(8, 0))
   $label = (mat $label).OneHot(10).ToFlatArray($true)
-  $label = ds $label 10, 1, -1
+  $label = cntk.datasource $label 10, 1, -1
 
   Write-Host "Saving..."
   $minibatchDef = cntk.minibatchdef @{ input = $data; label = $label }
@@ -92,6 +92,7 @@ else {
 }
 
 $out = $n
+
 $label = cntk.input $OUT_CLASS -Name label
 
 ############################################################

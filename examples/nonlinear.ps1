@@ -1,6 +1,6 @@
 Set-StrictMode -Version latest
 
-Import-Module psmath
+#Import-Module psmath
 #Import-Module oxyplotcli
 
 ############################################################
@@ -13,11 +13,11 @@ $data = $dataA + $dataB
 
 #$data | oxyscat -xname y0 -yname y1 -groupname y2 | show-oxyplot
 
-$features = ds.fromrows $data.y0, $data.y1
+$features = cntk.datasource -Rows $data.y0, $data.y1
 $features.Reshape(2, 1, -1)
 
 $l = pso.onehot $data.y2
-$labels = ds.fromrows $l.A, $l.B
+$labels = cntk.datasource -Rows $l.A, $l.B
 $labels.Reshape(2, 1, -1)
 
 $minibatchDef = cntk.minibatchdef @{ input = $features; label = $labels } 20 .3

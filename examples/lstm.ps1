@@ -12,11 +12,11 @@ $seq = seq 0 1000 .5 -func { (math.sin $x) * (math.abs (math.sin ($x / 100))) + 
 #oxyline -x $seq.x -y $seq.y0 | show-oxyplot
 
 $features = $seq.y0.Slice(@(0,-1))
-$features = ds $features 1, -1, 1
+$features = cntk.datasource $features 1, -1, 1
 $features = $features.GetSubsequences(20)
 
 $labels = $seq.y0 | select -skip 20
-$labels = ds $labels 1, 1, -1
+$labels = cntk.datasource $labels 1, 1, -1
 
 $minibatchDef = cntk.minibatchdef @{ input = $features; labels = $labels } 20 .7
 
