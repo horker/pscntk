@@ -28,7 +28,7 @@ namespace UnitTest
                 new DataSourceSet(new Dictionary<string, DataSource<float>> { { "input", new DataSource<float>(new float[] { 5, 6, 7 }, new int[] { 1, 1, -1 }) } })
             };
 
-            var minibatchDef = new ProgressiveMinibatchDefinition(10, 2, 4, 1);
+            var minibatchDef = new ProgressiveMinibatchDefinition(2, 4, 1, 10);
 
             minibatchDef.AddDataSourceSet(a[0]);
 
@@ -100,6 +100,61 @@ namespace UnitTest
             Assert.AreEqual((uint)2, data.numberOfSequences);
             Assert.AreEqual(true, data.sweepEnd);
         }
+
+        [TestMethod]
+        public void TestProgressiveMinibatchFeatures()
+        {
+            var a = new DataSourceSet[]
+            {
+                new DataSourceSet(new Dictionary<string, DataSource<float>>
+                {
+                    { "input", new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6 }, new int[]{ 2, 1, -1 }) },
+                    { "label", new DataSource<float>(new float[] { 11, 12, 13 }, new int[]{ 1, 1, -1 }) }
+                }),
+                new DataSourceSet(new Dictionary<string, DataSource<float>>
+                {
+                    { "input", new DataSource<float>(new float[] { 7, 8 }, new int[] { 2, 1, -1 }) },
+                    { "label", new DataSource<float>(new float[] { 14 }, new int[] { 1, 1, -1 }) }
+                })
+            };
+
+            var minibatchDef = new ProgressiveMinibatchDefinition(2, 4, 3, 10);
+
+            minibatchDef.AddDataSourceSet(a[0]);
+            minibatchDef.AddDataSourceSet(a[1]);
+
+            var batch = minibatchDef.GetNextBatch();
+
+            var data = batch.Features["input"];
+            CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
+            CollectionAssert.AreEqual(new float[] { 1, 2, 3, 4 }, DataSource<float>.FromValue(data.data).Data);
+            Assert.AreEqual((uint)2, data.numberOfSamples);
+            Assert.AreEqual((uint)2, data.numberOfSequences);
+            Assert.AreEqual(false, data.sweepEnd);
+
+            data = batch.Features["label"];
+            CollectionAssert.AreEqual(new int[] { 1, 1, 2 }, data.data.Shape.Dimensions.ToArray());
+            CollectionAssert.AreEqual(new float[] { 11, 12 }, DataSource<float>.FromValue(data.data).Data);
+            Assert.AreEqual((uint)2, data.numberOfSamples);
+            Assert.AreEqual((uint)2, data.numberOfSequences);
+            Assert.AreEqual(false, data.sweepEnd);
+
+            batch = minibatchDef.GetNextBatch();
+
+            data = batch.Features["input"];
+            CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
+            CollectionAssert.AreEqual(new float[] { 5, 6, 7, 8 }, DataSource<float>.FromValue(data.data).Data);
+            Assert.AreEqual((uint)2, data.numberOfSamples);
+            Assert.AreEqual((uint)2, data.numberOfSequences);
+            Assert.AreEqual(true, data.sweepEnd);
+
+            data = batch.Features["label"];
+            CollectionAssert.AreEqual(new int[] { 1, 1, 2 }, data.data.Shape.Dimensions.ToArray());
+            CollectionAssert.AreEqual(new float[] { 13, 14 }, DataSource<float>.FromValue(data.data).Data);
+            Assert.AreEqual((uint)2, data.numberOfSamples);
+            Assert.AreEqual((uint)2, data.numberOfSequences);
+            Assert.AreEqual(true, data.sweepEnd);
+
+        }
     }
 }
-
