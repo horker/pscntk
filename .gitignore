@@ -14,6 +14,7 @@ data/
 CNTK/
 
 *.cntkmodel
-*.bin
 *.clixml
+*.bin
+*.clibin
 *.sqlite
