@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CNTK;
 using Horker.PSCNTK;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace UnitTest
 {
@@ -155,6 +156,54 @@ namespace UnitTest
             Assert.AreEqual((uint)2, data.numberOfSequences);
             Assert.AreEqual(true, data.sweepEnd);
 
+        }
+
+        [TestMethod]
+        public void TestCancelAdding()
+        {
+            var minibatchDef = new ProgressiveMinibatchDefinition(1, 10, 10, 10);
+
+            var producerStopped = false;
+
+            var producer = Task.Run(() => {
+                try
+                {
+                    for (var i = 0; ; ++i)
+                    {
+                        var dss = new DataSourceSet
+                        (
+                            new Dictionary<string, DataSource<float>> { { "input", new DataSource<float>(new float[] { i }, new int[] { 1, 1, -1 }) }
+                        });
+
+                        minibatchDef.AddDataSourceSet(dss);
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    producerStopped = true;
+                }
+            });
+
+            var batch = minibatchDef.GetNextBatch();
+            var data = batch.Features["input"];
+            CollectionAssert.AreEqual(new float[] { 0 }, DataSource<float>.FromValue(data.data).Data);
+            Assert.AreEqual(false, producerStopped);
+
+            batch = minibatchDef.GetNextBatch();
+            data = batch.Features["input"];
+            CollectionAssert.AreEqual(new float[] { 1 }, DataSource<float>.FromValue(data.data).Data);
+            Assert.AreEqual(false, producerStopped);
+
+            batch = minibatchDef.GetNextBatch();
+            data = batch.Features["input"];
+            CollectionAssert.AreEqual(new float[] { 2 }, DataSource<float>.FromValue(data.data).Data);
+            Assert.AreEqual(false, producerStopped);
+
+            minibatchDef.CancelAdding();
+
+            producer.Wait();
+
+            Assert.AreEqual(true, producerStopped);
         }
     }
 }

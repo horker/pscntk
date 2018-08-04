@@ -3,7 +3,7 @@ task . Compile, Build, ImportDebug, Test
 Set-StrictMode -Version 4
 
 Import-Module HorkerTemplateEngine
-#Import-Module psmath
+Import-Module psmath
 
 ############################################################
 # Settings

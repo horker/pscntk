@@ -79,9 +79,9 @@ namespace Horker.PSCNTK
     {
         private IEnumerator<KeyValuePair<string, DataSource<float>>> _e;
 
-        public DataSourceSetEnumerator(DataSourceSet dataSet)
+        public DataSourceSetEnumerator(DataSourceSet dataSourceSet)
         {
-            _e = dataSet._data.GetEnumerator();
+            _e = dataSourceSet._data.GetEnumerator();
         }
 
         public KeyValuePair<string, DataSource<float>> Current => _e.Current;

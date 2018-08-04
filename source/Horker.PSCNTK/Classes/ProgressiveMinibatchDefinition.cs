@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using CNTK;
 
 namespace Horker.PSCNTK
@@ -205,7 +206,16 @@ namespace Horker.PSCNTK
         private int _validationDataSize;
         private Minibatch _validationData;
 
-        public ProgressiveMinibatchDefinition(int minibatchSize, int sampleCountPerEpoch, int validationDataSize, int queueSize)
+        private CancellationTokenSource _cancelTokenSourceForAdd;
+        private CancellationTokenSource _cancelTokenSourceForTake;
+
+        private int _timeoutForAdd;
+        private int _timeoutForTake;
+
+        public int TimeoutForAdd;
+        public int TimeoutForTake;
+
+        public ProgressiveMinibatchDefinition(int minibatchSize, int sampleCountPerEpoch, int validationDataSize, int queueSize, int timeoutForAdd = 30 * 1000, int timeoutForTake = 30 * 1000)
         {
             _minibatchSize = minibatchSize;
             _sampleCountPerEpoch = sampleCountPerEpoch;
@@ -219,18 +229,26 @@ namespace Horker.PSCNTK
 
             _validationDataSize = validationDataSize;
             _validationData = null;
+
+            _cancelTokenSourceForAdd = new CancellationTokenSource();
+            _cancelTokenSourceForTake = new CancellationTokenSource();
+
+            _timeoutForAdd = timeoutForAdd;
+            _timeoutForTake = timeoutForTake;
         }
 
         public void AddDataSourceSet(DataSourceSet dataSet)
         {
-            _dataSetQueue.Add(dataSet);
+            _cancelTokenSourceForAdd.CancelAfter(_timeoutForAdd);
+            _dataSetQueue.Add(dataSet, _cancelTokenSourceForAdd.Token);
         }
 
         public Minibatch GetNextBatch(DeviceDescriptor device = null)
         {
             while (_availableSampleCount < _minibatchSize)
             {
-                var ds = _dataSetQueue.Take();
+                _cancelTokenSourceForTake.CancelAfter(_timeoutForTake);
+                var ds = _dataSetQueue.Take(_cancelTokenSourceForTake.Token);
                 _availableSampleCount += _buffers.UpdateDataSourceBuffer(ds);
             }
 
@@ -276,6 +294,16 @@ namespace Horker.PSCNTK
             bufferSet.UpdateDataSourceBuffer(dataSet);
 
             _validationData = bufferSet.GetMinibatch(device, false);
+        }
+
+        public void CancelAdding()
+        {
+            _cancelTokenSourceForAdd.Cancel();
+        }
+
+        public void CancelTaking()
+        {
+            _cancelTokenSourceForTake.Cancel();
         }
     }
 }
