@@ -166,22 +166,19 @@ namespace UnitTest
             var producerStopped = false;
 
             var producer = Task.Run(() => {
-                try
+                for (var i = 0; ; ++i)
                 {
-                    for (var i = 0; ; ++i)
-                    {
-                        var dss = new DataSourceSet
-                        (
-                            new Dictionary<string, DataSource<float>> { { "input", new DataSource<float>(new float[] { i }, new int[] { 1, 1, -1 }) }
-                        });
+                    var dss = new DataSourceSet
+                    (
+                        new Dictionary<string, DataSource<float>> { { "input", new DataSource<float>(new float[] { i }, new int[] { 1, 1, -1 }) }
+                    });
 
-                        minibatchDef.AddDataSourceSet(dss);
-                    }
+                    var cont = minibatchDef.AddDataSourceSet(dss);
+                    if (!cont)
+                        break;
                 }
-                catch (OperationCanceledException)
-                {
-                    producerStopped = true;
-                }
+
+                producerStopped = true;
             });
 
             var batch = minibatchDef.GetNextBatch();

@@ -212,10 +212,12 @@ namespace Horker.PSCNTK
         private int _timeoutForAdd;
         private int _timeoutForTake;
 
-        public int TimeoutForAdd;
-        public int TimeoutForTake;
+        public int CountInQueue { get => _dataSetQueue.Count; }
 
-        public ProgressiveMinibatchDefinition(int minibatchSize, int sampleCountPerEpoch, int validationDataSize, int queueSize, int timeoutForAdd = 30 * 1000, int timeoutForTake = 30 * 1000)
+        public int TimeoutForAdd { get => _timeoutForAdd; }
+        public int TimeoutForTake { get => _timeoutForTake; }
+
+        public ProgressiveMinibatchDefinition(int minibatchSize, int sampleCountPerEpoch, int validationDataSize, int queueSize, int timeoutForAdd = 60 * 1000, int timeoutForTake = 60 * 1000)
         {
             _minibatchSize = minibatchSize;
             _sampleCountPerEpoch = sampleCountPerEpoch;
@@ -237,19 +239,34 @@ namespace Horker.PSCNTK
             _timeoutForTake = timeoutForTake;
         }
 
-        public void AddDataSourceSet(DataSourceSet dataSet)
+        public bool AddDataSourceSet(DataSourceSet dataSet)
         {
-            _cancelTokenSourceForAdd.CancelAfter(_timeoutForAdd);
-            _dataSetQueue.Add(dataSet, _cancelTokenSourceForAdd.Token);
+            try
+            {
+                _cancelTokenSourceForAdd.CancelAfter(_timeoutForAdd);
+                _dataSetQueue.Add(dataSet, _cancelTokenSourceForAdd.Token);
+
+                return true;
+            }
+            catch (OperationCanceledException)
+            {
+                return false;
+            }
         }
 
         public Minibatch GetNextBatch(DeviceDescriptor device = null)
         {
-            while (_availableSampleCount < _minibatchSize)
+            try
             {
-                _cancelTokenSourceForTake.CancelAfter(_timeoutForTake);
-                var ds = _dataSetQueue.Take(_cancelTokenSourceForTake.Token);
-                _availableSampleCount += _buffers.UpdateDataSourceBuffer(ds);
+                while (_availableSampleCount < _minibatchSize)
+                {
+                    var ds = _dataSetQueue.Take(_cancelTokenSourceForTake.Token);
+                    _availableSampleCount += _buffers.UpdateDataSourceBuffer(ds);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                return null;
             }
 
             _availableSampleCount -= _minibatchSize;

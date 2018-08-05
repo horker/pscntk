@@ -9,9 +9,8 @@ namespace Horker.PSCNTK
     public class TrainingSession
     {
         public Trainer Trainer { get; private set; }
-        public MinibatchDefinition Minibatch { get; private set; }
+        public IMinibatchDefinition MinibatchDefinition { get; private set; }
         public Dictionary<string, Variable> ParameterMap { get; private set; }
-        public DeviceDescriptor Device { get; private set; }
 
         public int Epoch { get; private set; }
         public int Iteration { get; private set; }
@@ -22,10 +21,10 @@ namespace Horker.PSCNTK
 
         private UnorderedMapVariableMinibatchData _validationData;
 
-        public TrainingSession(Trainer trainer, MinibatchDefinition minibatch, Hashtable parameterMap = null, DeviceDescriptor device = null)
+        public TrainingSession(Trainer trainer, IMinibatchDefinition minibatchDef, Hashtable parameterMap = null)
         {
             Trainer = trainer;
-            Minibatch = minibatch;
+            MinibatchDefinition = minibatchDef;
 
             ParameterMap = new Dictionary<string, Variable>();
             if (parameterMap != null)
@@ -43,20 +42,6 @@ namespace Horker.PSCNTK
                     }
                 }
             }
-            else
-            {
-                foreach (var entry in minibatch.Features)
-                {
-                    var name = entry.Key.ToString();
-                    var va = FindVariable(name);
-                    if (va != null)
-                        ParameterMap.Add(name, va);
-                }
-            }
-
-            if (device == null)
-                device = DeviceDescriptor.UseDefaultDevice();
-            Device = device;
         }
 
         private Variable FindVariable(string name)
@@ -82,19 +67,38 @@ namespace Horker.PSCNTK
             return null;
         }
 
+        private void InitializeParameterMap(Minibatch batch)
+        {
+            if (ParameterMap.Count > 0)
+                return;
+
+            foreach (var entry in batch.Features)
+            {
+                var name = entry.Key.ToString();
+                var va = FindVariable(name);
+                if (va != null)
+                    ParameterMap.Add(name, va);
+            }
+        }
+
         public IEnumerable<TrainingSession> GetSession(int maxIteration = int.MaxValue, DeviceDescriptor device = null)
         {
+            if (device == null)
+                device = DeviceDescriptor.UseDefaultDevice();
+
             Epoch = 1;
 
             for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
             {
-                var batch = Minibatch.GetNextBatch(device);
+                var batch = MinibatchDefinition.GetNextBatch(device);
+
+                InitializeParameterMap(batch);
 
                 var arguments = new Dictionary<Variable, MinibatchData>();
                 foreach (var entry in batch.Features)
                     arguments.Add(ParameterMap[entry.Key], entry.Value);
 
-                Trainer.TrainMinibatch(arguments, Device);
+                Trainer.TrainMinibatch(arguments, device);
 
                 SampleCount = (int)Trainer.PreviousMinibatchSampleCount();
                 Loss = Trainer.PreviousMinibatchLossAverage();
@@ -109,9 +113,12 @@ namespace Horker.PSCNTK
 
         public double GetValidationMetric(DeviceDescriptor device = null)
         {
+            if (device == null)
+                device = DeviceDescriptor.UseDefaultDevice();
+
             if (_validationData == null)
             {
-                var batch = Minibatch.GetValidationBatch(device);
+                var batch = MinibatchDefinition.GetValidationBatch(device);
 
                 if (batch == null)
                     return 0.0;
@@ -121,7 +128,7 @@ namespace Horker.PSCNTK
                     _validationData.Add(ParameterMap[entry.Key], entry.Value);
             }
 
-            return Trainer.TestMinibatch(_validationData, Device);
+            return Trainer.TestMinibatch(_validationData, device);
         }
     }
 }

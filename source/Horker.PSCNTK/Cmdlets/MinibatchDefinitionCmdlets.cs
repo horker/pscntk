@@ -81,10 +81,10 @@ namespace Horker.PSCNTK
         public int QueueSize = 100;
 
         [Parameter(Position = 5, Mandatory = false)]
-        public int TimeoutForAdd = 30 * 1000;
+        public int TimeoutForAdd = 15 * 1000;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public int TimeoutForTake = 30 * 1000;
+        public int TimeoutForTake = 15 * 1000;
 
         protected override void EndProcessing()
         {
