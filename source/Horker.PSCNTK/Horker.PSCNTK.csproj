@@ -68,6 +68,7 @@
     <Compile Include="Classes\Serializer.cs" />
     <Compile Include="Classes\TrainingSession.cs" />
     <Compile Include="Classes\UnmanagedDllLoader.cs" />
+    <Compile Include="Cmdlets\AxisCmdlets.cs" />
     <Compile Include="Cmdlets\BackgroundScriptRunnerCmdlet.cs" />
     <Compile Include="Cmdlets\CTFCmdlets.cs" />
     <Compile Include="Cmdlets\DataSourceSetCmdlet.cs" />
