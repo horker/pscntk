@@ -78,6 +78,7 @@
     <Compile Include="Cmdlets\MinibatchSourceCmdlets.cs" />
     <Compile Include="Cmdlets\TrainerCmdlets.cs" />
     <Compile Include="Cmdlets\TrainingSessionCmdlet.cs" />
+    <Compile Include="Cmdlets\UtilsCmdlets.cs" />
     <Compile Include="Extension methods\FunctionMethods.cs" />
     <Compile Include="Cmdlets\DataSourceCmdlets.cs" />
     <Compile Include="Cmdlets\FunctionCmdlets.cs" />
