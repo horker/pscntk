@@ -49,4 +49,14 @@ namespace Horker.PSCNTK
             CNTK.Utils.SetTraceLevel(TraceLevel);
         }
     }
+
+// void DisableCPUEvalOptimization()
+// GenerateRandomSeed
+// GetRandomSeed
+// ISRandomSeedFixed
+// RandomInitializerWithRank
+// ResetRandomSeed
+// SetMathLibTraceLevel
+// UseSparseGradientAggregationInDataParallelSGD
+
 }
