@@ -106,6 +106,30 @@ namespace Horker.PSCNTK
         }
     }
 
+    [Cmdlet("New", "CNTKFSAdaGrad")]
+    [Alias("cntk.fsadagrad")]
+    public class NewCNTKFSAdaGrad : LearnerCmdletBase
+    {
+        [Parameter(Position = 2, Mandatory = false)]
+        [Alias("Beta1")]
+        public double Momentum = 0.9;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public SwitchParameter NoUnitGrain = !Constants.DefaultUnitGainValue;
+
+        [Parameter(Position = 4, Mandatory = false)]
+        [Alias("Beta2")]
+        public double VarianceMomentum = Constants.DefaultVarianceMomentum;
+
+        protected override Learner GenerateLearner(IList<Parameter> parameters, TrainingParameterScheduleDouble learningRateSchedule)
+        {
+            var m = new TrainingParameterScheduleDouble(Momentum);
+            var vm = new TrainingParameterScheduleDouble(VarianceMomentum);
+
+            return CNTKLib.FSAdaGradLearner(new ParameterVector(parameters.ToArray()), learningRateSchedule, m, !NoUnitGrain, vm, Options);
+        }
+    }
+
     [Cmdlet("New", "CNTKRMSProp")]
     [Alias("cntk.rmsprop")]
     public class NewCNTKRMSProp : LearnerCmdletBase
