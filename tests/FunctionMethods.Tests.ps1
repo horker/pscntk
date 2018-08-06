@@ -14,14 +14,14 @@ Describe "Invoke()" {
 
 }
 
-Describe "Get()" {
+Describe "Find()" {
 
   It "can obtain input variable by name" {
 
     $i = cntk.input 3 -Name "input"
     $f = cntk.reducesum $i -Axis ([CNTK.Axis]::AllStaticAxes())
 
-    $in = $f.Get("input")
+    $in = $f.Find("input")
 
     $in | Should -beExactly $i
   }

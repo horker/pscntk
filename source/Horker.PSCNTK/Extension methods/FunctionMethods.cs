@@ -8,7 +8,7 @@ namespace Horker.PSCNTK
 {
     public class FunctionMethods
     {
-        public static CNTK.Variable Get(PSObject func, string name)
+        public static CNTK.Variable Find(PSObject func, string name)
         {
             var f = (CNTK.Function)func.BaseObject;
             return CNTKFunctionHelper.Find(f, name);

@@ -19,7 +19,7 @@ $METHOD_LIST = @(
     TargetClass = "CNTK.Function"
     ClassInfo = [Horker.PSCNTK.FunctionMethods]
     MethodNames = @(
-      "Get"
+      "Find"
       "Invoke"
       "AsTree"
     )
