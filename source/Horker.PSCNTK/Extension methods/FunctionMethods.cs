@@ -11,7 +11,7 @@ namespace Horker.PSCNTK
         public static CNTK.Variable Get(PSObject func, string name)
         {
             var f = (CNTK.Function)func.BaseObject;
-            return CNTKFunctionHelper.Get(f, name);
+            return CNTKFunctionHelper.Find(f, name);
         }
 
         public static CNTK.Value Invoke(PSObject func, Hashtable Arguments = null, CNTK.DeviceDescriptor device = null)

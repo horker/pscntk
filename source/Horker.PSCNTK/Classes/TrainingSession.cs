@@ -47,19 +47,19 @@ namespace Horker.PSCNTK
         private Variable FindVariable(string name)
         {
             var model = Trainer.Model();
-            var va = CNTKFunctionHelper.Get(model, name);
+            var va = CNTKFunctionHelper.Find(model, name);
             if (va != null)
                 return va;
             else
             {
                 var loss = Trainer.LossFunction();
-                va = CNTKFunctionHelper.Get(loss, name);
+                va = CNTKFunctionHelper.Find(loss, name);
                 if (va != null)
                     return va;
                 else
                 {
                     var error = Trainer.EvaluationFunction();
-                    va = CNTKFunctionHelper.Get(error, name);
+                    va = CNTKFunctionHelper.Find(error, name);
                     if (va != null)
                         return va;
                 }
