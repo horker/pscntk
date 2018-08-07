@@ -3,6 +3,72 @@ using System.Management.Automation;
 
 namespace Horker.PSCNTK {
 
+    [Cmdlet("New", "CNTKBatchNormalization")]
+    [Alias("cntk.batchnormalization")]
+    public class NewCNTKBatchNormalization : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public CNTK.Variable Operand;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public CNTK.Variable Scale;
+
+        [Parameter(Position = 2, Mandatory = true)]
+        public CNTK.Variable Bias;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public CNTK.Variable RunningMean = null;
+
+        [Parameter(Position = 4, Mandatory = false)]
+        public CNTK.Variable RunningInvStd = null;
+
+        [Parameter(Position = 5, Mandatory = false)]
+        public CNTK.Variable RunningCount = null;
+
+        [Parameter(Position = 6, Mandatory = false)]
+        public SwitchParameter Spatial = false;
+
+        [Parameter(Position = 7, Mandatory = false)]
+        public double NormalizationTimeConstant = 0;
+
+        [Parameter(Position = 8, Mandatory = false)]
+        public double BlendTimeConstant = 0;
+
+        [Parameter(Position = 9, Mandatory = false)]
+        public double Epsilon = 0.00001;
+
+        [Parameter(Position = 10, Mandatory = false)]
+        public bool UseCuDNNEngine = true;
+
+        [Parameter(Position = 11, Mandatory = false)]
+        public bool DisableRegularization = false;
+
+        [Parameter(Position = 12, Mandatory = false)]
+        public string Name = "";
+
+        [Parameter(Position = 13, Mandatory = false)]
+        public CNTK.DeviceDescriptor Device = null;
+
+        protected override void EndProcessing()
+        {
+            if (Device == null)
+                Device = CNTK.DeviceDescriptor.UseDefaultDevice();
+
+            if (RunningMean == null)
+                RunningMean = new CNTK.Constant(new int[] { CNTK.NDShape.InferredDimension }, CNTK.DataType.Float, 0.0, Device);
+
+            if (RunningInvStd == null)
+                RunningInvStd = new CNTK.Constant(new int[] { CNTK.NDShape.InferredDimension }, CNTK.DataType.Float, 0.0, Device);
+
+            if (RunningCount == null)
+                RunningCount = CNTK.Constant.Scalar(CNTK.DataType.Float, 0.0, Device);
+
+            var result = CNTK.CNTKLib.BatchNormalization(Operand, Scale, Bias, RunningMean, RunningInvStd, RunningCount, Spatial, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCuDNNEngine, DisableRegularization, Name);
+
+            WriteObject(result);
+        }
+    }
+
     [Cmdlet("New", "CNTKClassificationError")]
     [Alias("cntk.classificationerror")]
     public class NewCNTKClassificationError : PSCmdlet

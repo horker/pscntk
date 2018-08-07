@@ -83,7 +83,7 @@ namespace Horker.PSCNTK
         public int[] Dimensions;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public float InitValue = 0;
+        public float[] InitValue = new float[] { 0.0f };
 
         [Parameter(Position = 2, Mandatory = false)]
         public DataType DataType = DataType.Float;
@@ -96,7 +96,16 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var result = new Constant(Dimensions, DataType, InitValue, Device, Name);
+            CNTK.Constant result;
+
+            if (InitValue.Length == 1)
+                result = new Constant(Dimensions, DataType, InitValue[0], Device, Name);
+            else
+            {
+                var array = new NDArrayView(Dimensions, InitValue, Device, false);
+                result = new Constant(array, Name);
+            }
+
             WriteObject(result);
         }
     }
