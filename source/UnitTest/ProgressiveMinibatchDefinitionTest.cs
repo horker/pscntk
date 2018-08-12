@@ -202,5 +202,36 @@ namespace UnitTest
 
             Assert.AreEqual(true, producerStopped);
         }
+
+        [TestMethod]
+        public void TestCountInQueue()
+        {
+            var a = new DataSourceSet[]
+            {
+                new DataSourceSet(new Dictionary<string, DataSource<float>> { { "input", new DataSource<float>(new float[] { 1, 2, 3 }, new int[]{ 1, 1, -1 }) } }),
+                new DataSourceSet(new Dictionary<string, DataSource<float>> { { "input", new DataSource<float>(new float[] { 4 }, new int[] { 1, 1, -1 }) } }),
+                new DataSourceSet(new Dictionary<string, DataSource<float>> { { "input", new DataSource<float>(new float[] { 5, 6, 7 }, new int[] { 1, 1, -1 }) } })
+            };
+
+            var minibatchDef = new ProgressiveMinibatchDefinition(2, 4, 1, 10);
+
+            Assert.AreEqual(0, minibatchDef.CountInQueue);
+            minibatchDef.AddDataSourceSet(a[0]);
+            Assert.AreEqual(1, minibatchDef.CountInQueue);
+            minibatchDef.AddDataSourceSet(a[1]);
+            Assert.AreEqual(2, minibatchDef.CountInQueue);
+            minibatchDef.AddDataSourceSet(a[2]);
+            Assert.AreEqual(3, minibatchDef.CountInQueue);
+            var batch = minibatchDef.GetNextBatch();
+            Assert.AreEqual(2, minibatchDef.CountInQueue);
+            batch = minibatchDef.GetNextBatch();
+            Assert.AreEqual(1, minibatchDef.CountInQueue);
+            batch = minibatchDef.GetNextBatch();
+            Assert.AreEqual(0, minibatchDef.CountInQueue);
+            minibatchDef.AddDataSourceSet(a[0]);
+            Assert.AreEqual(1, minibatchDef.CountInQueue);
+            minibatchDef.AddDataSourceSet(a[1]);
+            Assert.AreEqual(2, minibatchDef.CountInQueue);
+        }
     }
 }
