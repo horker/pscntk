@@ -58,7 +58,6 @@ namespace Horker.PSCNTK
         public int[] GetDimensionalIndexes(int seq)
         {
             var dims = new int[Rank];
-            var size = 1;
             for (int i = 0; i < Rank; ++i)
             {
                 var d = Dimensions[i];
