@@ -9,28 +9,6 @@ namespace UnitTest
     public class DataSourceTest
     {
         [TestMethod]
-        public void TestShape()
-        {
-            var dims = new int[] { 3, 4, 5 };
-
-            var s = new Shape(dims);
-
-            // Dimensions
-            CollectionAssert.AreEqual(dims, s.Dimensions);
-
-            // Rank
-            Assert.AreEqual(s.Rank, 3);
-
-            // TotalSize
-            Assert.AreEqual(s.TotalSize, 3 * 4 * 5);
-
-            // GetSize()
-            Assert.AreEqual(s.TotalSize, s.GetSize(2));
-            Assert.AreEqual(3 * 4, s.GetSize(1));
-            Assert.AreEqual(3, s.GetSize(0));
-        }
-
-        [TestMethod]
         public void TestCreate()
         {
             var a = new float[] { 10, 20 };
@@ -268,6 +246,39 @@ namespace UnitTest
 
             Assert.AreEqual(a.Shape, b.Shape);
             CollectionAssert.AreEqual(a.Data, b.Data);
+        }
+
+        [TestMethod]
+        public void TestTranspose()
+        {
+            var a = new DataSource<int>(new int[] { 1, 2, 3, 4, 5, 6 }, new int[] { 2, 3 });
+
+            var b = a.Transpose(1, 0);
+            CollectionAssert.AreEqual(new int[] { 1, 3, 5, 2, 4, 6 }, b.Data);
+        }
+
+        [TestMethod]
+        public void TestTranspose2()
+        {
+            var a = new DataSource<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 3, 2 });
+
+            var b = a.Transpose(1, 0, 2);
+            CollectionAssert.AreEqual(new int[] { 1, 3, 5, 2, 4, 6, 7, 9, 11, 8, 10, 12 }, b.Data);
+
+            b = a.Transpose(1, 2, 0);
+            CollectionAssert.AreEqual(new int[] { 1, 3, 5, 7, 9, 11, 2, 4, 6, 8, 10, 12 }, b.Data);
+
+            b = a.Transpose(2, 1, 0);
+            CollectionAssert.AreEqual(new int[] { 1, 7, 3, 9, 5, 11, 2, 8, 4, 10, 6, 12 }, b.Data);
+        }
+
+        [TestMethod]
+        public void TestTranspose3()
+        {
+            var a = new DataSource<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 3, 2, 2 });
+
+            var b = a.Transpose(1, 2, 0);
+            CollectionAssert.AreEqual(new int[] { 1, 4, 7, 10, 2, 5, 8, 11, 3, 6, 9, 12 }, b.Data);
         }
     }
 }

@@ -58,6 +58,7 @@
     <Compile Include="BackgroundScriptRunnerTest.cs" />
     <Compile Include="CTFBuilderTest.cs" />
     <Compile Include="DataSourceCTFBuilderTest.cs" />
+    <Compile Include="ShapeTest.cs" />
     <Compile Include="DataSourceTest.cs" />
     <Compile Include="FeatureCTFBuilderTest.cs" />
     <Compile Include="FunctionMethodsTest.cs" />

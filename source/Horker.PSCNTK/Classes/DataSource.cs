@@ -422,6 +422,31 @@ namespace Horker.PSCNTK
             return results.ToArray();
         }
 
+        public DataSource<T> Transpose(params int[] order)
+        {
+            if (order.Length != Shape.Rank)
+                throw new ArgumentException("Specify the order for all axes");
+
+            var newShape = new Shape(order.Select(x => Shape[x]).ToArray());
+
+            var newData = new T[Shape.TotalSize];
+
+            var reordered = new int[Shape.Rank];
+            for (var i = 0; i < newData.Length; ++i)
+            {
+                var dims = Shape.GetDimensionalIndexes(i);
+
+                for (var j = 0; j < order.Length; ++j)
+                    reordered[j] = dims[order[j]];
+
+                var index = newShape.GetSequentialIndex(reordered);
+
+                newData[index] = Data[i];
+            }
+
+            return new DataSource<T>(newData, newShape);
+        }
+
         #endregion
     }
 }
