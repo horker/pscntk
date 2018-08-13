@@ -15,7 +15,6 @@ namespace Horker.PSCNTK
     }
 
     public class DataSourceToBitmap<T>
-        where T: IConvertible
     {
         private static Byte Scale(T value)
         {
@@ -24,8 +23,8 @@ namespace Horker.PSCNTK
 
         public static Bitmap Do(DataSource<T> dataSource, ImageFormat imageFormat, bool scale)
         {
-            var width = dataSource.Shape[-2];
-            var height = dataSource.Shape[-1];
+            var width = dataSource.Shape[1];
+            var height = dataSource.Shape[2];
 
             Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             BitmapData bitmapData = bitmap.LockBits(

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -194,6 +195,15 @@ namespace Horker.PSCNTK
             var data = Data.Select(x => Convert.ToSingle(x)).ToArray();
             return new DataSource<float>(data, Shape);
         }
+
+        public Bitmap ToBitmap(ImageFormat imageFormat, bool scale)
+        {
+            return DataSourceToBitmap<T>.Do(this, imageFormat, scale);
+        }
+
+        #endregion
+
+        #region Serializer
 
         public byte[] Serialize(bool compress = true)
         {

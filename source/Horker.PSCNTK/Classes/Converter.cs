@@ -148,6 +148,14 @@ namespace Horker.PSCNTK
             return new DataSource<float>(new float[] { Convert.ToSingle(value is PSObject ? (value as PSObject).BaseObject : value) }, new int[] { 1 }).ToValue();
         }
 
+        public static double ToDouble(object value)
+        {
+            if (value is PSObject)
+                value = (value as PSObject).BaseObject;
+
+            return Convert.ToDouble(value);
+        }
+
         public static float ToFloat(object value)
         {
             if (value is PSObject)
