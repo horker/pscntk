@@ -205,4 +205,43 @@ namespace Horker.PSCNTK
             WriteObject(result);
         }
     }
+
+    [Cmdlet("New", "CNTKBatchNorm")]
+    [Alias("cntk.batchnorm")]
+    public class NewCNTKBatchNorm : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public Variable Input;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public SwitchParameter Spatial = false;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public double InitScale = 1.0;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public double NormalizationTimeConstant = 5000;
+
+        [Parameter(Position = 4, Mandatory = false)]
+        public double BlendTimeConstant = 0;
+
+        [Parameter(Position = 5, Mandatory = false)]
+        public double Epsilon = 0.00001;
+
+        [Parameter(Position = 6, Mandatory = false)]
+        public SwitchParameter UseCNTKEngine = false;
+
+        [Parameter(Position = 7, Mandatory = false)]
+        public SwitchParameter DisableRegularization = false;
+
+        [Parameter(Position = 8, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var output = Layers.BatchNormalization(Input, Spatial, InitScale, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCNTKEngine, DisableRegularization, Name);
+
+            WriteObject(output);
+        }
+    }
 }
