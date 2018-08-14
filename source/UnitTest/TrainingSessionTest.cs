@@ -34,9 +34,9 @@ namespace UnitTest
             // Build a model
 
             var input = CNTKLib.InputVariable(new int[] { 2 }, false, DataType.Float, "input");
-            var h = Layers.Dense(input, 100, CNTKLib.HeNormalInitializer());
+            var h = Layers.Dense(input, new int[] { 100 }, CNTKLib.HeNormalInitializer());
             h = CNTKLib.ReLU(h);
-            h = Layers.Dense(h, 2, CNTKLib.GlorotNormalInitializer());
+            h = Layers.Dense(h, new int[] { 2 }, CNTKLib.GlorotNormalInitializer());
             var output = CNTKLib.Sigmoid(h);
 
             var label = CNTKLib.InputVariable(new int[] { 2 }, DataType.Float, "label");

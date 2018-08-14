@@ -65,6 +65,7 @@
     <Compile Include="Classes\DataSourceSet.cs" />
     <Compile Include="Classes\DataSourceToBitmap.cs" />
     <Compile Include="Classes\FeatureCTFBuilder.cs" />
+    <Compile Include="Classes\Helpers.cs" />
     <Compile Include="Classes\IMinibatchDefinition.cs" />
     <Compile Include="Classes\Layers.cs" />
     <Compile Include="Classes\MinibatchDefinition.cs" />
