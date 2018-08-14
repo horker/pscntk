@@ -33,8 +33,8 @@ namespace Horker.PSCNTK
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "columns")]
         public object[][] Columns;
 
-        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "new")]
-        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "rows")]
+        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "new")]
+        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "rows")]
         [Parameter(Position = 2, Mandatory = false, ParameterSetName = "columns")]
         public Type DataType = typeof(Single);
 
