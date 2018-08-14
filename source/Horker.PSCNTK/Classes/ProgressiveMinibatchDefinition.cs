@@ -217,7 +217,7 @@ namespace Horker.PSCNTK
         public int TimeoutForAdd { get => _timeoutForAdd; }
         public int TimeoutForTake { get => _timeoutForTake; }
 
-        public ProgressiveMinibatchDefinition(int minibatchSize, int sampleCountPerEpoch, int validationDataSize, int queueSize, int timeoutForAdd = 60 * 1000, int timeoutForTake = 60 * 1000)
+        public ProgressiveMinibatchDefinition(int minibatchSize, int sampleCountPerEpoch, int validationDataSize, int queueSize, int timeoutForAdd = 60 * 1000, int timeoutForTake = 10)
         {
             _minibatchSize = minibatchSize;
             _sampleCountPerEpoch = sampleCountPerEpoch;
@@ -260,6 +260,7 @@ namespace Horker.PSCNTK
             {
                 while (_availableSampleCount < _minibatchSize)
                 {
+                    _cancelTokenSourceForTake.CancelAfter(_timeoutForTake);
                     var ds = _dataSetQueue.Take(_cancelTokenSourceForTake.Token);
                     _availableSampleCount += _buffers.UpdateDataSourceBuffer(ds);
                 }

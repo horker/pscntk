@@ -19,10 +19,15 @@ namespace Horker.PSCNTK
         public double Loss { get; private set;}
         public double Metric { get; private set;}
 
+        private Stopwatch _stopwatch;
+        public TimeSpan Elapsed { get; private set; }
+
         private UnorderedMapVariableMinibatchData _validationData;
 
         public TrainingSession(Trainer trainer, IMinibatchDefinition minibatchDef, Hashtable parameterMap = null)
         {
+            _stopwatch = Stopwatch.StartNew();
+
             Trainer = trainer;
             MinibatchDefinition = minibatchDef;
 
@@ -103,6 +108,8 @@ namespace Horker.PSCNTK
                 SampleCount = (int)Trainer.PreviousMinibatchSampleCount();
                 Loss = Trainer.PreviousMinibatchLossAverage();
                 Metric = Trainer.PreviousMinibatchEvaluationAverage();
+
+                Elapsed = _stopwatch.Elapsed;
 
                 yield return this;
 

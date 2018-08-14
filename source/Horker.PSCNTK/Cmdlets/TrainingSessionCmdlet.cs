@@ -16,6 +16,7 @@ namespace Horker.PSCNTK
         public double Loss;
         public double Metric;
         public double Validation;
+        public TimeSpan Elapsed;
         public int CountInQueue;
     }
 
@@ -73,6 +74,7 @@ namespace Horker.PSCNTK
                         p.Loss = Math.Round(loss / ProgressOutputStep, 5);
                         p.Metric = Math.Round(metric / ProgressOutputStep, 5);
                         p.Validation = Math.Round(t.GetValidationMetric(), 5);
+                        p.Elapsed = t.Elapsed;
 
                         if (MinibatchDefinition is ProgressiveMinibatchDefinition)
                             p.CountInQueue = (MinibatchDefinition as ProgressiveMinibatchDefinition).CountInQueue;
