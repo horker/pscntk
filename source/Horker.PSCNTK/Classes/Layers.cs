@@ -64,6 +64,7 @@ namespace Horker.PSCNTK
                 biasInitializer = CNTKLib.ConstantInitializer(0);
 
             // Convolution map
+            // convolutionMap = CNTK.Parameter (kernelWidth, kernelHeight, numInputChannels, featureMapCount) initializer
 
             var convDims = new int[filterShape.Length + 2];
             filterShape.CopyTo(convDims, 0);

@@ -141,4 +141,68 @@ namespace Horker.PSCNTK
             WriteObject(output);
         }
     }
+
+    [Cmdlet("New", "CNTKMaxPooling")]
+    [Alias("cntk.maxpooling")]
+    public class NewCNTKMaxPooling : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public CNTK.Variable Input;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public int[] FilterShape;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public int[] Strides = new int[] { 1 };
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public bool[] AutoPadding = new bool[] { true };
+
+        [Parameter(Position = 4, Mandatory = false)]
+        public bool CeilOutDim = false;
+
+        [Parameter(Position = 5, Mandatory = false)]
+        public bool IncludePad = false;
+
+        [Parameter(Position = 6, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.Pooling(Input, PoolingType.Max, FilterShape, Strides, new CNTK.BoolVector(AutoPadding), CeilOutDim, IncludePad, Name);
+            WriteObject(result);
+        }
+    }
+
+    [Cmdlet("New", "CNTKAveragePooling")]
+    [Alias("cntk.averagepooling")]
+    public class NewCNTKAveragePooling : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public CNTK.Variable Input;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public int[] FilterShape;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public int[] Strides = new int[] { 1 };
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public bool[] AutoPadding = new bool[] { true };
+
+        [Parameter(Position = 4, Mandatory = false)]
+        public bool CeilOutDim = false;
+
+        [Parameter(Position = 5, Mandatory = false)]
+        public bool IncludePad = false;
+
+        [Parameter(Position = 6, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.Pooling(Input, PoolingType.Average, FilterShape, Strides, new CNTK.BoolVector(AutoPadding), CeilOutDim, IncludePad, Name);
+            WriteObject(result);
+        }
+    }
 }
