@@ -151,7 +151,6 @@ while (!$eof) {
 $EXCLUDES = @(
   "AsBlock"
   "Atan"
-  "BatchNormalization"
   "BroadcastAs"
   "Clone"
   "CloneFlattened"

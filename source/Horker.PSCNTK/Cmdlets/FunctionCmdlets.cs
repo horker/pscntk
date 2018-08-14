@@ -2,7 +2,7 @@ using System;
 using System.Management.Automation;
 
 // DO NOT EDIT
-// This file was automatically generated at 2018/08/02 05:17:29
+// This file was automatically generated at 2018/08/15 04:29:10
 
 namespace Horker.PSCNTK {
 
@@ -181,6 +181,56 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Atanh(Operand, Name);
+            WriteObject(result);
+        }
+    }
+
+    [Cmdlet("New", "CNTKBatchNormalization")]
+    [Alias("cntk.batchnormalization")]
+    public class NewCNTKBatchNormalization : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public CNTK.Variable Operand;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public CNTK.Variable Scale;
+
+        [Parameter(Position = 2, Mandatory = true)]
+        public CNTK.Variable Bias;
+
+        [Parameter(Position = 3, Mandatory = true)]
+        public CNTK.Variable RunningMean;
+
+        [Parameter(Position = 4, Mandatory = true)]
+        public CNTK.Variable RunningInvStd;
+
+        [Parameter(Position = 5, Mandatory = true)]
+        public CNTK.Variable RunningCount;
+
+        [Parameter(Position = 6, Mandatory = true)]
+        public bool Spatial;
+
+        [Parameter(Position = 7, Mandatory = false)]
+        public double NormalizationTimeConstant = 0;
+
+        [Parameter(Position = 8, Mandatory = false)]
+        public double BlendTimeConstant = 0;
+
+        [Parameter(Position = 9, Mandatory = false)]
+        public double Epsilon = 0.00001;
+
+        [Parameter(Position = 10, Mandatory = false)]
+        public bool UseCuDNNEngine = true;
+
+        [Parameter(Position = 11, Mandatory = false)]
+        public bool DisableRegularization = false;
+
+        [Parameter(Position = 12, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.BatchNormalization(Operand, Scale, Bias, RunningMean, RunningInvStd, RunningCount, Spatial, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCuDNNEngine, DisableRegularization, Name);
             WriteObject(result);
         }
     }
