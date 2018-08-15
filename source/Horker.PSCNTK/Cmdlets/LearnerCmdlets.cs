@@ -43,6 +43,18 @@ namespace Horker.PSCNTK
         [Parameter(Position = 1, Mandatory = false)]
         public double LearningRate = 0.01;
 
+        [Parameter(Position = 90, Mandatory = false)]
+        public double L1RegularizationWeight = 0.0;
+
+        [Parameter(Position = 91, Mandatory = false)]
+        public double L2RegularizationWeight = 0.0;
+
+        [Parameter(Position = 92, Mandatory = false)]
+        public double GradientClippingThresholdPerSample = double.NaN;
+
+        [Parameter(Position = 93, Mandatory = false)]
+        public bool GradientClippingWithTruncation = false;
+
         [Parameter(Position = 99, Mandatory = false)]
         public AdditionalLearningOptions Options = new AdditionalLearningOptions();
 
@@ -58,6 +70,11 @@ namespace Horker.PSCNTK
                 parameters = Model.Parameters();
             else
                 parameters = Parameters;
+
+            Options.l1RegularizationWeight = L1RegularizationWeight;
+            Options.l2RegularizationWeight = L2RegularizationWeight;
+            Options.gradientClippingThresholdPerSample = GradientClippingThresholdPerSample;
+            Options.gradientClippingWithTruncation = GradientClippingWithTruncation;
 
             var learner = GenerateLearner(parameters, lr);
 
