@@ -29,7 +29,6 @@ function Create-Tables {
   )
 
   Invoke-DataQuery $conn "create table data (file int not null, label int not null, image blob($($IMAGE_LENGTH)) not null)"
-  Invoke-DataQuery $conn "create table minibatches (label blog($($MINIBATCH_SIZE * $LABEL_LENGTH)) not null, image blob($($MINIBATCH_SIZE * $IMAGE_LENGTH)) not null)"
 }
 
 ############################################################

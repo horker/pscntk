@@ -19,8 +19,8 @@ $dataProducerScript = {
   Import-Module pscntk
 
   while ($true) {
-    $dataA = seq 0 (math.pi) 0.001 -func { (math.sin $x) + (st.norm 0 .1).gen() }, { (math.cos $x) + (st.norm 0 .1).gen() }, { "A" }
-    $dataB = seq (math.pi) (2 * (math.pi)) 0.01 -func { .7 + (math.sin $x) + (st.norm 0 .1).gen() }, { 1 + (math.cos $x) + (st.norm 0 .1).gen() }, { "B" }
+    $dataA = seq 0 (math.pi) 0.001 -func { (math.sin $x) + (st.normal 0 .1).gen() }, { (math.cos $x) + (st.normal 0 .1).gen() }, { "A" }
+    $dataB = seq (math.pi) (2 * (math.pi)) 0.01 -func { .7 + (math.sin $x) + (st.normal 0 .1).gen() }, { 1 + (math.cos $x) + (st.normal 0 .1).gen() }, { "B" }
     $data = $dataA + $dataB
 
     $data = pso.shuffle $data
@@ -55,10 +55,8 @@ $HIDDEN_NODES = 100
 $in  = cntk.input $INPUT_DIM -Name "input"
 
 $n = $in
-$n = cntk.dense $n $HIDDEN_NODES (cntk.henormal)
-$n = cntk.relu $n
-$n = cntk.dense $n $OUTPUT_CLASSES (cntk.glorotnormal)
-$n = cntk.sigmoid $n
+$n = cntk.dense $n $HIDDEN_NODES (cntk.henormal) relu
+$n = cntk.dense $n $OUTPUT_CLASSES (cntk.glorotnormal) sigmoid
 $out = $n
 
 $label = cntk.input $OUTPUT_CLASSES -Name "label"

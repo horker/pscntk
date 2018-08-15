@@ -1,10 +1,11 @@
 Set-StrictMode -Version latest
 
 Import-Module psmath
+Import-Module oxyplotcli
 
-$model = cntk.restore "$PSScriptRoot\nonlinear.cntkmodel"
+$model = cntk.restore "$PSScriptRoot\logistic.model"
 
-$data = seq 1000 -NoSeq -func { (st.unif -.5 1.5).gen() }, { (st.unif -1.5 2.5).gen() }
+$data = seq 1000 -NoSeq -func { (st.uniform 0 2).gen() }, { (st.uniform 0 4).gen() }
 
 $xy = $data | foreach {
   $d = $_
