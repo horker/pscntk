@@ -68,6 +68,9 @@ namespace Horker.PSCNTK
                     {
                         var p = new TrainingProgress();
 
+                        if (MinibatchDefinition is ProgressiveMinibatchDefinition)
+                            p.CountInQueue = (MinibatchDefinition as ProgressiveMinibatchDefinition).CountInQueue;
+
                         p.Epoch = t.Epoch;
                         p.Iteration = t.Iteration;
                         p.SampleCount = sampleCount;
@@ -75,9 +78,6 @@ namespace Horker.PSCNTK
                         p.Metric = Math.Round(metric / ProgressOutputStep, 5);
                         p.Validation = Math.Round(t.GetValidationMetric(), 5);
                         p.Elapsed = t.Elapsed;
-
-                        if (MinibatchDefinition is ProgressiveMinibatchDefinition)
-                            p.CountInQueue = (MinibatchDefinition as ProgressiveMinibatchDefinition).CountInQueue;
 
                         WriteObject(p);
 
