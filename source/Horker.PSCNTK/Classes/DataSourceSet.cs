@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using CNTK;
 
 namespace Horker.PSCNTK
 {
@@ -22,24 +23,18 @@ namespace Horker.PSCNTK
                 Add(entry.Key, entry.Value);
         }
 
-        public static DataSourceSet Load(byte[] data, bool decompress = true)
+        public int SampleCount
         {
-            return Serializer.Deserialize<DataSourceSet>(data, decompress);
-        }
-
-        public static DataSourceSet Load(string path, bool decompress = true)
-        {
-            return Serializer.Deserialize<DataSourceSet>(path, decompress);
+            get => _data.First().Value.Shape[-1];
         }
 
         public DataSource<float> this[string name]
         {
             get => _data[name];
-        }
-
-        public int SampleCount
-        {
-            get => _data.Values.First().Shape[-1];
+            set
+            {
+                Add(name, value);
+            }
         }
 
         public void Add(string name, DataSource<float> data)
@@ -52,6 +47,16 @@ namespace Horker.PSCNTK
             }
 
             _data.Add(name, data);
+        }
+
+        public static DataSourceSet Load(byte[] data, bool decompress = true)
+        {
+            return Serializer.Deserialize<DataSourceSet>(data, decompress);
+        }
+
+        public static DataSourceSet Load(string path, bool decompress = true)
+        {
+            return Serializer.Deserialize<DataSourceSet>(path, decompress);
         }
 
         public byte[] Save(bool compress = true)

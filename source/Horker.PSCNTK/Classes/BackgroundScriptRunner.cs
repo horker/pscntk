@@ -34,9 +34,15 @@ namespace Horker.PSCNTK
         {
             var scriptString = script.ToString();
 
-            var paramString = (script.Ast as ScriptBlockAst).ParamBlock.ToString();
-            var paramIndex = scriptString.IndexOf(paramString);
-            paramIndex += paramString.Length;
+            int paramIndex = 0;
+            var ast = script.Ast as ScriptBlockAst;
+            var paramBlock = ast.ParamBlock;
+            if (paramBlock != null)
+            {
+                var paramString = paramBlock.ToString();
+                paramIndex = scriptString.IndexOf(paramString);
+                paramIndex += paramString.Length;
+            }
 
             var s = scriptString.Substring(0, paramIndex) +
                 " try { " +

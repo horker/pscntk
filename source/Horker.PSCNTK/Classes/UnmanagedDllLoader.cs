@@ -20,7 +20,7 @@ namespace Horker.PSCNTK
           "libiomp5md.dll",
           "nvml.dll",
           "opencv_world310.dll",
-          "zip.dll",
+//          "zip.dll",
           "zlib.dll",
 
           "mklml.dll",
@@ -33,7 +33,7 @@ namespace Horker.PSCNTK
 
           "Cntk.Deserializers.Binary-2.5.1.dll",
           "Cntk.Deserializers.HTK-2.5.1.dll",
-          "Cntk.Deserializers.Image-2.5.1.dll",
+//          "Cntk.Deserializers.Image-2.5.1.dll",
           "Cntk.Deserializers.TextFormat-2.5.1.dll",
           "Cntk.Composite-2.5.1.dll",
           "Cntk.Core.CSBinding-2.5.1.dll"

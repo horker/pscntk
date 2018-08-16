@@ -66,33 +66,20 @@ namespace Horker.PSCNTK
     public class NewCNTKProgressiveMinibatchDefinition : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = false)]
-        public DataSourceSet DataSourceSet;
-
-        [Parameter(Position = 1, Mandatory = false)]
-        public int MinibatchSize = 32;
-
-        [Parameter(Position = 2, Mandatory = false)]
         public int SampleCountPerEpoch = 3200;
 
-        [Parameter(Position = 3, Mandatory = false)]
-        public int ValidationSize = 100;
+        [Parameter(Position = 1, Mandatory = false)]
+        public int QueueSize = 1000;
 
-        [Parameter(Position = 4, Mandatory = false)]
-        public int QueueSize = 100;
-
-        [Parameter(Position = 5, Mandatory = false)]
+        [Parameter(Position = 2, Mandatory = false)]
         public int TimeoutForAdd = 15 * 1000;
 
-        [Parameter(Position = 6, Mandatory = false)]
+        [Parameter(Position = 3, Mandatory = false)]
         public int TimeoutForTake = 15 * 1000;
 
         protected override void EndProcessing()
         {
-            var minibatchDef = new ProgressiveMinibatchDefinition(MinibatchSize, SampleCountPerEpoch, ValidationSize, QueueSize, TimeoutForAdd, TimeoutForTake);
-
-            if (DataSourceSet != null)
-                minibatchDef.AddDataSourceSet(DataSourceSet);
-
+            var minibatchDef = new ProgressiveMinibatchDefinition(SampleCountPerEpoch, QueueSize, TimeoutForAdd, TimeoutForTake);
             WriteObject(minibatchDef);
         }
     }

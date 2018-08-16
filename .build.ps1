@@ -23,7 +23,8 @@ $OBJECT_FILES = @(
   "Horker.PSCNTK.pdb"
 )
 
-$LIB_PATH = "$PSScriptRoot\lib"
+$LIB_PATH = "$PSScriptRoot\lib\Release"
+$LIB_PATH_DEBUG = "$PSScriptRoot\lib\Debug"
 
 $TEMPLATE_INPUT_PATH = "$PSScriptRoot\templates"
 $TEMPLATE_OUTPUT_PATH = "$PSScriptRoot\source\Horker.PSCNTK\Cmdlets"
@@ -147,6 +148,8 @@ task ProcessTemplate {
 }
 
 task CopyLib {
-    Copy-Item2 "$LIB_PATH\*.dll" "$MODULE_PATH\lib"
-    Copy-Item2 "$LIB_PATH\*.dll" "$MODULE_PATH_DEBUG\lib"
+  Copy-Item2 "$LIB_PATH\*.dll" "$MODULE_PATH\lib"
+  Copy-Item2 "$LIB_PATH\*.pdb" "$MODULE_PATH\lib"
+  Copy-Item2 "$LIB_PATH\*.dll" "$MODULE_PATH_DEBUG\lib"
+  Copy-Item2 "$LIB_PATH\*.pdb" "$MODULE_PATH_DEBUG\lib"
 }

@@ -6,6 +6,8 @@ bin/
 obj/
 packages/
 *.user
+*.psess
+*.vspx
 
 private/
 lib/

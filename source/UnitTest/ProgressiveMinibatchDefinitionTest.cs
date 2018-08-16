@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace UnitTest
 {
+    /*
     [TestClass]
     public class ProgressiveMinibatchDefinitionTest
     {
@@ -234,4 +235,5 @@ namespace UnitTest
             Assert.AreEqual(2, minibatchDef.CountInQueue);
         }
     }
+    */
 }
