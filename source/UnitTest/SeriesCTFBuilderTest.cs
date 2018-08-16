@@ -5,7 +5,7 @@ using Horker.PSCNTK;
 namespace UnitTest
 {
     [TestClass]
-    class SeriesCTFBuilderTest
+    public class SeriesCTFBuilderTest
     {
         [TestMethod]
         public void TestSeriesCTFBuilder()
