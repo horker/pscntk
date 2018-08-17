@@ -15,8 +15,8 @@ vendor/
 data/
 CNTK/
 
+*.txt
 *.model
-*.cntkmodel
 *.clixml
 *.bin
 *.clibin

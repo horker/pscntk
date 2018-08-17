@@ -8,6 +8,8 @@ namespace Horker.PSCNTK
     {
         public Dictionary<string, MinibatchData> Features;
 
+        public MinibatchData this[string name] { get => Features[name]; }
+
         public int SampleCount { get => (int)Features.First().Value.numberOfSamples; }
 
         public bool SweepEnd

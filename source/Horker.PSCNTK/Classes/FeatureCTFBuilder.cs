@@ -274,7 +274,7 @@ namespace Horker.PSCNTK
 
         public void Write(TextWriter writer)
         {
-            var builder = new CTFBuilder(writer, true);
+            var builder = new CTFBuilder(writer, 0, true);
 
             var completed = new List<FeatureBase>();
             while (true) {

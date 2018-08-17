@@ -42,7 +42,7 @@ namespace UnitTest
         public void TestSequence()
         {
             var writer = new StringWriter();
-            var builder = new CTFBuilder(writer, false);
+            var builder = new CTFBuilder(writer, 0, false);
 
             builder.AddDenseSample("a", new float[] { 1, 2, 3 });
             builder.NextLine();
@@ -63,7 +63,7 @@ namespace UnitTest
         public void TestSparse()
         {
             var writer = new StringWriter();
-            var builder = new CTFBuilder(writer, false);
+            var builder = new CTFBuilder(writer, 0, false);
 
             builder.AddSparseSample("a");
             builder.AddSparseValue(20, 1);
@@ -79,7 +79,7 @@ namespace UnitTest
         public void TestComment()
         {
             var writer = new StringWriter();
-            var builder = new CTFBuilder(writer, false);
+            var builder = new CTFBuilder(writer, 0, false);
 
             builder.AddComment("hello world");
             builder.AddDenseSample("a", new float[] { 1, 2 });
@@ -94,7 +94,7 @@ namespace UnitTest
         public void TestOneHot()
         {
             var writer = new StringWriter();
-            var builder = new CTFBuilder(writer, false);
+            var builder = new CTFBuilder(writer, 0, false);
 
             builder.AddOneHotSample("one", 5, 4);
 

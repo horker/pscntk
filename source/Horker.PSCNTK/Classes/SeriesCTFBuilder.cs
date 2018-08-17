@@ -41,7 +41,7 @@ namespace Horker.PSCNTK
 
         public void Write(TextWriter writer)
         {
-            var builder = new CTFBuilder(writer, false);
+            var builder = new CTFBuilder(writer, 0, false);
 
             int total = int.MaxValue;
             foreach (var d in _featureMap) {

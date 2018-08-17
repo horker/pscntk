@@ -1,17 +1,76 @@
 Set-StrictMode -Version Latest
 
 ############################################################
-# Configuration
+# Data producer
 ############################################################
 
-$TRAIN_FILE = "$PSScriptRoot\cifar10_train.txt"
-$TEST_FILE = "$PSScriptRoot\cifar10_test.txt"
+$dataProducerScript = {
+  param(
+    $MinibatchDef,
+    $PSScriptRoot
+  )
 
-$MINIBATCH_SIZE = 50
-$VALIDATION_SIZE = 1000
+  Set-StrictMode -Version Latest
 
-$IMAGE_DIM = (32, 32, 3)
-$OUT_CLASSES = 10
+  $ErrorActionPreference = "Stop"
+
+  Import-Module HorkerDataQuery
+  Import-Module psmath
+  Import-Module pscntk
+
+  $SQLITE_FILE = "$PSScriptRoot\cifar10.sqlite"
+  $TABLE = "minibatches"
+  $VALIDATION_SIZE = 50
+
+  function Get-DataSource {
+    param($image, $label)
+
+    $image = $image.Scale(0, 255, 0, 1.0)
+    $label = $label.OneHot(10).ToFlatArray($true)
+
+    cntk.datasourceset @{
+      input = cntk.datasource $image 32, 32, 3, 1, -1
+      label = cntk.datasource $label 10, 1, -1
+    }
+  }
+
+  $connection = New-DataConnection $SQLITE_FILE
+
+  try {
+
+    # validation data
+
+    $totalSize = (Invoke-DataQuery $connection "select count(*) Count from $TABLE").Count
+
+    $sample = Invoke-DataQuery $connection "select label, image from $TABLE where rowid >= $($totalSize - $VALIDATION_SIZE + 1)"
+
+    $image = ([byte[][]]$sample.Select({ $args[0].image })).Concatenate();
+    $label = ([byte[][]]$sample.Select({ $args[0].label })).Concatenate();
+    $data = Get-DataSource $image $label
+
+    $MinibatchDef.SetValidationData($data)
+
+    # test data
+
+    $exit = $false
+    while (!$exit) {
+      for ($i = 1; $i -le $totalSize - $VALIDATION_SIZE; ++$i) {
+        $sample = Invoke-DataQuery $connection "select label, image from $TABLE where rowid = @id" @{ id = $i }
+
+        $data = Get-DataSource $sample.image $sample.label
+
+        $result = $MinibatchDef.AddDataSourceSet($data)
+        if (!$result) {
+          $exit = $true
+          break
+        }
+      }
+    }
+  }
+  finally {
+    Close-DataConnection $connection
+  }
+}
 
 ############################################################
 # Model (ResNet)
@@ -97,7 +156,9 @@ function Get-ProjectionMap {
 
 function New-ResNetClassifier {
   param(
-    [CNTK.Variable]$In
+    [CNTK.Variable]$In,
+    [int]$NumOutputClasses,
+    [string]$OutputName
   )
 
   $n = $In
@@ -139,7 +200,7 @@ function New-ResNetClassifier {
   ##### Output DNN layer
 
   $n = cntk.dropout $n .5
-  $n = cntk.dense $n $OUT_CLASSES (cntk.glorotuniform .4 1 0) -Name "output"
+  $n = cntk.dense $n $NumOutputClasses (cntk.glorotuniform .4 1 0) -Name $OutputName
 
   $n
 }
@@ -150,7 +211,9 @@ function New-ResNetClassifier {
 
 function New-CNNClassifier {
   param(
-    [CNTK.Variable]$In
+    [CNTK.Variable]$In,
+    [int]$NumOutputClasses,
+    [string]$OutputName
   )
 
   $n = $In
@@ -171,33 +234,52 @@ function New-CNNClassifier {
   }
 
   $n = cntk.dropout $n .5
-  $n = cntk.dense $n $OUT_CLASSES (cntk.glorotuniform) -Name "output"
+  $n = cntk.dense $n $NumOutputClasses (cntk.glorotuniform) -Name $OutputName
 
   $n
 }
 
 # Build a model
 
+$IMAGE_DIM = (32, 32, 3)
+$NUM_CLASSES = 10
+
 $in = cntk.input $IMAGE_DIM -Name "input"
 
-#$out = New-ResNetClassifier $in
-$out = New-CNNClassifier $in
+#$out = New-ResNetClassifier $in $NUM_CLASSES "output"
+$out = New-CNNClassifier $in $NUM_CLASSES "output"
 
-$label = cntk.input $OUT_CLASSES -Name "label"
+$label = cntk.input $NUM_CLASSES -Name "label"
 
 ############################################################
 # Training
 ############################################################
 
-$learner = cntk.momentumsgd $out .01 .7
+$MINIBATCH_SIZE = 50
+$SAMPLE_COUNT_PER_EPOCH = 50000
+
+#$learner = cntk.sgd $out .00781251
+$learner = cntk.momentumsgd $out .005 .5
 
 $trainer = cntk.trainer $out $label CrossEntropyWithSoftmax ClassificationError $learner
 
-$minibatchDef = cntk.ctfminibatchdef $TRAIN_FILE $MINIBATCH_SIZE
+$minibatchDef = cntk.progminibatchdef -MinibatchSize $MINIBATCH_SIZE -SampleCountPerEpoch $SAMPLE_COUNT_PER_EPOCH -ValidationSize (50 * 50) -QueueSize 1000
 
-$testmd = cntk.ctfminibatchdef $TEST_FILE $VALIDATION_SIZE
-$minibatchDef.SetValidationData($testmd.GetNextBatch())
+$runner = cntk.backgroundscriptrunner
+$runner.Start($dataProducerScript, $minibatchDef, $PSScriptRoot)
 
-cntk.starttraining $trainer $minibatchDef -MaxIteration 50000 -ProgressOutputStep 500
+#$m = $minibatchDef.GetNextBatch()
+#$d = $m.Features["input"].data.ToDataSource().Transpose(2, 0, 1, 3, 4)
+#0..49 | foreach { $d.Slice($_, ($_+1)).ToBitmap("RGB", $true) } | out-canvas
+#mat $m.Features["label"].data.ToArray() -row 10 -transpose
+
+try {
+  cntk.starttraining $trainer $minibatchDef -MaxIteration 50000 -ProgressOutputStep 500
+}
+finally {
+  $minibatchDef.CancelAdding()
+  $null = $runner.Finish()
+  $runner.Dispose()
+}
 
 $out.Save("$PSScriptRoot\cifar10.model")

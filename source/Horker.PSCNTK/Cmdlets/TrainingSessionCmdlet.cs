@@ -17,7 +17,6 @@ namespace Horker.PSCNTK
         public double Metric;
         public double Validation;
         public TimeSpan Elapsed;
-        public int CountInQueue;
     }
 
     [Cmdlet("Start", "CNTKTraining")]
@@ -67,9 +66,6 @@ namespace Horker.PSCNTK
                     if (t.Iteration % ProgressOutputStep == 0 || t.Iteration == MaxIteration)
                     {
                         var p = new TrainingProgress();
-
-                        if (MinibatchDefinition is ProgressiveMinibatchDefinition)
-                            p.CountInQueue = (MinibatchDefinition as ProgressiveMinibatchDefinition).CountInQueue;
 
                         p.Epoch = t.Epoch;
                         p.Iteration = t.Iteration;

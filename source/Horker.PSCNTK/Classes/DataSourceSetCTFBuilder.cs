@@ -10,29 +10,29 @@ using System.Threading.Tasks;
 
 namespace Horker.PSCNTK
 {
-    public class DataSourceCTFBuilder
+    public class DataSourceSetCTFBuilder
     {
-        public static void Write(TextWriter writer, DataSource<float>[] dataSources, string[] names)
+        public static void Write(TextWriter writer, DataSourceSet dataSourceSet)
         {
-            var builder = new CTFBuilder(writer, false);
+            var builder = new CTFBuilder(writer, 0, false);
 
             // Argument check
 
-            if (dataSources.Length != names.Length)
-                throw new ArgumentException("Number of dataSources and names should be equal");
-
-            var sampleCount = dataSources[0].Shape[dataSources[0].Shape.Rank - 1];
+            var sampleCount = dataSourceSet.Features.First().Value.Shape[-1];
             var maxSeqLength = 1;
-            foreach (var ds in dataSources)
+            foreach (var entry in dataSourceSet)
             {
+                var name = entry.Key;
+                var ds = entry.Value;
+
                 if (ds.Shape.Rank < 3)
                     throw new ArgumentException("DataSource shape should contain sequence and batch axes as the last two");
 
-                var count = ds.Shape[ds.Shape.Rank - 1];
+                var count = ds.Shape[-1];
                 if (count != sampleCount)
-                    throw new ArgumentException("sample counts of data sources should be equal");
+                    throw new ArgumentException("Sample counts of data sources should be equal");
 
-                var seqLength = ds.Shape[ds.Shape.Rank - 2];
+                var seqLength = ds.Shape[-2];
                 if (seqLength > maxSeqLength)
                     maxSeqLength = seqLength;
             }
@@ -41,14 +41,14 @@ namespace Horker.PSCNTK
             {
                 for (var seq = 0; seq < maxSeqLength; ++seq)
                 {
-                    for (var dataIndex = 0; dataIndex < dataSources.Length; ++dataIndex)
+                    foreach (var entry in dataSourceSet)
                     {
-                        var ds = dataSources[dataIndex];
-                        var seqLength = ds.Shape[ds.Shape.Rank - 2];
+                        var name = entry.Key;
+                        var ds = entry.Value;
+                        var seqLength = ds.Shape[-2];
                         if (seq >= seqLength)
                             continue;
 
-                        var name = names[dataIndex];
                         var dim = ds.Shape.GetSize(ds.Shape.Rank - 3);
 
                         int index = sampleIndex * dim * seqLength + seq * dim;
@@ -62,14 +62,13 @@ namespace Horker.PSCNTK
             builder.Finish();
         }
 
-        public static void Write(string file, Hashtable sourceSpec)
+        public static void Write(TextWriter writer, Hashtable sourceSpec)
         {
-            var names = new List<string>();
-            var dataSources = new List<DataSource<float>>();
+            var set = new DataSourceSet();
 
             foreach (DictionaryEntry entry in sourceSpec)
             {
-                names.Add(entry.Key.ToString());
+                var name = entry.Key.ToString();
 
                 DataSource<float> ds;
                 if (entry.Value is PSObject)
@@ -77,13 +76,22 @@ namespace Horker.PSCNTK
                 else
                     ds = (DataSource<float>)entry.Value;
 
-                dataSources.Add(ds);
+                set.Features.Add(name, ds);
             }
 
-            using (var writer = new StreamWriter(file, false, new UTF8Encoding(false)))
-            {
-                DataSourceCTFBuilder.Write(writer, dataSources.ToArray(), names.ToArray());
-            }
+            Write(writer, set);
+        }
+
+        public static void Write(string path, DataSourceSet dataSourceSet)
+        {
+            using (var writer = new StreamWriter(path, false, new UTF8Encoding(false)))
+                DataSourceSetCTFBuilder.Write(writer, dataSourceSet);
+        }
+
+        public static void Write(string path, Hashtable sourceSpec)
+        {
+            using (var writer = new StreamWriter(path, false, new UTF8Encoding(false)))
+                DataSourceSetCTFBuilder.Write(writer, sourceSpec);
         }
     }
 }

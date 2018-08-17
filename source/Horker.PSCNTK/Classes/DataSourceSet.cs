@@ -84,6 +84,11 @@ namespace Horker.PSCNTK
             Serializer.Serialize(this, path, compress);
         }
 
+        public void ToCTF(string path)
+        {
+            DataSourceSetCTFBuilder.Write(path, this);
+        }
+
         public IEnumerator<KeyValuePair<string, DataSource<float>>> GetEnumerator()
         {
             return new DataSourceSetEnumerator(this);

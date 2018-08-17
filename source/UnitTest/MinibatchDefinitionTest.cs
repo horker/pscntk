@@ -14,8 +14,7 @@ namespace UnitTest
     {
         public MinibatchDefinitionTest()
         {
-            var path = Environment.ExpandEnvironmentVariables("%HOME%\\work\\pscntk\\lib");
-            UnmanagedDllLoader.Load(path);
+            UnmanagedDllLoader.Load(@"..\..\..\..\lib");
         }
 
         [TestMethod]

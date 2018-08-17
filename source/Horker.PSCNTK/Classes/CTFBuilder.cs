@@ -156,7 +156,7 @@ namespace Horker.PSCNTK
 
     // ref.
     // https://docs.microsoft.com/en-us/cognitive-toolkit/brainscript-cntktextformat-reader
-    public class CTFBuilder : IDisposable
+    public class CTFBuilder
     {
         private int _seq;
         private bool _seqAutIncrement;
@@ -171,9 +171,11 @@ namespace Horker.PSCNTK
 
         public string NEWLINE = "\r\n";
 
-        public CTFBuilder(TextWriter writer, bool seqAutoIncrement = true)
+        public TextWriter Writer { get; }
+
+        public CTFBuilder(TextWriter writer, int initialSeq = 0, bool seqAutoIncrement = true)
         {
-            _seq = 0;
+            _seq = initialSeq;
             _seqAutIncrement = seqAutoIncrement;
             _bol = true;
             _first = true;
@@ -212,11 +214,6 @@ namespace Horker.PSCNTK
             }
 
             _finished = true;
-        }
-
-        public void Dispose()
-        {
-            Finish();
         }
 
         private void FlushSample()

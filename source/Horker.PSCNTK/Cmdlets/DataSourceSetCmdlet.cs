@@ -35,16 +35,7 @@ namespace Horker.PSCNTK
             }
             else
             {
-                var dss = new DataSourceSet();
-                foreach (DictionaryEntry entry in DataSources)
-                {
-                    var value = entry.Value;
-                    if (value is PSObject)
-                        value = (value as PSObject).BaseObject;
-
-                    dss.Add(entry.Key.ToString(), (DataSource<float>)value);
-                }
-
+                var dss = new DataSourceSet(DataSources);
                 WriteObject(dss);
             }
         }
