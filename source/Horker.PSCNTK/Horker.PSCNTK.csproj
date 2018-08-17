@@ -68,6 +68,7 @@
     <Compile Include="Classes\Helpers.cs" />
     <Compile Include="Classes\IMinibatchDefinition.cs" />
     <Compile Include="Classes\Layers.cs" />
+    <Compile Include="Classes\Lstm.cs" />
     <Compile Include="Classes\Minibatch.cs" />
     <Compile Include="Classes\CTFMinibatchDefinition.cs" />
     <Compile Include="Classes\MinibatchDefinition.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Cmdlets\FunctionCmdletsByHand.cs" />
     <Compile Include="Cmdlets\LearnerCmdlets.cs" />
     <Compile Include="Cmdlets\CTFMinibatchDefinitionCmdlet.cs" />
+    <Compile Include="Cmdlets\LstmCmdlet.cs" />
     <Compile Include="Cmdlets\MinibatchDefinitionCmdlets.cs" />
     <Compile Include="Cmdlets\TrainerCmdlets.cs" />
     <Compile Include="Cmdlets\TrainingSessionCmdlet.cs" />

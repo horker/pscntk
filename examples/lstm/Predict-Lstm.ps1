@@ -14,14 +14,18 @@ $predicted.AddRange([float[]]$initial.y0)
 
 $in = New-Object float[] $SEQLEN
 
-for ($i = 0; $i -lt 5; ++$i) {
+for ($i = 0; $i -lt 500; ++$i) {
 
   $predicted.CopyTo(($predicted.Count - $SEQLEN), $in, 0, $SEQLEN)
-  Write-Host (($in | foreach { $_.ToString(".##") }) -join " ")
+#  Write-Host (($in | foreach { $_.ToString(".##") }) -join " ")
 
   $output = $f.Invoke(@{ input = (cntk.datasource $in 1, $SEQLEN, 1) })
 
   $predicted.Add($output.ToArray()[0])
 }
 
-oxyline -x (0..($predicted.Count - 1)) -y $predicted | show-oxyplot
+$predicted = $predicted.ToArray()
+$m = oxymodel
+oxyline -x (0..99) -y $predicted.Slice(@(0, 100)) -Color Red -AddTo $m
+oxyline -x (99..($predicted.Count - 1)) -y $predicted.Slice(@(99, 0)) -AddTo $m
+$m | Show-OxyPlot
