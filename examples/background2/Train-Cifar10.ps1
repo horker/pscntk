@@ -6,7 +6,7 @@ Set-StrictMode -Version Latest
 
 $dataProducerScript = {
   param(
-    $MinibatchDef,
+    $Sampler,
     $PSScriptRoot
   )
 
@@ -48,7 +48,7 @@ $dataProducerScript = {
     $label = ([byte[][]]$sample.Select({ $args[0].label })).Concatenate();
     $data = Get-DataSource $image $label
 
-    $MinibatchDef.SetValidationData($data)
+    $Sampler.SetValidationData($data)
 
     # test data
 
@@ -59,7 +59,7 @@ $dataProducerScript = {
 
         $data = Get-DataSource $sample.image $sample.label
 
-        $result = $MinibatchDef.AddDataSourceSet($data)
+        $result = $Sampler.AddMinibatch($data)
         if (!$result) {
           $exit = $true
           break
@@ -263,21 +263,21 @@ $learner = cntk.momentumsgd $out .005 .5
 
 $trainer = cntk.trainer $out $label CrossEntropyWithSoftmax ClassificationError $learner
 
-$minibatchDef = cntk.progminibatchdef -MinibatchSize $MINIBATCH_SIZE -SampleCountPerEpoch $SAMPLE_COUNT_PER_EPOCH -ValidationSize (50 * 50) -QueueSize 1000
+$sampler = cntk.parallelsampler -SampleCountPerEpoch $SAMPLE_COUNT_PER_EPOCH -QueueSize 1000
 
 $runner = cntk.backgroundscriptrunner
-$runner.Start($dataProducerScript, $minibatchDef, $PSScriptRoot)
+$runner.Start($dataProducerScript, $sampler, $PSScriptRoot)
 
-#$m = $minibatchDef.GetNextBatch()
+#$m = $sampler.GetNextBatch()
 #$d = $m.Features["input"].data.ToDataSource().Transpose(2, 0, 1, 3, 4)
 #0..49 | foreach { $d.Slice($_, ($_+1)).ToBitmap("RGB", $true) } | out-canvas
 #mat $m.Features["label"].data.ToArray() -row 10 -transpose
 
 try {
-  cntk.starttraining $trainer $minibatchDef -MaxIteration 50000 -ProgressOutputStep 500
+  cntk.starttraining $trainer $sampler -MaxIteration 50000 -ProgressOutputStep 500
 }
 finally {
-  $minibatchDef.CancelAdding()
+  $sampler.CancelAdding()
   $null = $runner.Finish()
   $runner.Dispose()
 }

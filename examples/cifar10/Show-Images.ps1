@@ -5,9 +5,9 @@ Import-Module psmath
 $FILE = "$PSScriptRoot\cifar10_test.txt"
 $MINIBATCH_SIZE = 100
 
-$minibatchDef = cntk.ctfminibatchdef $FILE $MINIBATCH_SIZE $false
+$sampler = cntk.ctfsampler $FILE $MINIBATCH_SIZE $false
 
-$batch = $minibatchDef.GetNextBatch()
+$batch = $sampler.GetNextBatch()
 
 $images = $batch["input"].data.ToDataSource()
 $images.Reshape(32, 32, 3, $MINIBATCH_SIZE)

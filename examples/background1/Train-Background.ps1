@@ -10,7 +10,7 @@ $MINIBATCH_SIZE = 20
 $SAMPLE_COUNT_PER_EPOCH = 20 * 100
 
 ############################################################
-# On-memory minibatch definition
+# On-memory sampler
 ############################################################
 
 function Generate-Samples {
@@ -23,7 +23,7 @@ function Generate-Samples {
   $data
 }
 
-function New-MinibatchDefinition {
+function New-OnMemorySampler {
 
   $data = Generate-Samples
 
@@ -36,16 +36,16 @@ function New-MinibatchDefinition {
   $labels = cntk.datasource -Rows $l.A, $l.B
   $labels.Reshape(2, 1, -1)
 
-  cntk.minibatchdef @{ input = $features; label = $labels } 20 .3
+  cntk.sampler @{ input = $features; label = $labels } 20 .3
 }
 
 ############################################################
-# Progressive minibatch definition
+# Progressive sampler
 ############################################################
 
 $dataProducerScript = {
   param(
-    $minibatchDef,
+    $sampler,
     $MINIBATCH_SIZE
   )
 
@@ -82,7 +82,7 @@ $dataProducerScript = {
   $data = Generate-Samples
   $validation = $data.Slice(@(0, ($data.Length * .3)))
   $features, $labels = Preprocess-Data $validation
-  $minibatchdef.SetValidationData(@{ "input" = $features; "label" = $labels })
+  $sampler.SetValidationData(@{ "input" = $features; "label" = $labels })
 
   $exit = $false
   while (!$exit) {
@@ -93,7 +93,7 @@ $dataProducerScript = {
 
       $features, $labels = Preprocess-Data $batch
 
-      if (!$minibatchdef.AddMinibatch(@{ "input" = $features; "label" = $labels })) {
+      if (!$sampler.AddMinibatch(@{ "input" = $features; "label" = $labels })) {
         $exit = $true
         break
       }
@@ -101,8 +101,8 @@ $dataProducerScript = {
   }
 }
 
-function New-ProgressiveMinibatchDefinition {
-  cntk.progminibatchdef -SampleCountPerEpoch $SAMPLE_COUNT_PER_EPOCH -QueueSize 1000
+function New-ParallelSampler {
+  cntk.parallelsampler -SampleCountPerEpoch $SAMPLE_COUNT_PER_EPOCH -QueueSize 1000
 }
 
 ############################################################
@@ -127,16 +127,16 @@ $label = cntk.input $OUTPUT_CLASSES -Name "label"
 ############################################################
 
 if ($Progressive) {
-  $minibatchDef = New-ProgressiveMinibatchDefinition
+  $sampler = New-ParallelSampler
 
   $runners = 1..3 | foreach {
     $runner = cntk.backgroundscriptrunner
-    $runner.Start($dataProducerScript, $minibatchDef, $MINIBATCH_SIZE)
+    $runner.Start($dataProducerScript, $sampler, $MINIBATCH_SIZE)
     $runner
   }
 }
 else {
-  $minibatchDef = New-MinibatchDefinition
+  $sampler = New-OnMemorySampler
 }
 
 $learner = cntk.momentumsgd $out .01 .5
@@ -144,11 +144,11 @@ $learner = cntk.momentumsgd $out .01 .5
 $trainer = cntk.trainer $out $label BinaryCrossEntropy ClassificationError $learner
 
 try {
-  cntk.starttraining $trainer $minibatchDef -MaxIteration 1000 -ProgressOutputStep 100
+  cntk.starttraining $trainer $sampler -MaxIteration 1000 -ProgressOutputStep 100
 }
 finally {
   if ($Progressive) {
-    $minibatchDef.CancelAdding()
+    $sampler.CancelAdding()
 
     $runners | foreach {
       $null = $_.Finish()

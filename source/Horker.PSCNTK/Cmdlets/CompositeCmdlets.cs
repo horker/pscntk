@@ -217,7 +217,7 @@ namespace Horker.PSCNTK
         public SwitchParameter Spatial = false;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public double InitScale = 1.0;
+        public double InitialScale = 1.0;
 
         [Parameter(Position = 3, Mandatory = false)]
         public double NormalizationTimeConstant = 5000;
@@ -239,7 +239,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var output = Composite.BatchNormalization(Input, Spatial, InitScale, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCNTKEngine, DisableRegularization, Name);
+            var output = Composite.BatchNormalization(Input, Spatial, InitialScale, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCNTKEngine, DisableRegularization, Name);
 
             WriteObject(output);
         }

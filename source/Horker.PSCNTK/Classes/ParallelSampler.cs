@@ -8,7 +8,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class ProgressiveMinibatchDefinition : IMinibatchDefinition
+    public class ParallelSampler : ISampler
     {
         private BlockingCollection<DataSourceSet> _dataQueue;
 
@@ -32,7 +32,7 @@ namespace Horker.PSCNTK
         public int TimeoutForAdd { get => _timeoutForAdd; }
         public int TimeoutForTake { get => _timeoutForTake; }
 
-        public ProgressiveMinibatchDefinition(int sampleCountPerEpoch, int queueSize, int timeoutForAdd = 60 * 1000, int timeoutForTake = 30 * 1000)
+        public ParallelSampler(int sampleCountPerEpoch, int queueSize, int timeoutForAdd = 60 * 1000, int timeoutForTake = 30 * 1000)
         {
             _sampleCountPerEpoch = sampleCountPerEpoch;
             _totalSampleCount = 0;

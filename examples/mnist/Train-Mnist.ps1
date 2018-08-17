@@ -19,14 +19,14 @@ Set-StrictMode -Version Latest
 $MNIST_IMAGE_FILE = "$PSScriptRoot\..\..\data\MNIST\train-images.idx3-ubyte"
 $MNIST_LABEL_FILE = "$PSScriptRoot\..\..\data\MNIST\train-labels.idx1-ubyte"
 
-$MNIST_CACHE_FILE = "$PSScriptRoot\mnist_minibatchdef.bin"
+$MNIST_CACHE_FILE = "$PSScriptRoot\mnist_data.bin"
 
 ############################################################
 # Prepraring data
 ############################################################
 
 if (Test-Path $MNIST_CACHE_FILE) {
-  $minibatchDef = cntk.minibatchdef -Path $MNIST_CACHE_FILE
+  $sampler = cntk.sampler -Path $MNIST_CACHE_FILE
 }
 else {
   Write-Host "Loading MNIST image file..."
@@ -46,18 +46,18 @@ else {
   $label = cntk.datasource $label (10, 1, -1)
 
   Write-Host "Saving..."
-  $minibatchDef = cntk.minibatchdef @{ input = $data; label = $label }
-  $minibatchDef.Save($MNIST_CACHE_FILE)
+  $sampler = cntk.sampler @{ input = $data; label = $label }
+  $sampler.Save($MNIST_CACHE_FILE)
 }
 
-$minibatchDef.MinibatchSize = 64
-$minibatchDef.ValidationRate = .2
+$sampler.MinibatchSize = 64
+$sampler.ValidationRate = .2
 
 ############################################################
 # Model
 ############################################################
 
-$OUT_CLASS = 10
+$OUT_CLASSES = 10
 
 $in = cntk.input (28, 28, 1) -Name input
 $n = $in
@@ -72,18 +72,18 @@ if ($UseConv) {
   $n = cntk.maxpooling $n (3, 3) (2, 2)
 
   # fc
-  $n = cntk.dense $n $OUT_CLASS (cntk.glorotuniform)
+  $n = cntk.dense $n $OUT_CLASSES (cntk.glorotuniform)
 }
 else {
   $n = cntk.dense $n 1000 (cntk.heuniform) relu
   $n = cntk.dense $n 1000 (cntk.heuniform) relu
   $n = cntk.dense $n 1000 (cntk.heuniform) relu
-  $n = cntk.dense $n $OUT_CLASS (cntk.glorotuniform)
+  $n = cntk.dense $n $OUT_CLASSES (cntk.glorotuniform)
 }
 
 $out = $n
 
-$label = cntk.input $OUT_CLASS -Name label
+$label = cntk.input $OUT_CLASSES -Name label
 
 ############################################################
 # Training
@@ -93,4 +93,4 @@ $learner = cntk.momentumsgd $out .1 .9
 
 $trainer = cntk.trainer $out $label CrossEntropyWithSoftmax ClassificationError $learner
 
-cntk.starttraining $trainer $minibatchDef -MaxIteration 10000 -ProgressOutputStep 500
+cntk.starttraining $trainer $sampler -MaxIteration 10000 -ProgressOutputStep 500

@@ -8,7 +8,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Serializable]
-    public class MinibatchDefinition : IMinibatchDefinition
+    public class OnMemorySampler : ISampler
     {
         public Dictionary<string, DataSource<float>> Features
         {
@@ -47,7 +47,7 @@ namespace Horker.PSCNTK
         private int _validationStart;
         private int[] _order;
 
-        public MinibatchDefinition(Dictionary<string, DataSource<float>> features, int minibatchSize, double validationRate = .3, bool randomize = true)
+        public OnMemorySampler(Dictionary<string, DataSource<float>> features, int minibatchSize, double validationRate = .3, bool randomize = true)
         {
             var f = features.Values.First();
 
@@ -75,14 +75,14 @@ namespace Horker.PSCNTK
             _randomized = randomize;
         }
 
-        public static MinibatchDefinition Load(byte[] data, bool decompress = true)
+        public static OnMemorySampler Load(byte[] data, bool decompress = true)
         {
-            return Serializer.Deserialize<MinibatchDefinition>(data, decompress);
+            return Serializer.Deserialize<OnMemorySampler>(data, decompress);
         }
 
-        public static MinibatchDefinition Load(string path, bool compress = true)
+        public static OnMemorySampler Load(string path, bool compress = true)
         {
-            return Serializer.Deserialize<MinibatchDefinition>(path, compress);
+            return Serializer.Deserialize<OnMemorySampler>(path, compress);
         }
 
         public byte[] Serialize(bool compress = true)

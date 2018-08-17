@@ -20,7 +20,7 @@ $l = pso.onehot $data.y2
 $labels = cntk.datasource -Rows $l.A, $l.B
 $labels.Reshape(2, 1, -1)
 
-$minibatchDef = cntk.minibatchdef @{ input = $features; label = $labels } 20 .3
+$sampler = cntk.sampler @{ input = $features; label = $labels } 20 .3
 
 ############################################################
 # Build a model
@@ -47,6 +47,6 @@ $learner = cntk.momentumsgd $out .01 .5
 
 $trainer = cntk.trainer $out $label BinaryCrossEntropy ClassificationError $learner
 
-cntk.starttraining $trainer $minibatchdef -MaxIteration 10000 -ProgressOutputStep 100
+cntk.starttraining $trainer $sampler -MaxIteration 10000 -ProgressOutputStep 100
 
 $out.Save("$PSScriptRoot\moon.model")

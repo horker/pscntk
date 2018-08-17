@@ -14,7 +14,7 @@ namespace benchmarkapp
     {
         static string backgroundScript = @"
   param(
-    $minibatchDef,
+    $sampler,
     $MINIBATCH_SIZE
   )
 
@@ -51,7 +51,7 @@ namespace benchmarkapp
   $data = Generate-Samples
   $validation = $data.Slice(@(0, ($data.Length * .3)))
   $features, $labels = Preprocess-Data $validation
-  $minibatchdef.SetValidationData(@{ 'input' = $features; 'label' = $labels })
+  $sampler.SetValidationData(@{ 'input' = $features; 'label' = $labels })
 
   $exit = $false
   while (!$exit) {
@@ -62,7 +62,7 @@ namespace benchmarkapp
 
       $features, $labels = Preprocess-Data $batch
 
-      if (!$minibatchdef.AddMinibatch(@{ 'input' = $features; 'label' = $labels })) {
+      if (!$sampler.AddMinibatch(@{ 'input' = $features; 'label' = $labels })) {
         $exit = $true
         break
       }
@@ -85,7 +85,7 @@ namespace benchmarkapp
 
         static void TestApp()
         {
-            var minibatchDef = new ProgressiveMinibatchDefinition(10000, 1000);
+            var sampler = new ParallelSampler(10000, 1000);
 
             var runners = new BackgroundScriptRunner[2];
 
@@ -95,7 +95,7 @@ namespace benchmarkapp
                 {
                     var runner = new BackgroundScriptRunner();
                     var script = ScriptBlock.Create(backgroundScript);
-                    runner.Start(script, new object[] { minibatchDef, MINIBATCH_SIZE });
+                    runner.Start(script, new object[] { sampler, MINIBATCH_SIZE });
                     runners[i] = runner;
                 }
 
@@ -111,7 +111,7 @@ namespace benchmarkapp
 
                 var trainer = CNTKLib.CreateTrainer(output, loss, metric, new LearnerVector(new Learner[] { learner }));
 
-                var session = new TrainingSession(trainer, minibatchDef);
+                var session = new TrainingSession(trainer, sampler);
 
                 var progress = session.GetSession().GetEnumerator();
                 for (var i = 0; i < 10000; ++i)
@@ -122,13 +122,13 @@ namespace benchmarkapp
                     if (p.Iteration == 1 || p.Iteration % 100 == 0)
                     {
                         Console.WriteLine(string.Format("Iteration: {0}  Loss: {1}  Metric: {2}  Validation: {3}  Elapsed: {4}  CountInQueue: {5}",
-                            p.Iteration, p.Loss, p.Metric, p.GetValidationMetric(), p.Elapsed, minibatchDef.CountInQueue));
+                            p.Iteration, p.Loss, p.Metric, p.GetValidationMetric(), p.Elapsed, sampler.CountInQueue));
                     }
                 }
             }
             finally
             {
-                minibatchDef.CancelAdding();
+                sampler.CancelAdding();
 
                 foreach (var runner in runners)
                 {

@@ -6,9 +6,9 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    [Cmdlet("New", "CNTKCTFMinibatchDefinition")]
-    [Alias("cntk.ctfminibatchdef")]
-    public class NewCNTKCTFMinibatchDefinition : PSCmdlet
+    [Cmdlet("New", "CNTKCTFSampler")]
+    [Alias("cntk.ctfsampler")]
+    public class NewCNTKCTFSampler : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
         public string Path;
@@ -27,7 +27,7 @@ namespace Horker.PSCNTK
                 Path = SessionState.Path.Combine(current.ToString(), Path);
             }
 
-            var result = new CTFMinibatchDefinition(Path, MinibatchSize, !NoRandomize);
+            var result = new CTFSampler(Path, MinibatchSize, !NoRandomize);
             WriteObject(result);
         }
     }

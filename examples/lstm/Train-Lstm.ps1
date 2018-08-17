@@ -11,7 +11,7 @@ $SEQLEN = 100
 
 $seq = seq 0 5000 .1 -func { (math.sin $x) + (st.normal 0 .05).gen() }
 
-oxyline -x $seq.x[0..200] -y $seq.y0[0..200] -markertype circle | show-oxyplot
+#oxyline -x $seq.x[0..200] -y $seq.y0[0..200] -markertype circle | show-oxyplot
 
 $features = $seq.y0.Slice(@(0, -1))
 $features = cntk.datasource $features 1, -1, 1
@@ -20,7 +20,7 @@ $features = $features.GetSubsequences($SEQLEN)
 $labels = $seq.y0 | select -skip $SEQLEN
 $labels = cntk.datasource $labels 1, 1, -1
 
-$minibatchDef = cntk.minibatchdef @{ input = $features; labels = $labels } $SEQLEN .1
+$sampler = cntk.sampler @{ input = $features; labels = $labels } $SEQLEN .1
 
 ############################################################
 # Build a model
@@ -44,6 +44,6 @@ $learner = cntk.momentumsgd $out .01 .9
 
 $trainer = cntk.trainer $out $label SquaredError SquaredError $learner
 
-cntk.starttraining $trainer $minibatchDef -MaxIteration 3000 -ProgressOutputStep 100
+cntk.starttraining $trainer $sampler -MaxIteration 3000 -ProgressOutputStep 100
 
 $out.Save("$PSScriptRoot\lstm.model")

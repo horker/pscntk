@@ -10,9 +10,9 @@ using System.Linq;
 namespace UnitTest
 {
     [TestClass]
-    public class MinibatchDefinitionTest
+    public class OnMemorySamplerTest
     {
-        public MinibatchDefinitionTest()
+        public OnMemorySamplerTest()
         {
             UnmanagedDllLoader.Load(@"..\..\..\..\lib");
         }
@@ -23,9 +23,9 @@ namespace UnitTest
             var features = new DataSource<float>(new float[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, new int[] { 2, 1, -1 });
 
             var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
-            var minibatchDef = new MinibatchDefinition(ds, 2, 0, false);
+            var sampler = new OnMemorySampler(ds, 2, 0, false);
 
-            var batch = minibatchDef.GetNextBatch();
+            var batch = sampler.GetNextBatch();
             var data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -33,7 +33,7 @@ namespace UnitTest
             Assert.AreEqual((uint)2, data.numberOfSequences);
             Assert.AreEqual(false, data.sweepEnd);
 
-            batch = minibatchDef.GetNextBatch();
+            batch = sampler.GetNextBatch();
             data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 4, 5, 6, 7 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -43,7 +43,7 @@ namespace UnitTest
 
             // When not randomized, remnant data that is smaller than the minibatch size is ignored.
 
-            batch = minibatchDef.GetNextBatch();
+            batch = sampler.GetNextBatch();
             data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -58,9 +58,9 @@ namespace UnitTest
             var features = new DataSource<float>(new float[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, new int[] { 2, 1, -1 });
 
             var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
-            var minibatchDef = new MinibatchDefinition(ds, 2, .4, false);
+            var sampler = new OnMemorySampler(ds, 2, .4, false);
 
-            var batch = minibatchDef.GetNextBatch();
+            var batch = sampler.GetNextBatch();
             var data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -68,7 +68,7 @@ namespace UnitTest
             Assert.AreEqual((uint)2, data.numberOfSequences);
             Assert.AreEqual(true, data.sweepEnd);
 
-            batch = minibatchDef.GetNextBatch();
+            batch = sampler.GetNextBatch();
             data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -76,7 +76,7 @@ namespace UnitTest
             Assert.AreEqual((uint)2, data.numberOfSequences);
             Assert.AreEqual(true, data.sweepEnd);
 
-            batch = minibatchDef.GetValidationBatch();
+            batch = sampler.GetValidationBatch();
             data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 6, 7, 8, 9 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -91,9 +91,9 @@ namespace UnitTest
             var features = new DataSource<float>(new float[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new int[] { 2, 2, -1 });
 
             var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
-            var minibatchDef = new MinibatchDefinition(ds, 2, .4, false);
+            var sampler = new OnMemorySampler(ds, 2, .4, false);
 
-            var batch = minibatchDef.GetNextBatch();
+            var batch = sampler.GetNextBatch();
             var data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3, 4, 5, 6, 7 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 2, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -108,9 +108,9 @@ namespace UnitTest
             var features = new DataSource<float>(new float[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new int[] { 1, 2, -1 });
 
             var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
-            var minibatchDef = new MinibatchDefinition(ds, 2, .5, true);
+            var sampler = new OnMemorySampler(ds, 2, .5, true);
 
-            var batch = minibatchDef.GetValidationBatch();
+            var batch = sampler.GetValidationBatch();
             var data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 4, 5, 6, 7 }, DataSource<float>.FromValue(data.data).Data);
         }

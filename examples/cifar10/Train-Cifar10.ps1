@@ -193,11 +193,11 @@ $learner = cntk.momentumsgd $out .01 .7
 
 $trainer = cntk.trainer $out $label CrossEntropyWithSoftmax ClassificationError $learner
 
-$minibatchDef = cntk.ctfminibatchdef $TRAIN_FILE $MINIBATCH_SIZE
+$sampler = cntk.ctfsampler $TRAIN_FILE $MINIBATCH_SIZE
 
-$testmd = cntk.ctfminibatchdef $TEST_FILE $VALIDATION_SIZE
-$minibatchDef.SetValidationData($testmd.GetNextBatch())
+$testsampler = cntk.ctfsampler $TEST_FILE $VALIDATION_SIZE
+$sampler.SetValidationData($testsampler.GetNextBatch())
 
-cntk.starttraining $trainer $minibatchDef -MaxIteration 50000 -ProgressOutputStep 500
+cntk.starttraining $trainer $sampler -MaxIteration 50000 -ProgressOutputStep 500
 
 $out.Save("$PSScriptRoot\cifar10.model")

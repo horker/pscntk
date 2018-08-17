@@ -9,7 +9,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Serializable]
-    public class CTFMinibatchDefinition : IMinibatchDefinition
+    public class CTFSampler : ISampler
     {
         private int _minibatchSize;
         private List<StreamConfiguration> _streamConfigurations;
@@ -23,7 +23,7 @@ namespace Horker.PSCNTK
         public int MinibatchSize { get => _minibatchSize; }
         public IList<StreamConfiguration> StreamConfigurations { get => _streamConfigurations; }
 
-        public CTFMinibatchDefinition(string path, int minibatchSize, bool randomize = true)
+        public CTFSampler(string path, int minibatchSize, bool randomize = true)
         {
             _minibatchSize = minibatchSize;
 

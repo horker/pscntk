@@ -9,7 +9,7 @@ namespace Horker.PSCNTK
     public class TrainingSession
     {
         public Trainer Trainer { get; private set; }
-        public IMinibatchDefinition MinibatchDefinition { get; private set; }
+        public ISampler Sampler { get; private set; }
         public Dictionary<string, Variable> ParameterMap { get; private set; }
 
         public int Epoch { get; private set; }
@@ -24,12 +24,12 @@ namespace Horker.PSCNTK
 
         private UnorderedMapVariableMinibatchData _validationData;
 
-        public TrainingSession(Trainer trainer, IMinibatchDefinition minibatchDef, Hashtable parameterMap = null)
+        public TrainingSession(Trainer trainer, ISampler sampler, Hashtable parameterMap = null)
         {
             _stopwatch = Stopwatch.StartNew();
 
             Trainer = trainer;
-            MinibatchDefinition = minibatchDef;
+            Sampler = sampler;
 
             ParameterMap = new Dictionary<string, Variable>();
             if (parameterMap != null)
@@ -95,7 +95,7 @@ namespace Horker.PSCNTK
 
             for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
             {
-                var batch = MinibatchDefinition.GetNextBatch(device);
+                var batch = Sampler.GetNextBatch(device);
                 if (batch == null)
                     break;
 
@@ -127,7 +127,7 @@ namespace Horker.PSCNTK
 
             if (_validationData == null)
             {
-                var batch = MinibatchDefinition.GetValidationBatch(device);
+                var batch = Sampler.GetValidationBatch(device);
 
                 if (batch == null)
                     return 0.0;

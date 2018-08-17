@@ -27,7 +27,7 @@ namespace Horker.PSCNTK
         public Trainer Trainer;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public IMinibatchDefinition MinibatchDefinition;
+        public ISampler Sampler;
 
         [Parameter(Position = 2, Mandatory = false)]
         public Hashtable ParameterMap = null;
@@ -40,7 +40,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Trainer, MinibatchDefinition, ParameterMap);
+            var session = new TrainingSession(Trainer, Sampler, ParameterMap);
 
             int sampleCount = 0;
             var loss = 0.0;
@@ -98,14 +98,14 @@ namespace Horker.PSCNTK
         public Trainer Trainer;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public IMinibatchDefinition MinibatchDefinition;
+        public ISampler Sampler;
 
         [Parameter(Position = 2, Mandatory = false)]
         public Hashtable ParameterMap = null;
 
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Trainer, MinibatchDefinition, ParameterMap);
+            var session = new TrainingSession(Trainer, Sampler, ParameterMap);
 
             WriteObject(session);
         }

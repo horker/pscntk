@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Management.Automation;
 using CNTK;
 
 namespace Horker.PSCNTK
 {
-    [Cmdlet("New", "CNTKMinibatchDefinition")]
+    [Cmdlet("New", "CNTKOnMemorySampler")]
     [CmdletBinding(DefaultParameterSetName = "new")]
-    [Alias("cntk.minibatchdef")]
-    public class NewCNTKMinibatchDefinition : PSCmdlet
+    [Alias("cntk.sampler")]
+    public class NewCNTKOneMemorySampler : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "new")]
         public Hashtable DataSources;
@@ -39,7 +38,7 @@ namespace Horker.PSCNTK
                     Path = SessionState.Path.Combine(current.ToString(), Path);
                 }
 
-                var result = MinibatchDefinition.Load(Path, !NoDecompress);
+                var result = OnMemorySampler.Load(Path, !NoDecompress);
                 WriteObject(result);
             }
             else
@@ -54,33 +53,10 @@ namespace Horker.PSCNTK
                     ds.Add(entry.Key.ToString(), (DataSource<float>)value);
                 }
 
-                var minibatchDef = new MinibatchDefinition(ds, MinibatchSize, ValidationRate, !NoRandomize);
+                var sampler = new OnMemorySampler(ds, MinibatchSize, ValidationRate, !NoRandomize);
 
-                WriteObject(minibatchDef);
+                WriteObject(sampler);
             }
-        }
-    }
-
-    [Cmdlet("New", "CNTKProgressiveMinibatchDefinition")]
-    [Alias("cntk.progminibatchdef")]
-    public class NewCNTKProgressiveMinibatchDefinition : PSCmdlet
-    {
-        [Parameter(Position = 0, Mandatory = false)]
-        public int SampleCountPerEpoch = 3200;
-
-        [Parameter(Position = 1, Mandatory = false)]
-        public int QueueSize = 1000;
-
-        [Parameter(Position = 2, Mandatory = false)]
-        public int TimeoutForAdd = 15 * 1000;
-
-        [Parameter(Position = 3, Mandatory = false)]
-        public int TimeoutForTake = 15 * 1000;
-
-        protected override void EndProcessing()
-        {
-            var minibatchDef = new ProgressiveMinibatchDefinition(SampleCountPerEpoch, QueueSize, TimeoutForAdd, TimeoutForTake);
-            WriteObject(minibatchDef);
         }
     }
 }

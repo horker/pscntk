@@ -13,7 +13,7 @@ namespace UnitTest
     {
         public TrainingSessionTest()
         {
-            var path = Environment.ExpandEnvironmentVariables("%HOME%\\work\\pscntk\\lib");
+            var path = Environment.ExpandEnvironmentVariables(@"..\..\..\..\lib");
             UnmanagedDllLoader.Load(path);
         }
 
@@ -25,7 +25,7 @@ namespace UnitTest
             var features = new DataSource<float>(new float[] { 0, 0, 0, 1, 1, 0, 1, 1, 3, 4, 3, 5, 4, 4, 4, 5 }, new int[] { 2, 1, -1 });
             var labels   = new DataSource<float>(new float[] { 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0 }, new int[] { 2, 1, -1 });
 
-            var minibatch = new MinibatchDefinition(new Dictionary<string, DataSource<float>>()
+            var sampler = new OnMemorySampler(new Dictionary<string, DataSource<float>>()
             {
                 { "input", features },
                 { "label", labels }
@@ -52,7 +52,7 @@ namespace UnitTest
 
             var trainer = Trainer.CreateTrainer(output, loss, error, new List<Learner>() { learner });
 
-            var session = new TrainingSession(trainer, minibatch);
+            var session = new TrainingSession(trainer, sampler);
             var iteration = session.GetSession().GetEnumerator();
 
             for (var i = 0; i < 1000; ++i)
