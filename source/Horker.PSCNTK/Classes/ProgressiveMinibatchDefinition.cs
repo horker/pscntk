@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Management.Automation;
 using System.Threading;
 using CNTK;
 
@@ -8,13 +10,16 @@ namespace Horker.PSCNTK
 {
     public class ProgressiveMinibatchDefinition : IMinibatchDefinition
     {
-        private BlockingCollection<Minibatch> _minibatchQueue;
+        private BlockingCollection<DataSourceSet> _dataQueue;
 
         private int _sampleCountPerEpoch;
         private int _totalSampleCount;
         private int _epoch;
 
-        private Minibatch _validationData;
+        private DataSourceSet _validationData;
+        private Minibatch _validationMinibatch;
+
+        private DataSourceSet _lastMinibatch;
 
         private CancellationTokenSource _cancelTokenSourceForAdd;
         private CancellationTokenSource _cancelTokenSourceForTake;
@@ -22,7 +27,7 @@ namespace Horker.PSCNTK
         private int _timeoutForAdd;
         private int _timeoutForTake;
 
-        public int CountInQueue { get => _minibatchQueue.Count; }
+        public int CountInQueue { get => _dataQueue.Count; }
 
         public int TimeoutForAdd { get => _timeoutForAdd; }
         public int TimeoutForTake { get => _timeoutForTake; }
@@ -33,9 +38,11 @@ namespace Horker.PSCNTK
             _totalSampleCount = 0;
             _epoch = 0;
 
-            _minibatchQueue = new BlockingCollection<Minibatch>(queueSize);
+            _dataQueue = new BlockingCollection<DataSourceSet>(queueSize);
 
             _validationData = null;
+            _validationMinibatch = null;
+            _lastMinibatch = null;
 
             _cancelTokenSourceForAdd = new CancellationTokenSource();
             _cancelTokenSourceForTake = new CancellationTokenSource();
@@ -44,12 +51,12 @@ namespace Horker.PSCNTK
             _timeoutForTake = timeoutForTake;
         }
 
-        public bool AddMinibatch(Minibatch minibatch)
+        public bool AddMinibatch(DataSourceSet dataSourceSet)
         {
             try
             {
                 _cancelTokenSourceForAdd.CancelAfter(_timeoutForAdd);
-                _minibatchQueue.Add(minibatch, _cancelTokenSourceForAdd.Token);
+                _dataQueue.Add(dataSourceSet, _cancelTokenSourceForAdd.Token);
                 return true;
             }
             catch (OperationCanceledException)
@@ -58,18 +65,34 @@ namespace Horker.PSCNTK
             }
         }
 
+        public bool AddMinibatch(Hashtable dataSet)
+        {
+            var set = new DataSourceSet();
+            foreach (DictionaryEntry entry in dataSet)
+            {
+                var value = entry.Value;
+                if (value is PSObject)
+                    value = (value as PSObject).BaseObject;
+                set.Add((string)entry.Key, (DataSource<float>)value);
+            }
+
+            return AddMinibatch(set);
+        }
+
         public Minibatch GetNextBatch(DeviceDescriptor device = null)
         {
-            Minibatch minibatch;
+            DataSourceSet dataSourceSet;
             try
             {
                 _cancelTokenSourceForTake.CancelAfter(_timeoutForTake);
-                minibatch = _minibatchQueue.Take(_cancelTokenSourceForTake.Token);
+                dataSourceSet = _dataQueue.Take(_cancelTokenSourceForTake.Token);
             }
             catch (OperationCanceledException)
             {
                 return null;
             }
+
+            var minibatch = new Minibatch(dataSourceSet.Features, false, device);
 
             _totalSampleCount += minibatch.SampleCount;
 
@@ -78,6 +101,9 @@ namespace Horker.PSCNTK
                 ++_epoch;
                 minibatch.SweepEnd = true;
             }
+
+            // Preserve the last data source until the next call to avoid it being garbage-collected.
+            _lastMinibatch = dataSourceSet;
 
             return minibatch;
         }
@@ -94,12 +120,29 @@ namespace Horker.PSCNTK
 
         public Minibatch GetValidationBatch(DeviceDescriptor device = null)
         {
-            return _validationData;
+            return _validationMinibatch;
         }
 
-        public void SetValidationData(Minibatch validationData)
+        public void SetValidationData(DataSourceSet validationData)
         {
+            // Keep the original data to avoid data being garbage-collected.
             _validationData = validationData;
+
+            _validationMinibatch = new Minibatch(validationData.Features, false, null);
+        }
+
+        public void SetValidationData(Hashtable dataSet)
+        {
+            var set = new DataSourceSet();
+            foreach (DictionaryEntry entry in dataSet)
+            {
+                var value = entry.Value;
+                if (value is PSObject)
+                    value = (value as PSObject).BaseObject;
+                set.Add((string)entry.Key, (DataSource<float>)value);
+            }
+
+            SetValidationData(set);
         }
     }
 }

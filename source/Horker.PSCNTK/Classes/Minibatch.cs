@@ -8,6 +8,20 @@ namespace Horker.PSCNTK
     {
         public Dictionary<string, MinibatchData> Features;
 
+        public int SampleCount { get => (int)Features.First().Value.numberOfSamples; }
+
+        public bool SweepEnd
+        {
+            get => Features.First().Value.sweepEnd;
+            set
+            {
+                foreach (var entry in Features)
+                {
+                    entry.Value.sweepEnd = value;
+                }
+            }
+        }
+
         public Minibatch()
         {
             Features = new Dictionary<string, MinibatchData>();
@@ -20,20 +34,6 @@ namespace Horker.PSCNTK
             {
                 var b = GetMinibatchData(entry.Value, sweepEnd, device);
                 Features.Add(entry.Key, b);
-            }
-        }
-
-        public int SampleCount { get => (int)Features.First().Value.numberOfSamples; }
-
-        public bool SweepEnd
-        {
-            get => Features.First().Value.sweepEnd;
-            set
-            {
-                foreach (var entry in Features)
-                {
-                    entry.Value.sweepEnd = value;
-                }
             }
         }
 

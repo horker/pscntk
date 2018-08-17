@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management.Automation;
 using CNTK;
 
 namespace Horker.PSCNTK
@@ -9,6 +10,8 @@ namespace Horker.PSCNTK
     [Serializable]
     public class DataSourceSet : IEnumerable<KeyValuePair<string, DataSource<float>>>
     {
+        public Dictionary<string, DataSource<float>> Features { get => _data; }
+
         internal Dictionary<string, DataSource<float>> _data;
 
         public DataSourceSet()
@@ -21,6 +24,18 @@ namespace Horker.PSCNTK
         {
             foreach (var entry in dataSources)
                 Add(entry.Key, entry.Value);
+        }
+
+        public DataSourceSet(Hashtable dataSet)
+            : this()
+        {
+            foreach (DictionaryEntry entry in dataSet)
+            {
+                var value = entry.Value;
+                if (value is PSObject)
+                    value = (value as PSObject).BaseObject;
+                _data.Add((string)entry.Key, (DataSource<float>)value);
+            }
         }
 
         public int SampleCount

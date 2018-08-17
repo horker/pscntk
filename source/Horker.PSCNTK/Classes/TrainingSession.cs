@@ -96,6 +96,8 @@ namespace Horker.PSCNTK
             for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
             {
                 var batch = MinibatchDefinition.GetNextBatch(device);
+                if (batch == null)
+                    break;
 
                 InitializeParameterMap(batch);
 

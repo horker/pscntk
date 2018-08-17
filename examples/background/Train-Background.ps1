@@ -6,7 +6,7 @@ Set-StrictMode -Version latest
 
 Import-Module psmath
 
-$MINIBATCH_SIZE = 100
+$MINIBATCH_SIZE = 20
 $SAMPLE_COUNT_PER_EPOCH = 20 * 100
 
 ############################################################
@@ -66,6 +66,24 @@ $dataProducerScript = {
     $data
   }
 
+  function Preprocess-Data {
+    param($batch)
+
+    $features = cntk.datasource -Rows $batch.y0, $batch.y1
+    $features.Reshape(2, 1, -1)
+
+    $l = pso.onehot $batch.y2 -Categories "A", "B"
+    $labels = cntk.datasource -Rows $l.A, $l.B
+    $labels.Reshape(2, 1, -1)
+
+    return $features, $labels
+  }
+
+  $data = Generate-Samples
+  $validation = $data.Slice(@(0, ($data.Length * .3)))
+  $features, $labels = Preprocess-Data $validation
+  $minibatchdef.SetValidationData(@{ "input" = $features; "label" = $labels })
+
   $exit = $false
   while (!$exit) {
     $data = Generate-Samples
@@ -73,19 +91,9 @@ $dataProducerScript = {
     for ($i = 0; $i -lt $data.Length - $MINIBATCH_SIZE; $i += $MINIBATCH_SIZE) {
       $batch = $data.Slice(@($i, ($i + $MINIBATCH_SIZE)))
 
-      $features = cntk.datasource -Rows $batch.y0, $batch.y1
-      $features.Reshape(2, 1, -1)
+      $features, $labels = Preprocess-Data $batch
 
-      $l = pso.onehot $batch.y2 -Categories "A", "B"
-      $labels = cntk.datasource -Rows $l.A, $l.B
-      $labels.Reshape(2, 1, -1)
-
-      $d = New-Object "Collections.Generic.Dictionary[string, Horker.PSCNTK.DataSource[float]]"
-      $d.Add("input", $features)
-      $d.Add("label", $labels)
-      $minibatch = New-Object Horker.PSCNTK.Minibatch $d
-
-      if (!$minibatchdef.AddMinibatch($minibatch)) {
+      if (!$minibatchdef.AddMinibatch(@{ "input" = $features; "label" = $labels })) {
         $exit = $true
         break
       }
@@ -121,7 +129,7 @@ $label = cntk.input $OUTPUT_CLASSES -Name "label"
 if ($Progressive) {
   $minibatchDef = New-ProgressiveMinibatchDefinition
 
-  $runners = 0..9 | foreach {
+  $runners = 1..3 | foreach {
     $runner = cntk.backgroundscriptrunner
     $runner.Start($dataProducerScript, $minibatchDef, $MINIBATCH_SIZE)
     $runner
