@@ -28,7 +28,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var output = Layers.OptimizedRNNStack(Input, HiddenSize, LayerSize, Bidirectional, CellType, Name);
+            var output = Composite.OptimizedRNNStack(Input, HiddenSize, LayerSize, Bidirectional, CellType, Name);
 
             WriteObject(output);
         }
@@ -61,7 +61,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var output = Layers.Dense(
+            var output = Composite.Dense(
                 Input,           // Variable input,
                 Shape,           // Shape outputShape,
                 Initializer,     // CNTKDictionary initializer,
@@ -120,7 +120,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var output = Layers.Convolution(
+            var output = Composite.Convolution(
                 Input,                   // Variable input
                 FilterShape,             // int[] filterShape
                 NumFilters,              // int numFilters
@@ -239,7 +239,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var output = Layers.BatchNormalization(Input, Spatial, InitScale, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCNTKEngine, DisableRegularization, Name);
+            var output = Composite.BatchNormalization(Input, Spatial, InitScale, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCNTKEngine, DisableRegularization, Name);
 
             WriteObject(output);
         }

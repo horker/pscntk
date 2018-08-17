@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Classes\BackgroundScriptRunner.cs" />
     <Compile Include="Classes\CNTKFunctionHelper.cs" />
+    <Compile Include="Classes\Composite.cs" />
     <Compile Include="Classes\Constants.cs" />
     <Compile Include="Classes\Converter.cs" />
     <Compile Include="Classes\CTFBuilder.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="Classes\FeatureCTFBuilder.cs" />
     <Compile Include="Classes\Helpers.cs" />
     <Compile Include="Classes\IMinibatchDefinition.cs" />
-    <Compile Include="Classes\Layers.cs" />
     <Compile Include="Classes\Lstm.cs" />
     <Compile Include="Classes\Minibatch.cs" />
     <Compile Include="Classes\CTFMinibatchDefinition.cs" />
@@ -92,7 +92,7 @@
     <Compile Include="Extension methods\FunctionMethods.cs" />
     <Compile Include="Cmdlets\DataSourceCmdlets.cs" />
     <Compile Include="Cmdlets\FunctionCmdlets.cs" />
-    <Compile Include="Cmdlets\LayerCmdlets.cs" />
+    <Compile Include="Cmdlets\CompositeCmdlets.cs" />
     <Compile Include="Cmdlets\VariableCmdlets.cs" />
     <Compile Include="Extension methods\ValueMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

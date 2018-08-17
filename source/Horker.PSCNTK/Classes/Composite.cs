@@ -5,7 +5,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class Layers
+    public class Composite
     {
         public static Function Dense(Variable input, Shape outputShape, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, string activation, string name)
         {
