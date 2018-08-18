@@ -125,6 +125,7 @@ namespace Horker.PSCNTK
         {
             var result = Composite.ConvolutionTransposexD(
                 1,
+                ChannelFirst,
                 Input,                   // Variable input
                 FilterShape,             // int[] filterShape
                 NumFilters,              // int numFilters
@@ -138,8 +139,7 @@ namespace Horker.PSCNTK
                 Dilation,                // int[] dilation
                 ReductionRank,           // int reductionRank
                 MaxTempMemSizeInSamples, // int maxTempMemSizeInSamples
-                Name,                    // string name
-                ChannelFirst
+                Name                     // string name
             );
 
             WriteObject(result);
@@ -199,6 +199,7 @@ namespace Horker.PSCNTK
         {
             var result = Composite.ConvolutionTransposexD(
                 2,
+                ChannelFirst,
                 Input,                   // Variable input
                 FilterShape,             // int[] filterShape
                 NumFilters,              // int numFilters
@@ -212,8 +213,7 @@ namespace Horker.PSCNTK
                 Dilation,                // int[] dilation
                 ReductionRank,           // int reductionRank
                 MaxTempMemSizeInSamples, // int maxTempMemSizeInSamples
-                Name,                    // string name
-                ChannelFirst
+                Name                     // string name
             );
 
             WriteObject(result);
@@ -273,6 +273,7 @@ namespace Horker.PSCNTK
         {
             var result = Composite.ConvolutionTransposexD(
                 3,
+                ChannelFirst,
                 Input,                   // Variable input
                 FilterShape,             // int[] filterShape
                 NumFilters,              // int numFilters
@@ -286,8 +287,7 @@ namespace Horker.PSCNTK
                 Dilation,                // int[] dilation
                 ReductionRank,           // int reductionRank
                 MaxTempMemSizeInSamples, // int maxTempMemSizeInSamples
-                Name,                    // string name
-                ChannelFirst
+                Name                     // string name
             );
 
             WriteObject(result);

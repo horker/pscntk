@@ -50,7 +50,7 @@ namespace Horker.PSCNTK
             return conv;
         }
 
-        public static Function ConvolutionTransposexD(int numDimensions, Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool[] padding, int[] strides, bool useBias, CNTKDictionary biasInitializer, int[] outputShape, int[] dilation, int reductionRank, int maxTempMemSizeInSamples, string name, bool channelFirst)
+        public static Function ConvolutionTransposexD(int numDimensions, bool channelFirst, Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool[] padding, int[] strides, bool useBias, CNTKDictionary biasInitializer, int[] outputShape, int[] dilation, int reductionRank, int maxTempMemSizeInSamples, string name)
         {
             if (strides.Length != 1 && filterShape.Length != numDimensions)
                 throw new ArgumentException("Dimensions of filterShape should be " + numDimensions);
