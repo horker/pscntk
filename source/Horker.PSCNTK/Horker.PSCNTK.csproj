@@ -57,7 +57,11 @@
   <ItemGroup>
     <Compile Include="Classes\BackgroundScriptRunner.cs" />
     <Compile Include="Classes\CNTKFunctionHelper.cs" />
-    <Compile Include="Classes\Composite.cs" />
+    <Compile Include="Composite functions\ConvolutionTranspose.cs" />
+    <Compile Include="Composite functions\Dense.cs" />
+    <Compile Include="Composite functions\BatchNormalization.cs" />
+    <Compile Include="Composite functions\OptimizedRNNStack.cs" />
+    <Compile Include="Composite functions\Convolution.cs" />
     <Compile Include="Classes\Constants.cs" />
     <Compile Include="Classes\Converter.cs" />
     <Compile Include="Classes\CTFBuilder.cs" />
