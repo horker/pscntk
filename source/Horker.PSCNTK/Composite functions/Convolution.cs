@@ -65,7 +65,7 @@ namespace Horker.PSCNTK
             return result;
         }
 
-        private static Function ConvolutionxD(int numDimensions, bool channelFirst, Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, int[] strides, bool[] padding, int[] dilation, int reductionRank, int groups, int maxTempMemSizeInSamples, string name)
+        public static Function ConvolutionxD(int numDimensions, bool channelFirst, Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, int[] strides, bool[] padding, int[] dilation, int reductionRank, int groups, int maxTempMemSizeInSamples, string name)
         {
             if (strides.Length != 1 && filterShape.Length != numDimensions)
                 throw new ArgumentException("Dimensions of filterShape should be " + numDimensions);
@@ -77,21 +77,6 @@ namespace Horker.PSCNTK
             var st = FillShapeArray(strides, numDimensions, input, channelFirst);
 
             return Convolution(input, fil, numFilters, activation, initializer, useBias, biasInitializer, st, padding, dilation, reductionRank, groups, maxTempMemSizeInSamples, name);
-        }
-
-        public static Function Convolution1D(bool channelFirst, Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, int[] strides, bool[] padding, int[] dilation, int reductionRank, int groups, int maxTempMemSizeInSamples, string name)
-        {
-            return ConvolutionxD(1, channelFirst, input, filterShape, numFilters, activation, initializer, useBias, biasInitializer, strides, padding, dilation, reductionRank, groups, maxTempMemSizeInSamples, name);
-        }
-
-        public static Function Convolution2D(bool channelFirst, Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, int[] strides, bool[] padding, int[] dilation, int reductionRank, int groups, int maxTempMemSizeInSamples, string name)
-        {
-            return ConvolutionxD(2, channelFirst, input, filterShape, numFilters, activation, initializer, useBias, biasInitializer, strides, padding, dilation, reductionRank, groups, maxTempMemSizeInSamples, name);
-        }
-
-        public static Function Convolution3D(bool channelFirst, Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, int[] strides, bool[] padding, int[] dilation, int reductionRank, int groups, int maxTempMemSizeInSamples, string name)
-        {
-            return ConvolutionxD(3, channelFirst, input, filterShape, numFilters, activation, initializer, useBias, biasInitializer, strides, padding, dilation, reductionRank, groups, maxTempMemSizeInSamples, name);
         }
     }
 }

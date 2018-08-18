@@ -117,7 +117,8 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var result = Composite.Convolution1D(
+            var result = Composite.ConvolutionxD(
+                1,
                 ChannelFirst,
                 Input,                   // Variable input
                 FilterShape,             // int[] filterShape
@@ -187,7 +188,8 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var result = Composite.Convolution2D(
+            var result = Composite.ConvolutionxD(
+                2,
                 ChannelFirst,
                 Input,                   // Variable input
                 FilterShape,             // int[] filterShape
@@ -257,7 +259,8 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var result = Composite.Convolution3D(
+            var result = Composite.ConvolutionxD(
+                3,
                 ChannelFirst,
                 Input,                   // Variable input
                 FilterShape,             // int[] filterShape
