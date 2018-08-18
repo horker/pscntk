@@ -7,16 +7,8 @@ namespace Horker.PSCNTK
 {
     public partial class Composite
     {
-        public static Function ConvolutionTranspose(Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool[] padding, int[] strides, bool[] sharing, bool useBias, CNTKDictionary biasInitializer, int[] outputShape, int[] dilation, int reductionRank, int maxTempMemSizeInSamples, string name)
+        public static Function ConvolutionTranspose(Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool[] padding, int[] strides, bool useBias, CNTKDictionary biasInitializer, int[] outputShape, int[] dilation, int reductionRank, int maxTempMemSizeInSamples, string name)
         {
-            // Assume input variable's dimensions = (x, [y, [z,]] channels)
-
-            if (filterShape.Length != input.Shape.Rank - 1)
-                throw new ArgumentException("Length of filterShape should match input's dimension minus one");
-
-            if (strides.Length != 1 && strides.Length != input.Shape.Rank - 1)
-                throw new ArgumentException("Length of strides should be one, or match input's dimension minus one");
-
             // Initializers
 
             if (initializer == null)
@@ -26,37 +18,25 @@ namespace Horker.PSCNTK
                 biasInitializer = CNTKLib.ConstantInitializer(0);
 
             // Convolution map
-            // convolutionMap = CNTK.Parameter (I, O, kernelWidth, kernelHeight, numInputChannels, featureMapCount)
+            // (kernelWidth, kernelHeight, kernelInputChannels, numChannels, featureMapCount)
 
-            var convDims = new int[filterShape.Length + 2];
-            filterShape.CopyTo(convDims, 2);
-            convDims[0] = input.Shape.Dimensions.Aggregate((a, b) => a * b);
-            convDims[1] = numFilters; // feature map count
+            var convDims = new int[filterShape.Length + 1];
+            filterShape.CopyTo(convDims, 0);
+            convDims[filterShape.Length] = numFilters; // feature map count
 
             var convolutionMap = new Parameter(convDims, DataType.Float, initializer);
 
-            // Strides
-
-            var st = new int[input.Shape.Rank]; // plus channel
-            if (strides.Length == 1)
-                for (var i = 0; i < input.Shape.Rank - 1; ++i)
-                    st[i] = strides[0];
-            else
-                strides.CopyTo(st, 0);
-
-            st[input.Shape.Rank - 1] = numFilters;
-
             var conv = CNTKLib.ConvolutionTranspose(
-                convolutionMap,                // CNTK.Variable convolutionMap
-                input,                         // CNTK.Variable operand
-                st,                            // CNTK.NDShape strides
-                new BoolVector(sharing),       // CNTK.BoolVector sharing
-                new BoolVector(padding),       // CNTK.BoolVector autoPadding
-                outputShape,                   // CNTK.NDShape outputShape
-                dilation,                      // CNTK.NDShape dilation
-                (uint)reductionRank,           // uint reductionRank
-                (uint)maxTempMemSizeInSamples, // uint maxTempMemSizeInSamples
-                name                           //  string name
+                convolutionMap,                      // CNTK.Variable convolutionMap
+                input,                               // CNTK.Variable operand
+                strides,                             // CNTK.NDShape strides
+                new BoolVector(new bool[] { true }), // CNTK.BoolVector sharing
+                new BoolVector(padding),             // CNTK.BoolVector autoPadding
+                outputShape,                         // CNTK.NDShape outputShape
+                dilation,                            // CNTK.NDShape dilation
+                (uint)reductionRank,                 // uint reductionRank
+                (uint)maxTempMemSizeInSamples,       // uint maxTempMemSizeInSamples
+                name                                 // string name
             );
 
             if (useBias)
@@ -68,6 +48,20 @@ namespace Horker.PSCNTK
             conv = Helpers.ApplyActivation(conv, activation);
 
             return conv;
+        }
+
+        public static Function ConvolutionTransposexD(int numDimensions, Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool[] padding, int[] strides, bool useBias, CNTKDictionary biasInitializer, int[] outputShape, int[] dilation, int reductionRank, int maxTempMemSizeInSamples, string name, bool channelFirst)
+        {
+            if (strides.Length != 1 && filterShape.Length != numDimensions)
+                throw new ArgumentException("Dimensions of filterShape should be " + numDimensions);
+
+            if (strides.Length != 1 && strides.Length != 2)
+                throw new ArgumentException("Dimensions of strides should be 1 or " + numDimensions);
+
+            var fil = FillShapeArray(filterShape, numDimensions, input, channelFirst);
+            var st = FillShapeArray(strides, numDimensions, input, channelFirst);
+
+            return ConvolutionTranspose(input, fil, numFilters, activation, initializer, padding, st, useBias, biasInitializer, outputShape, dilation, reductionRank, maxTempMemSizeInSamples, name);
         }
     }
 }

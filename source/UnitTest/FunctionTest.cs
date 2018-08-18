@@ -43,7 +43,7 @@ namespace UnitTest
 
             var convolutionMap = new Parameter(kernelData.ToNDArrayView());
 
-            var f = CNTKLib.Convolution(convolutionMap, input, new int[]{ 1, 1, 2 }, new BoolVector(new bool[] { true }), new BoolVector(new bool[]{ true }), new int[] { 1 }, 1, 1);
+            var f = CNTKLib.Convolution(convolutionMap, input, new int[] { 1, 1, 2 }, new BoolVector(new bool[] { true }), new BoolVector(new bool[] { true }), new int[] { 1 }, 1, 1);
 
             var inputs = new Dictionary<Variable, Value>() { { input, inputData.ToValue() } };
             var outputs = new Dictionary<Variable, Value>() { { f.Output, null } };
@@ -59,13 +59,33 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestConv()
+        public void TestConvolutionTranspose()
         {
-            var inputData = new DataSource<float>(new float[] { 1, 2, 3, 4, 1, 2, 3, 4 }, new int[] { 2, 2, 2 });
+            // input:
+            //                           | 0 0 0 0 0 |
+            // | 1 3 |  strides = 2, 2   | 0 1 0 3 0 |
+            // | 2 4 | ================> | 0 0 0 0 0 |
+            //                           | 0 2 0 4 0 |
+            //                           | 0 0 0 0 0 |
+            //
+            // kernel:
+            // | 1 1 |    transpose      | 0 0 |
+            // | 0 0 | ================> | 1 1 |
+            //
+            // output:
+            //                           | 1 1 3 |
+            //                           | 0 0 0 |
+            //                           | 2 2 4 |
 
-            var input = CNTKLib.InputVariable(new int[] { 2, 2, 2 }, DataType.Float);
 
-            var f = Composite.Convolution(input, new int[] { 2, 2, 2 }, 4, null, CNTKLib.ConstantInitializer(1), false, null, new int[] { 1, 1, 2 }, new bool[] { true }, new int[] { 1 }, 1, 1, 0, "");
+            var inputData = new DataSource<float>(new float[] { 1, 2, 3, 4 }, new int[] { 2, 2, 1 });
+            var convData = new DataSource<float>(new float[] { 1, 0, 1, 0 }, new int[] { 2, 2, 1, 1 });
+
+            var input = CNTKLib.InputVariable(new int[] { 2, 2, 1 }, DataType.Float);
+
+            var convolutionMap = new Parameter(convData.ToNDArrayView());
+
+            var f = CNTKLib.ConvolutionTranspose(convolutionMap, input, new int[] { 2, 2, 1 }, new BoolVector(new bool[] { true }), new BoolVector(new bool[] { true }), new int[] { 0 }, new int[] { 1 }, 1, 0, "");
 
             var inputs = new Dictionary<Variable, Value>() { { input, inputData.ToValue() } };
             var outputs = new Dictionary<Variable, Value>() { { f.Output, null } };
@@ -73,11 +93,11 @@ namespace UnitTest
             f.Evaluate(inputs, outputs, DeviceDescriptor.UseDefaultDevice());
             var result = DataSource<float>.FromValue(outputs[f.Output]);
 
-            CollectionAssert.AreEqual(new int[] { 2, 2, 4, 1, 1 }, result.Shape.Dimensions);
-            Assert.AreEqual(20, result.Data[0]);
-            Assert.AreEqual(12, result.Data[1]);
-            Assert.AreEqual(14, result.Data[2]);
-            Assert.AreEqual(8, result.Data[3]);
+            CollectionAssert.AreEqual(new int[] { 3, 3, 1, 1, 1 }, result.Shape.Dimensions);
+            Assert.AreEqual(1, result.Data[0]);
+            Assert.AreEqual(0, result.Data[1]);
+            Assert.AreEqual(2, result.Data[2]);
+            Assert.AreEqual(1, result.Data[3]);
         }
     }
 }
