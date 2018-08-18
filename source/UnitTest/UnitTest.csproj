@@ -59,6 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackgroundScriptRunnerTest.cs" />
+    <Compile Include="FunctionTest.cs" />
+    <Compile Include="CompositeFunctionTest.cs" />
     <Compile Include="CTFBuilderTest.cs" />
     <Compile Include="CTFSamplerTest.cs" />
     <Compile Include="DataSourceCTFBuilderTest.cs" />

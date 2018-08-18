@@ -1,3 +1,7 @@
+param(
+  [switch]$UseResNet
+)
+
 Set-StrictMode -Version Latest
 
 ############################################################
@@ -27,11 +31,11 @@ function New-ResNetNode {
   $WScale = 7.07
 
   $n = $In
-  $n = cntk.conv $n (3, 3) $OutDim (cntk.glorotuniform $WScale -1 2)
+  $n = cntk.conv2d $n (3, 3) $OutDim (1, 1) (cntk.glorotuniform $WScale -1 2)
   $n = cntk.batchnorm $n -Spatial:$Spatial
   $n = cntk.relu $n
 
-  $n = cntk.conv $n (3, 3) $OutDim (cntk.glorotuniform $WScale -1 2)
+  $n = cntk.conv2d $n (3, 3) $OutDim (1, 1) (cntk.glorotuniform $WScale -1 2)
   $n = cntk.batchnorm $n -Spatial:$Spatial
 
   $n = cntk.plus $n $In
@@ -49,11 +53,11 @@ function New-ResNetNodeInc {
   $WScale = 7.07
 
   $n = $In
-  $n = cntk.conv $n (3, 3) $OutDim (cntk.glorotuniform $WScale -1 2) -Strides (2, 2)
+  $n = cntk.conv2d $n (3, 3) $OutDim (2, 2) (cntk.glorotuniform $WScale -1 2)
   $n = cntk.batchnorm $n -Spatial:$Spatial
   $n = cntk.relu $n
 
-  $n = cntk.conv $n (3, 3) $OutDim (cntk.glorotuniform $WScale -1 2)
+  $n = cntk.conv2d $n (3, 3) $OutDim (1, 1) (cntk.glorotuniform $WScale -1 2)
   $n = cntk.batchnorm $n -Spatial:$Spatial
 
   $proj = New-ProjectLayer $Projection $In 2 2
@@ -106,7 +110,7 @@ function New-ResNetClassifier {
 
   $dim1 = 16
 
-  $n = cntk.conv $n (3, 3) $dim1 (cntk.glorotuniform .26 -1 2)
+  $n = cntk.conv2d $n (3, 3) $dim1 (1, 1) (cntk.glorotuniform .26 -1 2)
   $n = cntk.batchnorm $n -Spatial
   $n = cntk.relu $n
 
@@ -156,12 +160,12 @@ function New-CNNClassifier {
   $n = $In
 
   $dim = 16
-  for ($i = 0; $i -lt 3; ++$i) {
-    $n = cntk.conv $n (3, 3) $dim (cntk.glorotuniform)
+  for ($i = 0; $i -lt 1; ++$i) {
+    $n = cntk.conv2d $n (3, 3) $dim (1, 1) (cntk.glorotuniform)
     $n = cntk.batchnorm $n
     $n = cntk.relu $n
 
-    $n = cntk.conv $n (3, 3) $dim (cntk.glorotuniform)
+    $n = cntk.conv2d $n (3, 3) $dim (1, 1) (cntk.glorotuniform)
     $n = cntk.batchnorm $n
     $n = cntk.relu $n
 
@@ -180,8 +184,12 @@ function New-CNNClassifier {
 
 $in = cntk.input $IMAGE_DIM -Name "input"
 
-#$out = New-ResNetClassifier $in
-$out = New-CNNClassifier $in
+if ($UseResNet) {
+  $out = New-ResNetClassifier $in
+}
+else {
+  $out = New-CNNClassifier $in
+}
 
 $label = cntk.input $OUT_CLASSES -Name "label"
 
