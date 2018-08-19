@@ -18,10 +18,10 @@ namespace Horker.PSCNTK
         [Parameter(Position = 1, Mandatory = true)]
         public Variable Label;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
         public string LossFunctionName;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 3, Mandatory = false)]
         public string ErrorFunctionName;
 
         [Parameter(Position = 4, Mandatory = true)]
@@ -48,11 +48,19 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            MethodInfo lossMethod = FindMethod(LossFunctionName);
-            MethodInfo errorMethod = FindMethod(ErrorFunctionName);
+            Function loss = null, error = null;
 
-            var loss = (Function)lossMethod.Invoke(null, new object[] { Model, Label });
-            var error = (Function)errorMethod.Invoke(null, new object[] { Model, Label });
+            if (!string.IsNullOrEmpty(LossFunctionName))
+            {
+                var lossMethod = FindMethod(LossFunctionName);
+                loss = (Function)lossMethod.Invoke(null, new object[] { Model, Label });
+            }
+
+            if (!string.IsNullOrEmpty(ErrorFunctionName))
+            {
+                var errorMethod = FindMethod(ErrorFunctionName);
+                error = (Function)errorMethod.Invoke(null, new object[] { Model, Label });
+            }
 
             var trainer = Trainer.CreateTrainer(Model, loss, error, Learners.ToList());
             WriteObject(trainer);

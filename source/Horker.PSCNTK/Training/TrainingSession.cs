@@ -108,8 +108,16 @@ namespace Horker.PSCNTK
                 Trainer.TrainMinibatch(arguments, device);
 
                 SampleCount = (int)Trainer.PreviousMinibatchSampleCount();
-                Loss = Trainer.PreviousMinibatchLossAverage();
-                Metric = Trainer.PreviousMinibatchEvaluationAverage();
+
+                if (Trainer.LossFunction() != null)
+                    Loss = Trainer.PreviousMinibatchLossAverage();
+                else
+                    Loss = 0;
+
+                if (Trainer.EvaluationFunction() != null)
+                    Metric = Trainer.PreviousMinibatchEvaluationAverage();
+                else
+                    Metric = 0;
 
                 Elapsed = _stopwatch.Elapsed;
 
@@ -122,6 +130,9 @@ namespace Horker.PSCNTK
 
         public double GetValidationMetric(DeviceDescriptor device = null)
         {
+            if (Trainer.EvaluationFunction() == null)
+                return 0;
+
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();
 
