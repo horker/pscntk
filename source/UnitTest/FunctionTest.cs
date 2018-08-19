@@ -77,7 +77,6 @@ namespace UnitTest
             //                           | 0 0 0 |
             //                           | 2 2 4 |
 
-
             var inputData = new DataSource<float>(new float[] { 1, 2, 3, 4 }, new int[] { 2, 2, 1 });
             var convData = new DataSource<float>(new float[] { 1, 0, 1, 0 }, new int[] { 2, 2, 1, 1 });
 
@@ -98,6 +97,31 @@ namespace UnitTest
             Assert.AreEqual(0, result.Data[1]);
             Assert.AreEqual(2, result.Data[2]);
             Assert.AreEqual(1, result.Data[3]);
+        }
+
+        [TestMethod]
+        public void TestConvolutionTranspose2()
+        {
+            var inputData = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
+            // var inputData = new DataSource<float>(new float[] { 1, 2, 3, 4 }, new int[] { 2, 2, 1 });
+
+            var input = CNTKLib.InputVariable(new int[] { 2, 2, 3 }, DataType.Float);
+
+            var convolutionMap = new Parameter(new int[] { 2, 2, 6, 3 }, DataType.Float, CNTKLib.ConstantInitializer(1));
+
+            var f = CNTKLib.ConvolutionTranspose(convolutionMap, input, new int[] { 2, 2, 3 }, new BoolVector(new bool[] { true }), new BoolVector(new bool[] { true }), new int[] { 0 }, new int[] { 1 }, 1, 0, "");
+
+            var inputs = new Dictionary<Variable, Value>() { { input, inputData.ToValue() } };
+            var outputs = new Dictionary<Variable, Value>() { { f.Output, null } };
+
+            f.Evaluate(inputs, outputs, DeviceDescriptor.UseDefaultDevice());
+            var result = DataSource<float>.FromValue(outputs[f.Output]);
+
+            CollectionAssert.AreEqual(new int[] { 3, 3, 6, 1, 1 }, result.Shape.Dimensions);
+            Assert.AreEqual(15, result.Data[0]);
+            Assert.AreEqual(15, result.Data[1]);
+            Assert.AreEqual(18, result.Data[2]);
+            Assert.AreEqual(15, result.Data[3]);
         }
     }
 }

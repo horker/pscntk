@@ -46,7 +46,7 @@ namespace UnitTest
 
             var input = CNTKLib.InputVariable(new int[] { 2, 2, 1 }, DataType.Float);
 
-            var f = Composite.ConvolutionTranspose(input, new int[] { 2, 2, 1 }, 1, null, CNTKLib.ConstantInitializer(1), new bool[] { true }, new int[] { 2, 2, 1 }, false, null, new int[] { 0 }, new int[] { 1 }, 1, 0, "");
+            var f = Composite.ConvolutionTranspose(input, new int[] { 2, 2 }, 1, null, CNTKLib.ConstantInitializer(1), new bool[] { true }, new int[] { 2, 2, 1 }, false, null, new int[] { 0 }, new int[] { 1 }, 1, 0, "");
 
             var inputs = new Dictionary<Variable, Value>() { { input, inputData.ToValue() } };
             var outputs = new Dictionary<Variable, Value>() { { f.Output, null } };

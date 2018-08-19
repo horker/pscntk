@@ -7,6 +7,7 @@ namespace Horker.PSCNTK
 {
     public partial class Composite
     {
+        // Assume input shape is such as (x [, y [, z]], channels)
         public static Function ConvolutionTranspose(Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool[] padding, int[] strides, bool useBias, CNTKDictionary biasInitializer, int[] outputShape, int[] dilation, int reductionRank, int maxTempMemSizeInSamples, string name)
         {
             // Initializers
@@ -18,11 +19,12 @@ namespace Horker.PSCNTK
                 biasInitializer = CNTKLib.ConstantInitializer(0);
 
             // Convolution map
-            // (kernelWidth, kernelHeight, kernelInputChannels, numChannels, featureMapCount)
+            // (kernelWidth, kernelHeight, featureMapCount, kernelChannel)
 
-            var convDims = new int[filterShape.Length + 1];
+            var convDims = new int[filterShape.Length + 2];
             filterShape.CopyTo(convDims, 0);
-            convDims[filterShape.Length] = numFilters; // feature map count
+            convDims[convDims.Length - 2] = numFilters;
+            convDims[convDims.Length - 1] = input.Shape.Dimensions[filterShape.Length]; // input channel
 
             var convolutionMap = new Parameter(convDims, DataType.Float, initializer);
 
@@ -58,10 +60,9 @@ namespace Horker.PSCNTK
             if (strides.Length > numDimensions)
                 throw new ArgumentException("Dimensions of strides should be <= " + numDimensions);
 
-            var fil = FillShapeArray(filterShape, numDimensions, input, channelFirst);
             var st = FillShapeArray(strides, numDimensions, input, channelFirst);
 
-            return ConvolutionTranspose(input, fil, numFilters, activation, initializer, padding, st, useBias, biasInitializer, outputShape, dilation, reductionRank, maxTempMemSizeInSamples, name);
+            return ConvolutionTranspose(input, filterShape, numFilters, activation, initializer, padding, st, useBias, biasInitializer, outputShape, dilation, reductionRank, maxTempMemSizeInSamples, name);
         }
     }
 }
