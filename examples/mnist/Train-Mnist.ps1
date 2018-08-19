@@ -64,11 +64,11 @@ $n = $in
 
 if ($UseConv) {
   # conv1: 28 x 28 x 1 -> 28 x 28 x 8 -> 14 x 14 x 8
-  $n = cntk.conv2d $n (3, 3) 8 (1, 1) (cntk.truncatednormal .1) relu -Padding $true
+  $n = cntk.conv2d $n (3, 3) 8 (1, 1) $true (cntk.truncatednormal .1) relu
   $n = cntk.maxpooling $n (3, 3) (2, 2)
 
   # conv2: 14 x 14 x 8 -> 14 x 14 x 32 -> 7 x 7 x 32
-  $n = cntk.conv2d $n (3, 3) 32 (1, 1) (cntk.truncatednormal .1) relu -Padding $true
+  $n = cntk.conv2d $n (3, 3) 32 (1, 1) $true (cntk.truncatednormal .1) relu
   $n = cntk.maxpooling $n (3, 3) (2, 2)
 
   # fc

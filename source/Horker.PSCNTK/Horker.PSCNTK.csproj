@@ -55,8 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\BackgroundScriptRunner.cs" />
-    <Compile Include="Classes\CNTKFunctionHelper.cs" />
+    <Compile Include="Cmdlets\NewCNTKNoiseSampler.cs" />
+    <Compile Include="Samplers\BackgroundScriptRunner.cs" />
+    <Compile Include="General\CNTKFunctionHelper.cs" />
     <Compile Include="Cmdlets\ConvCmdlets.cs" />
     <Compile Include="Cmdlets\ConvTransCmdlets.cs" />
     <Compile Include="Composite functions\ConvolutionTranspose.cs" />
@@ -64,24 +65,25 @@
     <Compile Include="Composite functions\BatchNormalization.cs" />
     <Compile Include="Composite functions\OptimizedRNNStack.cs" />
     <Compile Include="Composite functions\Convolution.cs" />
-    <Compile Include="Classes\Constants.cs" />
-    <Compile Include="Classes\Converter.cs" />
-    <Compile Include="Classes\CTFBuilder.cs" />
-    <Compile Include="Classes\CTFSampler.cs" />
-    <Compile Include="Classes\DataSource.cs" />
-    <Compile Include="Classes\DataSourceSet.cs" />
-    <Compile Include="Classes\DataSourceSetCTFBuilder.cs" />
-    <Compile Include="Classes\DataSourceToBitmap.cs" />
-    <Compile Include="Classes\FeatureCTFBuilder.cs" />
-    <Compile Include="Classes\Helpers.cs" />
-    <Compile Include="Classes\ISampler.cs" />
-    <Compile Include="Classes\Lstm.cs" />
-    <Compile Include="Classes\Minibatch.cs" />
-    <Compile Include="Classes\OnMemorySampler.cs" />
-    <Compile Include="Classes\ParallelSampler.cs" />
-    <Compile Include="Classes\Serializer.cs" />
-    <Compile Include="Classes\TrainingSession.cs" />
-    <Compile Include="Classes\UnmanagedDllLoader.cs" />
+    <Compile Include="General\Constants.cs" />
+    <Compile Include="General\Converter.cs" />
+    <Compile Include="CTF\CTFBuilder.cs" />
+    <Compile Include="Samplers\CTFSampler.cs" />
+    <Compile Include="DataSource\DataSource.cs" />
+    <Compile Include="DataSource\DataSourceSet.cs" />
+    <Compile Include="CTF\DataSourceSetCTFBuilder.cs" />
+    <Compile Include="DataSource\DataSourceToBitmap.cs" />
+    <Compile Include="CTF\FeatureCTFBuilder.cs" />
+    <Compile Include="General\Helpers.cs" />
+    <Compile Include="Samplers\ISampler.cs" />
+    <Compile Include="Composite functions\Lstm.cs" />
+    <Compile Include="Samplers\Minibatch.cs" />
+    <Compile Include="Samplers\NoiseSampler.cs" />
+    <Compile Include="Samplers\OnMemorySampler.cs" />
+    <Compile Include="Samplers\ParallelSampler.cs" />
+    <Compile Include="DataSource\Serializer.cs" />
+    <Compile Include="Training\TrainingSession.cs" />
+    <Compile Include="General\UnmanagedDllLoader.cs" />
     <Compile Include="Cmdlets\AxisCmdlets.cs" />
     <Compile Include="Cmdlets\FunctionCmdletsByHand.cs" />
     <Compile Include="Cmdlets\LearnerCmdlets.cs" />
@@ -103,8 +105,8 @@
     <Compile Include="Cmdlets\VariableCmdlets.cs" />
     <Compile Include="Extension methods\ValueMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Classes\SeriesCTFBuilder.cs" />
-    <Compile Include="Classes\Shape.cs" />
+    <Compile Include="CTF\SeriesCTFBuilder.cs" />
+    <Compile Include="DataSource\Shape.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

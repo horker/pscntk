@@ -20,13 +20,13 @@ namespace Horker.PSCNTK
         public int[] Strides = new int[] { 1 };
 
         [Parameter(Position = 4, Mandatory = false)]
-        public CNTKDictionary Initializer = null;
+        public bool[] Padding = new bool[] { false };
 
         [Parameter(Position = 5, Mandatory = false)]
-        public string Activation = null;
+        public CNTKDictionary Initializer = null;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public bool[] Padding = new bool[] { true };
+        public string Activation = null;
 
         [Parameter(Position = 7, Mandatory = false)]
         public SwitchParameter NoBias = false;
@@ -89,13 +89,13 @@ namespace Horker.PSCNTK
         public int[] Strides = new int[] { 1 };
 
         [Parameter(Position = 4, Mandatory = false)]
-        public CNTKDictionary Initializer = null;
+        public bool[] Padding = new bool[] { false };
 
         [Parameter(Position = 5, Mandatory = false)]
-        public string Activation = null;
+        public CNTKDictionary Initializer = null;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public bool[] Padding = new bool[] { true };
+        public string Activation = null;
 
         [Parameter(Position = 7, Mandatory = false)]
         public SwitchParameter NoBias = false;
@@ -163,13 +163,13 @@ namespace Horker.PSCNTK
         public int[] Strides = new int[] { 1 };
 
         [Parameter(Position = 4, Mandatory = false)]
-        public CNTKDictionary Initializer = null;
+        public bool[] Padding = new bool[] { false };
 
         [Parameter(Position = 5, Mandatory = false)]
-        public string Activation = null;
+        public CNTKDictionary Initializer = null;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public bool[] Padding = new bool[] { true };
+        public string Activation = null;
 
         [Parameter(Position = 7, Mandatory = false)]
         public SwitchParameter NoBias = false;
@@ -237,13 +237,13 @@ namespace Horker.PSCNTK
         public int[] Strides = new int[] { 1 };
 
         [Parameter(Position = 4, Mandatory = false)]
-        public CNTKDictionary Initializer = null;
+        public bool[] Padding = new bool[] { false };
 
         [Parameter(Position = 5, Mandatory = false)]
-        public string Activation = null;
+        public CNTKDictionary Initializer = null;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public bool[] Padding = new bool[] { true };
+        public string Activation = null;
 
         [Parameter(Position = 7, Mandatory = false)]
         public SwitchParameter NoBias = false;
