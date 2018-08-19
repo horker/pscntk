@@ -40,7 +40,7 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestConvolutionTranspose()
+        public void TestConvTrans()
         {
             var inputData = new DataSource<float>(new float[] { 1, 2, 3, 4 }, new int[] { 2, 2, 1 });
 

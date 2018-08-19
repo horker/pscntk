@@ -52,11 +52,11 @@ namespace Horker.PSCNTK
 
         public static Function ConvolutionTransposexD(int numDimensions, bool channelFirst, Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool[] padding, int[] strides, bool useBias, CNTKDictionary biasInitializer, int[] outputShape, int[] dilation, int reductionRank, int maxTempMemSizeInSamples, string name)
         {
-            if (strides.Length != 1 && filterShape.Length != numDimensions)
-                throw new ArgumentException("Dimensions of filterShape should be " + numDimensions);
+            if (filterShape.Length > numDimensions)
+                throw new ArgumentException("Dimensions of filterShape should be <= " + numDimensions);
 
-            if (strides.Length != 1 && strides.Length != 2)
-                throw new ArgumentException("Dimensions of strides should be 1 or " + numDimensions);
+            if (strides.Length > numDimensions)
+                throw new ArgumentException("Dimensions of strides should be <= " + numDimensions);
 
             var fil = FillShapeArray(filterShape, numDimensions, input, channelFirst);
             var st = FillShapeArray(strides, numDimensions, input, channelFirst);
