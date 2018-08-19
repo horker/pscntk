@@ -15,14 +15,14 @@ namespace Horker.PSCNTK
         [Parameter(Position = 0, Mandatory = true)]
         public Variable Model;
 
-        [Parameter(Position = 1, Mandatory = true)]
+        [Parameter(Position = 1, Mandatory = false)]
         public Variable Label;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public string LossFunctionName;
+        public object LossFunction;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public string ErrorFunctionName;
+        public object ErrorFunction;
 
         [Parameter(Position = 4, Mandatory = true)]
         public Learner[] Learners;
@@ -43,24 +43,38 @@ namespace Horker.PSCNTK
                 }
             }
 
-            throw new ArgumentException("LossFunctionName doesn't indicate the proper CNTK function name");
+            throw new ArgumentException("'" + name + "' doesn't indicate the proper CNTK function name");
+        }
+
+        private Function GetFunctionInstance(object func, string displayName)
+        {
+            if (func == null)
+                return null;
+
+            if (func is PSObject)
+                func = (func as PSObject).BaseObject;
+
+            if (func is Function)
+            {
+                return LossFunction as Function;
+            }
+            else if (func is string)
+            {
+                var f = func as string;
+                if (string.IsNullOrEmpty(f))
+                    return null;
+
+                var lossMethod = FindMethod(f);
+                return (Function)lossMethod.Invoke(null, new object[] { Model, Label });
+            }
+
+            throw new ArgumentException(displayName + " should be an instance of Function or a function name");
         }
 
         protected override void EndProcessing()
         {
-            Function loss = null, error = null;
-
-            if (!string.IsNullOrEmpty(LossFunctionName))
-            {
-                var lossMethod = FindMethod(LossFunctionName);
-                loss = (Function)lossMethod.Invoke(null, new object[] { Model, Label });
-            }
-
-            if (!string.IsNullOrEmpty(ErrorFunctionName))
-            {
-                var errorMethod = FindMethod(ErrorFunctionName);
-                error = (Function)errorMethod.Invoke(null, new object[] { Model, Label });
-            }
+            Function loss = GetFunctionInstance(LossFunction, "LossFunction");
+            Function error = GetFunctionInstance(ErrorFunction, "ErrorFunction");
 
             var trainer = Trainer.CreateTrainer(Model, loss, error, Learners.ToList());
             WriteObject(trainer);
