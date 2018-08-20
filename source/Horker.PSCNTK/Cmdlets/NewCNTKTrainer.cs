@@ -56,7 +56,7 @@ namespace Horker.PSCNTK
 
             if (func is Function)
             {
-                return LossFunction as Function;
+                return func as Function;
             }
             else if (func is string)
             {
