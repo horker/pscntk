@@ -36,12 +36,12 @@ namespace Horker.PSCNTK.Microsoft
                 fInv,
                 CNTKLib.Log(
                     Constant.Scalar(f.DataType, 1.0) +
-                    CNTKLib.Exp(CNTKLib.ElementTimes(f, new Parameter(new NDShape(), f.DataType, 0.99537863 /* 1/f*ln (e^f-1) */, device)))));
+                    CNTKLib.Exp(CNTKLib.ElementTimes(f, new Parameter(new NDShape(), f.DataType, 0.99537863 /* 1/f*ln (e^f-1) */, device, name + "_w")))));
             return CNTKLib.ElementTimes(beta, x, name);
         }
 
         static Tuple<Function, Function> LSTMPCellWithSelfStabilization<ElementType>(
-            Variable input, Variable prevOutput, Variable prevCellState, DeviceDescriptor device)
+            Variable input, Variable prevOutput, Variable prevCellState, DeviceDescriptor device, string baseName)
         {
             int outputDim = prevOutput.Shape[0];
             int cellDim = prevCellState.Shape[0];
@@ -49,66 +49,71 @@ namespace Horker.PSCNTK.Microsoft
             bool isFloatType = typeof(ElementType).Equals(typeof(float));
             DataType dataType = isFloatType ? DataType.Float : DataType.Double;
 
-            Func<int, Parameter> createBiasParam;
+            Func<int, string, Parameter> createBiasParam;
             if (isFloatType)
-                createBiasParam = (dim) => new Parameter(new int[] { dim }, 0.01f, device, "");
+                createBiasParam = (dim, name) => new Parameter(new int[] { dim }, 0.01f, device, name + "_b");
             else
-                createBiasParam = (dim) => new Parameter(new int[] { dim }, 0.01, device, "");
+                createBiasParam = (dim, name) => new Parameter(new int[] { dim }, 0.01, device, name + "_b");
 
-            uint seed2 = 1;
-            Func<int, Parameter> createProjectionParam = (oDim) => new Parameter(new int[] { oDim, NDShape.InferredDimension },
-                    dataType, CNTKLib.GlorotUniformInitializer(1.0, 1, 0, seed2++), device);
+            Func<int, string, Parameter> createProjectionParam = (oDim, name) => new Parameter(new int[] { oDim, NDShape.InferredDimension },
+                    dataType, CNTKLib.GlorotUniformInitializer(1.0, 1, 0), device, name + "_w");
 
-            Func<int, Parameter> createDiagWeightParam = (dim) =>
-                new Parameter(new int[] { dim }, dataType, CNTKLib.GlorotUniformInitializer(1.0, 1, 0, seed2++), device);
+            Func<int, string, Parameter> createDiagWeightParam = (dim, name) =>
+                new Parameter(new int[] { dim }, dataType, CNTKLib.GlorotUniformInitializer(1.0, 1, 0), device, name + "_diagw");
 
-            Function stabilizedPrevOutput = Stabilize<ElementType>(prevOutput, device);
-            Function stabilizedPrevCellState = Stabilize<ElementType>(prevCellState, device);
+            Function stabilizedPrevOutput = Stabilize<ElementType>(prevOutput, device, baseName + "_stab1");
+            Function stabilizedPrevCellState = Stabilize<ElementType>(prevCellState, device, baseName + "_stab2");
 
-            Func<Variable> projectInput = () =>
-                createBiasParam(cellDim) + (createProjectionParam(cellDim) * input);
+            Func<string, Variable> projectInput = (name) =>
+                createBiasParam(cellDim, name) + (createProjectionParam(cellDim, name) * input);
 
             // Input gate
+            var n = baseName + "_it";
             Function it =
                 CNTKLib.Sigmoid(
-                    (Variable)(projectInput() + (createProjectionParam(cellDim) * stabilizedPrevOutput)) +
-                    CNTKLib.ElementTimes(createDiagWeightParam(cellDim), stabilizedPrevCellState));
+                    (Variable)(projectInput(n) + (createProjectionParam(cellDim, n) * stabilizedPrevOutput)) +
+                    CNTKLib.ElementTimes(createDiagWeightParam(cellDim, n), stabilizedPrevCellState));
+
+            n = baseName + "_bit";
             Function bit = CNTKLib.ElementTimes(
                 it,
-                CNTKLib.Tanh(projectInput() + (createProjectionParam(cellDim) * stabilizedPrevOutput)));
+                CNTKLib.Tanh(projectInput(n) + (createProjectionParam(cellDim, n) * stabilizedPrevOutput)));
 
             // Forget-me-not gate
+            n = baseName + "_ft";
             Function ft = CNTKLib.Sigmoid(
                 (Variable)(
-                        projectInput() + (createProjectionParam(cellDim) * stabilizedPrevOutput)) +
-                        CNTKLib.ElementTimes(createDiagWeightParam(cellDim), stabilizedPrevCellState));
+                        projectInput(n) + (createProjectionParam(cellDim, n) * stabilizedPrevOutput)) +
+                        CNTKLib.ElementTimes(createDiagWeightParam(cellDim, n), stabilizedPrevCellState));
             Function bft = CNTKLib.ElementTimes(ft, prevCellState);
 
             Function ct = (Variable)bft + bit;
 
             // Output gate
+            n = baseName + "_ot";
             Function ot = CNTKLib.Sigmoid(
-                (Variable)(projectInput() + (createProjectionParam(cellDim) * stabilizedPrevOutput)) +
-                CNTKLib.ElementTimes(createDiagWeightParam(cellDim), Stabilize<ElementType>(ct, device)));
+                (Variable)(projectInput(n) + (createProjectionParam(cellDim, n) * stabilizedPrevOutput)) +
+                CNTKLib.ElementTimes(createDiagWeightParam(cellDim, n), Stabilize<ElementType>(ct, device, n)));
             Function ht = CNTKLib.ElementTimes(ot, CNTKLib.Tanh(ct));
 
+            n = baseName + "_h";
             Function c = ct;
-            Function h = (outputDim != cellDim) ? (createProjectionParam(outputDim) * Stabilize<ElementType>(ht, device)) : ht;
+            Function h = (outputDim != cellDim) ? (createProjectionParam(outputDim, n) * Stabilize<ElementType>(ht, device, n)) : ht;
 
             return new Tuple<Function, Function>(h, c);
         }
-
 
         static Tuple<Function, Function> LSTMPComponentWithSelfStabilization<ElementType>(Variable input,
             NDShape outputShape, NDShape cellShape,
             Func<Variable, Function> recurrenceHookH,
             Func<Variable, Function> recurrenceHookC,
-            DeviceDescriptor device)
+            DeviceDescriptor device,
+            string baseName)
         {
             var dh = Variable.PlaceholderVariable(outputShape, input.DynamicAxes);
             var dc = Variable.PlaceholderVariable(cellShape, input.DynamicAxes);
 
-            var LSTMCell = LSTMPCellWithSelfStabilization<ElementType>(input, dh, dc, device);
+            var LSTMCell = LSTMPCellWithSelfStabilization<ElementType>(input, dh, dc, device, baseName);
             var actualDh = recurrenceHookH(LSTMCell.Item1);
             var actualDc = recurrenceHookC(LSTMCell.Item2);
 
@@ -148,8 +153,9 @@ namespace Horker.PSCNTK.Microsoft
                 new int[] { cellDim },
                 pastValueRecurrenceHook,
                 pastValueRecurrenceHook,
-                device).Item1;
-            Function thoughtVectorFunction = CNTKLib.SequenceLast(LSTMFunction);
+                device,
+                outputName).Item1;
+            Function thoughtVectorFunction = CNTKLib.SequenceLast(LSTMFunction, outputName);
 
             return thoughtVectorFunction;
         }

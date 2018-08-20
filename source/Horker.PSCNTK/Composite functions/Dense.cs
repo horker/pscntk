@@ -25,13 +25,13 @@ namespace Horker.PSCNTK
 
             int hiddenSize = outputShape.Dimensions.Aggregate((d1, d2) => d1 * d2);
 
-            var weight = new Parameter(new int[] { hiddenSize, inDim }, DataType.Float, initializer);
+            var weight = new Parameter(new int[] { hiddenSize, inDim }, DataType.Float, initializer, DeviceDescriptor.UseDefaultDevice(), name + "_w");
 
             Function output;
 
             if (useBias)
             {
-                var bias = new Parameter(new int[] { hiddenSize }, DataType.Float, biasInitializer);
+                var bias = new Parameter(new int[] { hiddenSize }, DataType.Float, biasInitializer, DeviceDescriptor.UseDefaultDevice(), name + "_b");
                 output = CNTKLib.Plus(CNTKLib.Times(weight, input), bias);
             }
             else

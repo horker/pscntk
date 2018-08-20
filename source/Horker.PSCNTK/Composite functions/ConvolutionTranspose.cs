@@ -26,7 +26,7 @@ namespace Horker.PSCNTK
             convDims[convDims.Length - 2] = numFilters;
             convDims[convDims.Length - 1] = input.Shape.Dimensions[filterShape.Length]; // input channel
 
-            var convolutionMap = new Parameter(convDims, DataType.Float, initializer);
+            var convolutionMap = new Parameter(convDims, DataType.Float, initializer, DeviceDescriptor.UseDefaultDevice(), name + "_w");
 
             var conv = CNTKLib.ConvolutionTranspose(
                 convolutionMap,                      // CNTK.Variable convolutionMap
@@ -43,7 +43,7 @@ namespace Horker.PSCNTK
 
             if (useBias)
             {
-                var bias = new Parameter(conv.Output.Shape, DataType.Float, biasInitializer);
+                var bias = new Parameter(conv.Output.Shape, DataType.Float, biasInitializer, DeviceDescriptor.UseDefaultDevice(), name + "_b");
                 conv = CNTKLib.Plus(conv, bias);
             }
 

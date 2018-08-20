@@ -10,8 +10,10 @@ namespace Horker.PSCNTK
         public static Function BatchNormalization(Variable input, bool spatial, double initScale, double normalizationTimeConstant, double blendTimeConstant, double epsilon, bool useCNTKEngine, bool disableRegularization, string name)
         {
             var normShape = new int[] { CNTK.NDShape.InferredDimension };
-            var scale = new Parameter(normShape, DataType.Float, initScale);
-            var bias = new Parameter(normShape, DataType.Float, 0);
+
+            var scale = new Parameter(normShape, DataType.Float, initScale, DeviceDescriptor.UseDefaultDevice(), name + "_w");
+            var bias = new Parameter(normShape, DataType.Float, 0, DeviceDescriptor.UseDefaultDevice(), name + "_b");
+
             var runningMean = new Constant(normShape, 0.0f, DeviceDescriptor.UseDefaultDevice());
             var runningInvStd = new Constant(normShape, 0.0f, DeviceDescriptor.UseDefaultDevice());
             var runningCount = Constant.Scalar(0.0f, DeviceDescriptor.UseDefaultDevice());

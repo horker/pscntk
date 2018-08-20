@@ -15,11 +15,11 @@ namespace Horker.PSCNTK
             weightSize += (layerSize - 1) * (8 * hiddenSize * hiddenSize + 8 * hiddenSize);
             weightSize += 4 * hiddenSize * hiddenSize + 12 * hiddenSize;
 
-            var w = new Parameter(new int[] { weightSize }, DataType.Float, CNTKLib.GlorotUniformInitializer());
+            var w = new Parameter(new int[] { weightSize }, DataType.Float, CNTKLib.GlorotUniformInitializer(), DeviceDescriptor.UseDefaultDevice(), name + "_w");
 
-            var rnn = CNTKLib.OptimizedRNNStack(input, w, (uint)hiddenSize, (uint)layerSize, bidirectional, cellType, name);
+            var rnn = CNTKLib.OptimizedRNNStack(input, w, (uint)hiddenSize, (uint)layerSize, bidirectional, cellType, name + "_rnn");
 
-            var output = CNTKLib.SequenceLast(rnn);
+            var output = CNTKLib.SequenceLast(rnn, name);
 
             return output;
         }
