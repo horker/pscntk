@@ -67,6 +67,9 @@ namespace Horker.PSCNTK
 
         public static Function ConvolutionxD(int numDimensions, bool channelFirst, Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, int[] strides, bool[] padding, int[] dilation, int reductionRank, int groups, int maxTempMemSizeInSamples, string name)
         {
+            if (input.Shape.Rank != numDimensions + 1)
+                throw new ArgumentException("Rank of input variable should be " + (numDimensions + 1) + " for " + numDimensions + "-dimensional convolution");
+
             if (filterShape.Length > numDimensions)
                 throw new ArgumentException("Dimensions of filterShape should be <= " + numDimensions);
 
