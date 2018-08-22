@@ -19,10 +19,10 @@ namespace Horker.PSCNTK
             _output = new StringBuilder();
             _detailed = detailed;
 
-            var walk = new NodeWalk(func, this);
+            new NodeWalk(func, this);
         }
 
-        public void ProcessFunction(Function func, int depth)
+        public bool ProcessFunction(Function func, int depth)
         {
             var indent = new string(' ', depth * 2);
 
@@ -33,9 +33,11 @@ namespace Horker.PSCNTK
                 name = string.IsNullOrEmpty(func.Name) ? "" : "<" + func.Name + ">";
 
             _output.AppendFormat("{0}{1} {2} {3}\r\n", indent, depth, func.OpName, name);
+
+            return true;
         }
 
-        public void ProcessVariable(Variable va, int depth, bool visited)
+        public bool ProcessVariable(Variable va, int depth, bool visited)
         {
             var indent = new string(' ', depth * 2);
             var v = visited ? " *" : "";
@@ -48,6 +50,8 @@ namespace Horker.PSCNTK
                 name = string.IsNullOrEmpty(va.Name) ? "" : " <" + va.Name + ">";
 
             _output.AppendFormat("{0}{1} @{2} [{3}]{4}{5}\r\n", indent, depth, va.Kind, shape, name, v);
+
+            return true;
         }
     }
 }

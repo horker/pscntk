@@ -1,18 +1,22 @@
 ﻿using System;
-using System.Text;
-using System.Collections;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Horker.PSCNTK;
-using System.Management.Automation;
 using System.Linq;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CNTK;
+using Horker.PSCNTK;
 
 namespace UnitTest
 {
-    /*
     [TestClass]
     public class FunctionMethodsTest
     {
+        public FunctionMethodsTest()
+        {
+            var path = Environment.ExpandEnvironmentVariables(@"..\..\..\..\lib");
+            UnmanagedDllLoader.Load(path);
+        }
+
+        /*
         [TestMethod]
         public void TestInvoke()
         {
@@ -33,4 +37,18 @@ namespace UnitTest
         }
     }
     */
+
+        [TestMethod]
+        public void TestFind()
+        {
+            var input = Variable.InputVariable(new int[] { 1, 2 }, CNTK.DataType.Float, "input");
+            var f = Composite.Dense(input, new int[] { 5 }, null, true, null, "sigmoid", "TestFind");
+
+            var obj = new PSObject(f);
+
+            var result = FunctionMethods.Find(new PSObject(f), "TestFind_w");
+
+            Assert.AreEqual("TestFind_w", ((Variable)result).Name);
+        }
+    }
 }

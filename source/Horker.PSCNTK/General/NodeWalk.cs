@@ -9,8 +9,8 @@ namespace Horker.PSCNTK
 {
     public interface INodeWalker
     {
-        void ProcessFunction(Function function, int depth);
-        void ProcessVariable(Variable variable, int depth, bool visited);
+        bool ProcessFunction(Function function, int depth);
+        bool ProcessVariable(Variable variable, int depth, bool visited);
     }
 
     public class NodeWalk
@@ -28,31 +28,47 @@ namespace Horker.PSCNTK
             WalkToFunction(_model, 0);
         }
 
-        private void WalkToFunction(Function func, int depth)
+        private bool WalkToFunction(Function func, int depth)
         {
-            _walker.ProcessFunction(func, depth);
+            if (!_walker.ProcessFunction(func, depth))
+                return false;
 
             if (func.IsComposite)
-                WalkToFunction(func.RootFunction, depth + 1);
+            {
+                if (!WalkToFunction(func.RootFunction, depth + 1))
+                    return false;
+            }
             else
+            {
                 foreach (var arg in func.Inputs)
-                    WalkToVariable(arg, depth + 1);
+                {
+                    if (!WalkToVariable(arg, depth + 1))
+                        return false;
+                }
+            }
 
+            return true;
         }
 
-        private void WalkToVariable(Variable va, int depth)
+        private bool WalkToVariable(Variable va, int depth)
         {
             var visited = _visited.Contains(va);
+            if (!visited)
+                _visited.Add(va);
 
-            _walker.ProcessVariable(va, depth, visited);
+            if (!_walker.ProcessVariable(va, depth, visited))
+                return false;
 
             if (visited)
-                return;
-
-            _visited.Add(va);
+                return true;
 
             if (va.Owner != null)
-                WalkToFunction(va.Owner, depth + 1);
+            {
+                if (!WalkToFunction(va.Owner, depth + 1))
+                    return false;
+            }
+
+            return true;
         }
     }
 }

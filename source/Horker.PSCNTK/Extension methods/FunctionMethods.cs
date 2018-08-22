@@ -8,10 +8,18 @@ namespace Horker.PSCNTK
 {
     public class FunctionMethods
     {
-        public static CNTK.Variable Find(PSObject func, string name)
+        public static object Find(PSObject func, string name)
         {
             var f = (CNTK.Function)func.BaseObject;
-            return CNTKFunctionHelper.Find(f, name);
+            var w = new FunctionFind(f, name, false, false);
+            return w.Results[0];
+        }
+
+        public static object FindAll(PSObject func, string name)
+        {
+            var f = (CNTK.Function)func.BaseObject;
+            var w = new FunctionFind(f, name, true, false);
+            return w.Results;
         }
 
         public static CNTK.Value Invoke(PSObject func, Hashtable Arguments = null, CNTK.DeviceDescriptor device = null)

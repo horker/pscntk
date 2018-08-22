@@ -8,15 +8,6 @@ namespace Horker.PSCNTK
 {
     public class CNTKFunctionHelper
     {
-        public static CNTK.Variable Find(CNTK.Function func, string name)
-        {
-            var vas = func.Inputs.Where(v => v.Name == name || v.Uid == name).ToArray();
-            if (vas.Length > 0)
-                return vas[0];
-
-            return null;
-        }
-
         public static CNTK.Value Invoke(CNTK.Function func, Hashtable Arguments = null, CNTK.DeviceDescriptor device = null)
         {
             if (Arguments == null)
@@ -33,7 +24,7 @@ namespace Horker.PSCNTK
                     key = entry.Key as CNTK.Variable;
                 else
                 {
-                    var va = Find(func, entry.Key.ToString());
+                    var va = FunctionFind.FindVariable(func, entry.Key.ToString());
                     if (va == null)
                         throw new ArgumentException(string.Format("Unknown argument key '{0}'", entry.Key.ToString()));
 

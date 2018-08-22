@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Cmdlets\NewCNTKNoiseSampler.cs" />
     <Compile Include="Extension methods\FunctionAsTree.cs" />
+    <Compile Include="Extension methods\FunctionFind.cs" />
     <Compile Include="General\NodeWalk.cs" />
     <Compile Include="Samplers\BackgroundScriptRunner.cs" />
     <Compile Include="Extension methods\CNTKFunctionHelper.cs" />
