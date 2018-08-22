@@ -57,47 +57,65 @@ namespace Horker.PSCNTK
             return output[func.Output];
         }
 
-        static public string AsTree(CNTK.Function func)
+        static public string AsTree(CNTK.Function func, bool detailed = false)
         {
             var visitedVariables = new HashSet<string>();
             var output = new StringBuilder();
 
-            AsTreeInternal(func, output, visitedVariables, 0);
+            AsTreeInternal(func, output, visitedVariables, 0, detailed);
 
             return output.ToString();
         }
 
-        static private void AsTreeInternal(object node, StringBuilder output, HashSet<string> visitedVariables, int depth)
+        static private void AddFunctionNode(StringBuilder output, int depth, CNTK.Function func, bool detailed)
         {
             var indent = new string(' ', depth * 2);
+
+            string name;
+            if (detailed)
+                name = "<" + (string.IsNullOrEmpty(func.Name) ? func.Uid : func.Name + ":" + func.Uid) + ">";
+            else
+                name = string.IsNullOrEmpty(func.Name) ? "" : "<" + func.Name + ">";
+
+            output.AppendFormat("{0}{1} {2} {3}\r\n", indent, depth, func.OpName, name);
+        }
+
+        static private void AddVariableNode(StringBuilder output, int depth, CNTK.Variable va, bool visited, bool detailed)
+        {
+            var indent = new string(' ', depth * 2);
+            var v = visited ? " *" : "";
+            var shape = string.Join("x", va.Shape.Dimensions);
+
+            string name;
+            if (detailed)
+                name = " <" + (string.IsNullOrEmpty(va.Name) ? va.Uid : va.Name + ":" + va.Uid) + ">";
+            else
+                name = string.IsNullOrEmpty(va.Name) ? "" : " <" + va.Name + ">";
+
+            output.AppendFormat("{0}{1} @{2} [{3}]{4}{5}\r\n", indent, depth, va.Kind, shape, name, v);
+        }
+
+        static private void AsTreeInternal(object node, StringBuilder output, HashSet<string> visitedVariables, int depth, bool detailed)
+        {
 
             if (node is CNTK.Function)
             {
                 var func = node as CNTK.Function;
-                var name = string.IsNullOrEmpty(func.Name) ? func.Uid : func.Name + ":" + func.Uid;
-                var args = string.Join(", ", func.Arguments.Select(arg => string.IsNullOrEmpty(arg.Name) ? arg.Uid : arg.Name));
 
-                var visited = visitedVariables.Contains(func.Uid);
-                var v = visited ? " *" : "";
+                AddFunctionNode(output, depth, func, detailed);
 
-                output.AppendFormat("{0}{1} {2}({3}) <{4}>{5}\r\n", indent, depth, func.OpName, args, name, v);
-
-                if (visited)
-                    return;
-
-                foreach (var arg in func.Arguments)
-                    AsTreeInternal(arg, output, visitedVariables, depth + 1);
+                if (func.IsComposite)
+                    AsTreeInternal(func.RootFunction, output, visitedVariables, depth + 1, detailed);
+                else
+                    foreach (var arg in func.Inputs)
+                        AsTreeInternal(arg, output, visitedVariables, depth + 1, detailed);
             }
             else if (node is CNTK.Variable)
             {
                 var va = node as CNTK.Variable;
-                var name = string.IsNullOrEmpty(va.Name) ? va.Uid : va.Name + ":" + va.Uid;
-
                 var visited = visitedVariables.Contains(va.Uid);
-                var v = visited ? " *" : "";
 
-                var shape = string.Join("x", va.Shape.Dimensions);
-                output.AppendFormat("{0}{1} @{2} [{3}] <{4}>{5}\r\n", indent, depth, va.Kind, shape, name, v);
+                AddVariableNode(output, depth, va, visited, detailed);
 
                 if (visited)
                     return;
@@ -105,7 +123,7 @@ namespace Horker.PSCNTK
                 visitedVariables.Add(va.Uid);
 
                 if (va.Owner != null)
-                    AsTreeInternal(va.Owner, output, visitedVariables, depth + 1);
+                    AsTreeInternal(va.Owner, output, visitedVariables, depth + 1, detailed);
             }
             else
             {

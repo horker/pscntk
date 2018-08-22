@@ -123,11 +123,11 @@ namespace Horker.PSCNTK.Microsoft
             return new Tuple<Function, Function>(LSTMCell.Item1, LSTMCell.Item2);
         }
 
-        private static Function Embedding(Variable input, int embeddingDim, DeviceDescriptor device)
+        private static Function Embedding(Variable input, int embeddingDim, DeviceDescriptor device, string baseName)
         {
             System.Diagnostics.Debug.Assert(input.Shape.Rank == 1);
             int inputDim = input.Shape[0];
-            var embeddingParameters = new Parameter(new int[] { embeddingDim, inputDim }, DataType.Float, CNTKLib.GlorotUniformInitializer(), device);
+            var embeddingParameters = new Parameter(new int[] { embeddingDim, inputDim }, DataType.Float, CNTKLib.GlorotUniformInitializer(), device, baseName + "_embed_w");
             return CNTKLib.Times(embeddingParameters, input);
         }
 
@@ -145,7 +145,7 @@ namespace Horker.PSCNTK.Microsoft
         public static Function Create(Variable input, int embeddingDim, int LSTMDim, int cellDim, DeviceDescriptor device,
             string outputName)
         {
-            Function embeddingFunction = Embedding(input, embeddingDim, device);
+            Function embeddingFunction = Embedding(input, embeddingDim, device, outputName);
             Func<Variable, Function> pastValueRecurrenceHook = (x) => CNTKLib.PastValue(x);
             Function LSTMFunction = LSTMPComponentWithSelfStabilization<float>(
                 embeddingFunction,
@@ -155,7 +155,9 @@ namespace Horker.PSCNTK.Microsoft
                 pastValueRecurrenceHook,
                 device,
                 outputName).Item1;
-            Function thoughtVectorFunction = CNTKLib.SequenceLast(LSTMFunction, outputName);
+            Function thoughtVectorFunction = CNTKLib.SequenceLast(LSTMFunction);
+
+            thoughtVectorFunction.RootFunction.SetName(outputName);
 
             return thoughtVectorFunction;
         }

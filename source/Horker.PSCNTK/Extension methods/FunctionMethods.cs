@@ -20,10 +20,10 @@ namespace Horker.PSCNTK
             return CNTKFunctionHelper.Invoke(f, Arguments, device);
         }
 
-        public static string AsTree(PSObject func)
+        public static string AsTree(PSObject func, bool detailed = false)
         {
             var f = (CNTK.Function)func.BaseObject;
-            return CNTKFunctionHelper.AsTree(f);
+            return CNTKFunctionHelper.AsTree(f, detailed);
         }
     }
 }

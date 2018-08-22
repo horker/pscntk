@@ -19,7 +19,9 @@ namespace Horker.PSCNTK
 
             var rnn = CNTKLib.OptimizedRNNStack(input, w, (uint)hiddenSize, (uint)layerSize, bidirectional, cellType, name + "_rnn");
 
-            var output = CNTKLib.SequenceLast(rnn, name);
+            var output = CNTKLib.SequenceLast(rnn);
+
+            output.RootFunction.SetName(name);
 
             return output;
         }

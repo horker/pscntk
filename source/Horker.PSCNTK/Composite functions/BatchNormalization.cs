@@ -31,8 +31,10 @@ namespace Horker.PSCNTK
                 epsilon,                   // double epsilon
                 !useCNTKEngine,            // bool useCuDNNEngine
                 disableRegularization,     // bool disableRegularization
-                name                       // string name
+                ""                         // string name
             );
+
+            output.RootFunction.SetName(name);
 
             return output;
         }

@@ -38,7 +38,7 @@ namespace Horker.PSCNTK
                 dilation,                            // CNTK.NDShape dilation
                 (uint)reductionRank,                 // uint reductionRank
                 (uint)maxTempMemSizeInSamples,       // uint maxTempMemSizeInSamples
-                name                                 // string name
+                ""                                   // string name
             );
 
             if (useBias)
@@ -48,6 +48,8 @@ namespace Horker.PSCNTK
             }
 
             conv = Helpers.ApplyActivation(conv, activation);
+
+            conv.RootFunction.SetName(name);
 
             return conv;
         }

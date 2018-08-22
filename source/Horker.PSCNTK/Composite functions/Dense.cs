@@ -42,6 +42,8 @@ namespace Horker.PSCNTK
 
             output = Helpers.ApplyActivation(output, activation);
 
+            output.RootFunction.SetName(name);
+
             return output;
         }
     }

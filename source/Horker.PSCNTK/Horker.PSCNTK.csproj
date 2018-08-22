@@ -57,7 +57,7 @@
   <ItemGroup>
     <Compile Include="Cmdlets\NewCNTKNoiseSampler.cs" />
     <Compile Include="Samplers\BackgroundScriptRunner.cs" />
-    <Compile Include="General\CNTKFunctionHelper.cs" />
+    <Compile Include="Extension methods\CNTKFunctionHelper.cs" />
     <Compile Include="Cmdlets\ConvCmdlets.cs" />
     <Compile Include="Cmdlets\ConvTransCmdlets.cs" />
     <Compile Include="Composite functions\ConvolutionTranspose.cs" />
