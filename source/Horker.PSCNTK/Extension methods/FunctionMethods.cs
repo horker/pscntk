@@ -23,7 +23,8 @@ namespace Horker.PSCNTK
         public static string AsTree(PSObject func, bool detailed = false)
         {
             var f = (CNTK.Function)func.BaseObject;
-            return CNTKFunctionHelper.AsTree(f, detailed);
+            var w = new FunctionAsTree(f, detailed);
+            return w.Result;
         }
     }
 }
