@@ -34,5 +34,12 @@ namespace Horker.PSCNTK
             var w = new FunctionAsTree(f, detailed);
             return w.Result;
         }
+
+        public static string ToDot(PSObject func)
+        {
+            var f = (CNTK.Function)func.BaseObject;
+            var g = new DotGenerator(f);
+            return g.Result;
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace Horker.PSCNTK
         public int MaxTempMemSizeInSamples = 0;
 
         [Parameter(Position = 12, Mandatory = false)]
-        public string Name = "";
+        public string Name = "Conv";
 
         protected override void EndProcessing()
         {
@@ -110,7 +110,7 @@ namespace Horker.PSCNTK
         public int MaxTempMemSizeInSamples = 0;
 
         [Parameter(Position = 12, Mandatory = false)]
-        public string Name = "";
+        public string Name = "Conv1d";
 
         [Parameter(Position = 13, Mandatory = false)]
         public SwitchParameter ChannelFirst = false;
@@ -181,7 +181,7 @@ namespace Horker.PSCNTK
         public int MaxTempMemSizeInSamples = 0;
 
         [Parameter(Position = 12, Mandatory = false)]
-        public string Name = "";
+        public string Name = "Conv2d";
 
         [Parameter(Position = 13, Mandatory = false)]
         public SwitchParameter ChannelFirst = false;
@@ -252,7 +252,7 @@ namespace Horker.PSCNTK
         public int MaxTempMemSizeInSamples = 0;
 
         [Parameter(Position = 12, Mandatory = false)]
-        public string Name = "";
+        public string Name = "Conv3d";
 
         [Parameter(Position = 13, Mandatory = false)]
         public SwitchParameter ChannelFirst = false;

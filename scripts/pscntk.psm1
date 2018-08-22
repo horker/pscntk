@@ -22,6 +22,7 @@ $METHOD_LIST = @(
       "Find"
       "Invoke"
       "AsTree"
+      "ToDot"
     )
   }
 

@@ -23,7 +23,7 @@ namespace Horker.PSCNTK
         public CNTK.DeviceDescriptor Device = null;
 
         [Parameter(Position = 5, Mandatory = false)]
-        public string Name = "";
+        public string Name = "LSTM";
 
         protected override void EndProcessing()
         {

@@ -26,7 +26,7 @@ namespace Horker.PSCNTK
         public CNTKDictionary BiasInitializer = null;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public string Name = "";
+        public string Name = "Dense";
 
         protected override void EndProcessing()
         {
@@ -67,7 +67,7 @@ namespace Horker.PSCNTK
         public bool IncludePad = false;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public string Name = "";
+        public string Name = "MaxPooling";
 
         protected override void EndProcessing()
         {
@@ -99,7 +99,7 @@ namespace Horker.PSCNTK
         public bool IncludePad = false;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public string Name = "";
+        public string Name = "AveragePooling";
 
         protected override void EndProcessing()
         {
@@ -137,7 +137,7 @@ namespace Horker.PSCNTK
         public SwitchParameter DisableRegularization = false;
 
         [Parameter(Position = 8, Mandatory = false)]
-        public string Name = "";
+        public string Name = "BatchNorm";
 
         protected override void EndProcessing()
         {
@@ -168,7 +168,7 @@ namespace Horker.PSCNTK
         public string CellType = "lstm";
 
         [Parameter(Position = 5, Mandatory = false)]
-        public string Name = "";
+        public string Name = "OptimizedRNNStack";
 
         protected override void EndProcessing()
         {

@@ -21,3 +21,4 @@ CNTK/
 *.bin
 *.clibin
 *.sqlite
+*.dot
