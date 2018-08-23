@@ -47,7 +47,7 @@ namespace Horker.PSCNTK
                 conv = CNTKLib.Plus(conv, bias);
             }
 
-            conv = Helpers.ApplyActivation(conv, activation);
+            conv = ApplyActivation(conv, activation);
 
             conv.RootFunction.SetName(name);
 

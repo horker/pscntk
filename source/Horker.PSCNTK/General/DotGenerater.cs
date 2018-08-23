@@ -9,25 +9,6 @@ namespace Horker.PSCNTK
 {
     public class DotGenerator : INodeWalker
     {
-        public class Node
-        {
-            public Function Subgraph;
-            public Function Function;
-            public Variable Variable;
-
-            public Node(Function subgraph, Function func)
-            {
-                Subgraph = subgraph;
-                Function = func;
-            }
-
-            public Node(Function subgraph, Variable va)
-            {
-                Subgraph = subgraph;
-                Variable = va;
-            }
-        }
-
         public class Link
         {
             public string From;
@@ -42,7 +23,8 @@ namespace Horker.PSCNTK
 
         private StringBuilder _output;
 
-        private List<Node> _nodes;
+        private Function _model;
+        private List<Variable> _nodes;
         private List<Link> _links;
         private List<Function> _subgraphs;
 
@@ -52,18 +34,22 @@ namespace Horker.PSCNTK
         {
             _output = new StringBuilder();
 
-            _nodes = new List<Node>();
+            _model = func;
+            _nodes = new List<Variable>();
             _links = new List<Link>();
             _subgraphs = new List<Function>();
             _subgraphs.Add(null);
 
             _output.AppendLine("digraph dot {");
-            _output.AppendLine("graph [splines=\"polyline\"];");
+            _output.AppendLine("graph [charset=\"utf-8\"; splines=\"polyline\"; fontname=\"Consolas\"];");
+            _output.AppendLine("node [fontname=\"Consolas\"];");
             _output.AppendLine("edge [dir=\"back\"; arrowtail=\"normal\"];");
+
+            _links.Add(new Link(func.Uid, func.RootFunction.Uid));
 
             new NodeWalk(func, this);
 
-            DefineNodesAndLinks();
+            WriteAllNodes();
 
             _output.AppendLine("}");
         }
@@ -71,15 +57,13 @@ namespace Horker.PSCNTK
         public bool ProcessFunction(Function func, int depth)
         {
             if (func.IsComposite)
-                AddLink(func, func.RootFunction);
-            else
-            {
-                if (!string.IsNullOrEmpty(func.Name))
-                    _subgraphs.Add(func);
+                return true;
 
-                foreach (var va in func.Inputs)
-                    AddLink(func, va);
-            }
+            if (!string.IsNullOrEmpty(func.Name))
+                _subgraphs.Add(func);
+
+            foreach (var va in func.Inputs)
+                AddLink(func, va);
 
             return true;
         }
@@ -89,20 +73,11 @@ namespace Horker.PSCNTK
             return true;
         }
 
-        private void AddNode(Function func)
-        {
-            if (!string.IsNullOrEmpty(func.Name))
-                _nodes.Add(new Node(func, func));
-            else
-                _nodes.Add(new Node(_subgraphs.Last(), func));
-        }
-
         private void AddNode(Variable va)
         {
-            if (va.IsInput)
-                _nodes.Add(new Node(null, va));
-            else
-                _nodes.Add(new Node(_subgraphs.Last(), va));
+            if (_nodes.Contains(va))
+                return;
+            _nodes.Add(va);
         }
 
         private void AddLink(Function from, Function to)
@@ -137,63 +112,78 @@ namespace Horker.PSCNTK
             _links.Add(new Link(from.Uid, to.Uid));
         }
 
-        private void DefineNodesAndLinks()
+        private void WriteAllNodes()
         {
-            var subgraphs = _nodes.Select(x => x.Subgraph).Distinct();
+            WriteOutputNode();
 
-            foreach (var sg in subgraphs)
-            {
-//                if (sg != null)
-//                {
-//                    _output.AppendFormat("subgraph cluster_{0} {{\r\n", sg.Uid);
-//                    _output.AppendFormat("label = \"{0}\";\r\n", sg.Name);
-//                    _output.AppendLine("labelloc = \"t\";");
-//                    _output.AppendLine("labeljust = \"r\";");
-//                    _output.AppendLine("style = \"dotted, filled\";");
-//                    _output.AppendLine("fillcolor = \"#f0f0f0\";");
-//                }
+            var groups = _nodes.GroupBy(x => NodeGroup.FindGroup(x));
 
-                foreach (var node in _nodes.Where(x => x.Subgraph == sg))
-                {
-                    if (node.Function != null)
-                    {
-                        var func = node.Function;
-
-                        string name;
-                        string style;
-                        if (func.IsComposite)
-                        {
-                            name = (func.Output == null || string.IsNullOrEmpty(func.Output.Name) ? "Output" : func.Output.Name) +
-                                "|" +
-                                (func.Output == null ? "(undef)" : string.Join(" x ", func.Output.Shape.Dimensions));
-                            style = "style=\"rounded, filled\" fillcolor=\"#ccccff\"";
-                        }
-                        else
-                        {
-                            name = func.OpName + "|" + (func.Output == null ? "(undef)" : string.Join(" x ", func.Output.Shape.Dimensions));
-                            style = "style=\"filled\" fillcolor=\"white\"";
-                        }
-
-                        _output.AppendFormat("{0} [label=\"{1}\" shape=\"record\" {2}];\r\n", func.Uid, name, style);
-                    }
-                    else
-                    {
-                        var va = node.Variable;
-                        var style = "style=\"rounded\"";
-                        if (va.IsInput)
-                            style = "style=\"rounded, filled\" fillcolor=\"#ffffcc\"";
-
-                        var name = (string.IsNullOrEmpty(va.Name) ? va.Uid : va.Name) + "|" + string.Join(" x ", va.Shape.Dimensions);
-                        _output.AppendFormat("{0} [label=\"{1}\" shape=\"record\" {2}];\r\n", va.Uid, name, style);
-                    }
-                }
-
-//                if (sg != null)
-//                    _output.AppendLine("}");
-            }
+            foreach (var g in groups)
+                WriteNodeInGroup(g.Key, g);
 
             foreach (var link in _links)
                 _output.AppendFormat("{0} -> {1};\r\n", link.From, link.To);
+        }
+
+        private void WriteOutputNode()
+        {
+            var name =
+                "Output" +
+                "|" +
+                string.Join(" x ", _model.Output.Shape.Dimensions);
+            var style = "style=\"rounded, filled\" fillcolor=\"#ccccff\"";
+
+            _output.AppendFormat("{0} [label=\"{1}\" shape=\"record\" {2}];\r\n", _model.Uid, name, style);
+        }
+
+        private void WriteNodeInGroup(NodeGroup group, IEnumerable<Variable> nodes)
+        {
+            bool first = true;
+            bool hasNodes = false;
+
+            foreach (var node in nodes)
+            {
+                if (first && group != null)
+                {
+                    _output.AppendFormat("subgraph cluster_{0} {{\r\n", group.UniqueName);
+                    _output.AppendFormat("label = \"{0}\";\r\n", group.Name);
+                    _output.AppendLine("labelloc = \"t\";");
+                    _output.AppendLine("labeljust = \"r\";");
+                    _output.AppendLine("style = \"dotted, filled\";");
+                    _output.AppendLine("fillcolor = \"#f0f0f0\";");
+                    first = false;
+                    hasNodes = true;
+                }
+
+                var value = node;
+                if (value.IsOutput)
+                {
+                    // Function
+
+                    var func = value.Owner;
+
+                    var name = func.OpName + "|" + (func.Output == null ? "(undef)" : string.Join(" x ", func.Output.Shape.Dimensions));
+                    var style = "style=\"filled\" fillcolor=\"white\"";
+
+                    _output.AppendFormat("{0} [label=\"{1}\" shape=\"record\" {2}];\r\n", func.Uid, name, style);
+                }
+                else
+                {
+                    // Variable
+
+                    var va = value as CNTK.Variable;
+
+                    var style = "style=\"rounded\"";
+                    if (va.IsInput)
+                        style = "style=\"rounded, filled\" fillcolor=\"#ffffcc\"";
+
+                    var name = (string.IsNullOrEmpty(va.Name) ? va.Uid : va.Name) + "|" + string.Join(" x ", va.Shape.Dimensions);
+                    _output.AppendFormat("{0} [label=\"{1}\" shape=\"record\" {2}];\r\n", va.Uid, name, style);
+                }
+            }
+
+            if (hasNodes)
+                _output.AppendLine("}");
         }
     }
 }

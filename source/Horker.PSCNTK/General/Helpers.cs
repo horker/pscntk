@@ -28,16 +28,5 @@ namespace Horker.PSCNTK
 
             return methodInfo;
         }
-
-        public static Function ApplyActivation(Function input, string activation)
-        {
-            if (activation != null)
-            {
-                var m = Helpers.GetCNTKLibMethod(activation);
-                input = (Function)m.Invoke(null, new object[] { (Variable)input });
-            }
-
-            return input;
-        }
     }
 }
