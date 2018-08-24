@@ -41,9 +41,9 @@ namespace Horker.PSCNTK
             _subgraphs.Add(null);
 
             _output.AppendLine("digraph dot {");
-            _output.AppendLine("graph [charset=\"utf-8\"; splines=\"polyline\"; fontname=\"Consolas\"];");
-            _output.AppendLine("node [fontname=\"Consolas\"];");
-            _output.AppendLine("edge [dir=\"back\"; arrowtail=\"normal\"];");
+            _output.AppendLine("    graph [charset=\"utf-8\"; rankdir=\"BT\"; splines=\"spline\"; fontname=\"Consolas\"];");
+            _output.AppendLine("    node [fontname=\"Consolas\"];");
+            _output.AppendLine("    edge [dir=\"back\"; arrowtail=\"normal\"];");
 
             _links.Add(new Link(func.Uid, func.RootFunction.Uid));
 
@@ -114,18 +114,32 @@ namespace Horker.PSCNTK
 
         private void WriteAllNodes()
         {
-            WriteOutputNode();
+            WriteOutputNode(1);
 
             var groups = _nodes.GroupBy(x => NodeGroup.FindGroup(x));
 
-            foreach (var g in groups)
-                WriteNodeInGroup(g.Key, g);
+            var visited = new HashSet<NodeGroup>();
+
+            foreach (var group in groups)
+            {
+                var g = group.Key;
+                if (g == null)
+                {
+                    WriteNodes(group, 1);
+                    continue;
+                }
+
+                while (g.Parent != null)
+                    g = g.Parent;
+
+                WriteNodeInGroup(g, groups, visited, 1);
+            }
 
             foreach (var link in _links)
-                _output.AppendFormat("{0} -> {1};\r\n", link.From, link.To);
+                _output.AppendFormat("    {0} -> {1};\r\n", link.From, link.To);
         }
 
-        private void WriteOutputNode()
+        private void WriteOutputNode(int depth)
         {
             var name =
                 "Output" +
@@ -133,28 +147,42 @@ namespace Horker.PSCNTK
                 string.Join(" x ", _model.Output.Shape.Dimensions);
             var style = "style=\"rounded, filled\" fillcolor=\"#ccccff\"";
 
-            _output.AppendFormat("{0} [label=\"{1}\" shape=\"record\" {2}];\r\n", _model.Uid, name, style);
+            _output.AppendFormat("    {0} [label=\"{1}\" shape=\"record\" {2}];\r\n", _model.Uid, name, style);
         }
 
-        private void WriteNodeInGroup(NodeGroup group, IEnumerable<Variable> nodes)
+        private void WriteNodeInGroup(NodeGroup group, IEnumerable<IGrouping<NodeGroup, Variable>> grouping, HashSet<NodeGroup> visited, int depth)
         {
-            bool first = true;
-            bool hasNodes = false;
+            if (visited.Contains(group))
+                return;
+
+            visited.Add(group);
+
+            var indent = new string(' ', depth * 4);
+            _output.AppendFormat("{0}subgraph cluster_{1} {{\r\n", indent, group.UniqueName);
+            _output.AppendFormat("{0}    label = \"{1}\";\r\n", indent, group.Name);
+            _output.AppendFormat("{0}    labelloc = \"t\";\r\n", indent);
+            _output.AppendFormat("{0}    labeljust = \"r\";\r\n", indent);
+            _output.AppendFormat("{0}    style = \"dotted, filled\";\r\n", indent);
+            _output.AppendFormat("{0}    fillcolor = \"#f0f0f0\";\r\n", indent);
+
+            var nodes = grouping.Where(x => x.Key == group).FirstOrDefault();
+            WriteNodes(nodes, depth + 1);
+
+            foreach (var g in group.Subgroups)
+                WriteNodeInGroup(g, grouping, visited, depth + 1);
+
+            _output.AppendFormat("{0}}}\r\n", indent);
+        }
+
+        private void WriteNodes(IEnumerable<Variable> nodes, int depth)
+        {
+            if (nodes == null)
+                return;
+
+            var indent = new string(' ', depth * 4);
 
             foreach (var node in nodes)
             {
-                if (first && group != null)
-                {
-                    _output.AppendFormat("subgraph cluster_{0} {{\r\n", group.UniqueName);
-                    _output.AppendFormat("label = \"{0}\";\r\n", group.Name);
-                    _output.AppendLine("labelloc = \"t\";");
-                    _output.AppendLine("labeljust = \"r\";");
-                    _output.AppendLine("style = \"dotted, filled\";");
-                    _output.AppendLine("fillcolor = \"#f0f0f0\";");
-                    first = false;
-                    hasNodes = true;
-                }
-
                 var value = node;
                 if (value.IsOutput)
                 {
@@ -165,7 +193,7 @@ namespace Horker.PSCNTK
                     var name = func.OpName + "|" + (func.Output == null ? "(undef)" : string.Join(" x ", func.Output.Shape.Dimensions));
                     var style = "style=\"filled\" fillcolor=\"white\"";
 
-                    _output.AppendFormat("{0} [label=\"{1}\" shape=\"record\" {2}];\r\n", func.Uid, name, style);
+                    _output.AppendFormat("{0}{1} [label=\"{2}\" shape=\"record\" {3}];\r\n", indent, func.Uid, name, style);
                 }
                 else
                 {
@@ -178,12 +206,9 @@ namespace Horker.PSCNTK
                         style = "style=\"rounded, filled\" fillcolor=\"#ffffcc\"";
 
                     var name = (string.IsNullOrEmpty(va.Name) ? va.Uid : va.Name) + "|" + string.Join(" x ", va.Shape.Dimensions);
-                    _output.AppendFormat("{0} [label=\"{1}\" shape=\"record\" {2}];\r\n", va.Uid, name, style);
+                    _output.AppendFormat("{0}{1} [label=\"{2}\" shape=\"record\" {3}];\r\n", indent, va.Uid, name, style);
                 }
             }
-
-            if (hasNodes)
-                _output.AppendLine("}");
         }
     }
 }

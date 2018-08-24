@@ -11,20 +11,32 @@ namespace Horker.PSCNTK
     {
         private string _name;
         private string _uniqueName;
+
+        private NodeGroup _parent;
+        private List<NodeGroup> _subgroups;
+
         private List<WeakReference> _nodes;
 
         public string Name { get => _name; set { _name = value; } }
         public string UniqueName { get => _uniqueName; set { _uniqueName = value; } }
 
+        public NodeGroup Parent => _parent;
+        public IEnumerable<NodeGroup> Subgroups => _subgroups;
+
         public IEnumerable<Variable> Nodes => GetLiveNodes();
 
-        static int _uniqueIndex = 0;
+        private static int _uniqueIndex = 0;
 
-        public NodeGroup(string name)
+        public NodeGroup(string name, NodeGroup parent)
         {
             _name = name;
             _uniqueName = _uniqueIndex.ToString();
             ++_uniqueIndex;
+
+            _parent = parent;
+            _subgroups = new List<NodeGroup>();
+            if (parent != null)
+                parent._subgroups.Add(this);
 
             _nodes = new List<WeakReference>();
         }
@@ -47,7 +59,7 @@ namespace Horker.PSCNTK
             if (totalCount * .5 > liveCount)
             {
                 _nodes.RemoveAll(x => !x.IsAlive);
-                if (_nodes.Count == 0)
+                if (_nodes.Count == 0 && _subgroups.Count == 0)
                     RemoveGroup(this);
             }
         }
@@ -65,16 +77,14 @@ namespace Horker.PSCNTK
         #region Group holder
 
         private static List<NodeGroup> _groups = new List<NodeGroup>();
-        private static Stack<NodeGroup> _groupStack = new Stack<NodeGroup>();
 
         public static NodeGroup Current = null;
         public static IEnumerable<NodeGroup> Groups => _groups;
 
         public static NodeGroup EnterNewGroup(string name)
         {
-            var g = new NodeGroup(name);
+            var g = new NodeGroup(name, Current);
             _groups.Add(g);
-            _groupStack.Push(g);
             Current = g;
 
             return g;
@@ -82,26 +92,27 @@ namespace Horker.PSCNTK
 
         public static void LeaveGroup()
         {
-            _groupStack.Pop();
-            if (_groupStack.Count > 0)
-                Current = _groupStack.Peek();
-            else
-                Current = null;
+            Current = Current._parent;
         }
 
         public static void RemoveGroup(NodeGroup group)
         {
-            if (_groupStack.Contains(group))
-                throw new ArgumentException("Can't remove current group");
+            if (group._subgroups.Count > 0)
+                throw new ArgumentException("Can't remove a group that contains subgroups");
 
+            if (Current == group)
+                throw new ArgumentException("Can't remove the current group");
+
+            group.Parent._subgroups.Remove(group);
             _groups.Remove(group);
         }
 
         public static NodeGroup FindGroup(Variable v)
         {
             foreach (var g in _groups)
-                if (g.Nodes.Contains(v))
-                    return g;
+                foreach (var n in g._nodes)
+                    if (n.Target == v)
+                        return g;
 
             return null;
         }

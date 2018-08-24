@@ -9,47 +9,60 @@ namespace Horker.PSCNTK
     {
         public static Function Convolution(Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, int[] strides, bool[] padding, int[] dilation, int reductionRank, int groups, int maxTempMemSizeInSamples, string name)
         {
-            // Initializers
-
-            if (initializer == null)
-                initializer = CNTKLib.GlorotUniformInitializer();
-
-            if (useBias && biasInitializer == null)
-                biasInitializer = CNTKLib.ConstantInitializer(0);
-
-            // Convolution map
-            // (kernelWidth, kernelHeight, kernelInputChannels, featureMapCount)
-
-            var convDims = new int[filterShape.Length + 1];
-            filterShape.CopyTo(convDims, 0);
-            convDims[filterShape.Length] = numFilters; // feature map count
-
-            var convolutionMap = new Parameter(convDims, DataType.Float, initializer, DeviceDescriptor.UseDefaultDevice(), name + "_w");
-
-            var conv = CNTKLib.Convolution(
-                convolutionMap,                      // CNTK.Variable convolutionMap
-                input,                               // CNTK.Variable operand
-                strides,                             // CNTK.NDShape strides
-                new BoolVector(new bool[] { true }), // CNTK.BoolVector sharing (false is not supported)
-                new BoolVector(padding),             // CNTK.BoolVector autoPadding
-                dilation,                            // CNTK.NDShape dilation
-                (uint)reductionRank,                 // uint reductionRank
-                (uint)groups,                        // uint groups
-                (uint)maxTempMemSizeInSamples,       // uint maxTempMemSizeInSamples
-                ""                                   // string name
-            );
-
-            if (useBias)
+            try
             {
-                var bias = new Parameter(conv.Output.Shape, DataType.Float, biasInitializer, DeviceDescriptor.UseDefaultDevice(), name + "_b");
-                conv = CNTKLib.Plus(conv, bias);
+                NodeGroup.EnterNewGroup(name);
+
+                // Initializers
+
+                if (initializer == null)
+                    initializer = CNTKLib.GlorotUniformInitializer();
+
+                if (useBias && biasInitializer == null)
+                    biasInitializer = CNTKLib.ConstantInitializer(0);
+
+                // Convolution map
+                // (kernelWidth, kernelHeight, kernelInputChannels, featureMapCount)
+
+                var convDims = new int[filterShape.Length + 1];
+                filterShape.CopyTo(convDims, 0);
+                convDims[filterShape.Length] = numFilters; // feature map count
+
+                var convolutionMap = new Parameter(convDims, DataType.Float, initializer, DeviceDescriptor.UseDefaultDevice(), name + "_w");
+                Register(convolutionMap);
+
+                var conv = CNTKLib.Convolution(
+                    convolutionMap,                      // CNTK.Variable convolutionMap
+                    input,                               // CNTK.Variable operand
+                    strides,                             // CNTK.NDShape strides
+                    new BoolVector(new bool[] { true }), // CNTK.BoolVector sharing (false is not supported)
+                    new BoolVector(padding),             // CNTK.BoolVector autoPadding
+                    dilation,                            // CNTK.NDShape dilation
+                    (uint)reductionRank,                 // uint reductionRank
+                    (uint)groups,                        // uint groups
+                    (uint)maxTempMemSizeInSamples,       // uint maxTempMemSizeInSamples
+                    ""                                   // string name
+                );
+                Register(conv);
+
+                if (useBias)
+                {
+                    var bias = new Parameter(conv.Output.Shape, DataType.Float, biasInitializer, DeviceDescriptor.UseDefaultDevice(), name + "_b");
+                    Register(bias);
+                    conv = CNTKLib.Plus(conv, bias);
+                    Register(conv);
+                }
+
+                conv = ApplyActivation(conv, activation);
+
+                conv.RootFunction.SetName(name);
+
+                return conv;
             }
-
-            conv = ApplyActivation(conv, activation);
-
-            conv.RootFunction.SetName(name);
-
-            return conv;
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
         }
 
         private static int[] FillShapeArray(int[] shape, int numDimensions, Variable input, bool channelFirst)

@@ -9,34 +9,49 @@ namespace Horker.PSCNTK
     {
         public static Function BatchNormalization(Variable input, bool spatial, double initScale, double normalizationTimeConstant, double blendTimeConstant, double epsilon, bool useCNTKEngine, bool disableRegularization, string name)
         {
-            var normShape = new int[] { CNTK.NDShape.InferredDimension };
+            try
+            {
+                NodeGroup.EnterNewGroup(name);
 
-            var scale = new Parameter(normShape, DataType.Float, initScale, DeviceDescriptor.UseDefaultDevice(), name + "_w");
-            var bias = new Parameter(normShape, DataType.Float, 0, DeviceDescriptor.UseDefaultDevice(), name + "_b");
+                var normShape = new int[] { CNTK.NDShape.InferredDimension };
 
-            var runningMean = new Constant(normShape, 0.0f, DeviceDescriptor.UseDefaultDevice());
-            var runningInvStd = new Constant(normShape, 0.0f, DeviceDescriptor.UseDefaultDevice());
-            var runningCount = Constant.Scalar(0.0f, DeviceDescriptor.UseDefaultDevice());
+                var scale = new Parameter(normShape, DataType.Float, initScale, DeviceDescriptor.UseDefaultDevice(), name + "_w");
+                Register(scale);
+                var bias = new Parameter(normShape, DataType.Float, 0, DeviceDescriptor.UseDefaultDevice(), name + "_b");
+                Register(bias);
 
-            var output = CNTKLib.BatchNormalization(
-                input,                     // CNTK.Variable operand
-                scale,                     // CNTK.Variable scale
-                bias,                      // CNTK.Variable bias
-                runningMean,               // CNTK.Variable runningMean
-                runningInvStd,             // CNTK.Variable runningInvStd
-                runningCount,              // CNTK.Variable runningCount
-                spatial,                   // bool spatial
-                normalizationTimeConstant, // double normalizationTimeConstant
-                blendTimeConstant,         // double blendTimeConstant
-                epsilon,                   // double epsilon
-                !useCNTKEngine,            // bool useCuDNNEngine
-                disableRegularization,     // bool disableRegularization
-                ""                         // string name
-            );
+                var runningMean = new Constant(normShape, 0.0f, DeviceDescriptor.UseDefaultDevice());
+                Register(runningMean);
+                var runningInvStd = new Constant(normShape, 0.0f, DeviceDescriptor.UseDefaultDevice());
+                Register(runningInvStd);
+                var runningCount = Constant.Scalar(0.0f, DeviceDescriptor.UseDefaultDevice());
+                Register(runningCount);
 
-            output.RootFunction.SetName(name);
+                var output = CNTKLib.BatchNormalization(
+                    input,                     // CNTK.Variable operand
+                    scale,                     // CNTK.Variable scale
+                    bias,                      // CNTK.Variable bias
+                    runningMean,               // CNTK.Variable runningMean
+                    runningInvStd,             // CNTK.Variable runningInvStd
+                    runningCount,              // CNTK.Variable runningCount
+                    spatial,                   // bool spatial
+                    normalizationTimeConstant, // double normalizationTimeConstant
+                    blendTimeConstant,         // double blendTimeConstant
+                    epsilon,                   // double epsilon
+                    !useCNTKEngine,            // bool useCuDNNEngine
+                    disableRegularization,     // bool disableRegularization
+                    ""                         // string name
+                );
+                Register(output);
 
-            return output;
+                output.RootFunction.SetName(name);
+
+                return output;
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
         }
     }
 }

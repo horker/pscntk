@@ -19,25 +19,56 @@ namespace Horker.PSCNTK.Microsoft
     {
         public static Function Stabilize<ElementType>(Variable x, DeviceDescriptor device, string name = "")
         {
-            bool isFloatType = typeof(ElementType).Equals(typeof(float));
-            Constant f, fInv;
-            if (isFloatType)
+            try
             {
-                f = Constant.Scalar(4.0f, device);
-                fInv = Constant.Scalar(f.DataType, 1.0 / 4.0f);
-            }
-            else
-            {
-                f = Constant.Scalar(4.0, device);
-                fInv = Constant.Scalar(f.DataType, 1.0 / 4.0f);
-            }
+                NodeGroup.EnterNewGroup(name);
 
-            var beta = CNTKLib.ElementTimes(
-                fInv,
-                CNTKLib.Log(
-                    Constant.Scalar(f.DataType, 1.0) +
-                    CNTKLib.Exp(CNTKLib.ElementTimes(f, new Parameter(new NDShape(), f.DataType, 0.99537863 /* 1/f*ln (e^f-1) */, device, name + "_w")))));
-            return CNTKLib.ElementTimes(beta, x, name);
+                bool isFloatType = typeof(ElementType).Equals(typeof(float));
+                Constant f, fInv;
+                if (isFloatType)
+                {
+                    f = Constant.Scalar(4.0f, device);
+                    fInv = Constant.Scalar(f.DataType, 1.0 / 4.0f);
+                }
+                else
+                {
+                    f = Constant.Scalar(4.0, device);
+                    fInv = Constant.Scalar(f.DataType, 1.0 / 4.0f);
+                }
+                Composite.Register(f);
+                Composite.Register(fInv);
+
+                // var beta = CNTKLib.ElementTimes(
+                //     fInv,
+                //     CNTKLib.Log(
+                //         Constant.Scalar(f.DataType, 1.0) +
+                //         CNTKLib.Exp(CNTKLib.ElementTimes(f, new Parameter(new NDShape(), f.DataType, 0.99537863 /* 1/f*ln (e^f-1) */, device, name + "_w")))));
+                // return CNTKLib.ElementTimes(beta, x, name);
+
+                var weight = new Parameter(new NDShape(), f.DataType, 0.99537863 /* 1/f*ln (e^f-1) */, device, name + "_w");
+                Composite.Register(weight);
+                var one = Constant.Scalar(f.DataType, 1.0);
+                Composite.Register(one);
+
+                var output = CNTKLib.ElementTimes(f, weight);
+                Composite.Register(output);
+                output = CNTKLib.Exp(output);
+                Composite.Register(output);
+                output = CNTKLib.Plus(one, output);
+                Composite.Register(output);
+                output = CNTKLib.Log(output);
+                Composite.Register(output);
+                var beta = CNTKLib.ElementTimes(fInv, output);
+                Composite.Register(beta);
+                output = CNTKLib.ElementTimes(beta, x, name);
+                Composite.Register(output);
+
+                return output;
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
         }
 
         static Tuple<Function, Function> LSTMPCellWithSelfStabilization<ElementType>(
@@ -51,56 +82,190 @@ namespace Horker.PSCNTK.Microsoft
 
             Func<int, string, Parameter> createBiasParam;
             if (isFloatType)
-                createBiasParam = (dim, name) => new Parameter(new int[] { dim }, 0.01f, device, name + "_b");
+                createBiasParam = (dim, name) => {
+                    var param = new Parameter(new int[] { dim }, 0.01f, device, name + "_b");
+                    Composite.Register(param);
+                    return param;
+                };
             else
-                createBiasParam = (dim, name) => new Parameter(new int[] { dim }, 0.01, device, name + "_b");
+                createBiasParam = (dim, name) => {
+                    var param = new Parameter(new int[] { dim }, 0.01, device, name + "_b");
+                    Composite.Register(param);
+                    return param;
+                };
 
-            Func<int, string, Parameter> createProjectionParam = (oDim, name) => new Parameter(new int[] { oDim, NDShape.InferredDimension },
-                    dataType, CNTKLib.GlorotUniformInitializer(1.0, 1, 0), device, name + "_w");
+            Func<int, string, Parameter> createProjectionParam = (oDim, name) => {
+                var param = new Parameter(new int[] { oDim, NDShape.InferredDimension },
+                        dataType, CNTKLib.GlorotUniformInitializer(1.0, 1, 0), device, name + "_w");
+                Composite.Register(param);
+                return param;
+            };
 
-            Func<int, string, Parameter> createDiagWeightParam = (dim, name) =>
-                new Parameter(new int[] { dim }, dataType, CNTKLib.GlorotUniformInitializer(1.0, 1, 0), device, name + "_diagw");
+            Func<int, string, Parameter> createDiagWeightParam = (dim, name) => {
+                var param = new Parameter(new int[] { dim }, dataType, CNTKLib.GlorotUniformInitializer(1.0, 1, 0), device, name + "_diagw");
+                Composite.Register(param);
+                return param;
+            };
 
-            Function stabilizedPrevOutput = Stabilize<ElementType>(prevOutput, device, baseName + "_stab1");
-            Function stabilizedPrevCellState = Stabilize<ElementType>(prevCellState, device, baseName + "_stab2");
+            Function stabilizedPrevOutput = Stabilize<ElementType>(prevOutput, device, baseName + "_prevOutput");
+            Function stabilizedPrevCellState = Stabilize<ElementType>(prevCellState, device, baseName + "_prevCellState");
 
-            Func<string, Variable> projectInput = (name) =>
-                createBiasParam(cellDim, name) + (createProjectionParam(cellDim, name) * input);
+            Func<string, Variable> projectInput = (name) => {
+                var param = createProjectionParam(cellDim, name) * input;
+                Composite.Register(param);
+                param = createBiasParam(cellDim, name) + param;
+                Composite.Register(param);
+                return param;
+            };
 
             // Input gate
-            var n = baseName + "_it";
-            Function it =
-                CNTKLib.Sigmoid(
-                    (Variable)(projectInput(n) + (createProjectionParam(cellDim, n) * stabilizedPrevOutput)) +
-                    CNTKLib.ElementTimes(createDiagWeightParam(cellDim, n), stabilizedPrevCellState));
+            Function it;
+            try
+            {
+                var name = baseName + "_it";
+                NodeGroup.EnterNewGroup(name);
 
-            n = baseName + "_bit";
-            Function bit = CNTKLib.ElementTimes(
-                it,
-                CNTKLib.Tanh(projectInput(n) + (createProjectionParam(cellDim, n) * stabilizedPrevOutput)));
+                it = createProjectionParam(cellDim, name) * stabilizedPrevOutput;
+                Composite.Register(it);
+                it = projectInput(name) + it;
+                Composite.Register(it);
+                var it2 = CNTKLib.ElementTimes(createDiagWeightParam(cellDim, name), stabilizedPrevCellState);
+                Composite.Register(it2);
+                it = (Variable)it + it2;
+                Composite.Register(it);
+                it = CNTKLib.Sigmoid(it);
+                Composite.Register(it);
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
+
+            Function bit;
+            try
+            {
+                var name = baseName + "_bit";
+                NodeGroup.EnterNewGroup(name);
+
+                bit = createProjectionParam(cellDim, name) * stabilizedPrevOutput;
+                Composite.Register(bit);
+                bit = projectInput(name) + bit;
+                Composite.Register(bit);
+                bit = CNTKLib.Tanh(bit);
+                Composite.Register(bit);
+                bit = CNTKLib.ElementTimes(it, bit);
+                Composite.Register(bit);
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
 
             // Forget-me-not gate
-            n = baseName + "_ft";
-            Function ft = CNTKLib.Sigmoid(
-                (Variable)(
-                        projectInput(n) + (createProjectionParam(cellDim, n) * stabilizedPrevOutput)) +
-                        CNTKLib.ElementTimes(createDiagWeightParam(cellDim, n), stabilizedPrevCellState));
-            Function bft = CNTKLib.ElementTimes(ft, prevCellState);
+            Function ft;
+            try
+            {
+                var name = baseName + "_ft";
+                NodeGroup.EnterNewGroup(name);
 
-            Function ct = (Variable)bft + bit;
+                ft = createProjectionParam(cellDim, name) * stabilizedPrevOutput;
+                Composite.Register(ft);
+                ft = projectInput(name) + ft;
+                Composite.Register(ft);
+                var ft2 = CNTKLib.ElementTimes(createDiagWeightParam(cellDim, name), stabilizedPrevCellState);
+                Composite.Register(ft2);
+                ft = (Variable)ft + ft2;
+                Composite.Register(ft);
+                ft = CNTKLib.Sigmoid(ft);
+                Composite.Register(ft);
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
+
+            Function bft;
+            try
+            {
+                var name = baseName + "_bft";
+                NodeGroup.EnterNewGroup(name);
+
+                bft = CNTKLib.ElementTimes(ft, prevCellState, name);
+                Composite.Register(bft);
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
+
+            Function ct;
+            try
+            {
+                var name = baseName + "_ct";
+                NodeGroup.EnterNewGroup(name);
+
+                ct = (Variable)bft + bit;
+                Composite.Register(ct);
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
 
             // Output gate
-            n = baseName + "_ot";
-            Function ot = CNTKLib.Sigmoid(
-                (Variable)(projectInput(n) + (createProjectionParam(cellDim, n) * stabilizedPrevOutput)) +
-                CNTKLib.ElementTimes(createDiagWeightParam(cellDim, n), Stabilize<ElementType>(ct, device, n)));
-            Function ht = CNTKLib.ElementTimes(ot, CNTKLib.Tanh(ct));
+            Function ot;
+            try
+            {
+                var name = baseName + "_ot";
+                NodeGroup.EnterNewGroup(name);
 
-            n = baseName + "_h";
-            Function c = ct;
-            Function h = (outputDim != cellDim) ? (createProjectionParam(outputDim, n) * Stabilize<ElementType>(ht, device, n)) : ht;
+                ot = createProjectionParam(cellDim, name) * stabilizedPrevOutput;
+                Composite.Register(ot);
+                ot = projectInput(name) + ot;
+                Composite.Register(ot);
+                var ot2 = CNTKLib.ElementTimes(createDiagWeightParam(cellDim, name), Stabilize<ElementType>(ct, device, name));
+                Composite.Register(ot2);
+                ot = (Variable)ot + ot2;
+                Composite.Register(ot);
+                ot = CNTKLib.Sigmoid(ot);
+                Composite.Register(ot);
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
 
-            return new Tuple<Function, Function>(h, c);
+            Function ht;
+            try
+            {
+                var name = baseName + "_ht";
+                NodeGroup.EnterNewGroup(name);
+
+                ht = CNTKLib.Tanh(ct);
+                Composite.Register(ht);
+                ht = CNTKLib.ElementTimes(ot, ht);
+                Composite.Register(ht);
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
+
+            Function h;
+            try
+            {
+                var name = baseName + "_h";
+                NodeGroup.EnterNewGroup(name);
+
+                h = (outputDim != cellDim) ? (createProjectionParam(outputDim, name) * Stabilize<ElementType>(ht, device, name + "_stab")) : ht;
+                Composite.Register(h);
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
+
+            return new Tuple<Function, Function>(h, ct);
         }
 
         static Tuple<Function, Function> LSTMPComponentWithSelfStabilization<ElementType>(Variable input,
@@ -115,7 +280,11 @@ namespace Horker.PSCNTK.Microsoft
 
             var LSTMCell = LSTMPCellWithSelfStabilization<ElementType>(input, dh, dc, device, baseName);
             var actualDh = recurrenceHookH(LSTMCell.Item1);
+            Composite.Register(actualDh);
+            Composite.Register(actualDh.Inputs[1]);
             var actualDc = recurrenceHookC(LSTMCell.Item2);
+            Composite.Register(actualDc);
+            Composite.Register(actualDc.Inputs[1]);
 
             // Form the recurrence loop by replacing the dh and dc placeholders with the actualDh and actualDc
             (LSTMCell.Item1).ReplacePlaceholders(new Dictionary<Variable, Variable> { { dh, actualDh }, { dc, actualDc } });
@@ -125,10 +294,24 @@ namespace Horker.PSCNTK.Microsoft
 
         private static Function Embedding(Variable input, int embeddingDim, DeviceDescriptor device, string baseName)
         {
-            System.Diagnostics.Debug.Assert(input.Shape.Rank == 1);
-            int inputDim = input.Shape[0];
-            var embeddingParameters = new Parameter(new int[] { embeddingDim, inputDim }, DataType.Float, CNTKLib.GlorotUniformInitializer(), device, baseName + "_embed_w");
-            return CNTKLib.Times(embeddingParameters, input);
+            try
+            {
+                var name = baseName + "_embed";
+                NodeGroup.EnterNewGroup(name);
+
+                int inputDim = input.Shape[0];
+                var embeddingParameters = new Parameter(new int[] { embeddingDim, inputDim }, DataType.Float, CNTKLib.GlorotUniformInitializer(), device, name + "_w");
+                Composite.Register(embeddingParameters);
+
+                var output = CNTKLib.Times(embeddingParameters, input);
+                Composite.Register(output);
+
+                return output;
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
         }
 
         /// <summary>
@@ -145,21 +328,33 @@ namespace Horker.PSCNTK.Microsoft
         public static Function Create(Variable input, int embeddingDim, int LSTMDim, int cellDim, DeviceDescriptor device,
             string outputName)
         {
-            Function embeddingFunction = Embedding(input, embeddingDim, device, outputName);
-            Func<Variable, Function> pastValueRecurrenceHook = (x) => CNTKLib.PastValue(x);
-            Function LSTMFunction = LSTMPComponentWithSelfStabilization<float>(
-                embeddingFunction,
-                new int[] { LSTMDim },
-                new int[] { cellDim },
-                pastValueRecurrenceHook,
-                pastValueRecurrenceHook,
-                device,
-                outputName).Item1;
-            Function thoughtVectorFunction = CNTKLib.SequenceLast(LSTMFunction);
+            try
+            {
+                NodeGroup.EnterNewGroup(outputName);
 
-            thoughtVectorFunction.RootFunction.SetName(outputName);
+                Function embeddingFunction = Embedding(input, embeddingDim, device, outputName);
+                Func<Variable, Function> pastValueRecurrenceHook = (x) => CNTKLib.PastValue(x); 
+                Function LSTMFunction = LSTMPComponentWithSelfStabilization<float>(
+                    embeddingFunction,
+                    new int[] { LSTMDim },
+                    new int[] { cellDim },
+                    pastValueRecurrenceHook,
+                    pastValueRecurrenceHook,
+                    device,
+                    outputName).Item1;
+                Function thoughtVectorFunction = CNTKLib.SequenceLast(LSTMFunction);
+                Composite.Register(thoughtVectorFunction);
+                Composite.Register(thoughtVectorFunction.Inputs[0]);
+                Composite.Register(thoughtVectorFunction.Inputs[1]);
 
-            return thoughtVectorFunction;
+                thoughtVectorFunction.RootFunction.SetName(outputName);
+
+                return thoughtVectorFunction;
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
         }
     }
 }

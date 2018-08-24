@@ -9,21 +9,33 @@ namespace Horker.PSCNTK
     {
         public static Function OptimizedRNNStack(Variable input, int hiddenSize, int layerSize = 1, bool bidirectional = false, string cellType = "lstm", string name = "")
         {
-            var dim = input.Shape.Dimensions[0];
+            try
+            {
+                NodeGroup.EnterNewGroup(name);
 
-            var weightSize = (dim - 1) * 4 * hiddenSize;
-            weightSize += (layerSize - 1) * (8 * hiddenSize * hiddenSize + 8 * hiddenSize);
-            weightSize += 4 * hiddenSize * hiddenSize + 12 * hiddenSize;
+                var dim = input.Shape.Dimensions[0];
 
-            var w = new Parameter(new int[] { weightSize }, DataType.Float, CNTKLib.GlorotUniformInitializer(), DeviceDescriptor.UseDefaultDevice(), name + "_w");
+                var weightSize = (dim - 1) * 4 * hiddenSize;
+                weightSize += (layerSize - 1) * (8 * hiddenSize * hiddenSize + 8 * hiddenSize);
+                weightSize += 4 * hiddenSize * hiddenSize + 12 * hiddenSize;
 
-            var rnn = CNTKLib.OptimizedRNNStack(input, w, (uint)hiddenSize, (uint)layerSize, bidirectional, cellType, name + "_rnn");
+                var w = new Parameter(new int[] { weightSize }, DataType.Float, CNTKLib.GlorotUniformInitializer(), DeviceDescriptor.UseDefaultDevice(), name + "_w");
+                Register(w);
 
-            var output = CNTKLib.SequenceLast(rnn);
+                var rnn = CNTKLib.OptimizedRNNStack(input, w, (uint)hiddenSize, (uint)layerSize, bidirectional, cellType, name + "_rnn");
+                Register(rnn);
 
-            output.RootFunction.SetName(name);
+                var output = CNTKLib.SequenceLast(rnn);
+                Register(output);
 
-            return output;
+                output.RootFunction.SetName(name);
+
+                return output;
+            }
+            finally
+            {
+                NodeGroup.LeaveGroup();
+            }
         }
     }
 }
