@@ -113,7 +113,7 @@ namespace benchmarkapp
 
                 var session = new TrainingSession(trainer, sampler);
 
-                var progress = session.GetSession().GetEnumerator();
+                var progress = session.GetIterator().GetEnumerator();
                 for (var i = 0; i < 10000; ++i)
                 {
                     progress.MoveNext();

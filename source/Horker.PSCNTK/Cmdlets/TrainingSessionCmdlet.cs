@@ -51,7 +51,7 @@ namespace Horker.PSCNTK
 
             try
             {
-                foreach (var t in session.GetSession(MaxIteration))
+                foreach (var t in session.GetIterator(MaxIteration))
                 {
                     if (Console.KeyAvailable)
                     {

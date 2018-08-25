@@ -55,20 +55,23 @@ namespace Horker.PSCNTK
             var va = FunctionFind.FindVariable(model, name);
             if (va != null)
                 return va;
-            else
+
+            var loss = Trainer.LossFunction();
+            if (loss != null)
             {
-                var loss = Trainer.LossFunction();
                 va = FunctionFind.FindVariable(loss, name);
                 if (va != null)
                     return va;
-                else
-                {
-                    var error = Trainer.EvaluationFunction();
-                    va = FunctionFind.FindVariable(error, name);
-                    if (va != null)
-                        return va;
-                }
             }
+
+            var error = Trainer.EvaluationFunction();
+            if (error != null)
+            {
+                va = FunctionFind.FindVariable(error, name);
+                if (va != null)
+                    return va;
+            }
+
             return null;
         }
 
@@ -86,7 +89,7 @@ namespace Horker.PSCNTK
             }
         }
 
-        public IEnumerable<TrainingSession> GetSession(int maxIteration = int.MaxValue, DeviceDescriptor device = null)
+        public IEnumerable<TrainingSession> GetIterator(int maxIteration = int.MaxValue, DeviceDescriptor device = null)
         {
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();
@@ -103,7 +106,11 @@ namespace Horker.PSCNTK
 
                 var arguments = new Dictionary<Variable, MinibatchData>();
                 foreach (var entry in batch.Features)
-                    arguments.Add(ParameterMap[entry.Key], entry.Value);
+                {
+                    Variable v = null;
+                    if (ParameterMap.TryGetValue(entry.Key, out v))
+                        arguments.Add(v, entry.Value);
+                }
 
                 Trainer.TrainMinibatch(arguments, device);
 
@@ -126,6 +133,12 @@ namespace Horker.PSCNTK
                 if (batch.SweepEnd)
                     ++Epoch;
             }
+        }
+
+        public IEnumerator<TrainingSession> GetEnumerator(int maxIteration = int.MaxValue, DeviceDescriptor device = null)
+        {
+            // In Powershell we can't call GetEnumerator()
+            return GetIterator(maxIteration, device).GetEnumerator();
         }
 
         public double GetValidationMetric(DeviceDescriptor device = null)

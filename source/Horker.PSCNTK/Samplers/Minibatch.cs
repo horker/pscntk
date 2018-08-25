@@ -14,7 +14,7 @@ namespace Horker.PSCNTK
 
         public bool SweepEnd
         {
-            get => Features.First().Value.sweepEnd;
+            get => Features.Any(x => x.Value.sweepEnd);
             set
             {
                 foreach (var entry in Features)
@@ -36,6 +36,16 @@ namespace Horker.PSCNTK
             {
                 var b = GetMinibatchData(entry.Value, sweepEnd, device);
                 Features.Add(entry.Key, b);
+            }
+        }
+
+        public Minibatch(IEnumerable<Minibatch> minibatches)
+            : this()
+        {
+            foreach (var m in minibatches)
+            {
+                foreach (var f in m.Features)
+                    Features.Add(f.Key, f.Value);
             }
         }
 
