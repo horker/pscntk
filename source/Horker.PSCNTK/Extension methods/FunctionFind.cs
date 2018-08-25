@@ -15,10 +15,10 @@ namespace Horker.PSCNTK
         private bool _all;
         private bool _variablesOnly;
 
-        public object[] Results
+        public Variable[] Results
         {
             get {
-                var results = new object[_functions.Count + _variables.Count];
+                var results = new Variable[_functions.Count + _variables.Count];
 
                 for (var i = 0; i < _functions.Count; ++i)
                     results[i] = _functions[i];
@@ -67,6 +67,17 @@ namespace Horker.PSCNTK
             }
 
             return true;
+        }
+
+        public static Variable Find(Function func, string name)
+        {
+            var w = new FunctionFind(func, name, false, false);
+
+            var results = w.Results;
+            if (results.Length == 0)
+                return null;
+
+            return results[0];
         }
 
         public static Variable FindVariable(Function func, string name)

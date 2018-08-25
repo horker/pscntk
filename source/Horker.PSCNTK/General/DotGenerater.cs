@@ -24,9 +24,9 @@ namespace Horker.PSCNTK
         private StringBuilder _output;
 
         private Function _model;
-        private List<Variable> _nodes;
+        private List<NodeGroup.Node> _nodes;
         private List<Link> _links;
-        private List<Function> _subgraphs;
+        private List<NodeGroup.Node> _subgraphs;
 
         public string Result => _output.ToString();
 
@@ -35,9 +35,9 @@ namespace Horker.PSCNTK
             _output = new StringBuilder();
 
             _model = func;
-            _nodes = new List<Variable>();
+            _nodes = new List<NodeGroup.Node>();
             _links = new List<Link>();
-            _subgraphs = new List<Function>();
+            _subgraphs = new List<NodeGroup.Node>();
             _subgraphs.Add(null);
 
             _output.AppendLine("digraph dot {");
@@ -60,7 +60,7 @@ namespace Horker.PSCNTK
                 return true;
 
             if (!string.IsNullOrEmpty(func.Name))
-                _subgraphs.Add(func);
+                _subgraphs.Add(new NodeGroup.Node(func));
 
             foreach (var va in func.Inputs)
                 AddLink(func, va);
@@ -75,9 +75,9 @@ namespace Horker.PSCNTK
 
         private void AddNode(Variable va)
         {
-            if (_nodes.Contains(va))
+            if (_nodes.Any(x => x.Uid == va.Uid))
                 return;
-            _nodes.Add(va);
+            _nodes.Add(new NodeGroup.Node(va));
         }
 
         private void AddLink(Function from, Function to)
@@ -116,7 +116,7 @@ namespace Horker.PSCNTK
         {
             WriteOutputNode(1);
 
-            var groups = _nodes.GroupBy(x => NodeGroup.FindGroup(x));
+            var groups = _nodes.GroupBy(x => NodeGroup.FindGroup(x.Uid));
 
             var visited = new HashSet<NodeGroup>();
 
@@ -150,7 +150,7 @@ namespace Horker.PSCNTK
             _output.AppendFormat("    {0} [label=\"{1}\" shape=\"record\" {2}];\r\n", _model.Uid, name, style);
         }
 
-        private void WriteNodeInGroup(NodeGroup group, IEnumerable<IGrouping<NodeGroup, Variable>> grouping, HashSet<NodeGroup> visited, int depth)
+        private void WriteNodeInGroup(NodeGroup group, IEnumerable<IGrouping<NodeGroup, NodeGroup.Node>> grouping, HashSet<NodeGroup> visited, int depth)
         {
             if (visited.Contains(group))
                 return;
@@ -174,7 +174,7 @@ namespace Horker.PSCNTK
             _output.AppendFormat("{0}}}\r\n", indent);
         }
 
-        private void WriteNodes(IEnumerable<Variable> nodes, int depth)
+        private void WriteNodes(IEnumerable<NodeGroup.Node> nodes, int depth)
         {
             if (nodes == null)
                 return;
@@ -183,7 +183,10 @@ namespace Horker.PSCNTK
 
             foreach (var node in nodes)
             {
-                var value = node;
+                var value = FunctionFind.Find(_model, node.Uid);
+                if (value == null)
+                    throw new ApplicationException(string.Format("Can't find network node with uid {0}", node.Uid));
+
                 if (value.IsOutput)
                 {
                     // Function
