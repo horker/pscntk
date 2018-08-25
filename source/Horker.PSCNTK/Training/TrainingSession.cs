@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Management.Automation;
 using CNTK;
 
 namespace Horker.PSCNTK
@@ -10,7 +11,7 @@ namespace Horker.PSCNTK
     {
         public Trainer Trainer { get; private set; }
         public ISampler Sampler { get; private set; }
-        public Dictionary<string, Variable> ParameterMap { get; private set; }
+        public Dictionary<string, Variable> DataToInputMap { get; private set; }
 
         public int Epoch { get; private set; }
         public int Iteration { get; private set; }
@@ -24,26 +25,30 @@ namespace Horker.PSCNTK
 
         private UnorderedMapVariableMinibatchData _validationData;
 
-        public TrainingSession(Trainer trainer, ISampler sampler, Hashtable parameterMap = null)
+        public TrainingSession(Trainer trainer, ISampler sampler, Hashtable dataToInputMap = null)
         {
             _stopwatch = Stopwatch.StartNew();
 
             Trainer = trainer;
             Sampler = sampler;
 
-            ParameterMap = new Dictionary<string, Variable>();
-            if (parameterMap != null)
+            DataToInputMap = new Dictionary<string, Variable>();
+            if (dataToInputMap != null)
             {
-                foreach (DictionaryEntry entry in parameterMap)
+                foreach (DictionaryEntry entry in dataToInputMap)
                 {
-                    if (entry.Value is Variable)
-                        ParameterMap.Add(entry.Key.ToString(), entry.Value as Variable);
+                    object value = entry.Value;
+                    if (value is PSObject)
+                        value = (value as PSObject).BaseObject;
+
+                    if (value is Variable)
+                        DataToInputMap.Add(entry.Key.ToString(), entry.Value as Variable);
                     else
                     {
-                        var va = FindVariable(entry.Value.ToString());
+                        var va = FindVariable(value.ToString());
                         if (va == null)
-                            throw new ArgumentException(string.Format("Pair ({0}, {1}) in parameterMap doesn't match any variable in the model", entry.Key, entry.Value.ToString()));
-                        ParameterMap.Add(entry.Key.ToString(), va);
+                            throw new ArgumentException(string.Format("Pair ({0}, {1}) in parameterMap doesn't match any variable in the model", entry.Key, value.ToString()));
+                        DataToInputMap.Add(entry.Key.ToString(), va);
                     }
                 }
             }
@@ -77,15 +82,15 @@ namespace Horker.PSCNTK
 
         private void InitializeParameterMap(Minibatch batch)
         {
-            if (ParameterMap.Count > 0)
+            if (DataToInputMap.Count > 0)
                 return;
 
             foreach (var entry in batch.Features)
             {
-                var name = entry.Key.ToString();
+                var name = entry.Key;
                 var va = FindVariable(name);
                 if (va != null)
-                    ParameterMap.Add(name, va);
+                    DataToInputMap.Add(name, va);
             }
         }
 
@@ -108,7 +113,7 @@ namespace Horker.PSCNTK
                 foreach (var entry in batch.Features)
                 {
                     Variable v = null;
-                    if (ParameterMap.TryGetValue(entry.Key, out v))
+                    if (DataToInputMap.TryGetValue(entry.Key, out v))
                         arguments.Add(v, entry.Value);
                 }
 
@@ -158,7 +163,7 @@ namespace Horker.PSCNTK
 
                 _validationData = new UnorderedMapVariableMinibatchData();
                 foreach (var entry in batch.Features)
-                    _validationData.Add(ParameterMap[entry.Key], entry.Value);
+                    _validationData.Add(DataToInputMap[entry.Key], entry.Value);
             }
 
             return Trainer.TestMinibatch(_validationData, device);

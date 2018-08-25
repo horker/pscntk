@@ -30,7 +30,7 @@ namespace Horker.PSCNTK
         public ISampler Sampler;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public Hashtable ParameterMap = null;
+        public Hashtable DataToInputMap = null;
 
         [Parameter(Position = 3, Mandatory = false)]
         public int MaxIteration = 10000;
@@ -40,7 +40,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Trainer, Sampler, ParameterMap);
+            var session = new TrainingSession(Trainer, Sampler, DataToInputMap);
 
             int sampleCount = 0;
             var loss = 0.0;
@@ -101,11 +101,11 @@ namespace Horker.PSCNTK
         public ISampler Sampler;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public Hashtable ParameterMap = null;
+        public Hashtable DataToInputMap = null;
 
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Trainer, Sampler, ParameterMap);
+            var session = new TrainingSession(Trainer, Sampler, DataToInputMap);
 
             WriteObject(session);
         }
