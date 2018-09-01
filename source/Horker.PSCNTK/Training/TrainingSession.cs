@@ -117,6 +117,9 @@ namespace Horker.PSCNTK
                         arguments.Add(v, entry.Value);
                 }
 
+                if (arguments.Count == 0)
+                    throw new ApplicationException("Minibatch is empty or contains no data corresponding to arguments");
+
                 Trainer.TrainMinibatch(arguments, device);
 
                 SampleCount = (int)Trainer.PreviousMinibatchSampleCount();

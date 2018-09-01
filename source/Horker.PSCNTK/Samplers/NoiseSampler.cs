@@ -36,9 +36,10 @@ namespace Horker.PSCNTK
             _dataSize = Shape.GetSize(-1);
             _data = new float[_dataSize * minibatchSize];
 
-            var minibatchShape = new int[Shape.Rank + 1];
+            var minibatchShape = new int[Shape.Rank + 2];
             shape.CopyTo(minibatchShape, 0);
-            minibatchShape[minibatchShape.Length - 1] = minibatchSize;
+            minibatchShape[minibatchShape.Length - 2] = 1; // sequence
+            minibatchShape[minibatchShape.Length - 1] = minibatchSize; // sample
             _samples = new DataSource<float>(_data, minibatchShape);
         }
 
