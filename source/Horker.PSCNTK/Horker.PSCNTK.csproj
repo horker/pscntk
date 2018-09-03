@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cmdlets\CmdletHelpers.cs" />
     <Compile Include="Cmdlets\ConvertToCNTKDot.cs" />
     <Compile Include="Cmdlets\NewCNTKCompositeSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKNoiseSampler.cs" />
