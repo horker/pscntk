@@ -33,7 +33,7 @@ namespace Horker.PSCNTK
         {
             if (activation != null)
             {
-                var m = Helpers.GetCNTKLibMethod(activation);
+                var m = Helpers.GetCNTKLibMethod(activation, 1);
                 input = (Function)m.Invoke(null, new object[] { (Variable)input });
                 Register(input);
             }

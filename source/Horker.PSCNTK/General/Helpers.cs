@@ -28,5 +28,16 @@ namespace Horker.PSCNTK
 
             return methodInfo;
         }
+
+        public static MethodInfo GetCNTKLibMethod(string name, int parameterCount)
+        {
+            var mi = GetCNTKLibMethod(name);
+            var p = mi.GetParameters();
+            if (p.Length == parameterCount)
+                return mi;
+
+            throw new ArgumentException(string.Format(
+                "Function found ({0}), but the number of parameters doesn't match ({1} required, {2} actual)", name, parameterCount, p.Length));
+        }
     }
 }

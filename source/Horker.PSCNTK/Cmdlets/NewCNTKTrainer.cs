@@ -27,25 +27,6 @@ namespace Horker.PSCNTK
         [Parameter(Position = 4, Mandatory = true)]
         public Learner[] Learners;
 
-        private MethodInfo FindMethod(string name)
-        {
-            var methods = typeof(CNTKLib).GetMethods(BindingFlags.Public | BindingFlags.Static);
-
-            foreach (var m in methods)
-            {
-                if (m.Name == name)
-                {
-                    var p = m.GetParameters();
-                    if (p.Length == 2 && p[0].ParameterType == typeof(Variable) && p[1].ParameterType == typeof(Variable))
-                    {
-                        return m;
-                    }
-                }
-            }
-
-            throw new ArgumentException("'" + name + "' doesn't indicate the proper CNTK function name");
-        }
-
         private Function GetFunctionInstance(object func, string displayName)
         {
             if (func == null)
@@ -64,7 +45,7 @@ namespace Horker.PSCNTK
                 if (string.IsNullOrEmpty(f))
                     return null;
 
-                var lossMethod = FindMethod(f);
+                var lossMethod = Helpers.GetCNTKLibMethod(f, 2);
                 return (Function)lossMethod.Invoke(null, new object[] { Model, Label });
             }
 
