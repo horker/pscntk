@@ -4,6 +4,7 @@ using System.Management.Automation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CNTK;
 using Horker.PSCNTK;
+using System.Collections;
 
 namespace UnitTest
 {
@@ -16,11 +17,10 @@ namespace UnitTest
             UnmanagedDllLoader.Load(path);
         }
 
-        /*
         [TestMethod]
         public void TestInvoke()
         {
-            var input = CNTK.Variable.InputVariable(new int[] { 1 }, CNTK.DataType.Float, "input");
+            var input = CNTK.Variable.InputVariable(new int[] { 3 }, CNTK.DataType.Float, "input");
             var f = CNTK.CNTKLib.ReduceSum(input, CNTK.Axis.AllStaticAxes());
 
             var obj = new PSObject(f);
@@ -32,11 +32,9 @@ namespace UnitTest
 
             var result = DataSource<float>.FromValue(output);
 
-            CollectionAssert.AreEqual(new int[] { 1 }, result.Shape.Dimensions);
+            CollectionAssert.AreEqual(new int[] { 1, 1 }, result.Shape.Dimensions);
             CollectionAssert.AreEqual(new float[] { 9 }, result.Data.ToArray());
         }
-    }
-    */
 
         [TestMethod]
         public void TestFind()
