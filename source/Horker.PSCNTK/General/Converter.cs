@@ -44,7 +44,7 @@ namespace Horker.PSCNTK
                 if (!open)
                     result.Append(" ");
 
-                result.Append(data[i]);
+                result.AppendFormat("{0:0.#####}", data[i]);
 
                 var close = false;
                 var newline = false;

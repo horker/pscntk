@@ -10,14 +10,16 @@ namespace Horker.PSCNTK
     public class FunctionAsTree : INodeWalker
     {
         private StringBuilder _output;
-        private bool _detailed;
+        private bool _shouUid;
+        private bool _showValue;
 
         public string Result { get => _output.ToString(); }
 
-        public FunctionAsTree(CNTK.Function func, bool detailed = false)
+        public FunctionAsTree(CNTK.Function func, bool showUid = false, bool showValue = true)
         {
             _output = new StringBuilder();
-            _detailed = detailed;
+            _shouUid = showUid;
+            _showValue = showValue;
 
             new NodeWalk(func, this);
         }
@@ -27,7 +29,7 @@ namespace Horker.PSCNTK
             var indent = new string(' ', depth * 2);
 
             string name;
-            if (_detailed)
+            if (_shouUid)
                 name = "<" + (string.IsNullOrEmpty(func.Name) ? func.Uid : func.Name + ":" + func.Uid) + ">";
             else
                 name = string.IsNullOrEmpty(func.Name) ? "" : "<" + func.Name + ">";
@@ -44,12 +46,25 @@ namespace Horker.PSCNTK
             var shape = string.Join("x", va.Shape.Dimensions);
 
             string name;
-            if (_detailed)
+            if (_shouUid)
                 name = " <" + (string.IsNullOrEmpty(va.Name) ? va.Uid : va.Name + ":" + va.Uid) + ">";
             else
                 name = string.IsNullOrEmpty(va.Name) ? "" : " <" + va.Name + ">";
 
             _output.AppendFormat("{0}{1} @{2} [{3}]{4}{5}\r\n", indent, depth, va.Kind, shape, name, v);
+
+            if (_showValue && (va.IsParameter || va.IsConstant))
+            {
+                var ds = DataSource<float>.FromVariable(va);
+                if (ds.Shape.GetSize(-1) <= 5)
+                    _output.AppendFormat("{0}    {1}\n", indent, Converter.ArrayToString("Value", ds.Data, ds.Shape, false));
+                else
+                {
+                    var seg = new ArraySegment<float>(ds.Data, 0, 5);
+                    var s = string.Join(" ", seg.Select(x => string.Format("{0:0.#####}", x)));
+                    _output.AppendFormat("{0}    Value [{1}] [{2} ...]\n", indent, shape, s);
+                }
+            }
 
             return true;
         }
