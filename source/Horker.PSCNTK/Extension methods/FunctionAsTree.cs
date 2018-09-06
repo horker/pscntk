@@ -42,7 +42,7 @@ namespace Horker.PSCNTK
 
             if (_showValue)
             {
-                var value = CNTKFunctionHelper.Invoke(func, _arguments, null, true);
+                var value = FunctionInvoke.Invoke(func, _arguments, null, true);
                 var ds = DataSource<float>.FromValue(value);
                 putDataSource(ds, indent);
             }

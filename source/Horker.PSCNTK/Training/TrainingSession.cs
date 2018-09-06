@@ -11,10 +11,12 @@ namespace Horker.PSCNTK
     {
         public Trainer Trainer { get; private set; }
         public ISampler Sampler { get; private set; }
-        public Dictionary<string, Variable> DataToInputMap { get; private set; }
+        public DataNameToInputMap DataNameToInputMap { get; private set; }
 
         public int Epoch { get; private set; }
         public int Iteration { get; private set; }
+
+        public Minibatch Batch { get; private set; }
 
         public int SampleCount { get; private set; }
         public double Loss { get; private set;}
@@ -25,33 +27,16 @@ namespace Horker.PSCNTK
 
         private UnorderedMapVariableMinibatchData _validationData;
 
-        public TrainingSession(Trainer trainer, ISampler sampler, Hashtable dataToInputMap = null)
+        public TrainingSession(Trainer trainer, ISampler sampler, Hashtable dataNameToInputMap = null)
         {
             _stopwatch = Stopwatch.StartNew();
 
             Trainer = trainer;
             Sampler = sampler;
 
-            DataToInputMap = new Dictionary<string, Variable>();
-            if (dataToInputMap != null)
-            {
-                foreach (DictionaryEntry entry in dataToInputMap)
-                {
-                    object value = entry.Value;
-                    if (value is PSObject)
-                        value = (value as PSObject).BaseObject;
-
-                    if (value is Variable)
-                        DataToInputMap.Add(entry.Key.ToString(), entry.Value as Variable);
-                    else
-                    {
-                        var va = FindVariable(value.ToString());
-                        if (va == null)
-                            throw new ArgumentException(string.Format("Pair ({0}, {1}) in parameterMap doesn't match any variable in the model", entry.Key, value.ToString()));
-                        DataToInputMap.Add(entry.Key.ToString(), va);
-                    }
-                }
-            }
+            DataNameToInputMap = new DataNameToInputMap(
+                new Function[] { trainer.Model(), trainer.LossFunction(), trainer.EvaluationFunction() },
+                dataNameToInputMap);
         }
 
         private Variable FindVariable(string name)
@@ -80,20 +65,6 @@ namespace Horker.PSCNTK
             return null;
         }
 
-        private void InitializeParameterMap(Minibatch batch)
-        {
-            if (DataToInputMap.Count > 0)
-                return;
-
-            foreach (var entry in batch.Features)
-            {
-                var name = entry.Key;
-                var va = FindVariable(name);
-                if (va != null)
-                    DataToInputMap.Add(name, va);
-            }
-        }
-
         public IEnumerable<TrainingSession> GetIterator(int maxIteration = int.MaxValue, DeviceDescriptor device = null)
         {
             if (device == null)
@@ -103,22 +74,13 @@ namespace Horker.PSCNTK
 
             for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
             {
-                var batch = Sampler.GetNextBatch(device);
-                if (batch == null)
+                Batch = Sampler.GetNextBatch(device);
+                if (Batch == null)
                     break;
 
-                InitializeParameterMap(batch);
+                DataNameToInputMap.InitializeByMinibatch(Batch);
 
-                var arguments = new Dictionary<Variable, MinibatchData>();
-                foreach (var entry in batch.Features)
-                {
-                    Variable v = null;
-                    if (DataToInputMap.TryGetValue(entry.Key, out v))
-                        arguments.Add(v, entry.Value);
-                }
-
-                if (arguments.Count == 0)
-                    throw new ApplicationException("Minibatch is empty or contains no data corresponding to arguments");
+                var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(Batch);
 
                 Trainer.TrainMinibatch(arguments, device);
 
@@ -138,7 +100,7 @@ namespace Horker.PSCNTK
 
                 yield return this;
 
-                if (batch.SweepEnd)
+                if (Batch.SweepEnd)
                     ++Epoch;
             }
         }
@@ -152,7 +114,7 @@ namespace Horker.PSCNTK
         public double GetValidationMetric(DeviceDescriptor device = null)
         {
             if (Trainer.EvaluationFunction() == null)
-                return 0;
+                return 0.0;
 
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();
@@ -165,8 +127,9 @@ namespace Horker.PSCNTK
                     return 0.0;
 
                 _validationData = new UnorderedMapVariableMinibatchData();
-                foreach (var entry in batch.Features)
-                    _validationData.Add(DataToInputMap[entry.Key], entry.Value);
+                var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(batch);
+                foreach (var entry in arguments)
+                    _validationData.Add(entry.Key, entry.Value);
             }
 
             return Trainer.TestMinibatch(_validationData, device);

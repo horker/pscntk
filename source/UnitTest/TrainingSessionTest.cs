@@ -20,7 +20,7 @@ namespace UnitTest
         [TestMethod]
         public void TestTrainingSession2()
         {
-            // Prepare data
+            // Data
 
             var features = new DataSource<float>(new float[] { 0, 0, 0, 1, 1, 0, 1, 1, 3, 4, 3, 5, 4, 4, 4, 5 }, new int[] { 2, 1, -1 });
             var labels   = new DataSource<float>(new float[] { 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0 }, new int[] { 2, 1, -1 });
@@ -31,7 +31,7 @@ namespace UnitTest
                 { "label", labels }
             }, 2);
 
-            // Build a model
+            // Model
 
             var input = CNTKLib.InputVariable(new int[] { 2 }, false, DataType.Float, "input");
             var h = Composite.Dense(input, new int[] { 100 }, CNTKLib.HeNormalInitializer(), true, null, "relu", "");
@@ -40,15 +40,17 @@ namespace UnitTest
 
             var label = CNTKLib.InputVariable(new int[] { 2 }, DataType.Float, "label");
 
+            // Loss and metric functions
+
+            var loss = CNTKLib.BinaryCrossEntropy(output, label);
+            var error = CNTKLib.ClassificationError(output, label);
+
             // Train
 
             var lr = new TrainingParameterScheduleDouble(.01);
             var m = new TrainingParameterScheduleDouble(.9);
 
             var learner = Learner.MomentumSGDLearner(output.Parameters(), lr, m, true);
-
-            var loss = CNTKLib.BinaryCrossEntropy(output, label);
-            var error = CNTKLib.ClassificationError(output, label);
 
             var trainer = Trainer.CreateTrainer(output, loss, error, new List<Learner>() { learner });
 
