@@ -9,17 +9,21 @@ namespace Horker.PSCNTK
 {
     public class FunctionAsTree : INodeWalker
     {
-        private StringBuilder _output;
+        private Hashtable _arguments;
         private bool _shouUid;
         private bool _showValue;
 
+        private StringBuilder _output;
+
         public string Result { get => _output.ToString(); }
 
-        public FunctionAsTree(CNTK.Function func, bool showUid = false, bool showValue = true)
+        public FunctionAsTree(CNTK.Function func, Hashtable arguments = null, bool showUid = false, bool showValue = true)
         {
-            _output = new StringBuilder();
+            _arguments = arguments;
             _shouUid = showUid;
             _showValue = showValue;
+
+            _output = new StringBuilder();
 
             new NodeWalk(func, this);
         }
@@ -36,6 +40,13 @@ namespace Horker.PSCNTK
 
             _output.AppendFormat("{0}{1} {2} {3}\r\n", indent, depth, func.OpName, name);
 
+            if (_showValue)
+            {
+                var value = CNTKFunctionHelper.Invoke(func, _arguments, null, true);
+                var ds = DataSource<float>.FromValue(value);
+                putDataSource(ds, indent);
+            }
+
             return true;
         }
 
@@ -43,7 +54,7 @@ namespace Horker.PSCNTK
         {
             var indent = new string(' ', depth * 2);
             var v = visited ? " *" : "";
-            var shape = string.Join("x", va.Shape.Dimensions);
+            var shape = string.Join(" x ", va.Shape.Dimensions);
 
             string name;
             if (_shouUid)
@@ -56,17 +67,24 @@ namespace Horker.PSCNTK
             if (_showValue && (va.IsParameter || va.IsConstant))
             {
                 var ds = DataSource<float>.FromVariable(va);
-                if (ds.Shape.GetSize(-1) <= 5)
-                    _output.AppendFormat("{0}    {1}\n", indent, Converter.ArrayToString("Value", ds.Data, ds.Shape, false));
-                else
-                {
-                    var seg = new ArraySegment<float>(ds.Data, 0, 5);
-                    var s = string.Join(" ", seg.Select(x => string.Format("{0:0.#####}", x)));
-                    _output.AppendFormat("{0}    Value [{1}] [{2} ...]\n", indent, shape, s);
-                }
+                putDataSource(ds, indent);
             }
 
             return true;
+        }
+
+        private void putDataSource(DataSource<float> ds, string indent)
+        {
+            var shape = ds.Shape;
+
+            if (ds.Shape.GetSize(-1) <= 5)
+                _output.AppendFormat("{0}    {1}\r\n", indent, Converter.ArrayToString("->", ds.Data, ds.Shape, false));
+            else
+            {
+                var seg = new ArraySegment<float>(ds.Data, 0, 5);
+                var s = string.Join(" ", seg.Select(x => string.Format("{0:0.#####}", x)));
+                _output.AppendFormat("{0}    -> {1} [{2} ...]\r\n", indent, shape, s);
+            }
         }
     }
 }

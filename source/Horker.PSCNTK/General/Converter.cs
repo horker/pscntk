@@ -138,6 +138,24 @@ namespace Horker.PSCNTK
             if (value is DataSource<float>)
                 return (value as DataSource<float>).ToValue();
 
+            if (value is float[])
+            {
+                var values = value as float[];
+                return ArrayToValue(values, new int[] { values.Length });
+            }
+
+            if (value is double[])
+            {
+                var values = (value as double[]).Select(x => (float)x).ToArray();
+                return ArrayToValue(values, new int[] { values.Length });
+            }
+
+            if (value is int[])
+            {
+                var values = (value as int[]).Select(x => (float)x).ToArray();
+                return ArrayToValue(values, new int[] { values.Length });
+            }
+
             if (value is object[])
             {
                 var values = (value as object[]).Select(x => Convert.ToSingle(x is PSObject ? (x as PSObject).BaseObject : x)).ToArray();

@@ -28,10 +28,10 @@ namespace Horker.PSCNTK
             return CNTKFunctionHelper.Invoke(f, Arguments, device);
         }
 
-        public static string AsTree(PSObject func, bool showUid = false, bool showValue = true)
+        public static string AsTree(PSObject func, Hashtable arguments, bool showUid = false, bool showValue = true)
         {
             var f = (CNTK.Function)func.BaseObject;
-            var w = new FunctionAsTree(f, showUid, showValue);
+            var w = new FunctionAsTree(f, arguments, showUid, showValue);
             return w.Result;
         }
 

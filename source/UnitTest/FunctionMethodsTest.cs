@@ -48,5 +48,32 @@ namespace UnitTest
 
             Assert.AreEqual("TestFind_w", ((Variable)result).Name);
         }
+
+        [TestMethod]
+        public void TestAsTree()
+        {
+            var input = Variable.InputVariable(new int[] { 2 }, CNTK.DataType.Float, "input");
+            var f = Composite.Dense(input, new int[] { 5 }, CNTKLib.ConstantInitializer(0.0), true, null, null, "test");
+
+            var obj = new PSObject(f);
+
+            var result = FunctionMethods.AsTree(obj, new Hashtable() { { input, new float[] { 1, 2 } } }, false, true);
+
+            var expected =
+                "0 CompositeFunctionOpName \r\n" +
+                "    -> [5 x 1 x 1] [ [ [0 0 0 0 0] ] ]\r\n" +
+                "  1 Plus <test>\r\n" +
+                "      -> [5 x 1 x 1] [ [ [0 0 0 0 0] ] ]\r\n" +
+                "    2 @Output [5]\r\n" +
+                "      3 Times \r\n" +
+                "          -> [5 x 1 x 1] [ [ [0 0 0 0 0] ] ]\r\n" +
+                "        4 @Parameter [5 x 2] <test_w>\r\n" +
+                "            -> [5 x 2] [0 0 0 0 0 ...]\r\n" +
+                "        4 @Input [2] <input>\r\n" +
+                "    2 @Parameter [5] <test_b>\r\n" +
+                "        -> [5] [0 0 0 0 0]\r\n";
+
+            Assert.AreEqual(expected, result);
+        }
     }
 }
