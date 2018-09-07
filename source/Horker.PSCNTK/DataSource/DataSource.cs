@@ -16,7 +16,7 @@ namespace Horker.PSCNTK
 
         public DataSource(T[] data, int[] dimensions = null, bool ensureCopy = false)
         {
-            if (dimensions == null)
+            if (dimensions == null || dimensions.Length == 0)
                 dimensions = new int[] { data.Length };
 
             Shape = new Shape(dimensions, data.Length);
