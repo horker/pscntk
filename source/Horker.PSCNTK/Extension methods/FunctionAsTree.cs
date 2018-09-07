@@ -10,6 +10,9 @@ namespace Horker.PSCNTK
     public class FunctionAsTree : INodeWalker
     {
         private Hashtable _arguments;
+        private Minibatch _minibatch;
+        private DataNameToInputMap _dataNameToInputMap;
+
         private bool _shouUid;
         private bool _showValue;
 
@@ -17,9 +20,26 @@ namespace Horker.PSCNTK
 
         public string Result { get => _output.ToString(); }
 
-        public FunctionAsTree(CNTK.Function func, Hashtable arguments = null, bool showUid = false, bool showValue = true)
+        public FunctionAsTree(Function func, Hashtable arguments = null, bool showUid = false, bool showValue = true)
         {
             _arguments = arguments;
+            _minibatch = null;
+            _dataNameToInputMap = null;
+
+            _shouUid = showUid;
+            _showValue = showValue;
+
+            _output = new StringBuilder();
+
+            new NodeWalk(func, this);
+        }
+
+        public FunctionAsTree(Function func, Minibatch minibatch, DataNameToInputMap dataNameToInputMap = null, bool showUid = false, bool showValue = true)
+        {
+            _arguments = null;
+            _minibatch = minibatch;
+            _dataNameToInputMap = dataNameToInputMap;
+
             _shouUid = showUid;
             _showValue = showValue;
 
@@ -42,7 +62,12 @@ namespace Horker.PSCNTK
 
             if (_showValue)
             {
-                var value = FunctionInvoke.Invoke(func, _arguments, null, true);
+                Value value;
+                if (_minibatch == null)
+                    value = FunctionInvoke.Invoke(func, _arguments, null, false);
+                else
+                    value = FunctionInvoke.Invoke(func, _minibatch, _dataNameToInputMap, null, false);
+
                 var ds = DataSource<float>.FromValue(value);
                 putDataSource(ds, indent);
             }

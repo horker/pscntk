@@ -36,10 +36,15 @@ namespace Horker.PSCNTK
             return FunctionInvoke.Invoke(f, arguments as Minibatch, map, null, false);
         }
 
-        public static string AsTree(PSObject func, Hashtable arguments, bool showUid = false, bool showValue = true)
+        public static string AsTree(PSObject func, object arguments = null, DataNameToInputMap map = null, bool showUid = false, bool showValue = true)
         {
             var f = func.BaseObject as Function;
-            var w = new FunctionAsTree(f, arguments, showUid, showValue);
+            FunctionAsTree w;
+            if (arguments is Hashtable)
+                w = new FunctionAsTree(f, arguments as Hashtable, showUid, showValue);
+            else
+                w = new FunctionAsTree(f, arguments as Minibatch, map, showUid, showValue);
+
             return w.Result;
         }
 

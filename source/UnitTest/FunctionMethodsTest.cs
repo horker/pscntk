@@ -57,7 +57,7 @@ namespace UnitTest
 
             var obj = new PSObject(f);
 
-            var result = FunctionMethods.AsTree(obj, new Hashtable() { { input, new float[] { 1, 2 } } }, false, true);
+            var result = FunctionMethods.AsTree(obj, new Hashtable() { { input, new float[] { 1, 2 } } }, null, false, true);
 
             var expected =
                 "0 CompositeFunctionOpName \r\n" +
