@@ -102,8 +102,8 @@ namespace Horker.PSCNTK
         {
             var shape = ds.Shape;
 
-            if (ds.Shape.GetSize(-1) <= 5)
-                _output.AppendFormat("{0}    {1}\r\n", indent, Converter.ArrayToString("->", ds.Data, ds.Shape, false));
+            if (shape.GetSize(-1) <= 5)
+                _output.AppendFormat("{0}    {1}\r\n", indent, Converter.ArrayToString("->", ds.Data, shape, false));
             else
             {
                 var seg = new ArraySegment<float>(ds.Data, 0, 5);
