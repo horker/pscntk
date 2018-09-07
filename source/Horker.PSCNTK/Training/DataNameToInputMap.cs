@@ -17,7 +17,8 @@ namespace Horker.PSCNTK
         public DataNameToInputMap(Function[] funcs, Hashtable map = null)
         {
             _map = new Dictionary<string, Variable>();
-            _funcs = funcs;
+
+            _funcs = funcs.Where(x => x != null).ToArray();
 
             if (map != null)
                 InitializeByUserGivenMap(map);
