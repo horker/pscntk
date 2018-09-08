@@ -4,7 +4,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("Get", "CNTKMaxNumCPUThreads")]
-    [Alias("cntk.maxcputhreads")]
+    [Alias("cntk.getmaxcputhreads", "cntk.maxcputhreads")]
     public class GetCNTKMaxCPUThreadCount : PSCmdlet
     {
         protected override void EndProcessing()
@@ -28,7 +28,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("Get", "CNTKTraceLevel")]
-    [Alias("cntk.tracelevel")]
+    [Alias("cntk.gettracelevel", "cntk.tracelevel")]
     public class GetCNTKTraceLvel : PSCmdlet
     {
         protected override void EndProcessing()
@@ -67,12 +67,32 @@ namespace Horker.PSCNTK
         }
     }
 
-// void DisableCPUEvalOptimization()
-// GenerateRandomSeed
-// GetRandomSeed
-// ISRandomSeedFixed
-// RandomInitializerWithRank
-// SetMathLibTraceLevel
-// UseSparseGradientAggregationInDataParallelSGD
+    [Cmdlet("Get", "CNTKRandomSeed")]
+    [Alias("cntk.getrandomseed", "cntk.randomseed")]
+    public class GetCNTRandomSeed : PSCmdlet
+    {
+        protected override void EndProcessing()
+        {
+            WriteObject(CNTKLib.GetRandomSeed());
+        }
+    }
+
+
+    [Cmdlet("Test", "CNTKRandomSeedFixed")]
+    [Alias("cntk.testrandomseedfixed", "cntk.israndomseedfixed")]
+    public class TestCNTRandomSeedFixed : PSCmdlet
+    {
+        protected override void EndProcessing()
+        {
+            WriteObject(CNTKLib.IsRandomSeedFixed());
+        }
+    }
+
+    // Unimplemented:
+    // void DisableCPUEvalOptimization()
+    // GenerateRandomSeed
+    // RandomInitializerWithRank
+    // SetMathLibTraceLevel
+    // UseSparseGradientAggregationInDataParallelSGD
 
 }
