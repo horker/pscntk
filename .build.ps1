@@ -137,7 +137,7 @@ task Clean {
   Remove-Item2 "$MODULE_PATH_DEBUG\*" -Force -Recurse -EA Continue
 }
 
-task ProcessTemplate {
+task Templates {
 #  .\tools\Extract-FunctionSignature.ps1
 
   dir $TEMPLATE_INPUT_PATH | foreach {

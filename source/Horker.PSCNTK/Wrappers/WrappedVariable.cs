@@ -3,7 +3,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class WrappedVariable
+    public partial class WrappedVariable
     {
         private Variable _va;
 
@@ -23,7 +23,7 @@ namespace Horker.PSCNTK
         public VariableKind Kind => _va.Kind;
         public string Name => _va.Name;
         public bool NeedsGradient => _va.NeedsGradient;
-        public Function Owner => _va.Owner;
+        public WrappedFunction Owner => _va.Owner;
         public NDShape Shape => _va.Shape;
         public string Uid => _va.Uid;
 
@@ -34,6 +34,9 @@ namespace Horker.PSCNTK
         #endregion
 
         #region Delegate methods
+
+        public override int GetHashCode() => _va.GetHashCode();
+        public override string ToString() => _va.AsString();
 
         public NDArrayView GetValue() => _va.GetValue();
         public bool HasBatchAxis() => _va.HasBatchAxis();
@@ -79,196 +82,28 @@ namespace Horker.PSCNTK
             return new WrappedFunction(va._va);
         }
 
+        public static implicit operator WrappedVariable(double value)
+        {
+            return Constant.Scalar(DataType.Float, value);
+        }
+
+        public static implicit operator WrappedVariable(int value)
+        {
+            return Constant.Scalar(DataType.Float, value);
+        }
+
         #endregion
 
-        #region Unary operator +
+        #region Unary operators
 
         public static WrappedFunction operator+(WrappedVariable va)
         {
             return new WrappedFunction(va._va);
         }
 
-        #endregion
-
-        #region Unary operator -
-
         public static WrappedFunction operator-(WrappedVariable va)
         {
             return CNTKLib.Negate(va);
-        }
-
-        #endregion
-
-        #region Binary operator +
-
-        public static WrappedFunction operator+(WrappedVariable left, WrappedVariable right)
-        {
-            return CNTKLib.Plus(left, right);
-        }
-
-        public static WrappedFunction operator+(WrappedVariable left, Variable right)
-        {
-            return CNTKLib.Plus(left, right);
-        }
-
-        public static WrappedFunction operator+(Variable left, WrappedVariable right)
-        {
-            return CNTKLib.Plus(left, right);
-        }
-
-        public static WrappedFunction operator+(WrappedVariable left, double right)
-        {
-            return CNTKLib.Plus(left, Constant.Scalar(DataType.Float, right));
-        }
-
-        public static WrappedFunction operator+(double left, WrappedVariable right)
-        {
-            return CNTKLib.Plus(Constant.Scalar(DataType.Float, left), right);
-        }
-
-        #endregion
-
-        #region Binary operator -
-
-        public static WrappedVariable operator-(WrappedVariable left, WrappedVariable right)
-        {
-            return CNTKLib.Minus(left, right);
-        }
-
-        public static WrappedVariable operator-(WrappedVariable left, Variable right)
-        {
-            return CNTKLib.Minus(left, right);
-        }
-
-        public static WrappedVariable operator-(Variable left, WrappedVariable right)
-        {
-            return CNTKLib.Minus(left, right);
-        }
-
-        public static WrappedVariable operator-(WrappedVariable left, double right)
-        {
-            return CNTKLib.Minus(left, Constant.Scalar(DataType.Float, right));
-        }
-
-        public static WrappedVariable operator-(double left, WrappedVariable right)
-        {
-            return CNTKLib.Minus(Constant.Scalar(DataType.Float, left), right);
-        }
-
-        #endregion
-
-        #region Binary operator *
-
-        public static WrappedVariable operator*(WrappedVariable left, WrappedVariable right)
-        {
-            return CNTKLib.ElementTimes(left, right);
-        }
-
-        public static WrappedVariable operator*(WrappedVariable left, Variable right)
-        {
-            return CNTKLib.ElementTimes(left, right);
-        }
-
-        public static WrappedVariable operator*(Variable left, WrappedVariable right)
-        {
-            return CNTKLib.ElementTimes(left, right);
-        }
-
-        public static WrappedVariable operator*(WrappedVariable left, double right)
-        {
-            return CNTKLib.ElementTimes(left, Constant.Scalar(DataType.Float, right));
-        }
-
-        public static WrappedVariable operator*(double left, WrappedVariable right)
-        {
-            return CNTKLib.ElementTimes(Constant.Scalar(DataType.Float, left), right);
-        }
-
-        #endregion
-
-        #region Binary operator /
-
-        public static WrappedVariable operator/(WrappedVariable left, WrappedVariable right)
-        {
-            return CNTKLib.ElementDivide(left, right);
-        }
-
-        public static WrappedVariable operator/(WrappedVariable left, Variable right)
-        {
-            return CNTKLib.ElementDivide(left, right);
-        }
-
-        public static WrappedVariable operator/(Variable left, WrappedVariable right)
-        {
-            return CNTKLib.ElementDivide(left, right);
-        }
-
-        public static WrappedVariable operator/(WrappedVariable left, double right)
-        {
-            return CNTKLib.ElementDivide(left, Constant.Scalar(DataType.Float, right));
-        }
-
-        public static WrappedVariable operator/(double left, WrappedVariable right)
-        {
-            return CNTKLib.ElementDivide(Constant.Scalar(DataType.Float, left), right);
-        }
-
-        #endregion
-
-        #region Binary operator &
-
-        public static WrappedVariable operator&(WrappedVariable left, WrappedVariable right)
-        {
-            return CNTKLib.ElementAnd(left, right);
-        }
-
-        public static WrappedVariable operator&(WrappedVariable left, Variable right)
-        {
-            return CNTKLib.ElementAnd(left, right);
-        }
-
-        public static WrappedVariable operator&(Variable left, WrappedVariable right)
-        {
-            return CNTKLib.ElementAnd(left, right);
-        }
-
-        public static WrappedVariable operator&(WrappedVariable left, double right)
-        {
-            return CNTKLib.ElementAnd(left, Constant.Scalar(DataType.Float, right));
-        }
-
-        public static WrappedVariable operator&(double left, WrappedVariable right)
-        {
-            return CNTKLib.ElementAnd(Constant.Scalar(DataType.Float, left), right);
-        }
-
-        #endregion
-
-        #region Binary operator |
-
-        public static WrappedVariable operator|(WrappedVariable left, WrappedVariable right)
-        {
-            return CNTKLib.ElementOr(left, right);
-        }
-
-        public static WrappedVariable operator|(WrappedVariable left, Variable right)
-        {
-            return CNTKLib.ElementOr(left, right);
-        }
-
-        public static WrappedVariable operator|(Variable left, WrappedVariable right)
-        {
-            return CNTKLib.ElementOr(left, right);
-        }
-
-        public static WrappedVariable operator|(WrappedVariable left, double right)
-        {
-            return CNTKLib.ElementOr(left, Constant.Scalar(DataType.Float, right));
-        }
-
-        public static WrappedVariable operator|(double left, WrappedVariable right)
-        {
-            return CNTKLib.ElementOr(Constant.Scalar(DataType.Float, left), right);
         }
 
         #endregion

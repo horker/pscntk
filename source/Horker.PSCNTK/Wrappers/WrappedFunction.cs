@@ -4,7 +4,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class WrappedFunction
+    public partial class WrappedFunction
     {
         private Function _f;
 
@@ -26,6 +26,9 @@ namespace Horker.PSCNTK
         #endregion
 
         #region Delegate methods
+
+        public override int GetHashCode() => _f.GetHashCode();
+        public override string ToString() => _f.AsString();
 
         public CNTKDictionary Attributes() => _f.Attributes();
         public WrappedFunction BlockRoot() => _f.BlockRoot();
@@ -80,6 +83,20 @@ namespace Horker.PSCNTK
         public static implicit operator WrappedVariable(WrappedFunction f)
         {
             return new WrappedVariable(f._f);
+        }
+
+        #endregion
+
+        #region Unary operators
+
+        public static WrappedFunction operator+(WrappedFunction f)
+        {
+            return f;
+        }
+
+        public static WrappedFunction operator-(WrappedFunction f)
+        {
+            return CNTKLib.Negate(f._f);
         }
 
         #endregion

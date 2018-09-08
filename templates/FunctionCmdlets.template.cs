@@ -10,7 +10,7 @@ $TYPE_MAP = @{
   "const Axis&" = "CNTK.Axis"
   "const bool" = "bool"
   "const Constant&" = "CNTK.Constant"
-  "const FunctionPtr&" = "CNTK.Function"
+  "const FunctionPtr&" = "WrappedFunction"
   "const NDArrayViewPtr&" = "CNTK.NDArrayView"
   "const NDShape&" = "int[]"
   "const std::vector<Axis>&" = "CNTK.Axis[]"
@@ -19,7 +19,7 @@ $TYPE_MAP = @{
   "const std::vector<size_t>&" = "UInt32[]"
   "const std::vector<Variable>&" = "CNTK.Variable[]"
   "const std::wstring&" = "string"
-  "const Variable&" = "CNTK.Variable"
+  "const Variable&" = "WrappedVariable"
   "DataType" = "CNTK.DataType"
   "double" = "double"
   "float" = "float"
@@ -30,7 +30,7 @@ $TYPE_MAP = @{
   "size_t" = "UInt32"
   "std::vector<float>" = "float[]"
   "unsigned long" = "UInt32"
-  "Variable&" = "CNTK.Variable"
+  "Variable&" = "WrappedVariable"
 }
 
 $CAST_MAP = @{
