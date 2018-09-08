@@ -27,6 +27,9 @@ namespace Horker.PSCNTK
         {
             var f = func.BaseObject as Function;
 
+            if (arguments == null)
+                return FunctionInvoke.Invoke(f, new Dictionary<Variable, Value>(), null, false);
+
             if (arguments is Dictionary<Variable, Value>)
                 return FunctionInvoke.Invoke(f, arguments as Dictionary<Variable, Value>, null, false);
 
@@ -40,7 +43,10 @@ namespace Horker.PSCNTK
         {
             var f = func.BaseObject as Function;
             FunctionAsTree w;
-            if (arguments is Hashtable)
+
+            if (arguments == null)
+                w = new FunctionAsTree(f, null, null, false);
+            else if (arguments is Hashtable)
                 w = new FunctionAsTree(f, arguments as Hashtable, showUid, showValue);
             else
                 w = new FunctionAsTree(f, arguments as Minibatch, map, showUid, showValue);
