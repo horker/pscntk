@@ -1,4 +1,5 @@
 ﻿using System.Management.Automation;
+using CNTK;
 
 namespace Horker.PSCNTK
 {
@@ -8,7 +9,7 @@ namespace Horker.PSCNTK
     {
         protected override void EndProcessing()
         {
-            var result = CNTK.Utils.GetMaxNumCPUThreads();
+            var result = Utils.GetMaxNumCPUThreads();
             WriteObject(result);
         }
     }
@@ -22,7 +23,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            CNTK.Utils.SetMaxNumCPUThreads(NumCPUThreads);
+            Utils.SetMaxNumCPUThreads(NumCPUThreads);
         }
     }
 
@@ -32,7 +33,7 @@ namespace Horker.PSCNTK
     {
         protected override void EndProcessing()
         {
-            var result = CNTK.Utils.GetTraceLevel();
+            var result = Utils.GetTraceLevel();
             WriteObject(result);
         }
     }
@@ -42,11 +43,27 @@ namespace Horker.PSCNTK
     public class SetCNTTraceLevel : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.TraceLevel TraceLevel;
+        public TraceLevel TraceLevel;
 
         protected override void EndProcessing()
         {
-            CNTK.Utils.SetTraceLevel(TraceLevel);
+            Utils.SetTraceLevel(TraceLevel);
+        }
+    }
+
+    [Cmdlet("Set", "CNTKRandomSeed")]
+    [Alias("cntk.setrandomseed")]
+    public class SetCNTRandomSeed : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = false)]
+        public int Value = 0;
+
+        protected override void EndProcessing()
+        {
+            if (MyInvocation.BoundParameters.ContainsKey("Value"))
+                CNTKLib.ResetRandomSeed((uint)Value);
+            else
+                CNTKLib.ResetRandomSeed();
         }
     }
 
@@ -55,7 +72,6 @@ namespace Horker.PSCNTK
 // GetRandomSeed
 // ISRandomSeedFixed
 // RandomInitializerWithRank
-// ResetRandomSeed
 // SetMathLibTraceLevel
 // UseSparseGradientAggregationInDataParallelSGD
 
