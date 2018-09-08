@@ -1,4 +1,5 @@
 ﻿using System.Management.Automation;
+using System.Runtime.InteropServices;
 using CNTK;
 
 namespace Horker.PSCNTK
@@ -55,6 +56,23 @@ namespace Horker.PSCNTK
     [Alias("cntk.setrandomseed")]
     public class SetCNTRandomSeed : PSCmdlet
     {
+        [DllImport("Cntk.Core-2.5.1.dll", EntryPoint = "?SetFixedRandomSeed@Internal@CNTK@@YAXK@Z", CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool SetFixedRandomSeed(uint value);
+
+        [Parameter(Position = 0, Mandatory = false)]
+        public int Value = 1234;
+
+        protected override void EndProcessing()
+        {
+            SetFixedRandomSeed((uint)Value);
+            NoiseSampler.RandomSeed = Value;
+        }
+    }
+
+    [Cmdlet("Reset", "CNTKRandomSeed")]
+    [Alias("cntk.resetrandomseed")]
+    public class ResetCNTRandomSeed : PSCmdlet
+    {
         [Parameter(Position = 0, Mandatory = false)]
         public int Value = 0;
 
@@ -64,6 +82,8 @@ namespace Horker.PSCNTK
                 CNTKLib.ResetRandomSeed((uint)Value);
             else
                 CNTKLib.ResetRandomSeed();
+
+            NoiseSampler.RandomSeed = null;
         }
     }
 
@@ -76,7 +96,6 @@ namespace Horker.PSCNTK
             WriteObject(CNTKLib.GetRandomSeed());
         }
     }
-
 
     [Cmdlet("Test", "CNTKRandomSeedFixed")]
     [Alias("cntk.testrandomseedfixed", "cntk.israndomseedfixed")]
