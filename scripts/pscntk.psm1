@@ -35,6 +35,14 @@ $METHOD_LIST = @(
       "ToArray"
     )
   }
+
+  [PSCustomObject]@{
+    TargetClass = "CNTK.NDArrayView"
+    ClassInfo = [Horker.PSCNTK.NDArrayViewMethods]
+    MethodNames = @(
+      "AsString"
+    )
+  }
 )
 
 foreach ($l in $METHOD_LIST) {

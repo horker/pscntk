@@ -64,6 +64,7 @@
     <Compile Include="Extension methods\FunctionAsTree.cs" />
     <Compile Include="Extension methods\FunctionFind.cs" />
     <Compile Include="Extension methods\FunctionInvoke.cs" />
+    <Compile Include="Extension methods\NDArrayViewMethods.cs" />
     <Compile Include="General\DotGenerater.cs" />
     <Compile Include="General\NodeGroup.cs" />
     <Compile Include="General\NodeWalk.cs" />

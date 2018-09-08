@@ -40,5 +40,24 @@
                 </CustomEntries>
             </CustomControl>
         </View>
+        <View>
+            <Name>CNTK.NDArrayView</Name>
+            <ViewSelectedBy>
+                <TypeName>CNTK.NDArrayView</TypeName>
+            </ViewSelectedBy>
+            <CustomControl>
+                <CustomEntries>
+                    <CustomEntry>
+                        <CustomItem>
+                            <ExpressionBinding>
+                                <ScriptBlock>
+                                    $_.AsString()
+                                </ScriptBlock>
+                            </ExpressionBinding>
+                        </CustomItem>
+                    </CustomEntry>
+                </CustomEntries>
+            </CustomControl>
+        </View>
     </ViewDefinitions>
 </Configuration>
