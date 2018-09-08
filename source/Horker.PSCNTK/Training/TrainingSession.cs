@@ -16,7 +16,7 @@ namespace Horker.PSCNTK
         public int Epoch { get; private set; }
         public int Iteration { get; private set; }
 
-        public Minibatch Batch { get; private set; }
+        public Minibatch Minibatch { get; private set; }
 
         public int SampleCount { get; private set; }
         public double Loss { get; private set;}
@@ -74,13 +74,13 @@ namespace Horker.PSCNTK
 
             for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
             {
-                Batch = Sampler.GetNextBatch(device);
-                if (Batch == null)
+                Minibatch = Sampler.GetNextBatch(device);
+                if (Minibatch == null)
                     break;
 
-                DataNameToInputMap.InitializeByMinibatch(Batch);
+                DataNameToInputMap.InitializeByMinibatch(Minibatch);
 
-                var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(Batch);
+                var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(Minibatch);
 
                 Trainer.TrainMinibatch(arguments, device);
 
@@ -100,7 +100,7 @@ namespace Horker.PSCNTK
 
                 yield return this;
 
-                if (Batch.SweepEnd)
+                if (Minibatch.SweepEnd)
                     ++Epoch;
             }
         }
