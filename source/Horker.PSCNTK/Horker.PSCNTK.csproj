@@ -116,7 +116,7 @@
     <Compile Include="Cmdlets\CNTKTextFormatBuilderCmdlets.cs" />
     <Compile Include="Cmdlets\WritetCNTKCTextFormat.cs" />
     <Compile Include="Extension methods\FunctionMethods.cs" />
-    <Compile Include="Cmdlets\FunctionCmdlets.cs" />
+    <Compile Include="Generated files\FunctionCmdlets.cs" />
     <Compile Include="Cmdlets\CompositeCmdlets.cs" />
     <Compile Include="Cmdlets\VariableCmdlets.cs" />
     <Compile Include="Extension methods\ValueMethods.cs" />

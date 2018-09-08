@@ -27,7 +27,7 @@ $LIB_PATH = "$PSScriptRoot\lib\Release"
 $LIB_PATH_DEBUG = "$PSScriptRoot\lib\Debug"
 
 $TEMPLATE_INPUT_PATH = "$PSScriptRoot\templates"
-$TEMPLATE_OUTPUT_PATH = "$PSScriptRoot\source\Horker.PSCNTK\Cmdlets"
+$TEMPLATE_OUTPUT_PATH = "$PSScriptRoot\source\Horker.PSCNTK\Generated files"
 
 #$HELP_INPUT =  "$SOURCE_PATH\bin\Release\Horker.Math.dll"
 #$HELP_INTERM = "$SOURCE_PATH\bin\Release\Horker.Data.dll-Help.xml"
