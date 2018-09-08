@@ -24,7 +24,7 @@ namespace Horker.PSCNTK
         public string Name => _va.Name;
         public bool NeedsGradient => _va.NeedsGradient;
         public WrappedFunction Owner => _va.Owner;
-        public NDShape Shape => _va.Shape;
+        public Shape Shape => _va.Shape;
         public string Uid => _va.Uid;
 
         // Additional

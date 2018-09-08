@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Linq;
+using CNTK;
 
 namespace Horker.PSCNTK
 {
     [Serializable]
     public class Shape
     {
-        public int[] Dimensions;
+        public int[] Dimensions { get; private set; }
         public int Rank => Dimensions.Length;
         public int TotalSize => GetSize(Rank - 1);
 
@@ -24,6 +26,11 @@ namespace Horker.PSCNTK
                     i = Rank + i;
                 Dimensions[i] = value;
             }
+        }
+
+        private Shape()
+        {
+            // Use to avoid expensive argument check
         }
 
         public Shape(int[] dimensions, int dataCount = -1)
@@ -81,6 +88,18 @@ namespace Horker.PSCNTK
         public static implicit operator int[] (Shape shape)
         {
             return shape.Dimensions;
+        }
+
+        public static implicit operator NDShape(Shape shape)
+        {
+            return (int[])shape;
+        }
+
+        public static implicit operator Shape(NDShape ndShape)
+        {
+            var shape = new Shape();
+            shape.Dimensions = ndShape.Dimensions.ToArray();
+            return shape;
         }
 
         public void Reshape(int[] dimensions, int dataCount = -1)
