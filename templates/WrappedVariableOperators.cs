@@ -29,12 +29,16 @@ foreach ($op in $OPERATORS.Keys) {
         {
             return <% $OPERATORS[$op] -f "left", ($TYPES[$type] -f "right") %>;
         }
+<%
+    if ($type -ne "WrappedFunction") {
+-%>
 
         public static WrappedFunction operator<% $op %>(<% $type %> left, WrappedVariable right)
         {
             return <% $OPERATORS[$op] -f ($TYPES[$type] -f "left"), "right" %>;
         }
 <%
+    }
   }
 }
 -%>

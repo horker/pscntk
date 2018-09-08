@@ -4,7 +4,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public partial class WrappedFunction
+    public partial class WrappedFunction : IWrappedNode
     {
         private Function _f;
 

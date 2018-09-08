@@ -68,9 +68,14 @@ namespace Horker.PSCNTK
             return true;
         }
 
-        public bool ProcessVariable(Variable va, int depth, bool visited)
+        public bool ProcessVariable(Function holder, Variable va, int depth, bool visited)
         {
             return true;
+        }
+
+        public void Complete()
+        {
+            // Do nothing
         }
 
         private void AddNode(Variable va)

@@ -10,7 +10,8 @@ namespace Horker.PSCNTK
     public interface INodeWalker
     {
         bool ProcessFunction(Function function, int depth);
-        bool ProcessVariable(Variable variable, int depth, bool visited);
+        bool ProcessVariable(Function holder, Variable variable, int depth, bool visited);
+        void Complete();
     }
 
     public class NodeWalk
@@ -26,6 +27,7 @@ namespace Horker.PSCNTK
             _visited = new HashSet<Variable>();
 
             WalkToFunction(_model, 0);
+            walker.Complete();
         }
 
         private bool WalkToFunction(Function func, int depth)
@@ -42,7 +44,7 @@ namespace Horker.PSCNTK
             {
                 foreach (var arg in func.Inputs)
                 {
-                    if (!WalkToVariable(arg, depth + 1))
+                    if (!WalkToVariable(func, arg, depth + 1))
                         return false;
                 }
             }
@@ -50,13 +52,13 @@ namespace Horker.PSCNTK
             return true;
         }
 
-        private bool WalkToVariable(Variable va, int depth)
+        private bool WalkToVariable(Function holder, Variable va, int depth)
         {
             var visited = _visited.Contains(va);
             if (!visited)
                 _visited.Add(va);
 
-            if (!_walker.ProcessVariable(va, depth, visited))
+            if (!_walker.ProcessVariable(holder, va, depth, visited))
                 return false;
 
             if (visited)

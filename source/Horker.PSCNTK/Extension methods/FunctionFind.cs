@@ -57,7 +57,7 @@ namespace Horker.PSCNTK
             return true;
         }
 
-        public bool ProcessVariable(Variable va, int depth, bool visited)
+        public bool ProcessVariable(Function holder, Variable va, int depth, bool visited)
         {
             if (va.Name == _name || va.Uid == _name)
             {
@@ -67,6 +67,11 @@ namespace Horker.PSCNTK
             }
 
             return true;
+        }
+
+        public void Complete()
+        {
+            // Do nothing
         }
 
         public static Variable Find(Function func, string name)

@@ -49,19 +49,34 @@ namespace Horker.PSCNTK
             return FunctionInvoke.Invoke(f, arguments as Minibatch, map, null, false);
         }
 
-        public static string AsTree(PSObject func, object arguments = null, DataNameToInputMap map = null, bool showUid = false, bool showValue = true)
+        public static string AsTree(PSObject func, object arguments = null, DataNameToInputMap map = null, bool showUid = true, bool showValue = true)
         {
             Function f = ToFunction(func);
             FunctionAsTree w;
 
             if (arguments == null)
-                w = new FunctionAsTree(f, null, null, false);
+                w = new FunctionAsTree(f, null, null, null, showUid, showValue);
             else if (arguments is Hashtable)
-                w = new FunctionAsTree(f, arguments as Hashtable, showUid, showValue);
+                w = new FunctionAsTree(f, arguments as Hashtable, null, null, showUid, showValue);
             else
-                w = new FunctionAsTree(f, arguments as Minibatch, map, showUid, showValue);
+                w = new FunctionAsTree(f, null, arguments as Minibatch, map, showUid, showValue);
 
             return w.Result;
+        }
+
+        public static IEnumerable<NodeInfo> GetNodeInfo(PSObject func, object arguments = null, DataNameToInputMap map = null)
+        {
+            Function f = ToFunction(func);
+            var w = new FunctionGetNodeInfo(f);
+
+            if (arguments == null)
+                w = new FunctionGetNodeInfo(f, null, null);
+            else if (arguments is Hashtable)
+                w = new FunctionGetNodeInfo(f, arguments as Hashtable);
+            else
+                w = new FunctionGetNodeInfo(f, null, arguments as Minibatch, map);
+
+            return w.GetNodeInfo();
         }
 
         public static string ToDot(PSObject func)

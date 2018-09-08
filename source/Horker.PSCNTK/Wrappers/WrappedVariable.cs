@@ -3,7 +3,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public partial class WrappedVariable
+    public partial class WrappedVariable : IWrappedNode
     {
         private Variable _va;
 

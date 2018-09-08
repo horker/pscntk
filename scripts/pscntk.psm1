@@ -23,6 +23,7 @@ $METHOD_LIST = @(
       "Invoke"
       "AsTree"
       "ToDot"
+      "GetNodeInfo"
     )
   }
 
@@ -34,6 +35,7 @@ $METHOD_LIST = @(
       "Invoke"
       "AsTree"
       "ToDot"
+      "GetNodeInfo"
     )
   }
 

@@ -1,7 +1,7 @@
 using CNTK;
 
 // DO NOT EDIT
-// This file was automatically generated at 2018/09/09 03:45:02
+// This file was automatically generated at 2018/09/09 08:11:38
 
 namespace Horker.PSCNTK {
 
@@ -43,11 +43,6 @@ namespace Horker.PSCNTK {
         }
 
         public static WrappedFunction operator^(WrappedVariable left, WrappedFunction right)
-        {
-            return CNTKLib.ElementXor(left, right);
-        }
-
-        public static WrappedFunction operator^(WrappedFunction left, WrappedVariable right)
         {
             return CNTKLib.ElementXor(left, right);
         }
@@ -102,11 +97,6 @@ namespace Horker.PSCNTK {
             return CNTKLib.Plus(left, right);
         }
 
-        public static WrappedFunction operator+(WrappedFunction left, WrappedVariable right)
-        {
-            return CNTKLib.Plus(left, right);
-        }
-
         public static WrappedFunction operator+(WrappedVariable left, double right)
         {
             return CNTKLib.Plus(left, Constant.Scalar(DataType.Float, right));
@@ -153,11 +143,6 @@ namespace Horker.PSCNTK {
         }
 
         public static WrappedFunction operator&(WrappedVariable left, WrappedFunction right)
-        {
-            return CNTKLib.ElementAnd(left, right);
-        }
-
-        public static WrappedFunction operator&(WrappedFunction left, WrappedVariable right)
         {
             return CNTKLib.ElementAnd(left, right);
         }
@@ -212,11 +197,6 @@ namespace Horker.PSCNTK {
             return CNTKLib.ElementOr(left, right);
         }
 
-        public static WrappedFunction operator|(WrappedFunction left, WrappedVariable right)
-        {
-            return CNTKLib.ElementOr(left, right);
-        }
-
         public static WrappedFunction operator|(WrappedVariable left, double right)
         {
             return CNTKLib.ElementOr(left, Constant.Scalar(DataType.Float, right));
@@ -263,11 +243,6 @@ namespace Horker.PSCNTK {
         }
 
         public static WrappedFunction operator*(WrappedVariable left, WrappedFunction right)
-        {
-            return CNTKLib.ElementTimes(left, right);
-        }
-
-        public static WrappedFunction operator*(WrappedFunction left, WrappedVariable right)
         {
             return CNTKLib.ElementTimes(left, right);
         }
@@ -322,11 +297,6 @@ namespace Horker.PSCNTK {
             return CNTKLib.Minus(left, right);
         }
 
-        public static WrappedFunction operator-(WrappedFunction left, WrappedVariable right)
-        {
-            return CNTKLib.Minus(left, right);
-        }
-
         public static WrappedFunction operator-(WrappedVariable left, double right)
         {
             return CNTKLib.Minus(left, Constant.Scalar(DataType.Float, right));
@@ -373,11 +343,6 @@ namespace Horker.PSCNTK {
         }
 
         public static WrappedFunction operator/(WrappedVariable left, WrappedFunction right)
-        {
-            return CNTKLib.ElementDivide(left, right);
-        }
-
-        public static WrappedFunction operator/(WrappedFunction left, WrappedVariable right)
         {
             return CNTKLib.ElementDivide(left, right);
         }

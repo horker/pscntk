@@ -37,6 +37,25 @@ namespace UnitTest
         }
 
         [TestMethod]
+        public void TestInvoke2()
+        {
+            var input = CNTK.Variable.InputVariable(new int[] { 2, 2 }, CNTK.DataType.Float, "input");
+            var f = CNTK.CNTKLib.ReduceSum(input, CNTK.Axis.AllStaticAxes());
+
+            var obj = new PSObject(f);
+
+            var output = FunctionMethods.Invoke(
+                new PSObject(f),
+                new Hashtable() { { "input", new object[] { new PSObject(1), 3, 5, 9 } } }
+            );
+
+            var result = DataSource<float>.FromValue(output);
+
+            CollectionAssert.AreEqual(new int[] { 1, 1 }, result.Shape.Dimensions);
+            CollectionAssert.AreEqual(new float[] { 1 + 3 + 5 + 9 }, result.Data.ToArray());
+        }
+
+        [TestMethod]
         public void TestFind()
         {
             var input = Variable.InputVariable(new int[] { 1, 2 }, CNTK.DataType.Float, "input");
@@ -68,7 +87,7 @@ namespace UnitTest
                 "      3 Times \r\n" +
                 "          -> [5 x 1 x 1] [ [ [0 0 0 0 0] ] ]\r\n" +
                 "        4 @Parameter [5 x 2] <test_w>\r\n" +
-                "            -> [5 x 2] [0 0 0 0 0 ...]\r\n" +
+                "            -> [5 x 2] [0 0 0 0 0...]\r\n" +
                 "        4 @Input [2] <input>\r\n" +
                 "    2 @Parameter [5] <test_b>\r\n" +
                 "        -> [5] [0 0 0 0 0]\r\n";

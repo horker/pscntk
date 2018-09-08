@@ -20,23 +20,9 @@ namespace Horker.PSCNTK
 
         public string Result { get => _output.ToString(); }
 
-        public FunctionAsTree(Function func, Hashtable arguments = null, bool showUid = false, bool showValue = true)
+        public FunctionAsTree(Function func, Hashtable arguments = null, Minibatch minibatch = null, DataNameToInputMap dataNameToInputMap = null, bool showUid = true, bool showValue = true)
         {
             _arguments = arguments;
-            _minibatch = null;
-            _dataNameToInputMap = null;
-
-            _shouUid = showUid;
-            _showValue = showValue;
-
-            _output = new StringBuilder();
-
-            new NodeWalk(func, this);
-        }
-
-        public FunctionAsTree(Function func, Minibatch minibatch, DataNameToInputMap dataNameToInputMap = null, bool showUid = false, bool showValue = true)
-        {
-            _arguments = null;
             _minibatch = minibatch;
             _dataNameToInputMap = dataNameToInputMap;
 
@@ -62,20 +48,27 @@ namespace Horker.PSCNTK
 
             if (_showValue)
             {
-                Value value;
-                if (_minibatch == null)
-                    value = FunctionInvoke.Invoke(func, _arguments, null, false);
-                else
-                    value = FunctionInvoke.Invoke(func, _minibatch, _dataNameToInputMap, null, false);
+                try
+                {
+                    Value value;
+                    if (_minibatch == null)
+                        value = FunctionInvoke.Invoke(func, _arguments, null, false);
+                    else
+                        value = FunctionInvoke.Invoke(func, _minibatch, _dataNameToInputMap, null, false);
 
-                var ds = DataSource<float>.FromValue(value);
-                putDataSource(ds, indent);
+                    var ds = DataSource<float>.FromValue(value);
+                    putDataSource(ds, indent);
+                }
+                catch (Exception)
+                {
+                    // Pass
+                }
             }
 
             return true;
         }
 
-        public bool ProcessVariable(Variable va, int depth, bool visited)
+        public bool ProcessVariable(Function holder, Variable va, int depth, bool visited)
         {
             var indent = new string(' ', depth * 2);
             var v = visited ? " *" : "";
@@ -98,6 +91,11 @@ namespace Horker.PSCNTK
             return true;
         }
 
+        public void Complete()
+        {
+            // Do nothing
+        }
+
         private void putDataSource(DataSource<float> ds, string indent)
         {
             var shape = ds.Shape;
@@ -108,7 +106,7 @@ namespace Horker.PSCNTK
             {
                 var seg = new ArraySegment<float>(ds.Data, 0, 5);
                 var s = string.Join(" ", seg.Select(x => string.Format("{0:0.#####}", x)));
-                _output.AppendFormat("{0}    -> {1} [{2} ...]\r\n", indent, shape, s);
+                _output.AppendFormat("{0}    -> {1} [{2}...]\r\n", indent, shape, s);
             }
         }
     }

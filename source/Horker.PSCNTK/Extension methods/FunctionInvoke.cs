@@ -64,7 +64,7 @@ namespace Horker.PSCNTK
                     key = va;
                 }
 
-                value = Converter.ToValue(entry.Value);
+                value = Converter.ToValue(entry.Value, key.Shape.Dimensions.ToArray());
 
                 inputs.Add(key, value);
             }
