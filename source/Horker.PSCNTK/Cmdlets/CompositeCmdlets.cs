@@ -131,7 +131,7 @@ namespace Horker.PSCNTK
         public double Epsilon = 0.00001;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public SwitchParameter UseCNTKEngine = false;
+        public SwitchParameter UseCuDNNEngine = false;
 
         [Parameter(Position = 7, Mandatory = false)]
         public SwitchParameter DisableRegularization = false;
@@ -141,7 +141,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var result = Composite.BatchNormalization(Input, Spatial, InitialScale, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCNTKEngine, DisableRegularization, Name);
+            var result = Composite.BatchNormalization(Input, Spatial, InitialScale, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCuDNNEngine, DisableRegularization, Name);
 
             WriteObject(result);
         }

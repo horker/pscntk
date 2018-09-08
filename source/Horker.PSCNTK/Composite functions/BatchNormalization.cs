@@ -7,7 +7,7 @@ namespace Horker.PSCNTK
 {
     public partial class Composite
     {
-        public static Function BatchNormalization(Variable input, bool spatial, double initScale, double normalizationTimeConstant, double blendTimeConstant, double epsilon, bool useCNTKEngine, bool disableRegularization, string name)
+        public static Function BatchNormalization(Variable input, bool spatial, double initScale, double normalizationTimeConstant, double blendTimeConstant, double epsilon, bool useCuDNNEngine, bool disableRegularization, string name)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace Horker.PSCNTK
                     normalizationTimeConstant, // double normalizationTimeConstant
                     blendTimeConstant,         // double blendTimeConstant
                     epsilon,                   // double epsilon
-                    !useCNTKEngine,            // bool useCuDNNEngine
+                    useCuDNNEngine,            // bool useCuDNNEngine
                     disableRegularization,     // bool disableRegularization
                     ""                         // string name
                 );
