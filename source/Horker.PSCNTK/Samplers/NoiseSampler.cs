@@ -15,10 +15,8 @@ namespace Horker.PSCNTK
         public double Min;
         public double Max;
 
-        public static int? RandomSeed;
-
+        private System.Random _random;
         private int _dataSize;
-        private Random _random;
         private float[] _data;
         private DataSource<float> _samples;
 
@@ -30,16 +28,7 @@ namespace Horker.PSCNTK
             Min = min;
             Max = max;
 
-            if (seed.HasValue)
-                _random = new Random(seed.Value);
-            else
-            {
-                if (RandomSeed.HasValue)
-                    _random = new Random(RandomSeed.Value);
-                else
-                    _random = new Random();
-            }
-
+            _random = Random.GetInstance(seed);
             _dataSize = Shape.GetSize(-1);
             _data = new float[_dataSize * minibatchSize];
 

@@ -132,7 +132,7 @@ namespace Horker.PSCNTK
             if (IsSeriesData)
                 randomEnd = _validationStart;
 
-            var random = new Random();
+            var random = Random.GetInstance();
             for (var i = 0; i < randomEnd; ++i)
             {
                 var j = random.Next(randomEnd);

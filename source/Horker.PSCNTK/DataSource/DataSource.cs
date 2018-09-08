@@ -357,11 +357,11 @@ namespace Horker.PSCNTK
             int count = Shape[Shape.Rank - 1];
             int chunkSize = Shape.GetSize(Shape.Rank - 2);
 
-            Random random;
+            System.Random random;
             if (seed.HasValue)
-                random = new Random(seed.Value);
+                random = Random.GetInstance(seed.Value);
             else
-                random = new Random();
+                random = Random.GetInstance();
 
             var temp = new T[chunkSize];
             for (var i = 0; i < count; ++i)

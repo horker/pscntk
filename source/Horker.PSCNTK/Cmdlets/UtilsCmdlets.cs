@@ -65,7 +65,6 @@ namespace Horker.PSCNTK
         protected override void EndProcessing()
         {
             SetFixedRandomSeed((uint)Value);
-            NoiseSampler.RandomSeed = Value;
         }
     }
 
@@ -82,8 +81,6 @@ namespace Horker.PSCNTK
                 CNTKLib.ResetRandomSeed((uint)Value);
             else
                 CNTKLib.ResetRandomSeed();
-
-            NoiseSampler.RandomSeed = null;
         }
     }
 
