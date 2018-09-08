@@ -89,6 +89,15 @@ namespace Horker.PSCNTK
             DataSourceSetCTFBuilder.Write(path, this);
         }
 
+        public static implicit operator Hashtable(DataSourceSet dss)
+        {
+            var result = new Hashtable();
+            foreach (var entry in dss._data)
+                result.Add(entry.Key, entry.Value);
+
+            return result;
+        }
+
         public IEnumerator<KeyValuePair<string, DataSource<float>>> GetEnumerator()
         {
             return new DataSourceSetEnumerator(this);

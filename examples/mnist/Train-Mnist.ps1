@@ -19,7 +19,7 @@ Set-CNTKRandomSeed 1234
 ############################################################
 
 $data = cntk.datasourceset -Path $MNIST_CACHE_FILE
-$sampler = cntk.sampler @{ input = $data["input"]; label = $data["label"] } -MinibatchSize 64 -ValidationRate .2
+$sampler = cntk.sampler $data -MinibatchSize 64 -ValidationRate .2
 
 ############################################################
 # Model
