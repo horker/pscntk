@@ -48,7 +48,7 @@ Describe "Find()" {
 
     $in = $f.Find("input")
 
-    $in | Should -beExactly $i
+    $in.Uid | Should -be $i.Uid
   }
 
 }

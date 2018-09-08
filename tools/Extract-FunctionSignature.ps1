@@ -114,7 +114,7 @@ while (!$eof) {
   elseif ($t -eq "<bol>") {
     if ((((Peek 0) -eq "CNTK_API" -or (Peek 0) -eq "inline") -and (Peek 1) -eq "FunctionPtr" -and (Peek 3) -eq "(") -or
         (((Peek 0) -eq "CNTK_API" -or (Peek 0) -eq "inline") -and (Peek 1) -eq "ParameterInitializer" -and (Peek 2) -match "Initializer$" -and (Peek 3) -eq "(")) {
-      $func = [PSCustomObject]@{ Name = (Peek 2); Args = (New-Object Collections.Generic.List[object]) }
+      $func = [PSCustomObject]@{ Name = (Peek 2); ReturnType = (Peek 1); Args = (New-Object Collections.Generic.List[object]) }
       $arg.Clear()
 
       $t = Next 5

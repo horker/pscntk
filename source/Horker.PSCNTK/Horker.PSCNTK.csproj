@@ -69,6 +69,8 @@
     <Compile Include="General\NodeGroup.cs" />
     <Compile Include="General\NodeWalk.cs" />
     <Compile Include="General\Random.cs" />
+    <Compile Include="Wrappers\WrappedFunction.cs" />
+    <Compile Include="Wrappers\WrappedVariable.cs" />
     <Compile Include="Samplers\BackgroundScriptRunner.cs" />
     <Compile Include="Cmdlets\ConvCmdlets.cs" />
     <Compile Include="Cmdlets\ConvTransCmdlets.cs" />

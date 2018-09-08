@@ -2,7 +2,7 @@ using System;
 using System.Management.Automation;
 
 // DO NOT EDIT
-// This file was automatically generated at 2018/08/15 04:29:10
+// This file was automatically generated at 2018/09/09 01:26:50
 
 namespace Horker.PSCNTK {
 
@@ -19,7 +19,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Abs(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -36,7 +36,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Acos(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -53,7 +53,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Alias(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -73,7 +73,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Argmax(Operand, Axis, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -93,7 +93,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Argmin(Operand, Axis, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -110,7 +110,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.AsComposite(RootFunction, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -127,7 +127,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Asin(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -144,7 +144,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Asinh(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -164,7 +164,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Assign(Ref, Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -181,7 +181,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Atanh(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -231,7 +231,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.BatchNormalization(Operand, Scale, Bias, RunningMean, RunningInvStd, RunningCount, Spatial, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCuDNNEngine, DisableRegularization, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -257,7 +257,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.BernoulliRandom(Shape, DataType, Mean, Seed, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -280,7 +280,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.BernoulliRandomLike(Operand, Mean, Seed, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -317,7 +317,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.BinaryCrossEntropy(Prediction, Targets, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -337,7 +337,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Cast(NodeInput, OutputType, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -354,7 +354,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Ceil(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -377,7 +377,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Clip(Operand, Min, Max, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -394,7 +394,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Combine(new CNTK.VariableVector(Operands), Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -449,7 +449,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, new CNTK.BoolVector(Sharing), new CNTK.BoolVector(AutoPadding), Dilation, ReductionRank, Groups, MaxTempMemSizeInSamples, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -490,7 +490,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ConvolutionTranspose(ConvolutionMap, Operand, Strides, new CNTK.BoolVector(Sharing), new CNTK.BoolVector(AutoPadding), OutputShape, Dilation, ReductionRank, MaxTempMemSizeInSamples, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -507,7 +507,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Cos(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -524,7 +524,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Cosh(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -544,7 +544,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.CosineDistance(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -570,7 +570,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.CosineDistanceWithNegativeSamples(LeftOperand, RightOperand, ShiftWindow, NumberOfNegativeSamples, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -590,7 +590,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.DepthToSpace(Operand, BlockSize, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -613,7 +613,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Dropout(Operand, DropoutRate, Seed, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -648,7 +648,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.EditDistanceError(Prediction, Labels, SubstitutionPenalty, DeletionPenalty, InsertionPenalty, SquashInputs, new CNTK.SizeTVector(TokensToIgnore), Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -668,7 +668,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ElementAnd(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -688,7 +688,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ElementDivide(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -708,7 +708,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ElementMax(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -728,7 +728,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ElementMin(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -745,7 +745,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ElementNot(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -765,7 +765,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ElementOr(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -788,7 +788,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ElementSelect(Condition, ThenOperand, ElseOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -808,7 +808,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ElementTimes(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -828,7 +828,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ElementXor(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -848,7 +848,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Equal(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -865,7 +865,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Exp(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -885,7 +885,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ExpandDims(Operand, Axis, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -902,7 +902,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Floor(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -928,7 +928,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ForwardBackward(Graph, Features, BlankTokenId, DelayConstraint, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -994,7 +994,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Greater(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1014,7 +1014,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.GreaterEqual(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1043,7 +1043,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.GumbelRandom(Shape, DataType, Loc, Scale, Seed, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1069,7 +1069,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.GumbelRandomLike(Operand, Loc, Scale, Seed, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1086,7 +1086,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Hardmax(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1109,7 +1109,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.HardSigmoid(Operand, Alpha, Beta, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1178,7 +1178,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ImageScaler(Operand, Scaler, new CNTK.FloatVector(Biases), Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1195,7 +1195,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.LabelsToGraph(Labels, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1218,7 +1218,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.LambdaRank(Prediction, Gains, GroupId, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1283,7 +1283,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.LatticeSequenceWithSoftmax(Labels, Prediction, ScaledLogLikelihood, Lattice, SymbolListPath, PhonePath, StateListPath, TransitionProbabilityPath, ConfigFilePath, SmoothingWeight, FrameDropThreshold, DoReferenceAlign, GammarUsesMBR, GammarAMF, GammarLMF, GammarBMMIFactor, GammarWordPenalty, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1303,7 +1303,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.LeakyReLU(Operand, Alpha, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1323,7 +1323,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Less(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1343,7 +1343,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.LessEqual(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1372,7 +1372,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.LocalResponseNormalization(Operand, DepthRadius, Bias, Alpha, Beta, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1389,7 +1389,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Log(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1409,7 +1409,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.LogAddExp(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1426,7 +1426,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Mean(new CNTK.VariableVector(Operands), Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1446,7 +1446,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Minus(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1469,7 +1469,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.NDCGAt1(Prediction, Gains, GroupId, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1486,7 +1486,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Negate(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1538,7 +1538,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.NormalRandom(Shape, DataType, Mean, Scale, Seed, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1564,7 +1564,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.NormalRandomLike(Operand, Mean, Scale, Seed, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1584,7 +1584,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.NotEqual(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1610,7 +1610,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.OneHotOp(Operand, NumClass, OutputSparse, Axis, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1627,7 +1627,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.OnesLike(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1656,7 +1656,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Pad(Operand, Mode, new CNTK.SizeTVector(Head), new CNTK.SizeTVector(Foot), ConstantValue, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1676,7 +1676,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Plus(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1711,7 +1711,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Pooling(Operand, PoolingType, PoolingWindowShape, Strides, new CNTK.BoolVector(AutoPadding), CeilOutDim, IncludePad, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1731,7 +1731,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Pow(LeftOperand, RightOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1751,7 +1751,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.PReLU(Alpha, Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1777,7 +1777,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.RandomSample(Operand, NumSamples, AllowDuplicates, Seed, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1803,7 +1803,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.RandomSampleInclusionFrequency(Operand, NumSamples, AllowDuplicates, Seed, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1820,7 +1820,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Reciprocal(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1840,7 +1840,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ReconcileDynamicAxes(Operand, AxesAsOperand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1863,7 +1863,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ReduceL1(Operand, new CNTK.AxisVector(Axes), KeepDims, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1886,7 +1886,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ReduceL2(Operand, new CNTK.AxisVector(Axes), KeepDims, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1909,7 +1909,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ReduceSumSquare(Operand, new CNTK.AxisVector(Axes), KeepDims, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1926,7 +1926,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ReLU(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1955,7 +1955,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ROIPooling(Operand, Rois, PoolingType, RoiOutputShape, SpatialScale, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1972,7 +1972,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Round(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -1995,7 +1995,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.SELU(Operand, Gamma, Alpha, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2012,7 +2012,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Sigmoid(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2029,7 +2029,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Sin(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2046,7 +2046,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Sinh(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2063,7 +2063,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Softplus(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2080,7 +2080,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Softsign(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2100,7 +2100,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.SpaceToDepth(Operand, BlockSize, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2120,7 +2120,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Splice(new CNTK.VariableVector(Operands), Axis, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2137,7 +2137,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Sqrt(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2154,7 +2154,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Square(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2174,7 +2174,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.SquaredError(Prediction, Targets, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2191,7 +2191,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.StopGradient(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2208,7 +2208,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Sum(new CNTK.VariableVector(Operands), Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2225,7 +2225,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Tanh(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2242,7 +2242,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ToBatch(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2262,7 +2262,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ToSequenceLike(Operand, DynamicAxesLike, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2285,7 +2285,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.TransposeAxes(Operand, Axis1, Axis2, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2348,7 +2348,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.UniformRandom(Shape, DataType, Low, High, Seed, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2374,7 +2374,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.UniformRandomLike(Operand, Low, High, Seed, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2391,7 +2391,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.UnpackBatch(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2423,7 +2423,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Unpooling(Operand, PoolingInput, UnpoolingType, UnpoolingWindowShape, Strides, new CNTK.BoolVector(AutoPadding), Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2446,7 +2446,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.WeightedBinaryCrossEntropy(Prediction, Targets, Weights, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 
@@ -2486,7 +2486,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ZerosLike(Operand, Name);
-            WriteObject(result);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
 }

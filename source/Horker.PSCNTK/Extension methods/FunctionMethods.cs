@@ -9,23 +9,33 @@ namespace Horker.PSCNTK
 {
     public class FunctionMethods
     {
-        public static object Find(PSObject func, string name)
+        private static Function ToFunction(PSObject func)
         {
-            var f = func.BaseObject as Function;
+            if (func.BaseObject is WrappedFunction)
+                return func.BaseObject as WrappedFunction;
+            else
+                return func.BaseObject as Function;
+        }
+
+        public static WrappedVariable Find(PSObject func, string name)
+        {
+            Function f = ToFunction(func);
+
             var w = new FunctionFind(f, name, false, false);
             return w.Results[0];
         }
 
-        public static object FindAll(PSObject func, string name)
+        public static WrappedVariable[] FindAll(PSObject func, string name)
         {
-            var f = func.BaseObject as Function;
+            Function f = ToFunction(func);
+
             var w = new FunctionFind(f, name, true, false);
-            return w.Results;
+            return w.Results.Select(x => (WrappedVariable)x).ToArray();
         }
 
         public static Value Invoke(PSObject func, object arguments = null, DataNameToInputMap map = null)
         {
-            var f = func.BaseObject as Function;
+            Function f = ToFunction(func);
 
             if (arguments == null)
                 return FunctionInvoke.Invoke(f, new Dictionary<Variable, Value>(), null, false);
@@ -41,7 +51,7 @@ namespace Horker.PSCNTK
 
         public static string AsTree(PSObject func, object arguments = null, DataNameToInputMap map = null, bool showUid = false, bool showValue = true)
         {
-            var f = func.BaseObject as Function;
+            Function f = ToFunction(func);
             FunctionAsTree w;
 
             if (arguments == null)
@@ -56,7 +66,7 @@ namespace Horker.PSCNTK
 
         public static string ToDot(PSObject func)
         {
-            var f = func.BaseObject as Function;
+            Function f = ToFunction(func);
             var g = new DotGenerator(f);
             return g.Result;
         }

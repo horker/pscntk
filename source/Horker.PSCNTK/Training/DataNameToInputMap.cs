@@ -46,6 +46,8 @@ namespace Horker.PSCNTK
 
                 if (value is Variable)
                     _map.Add(entry.Key.ToString(), entry.Value as Variable);
+                else if (value is WrappedVariable)
+                    _map.Add(entry.Key.ToString(), entry.Value as WrappedVariable);
                 else
                 {
                     var va = FindVariable(value.ToString());

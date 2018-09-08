@@ -48,6 +48,8 @@ namespace Horker.PSCNTK
 
                 if (entryKey is Variable)
                     key = entryKey as Variable;
+                else if (entryKey is WrappedVariable)
+                    key = entryKey as WrappedVariable;
                 else
                 {
                     var va = FunctionFind.FindVariable(func, entryKey.ToString());

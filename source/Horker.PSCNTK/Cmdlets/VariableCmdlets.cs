@@ -28,7 +28,7 @@ namespace Horker.PSCNTK
         protected override void EndProcessing()
         {
             var result = Variable.InputVariable(Dimensions, DataType, Name, DynamicAxes, Sparse, NeedsGradient);
-            WriteObject(result);
+            WriteObject(new WrappedVariable(result));
         }
     }
 
@@ -45,7 +45,7 @@ namespace Horker.PSCNTK
         protected override void EndProcessing()
         {
             var result = Variable.PlaceholderVariable(Dimensions, DynamicAxes);
-            WriteObject(result);
+            WriteObject(new WrappedVariable(result));
         }
     }
 
@@ -71,7 +71,7 @@ namespace Horker.PSCNTK
         protected override void EndProcessing()
         {
             var result = new Parameter(Dimensions, DataType, Initializer, Device, Name);
-            WriteObject(result);
+            WriteObject(new WrappedVariable(result));
         }
     }
 
@@ -106,7 +106,7 @@ namespace Horker.PSCNTK
                 result = new Constant(array, Name);
             }
 
-            WriteObject(result);
+            WriteObject(new WrappedVariable(result));
         }
     }
 

@@ -27,6 +27,17 @@ $METHOD_LIST = @(
   }
 
   [PSCustomObject]@{
+    TargetClass = "Horker.PSCNTK.WrappedFunction"
+    ClassInfo = [Horker.PSCNTK.FunctionMethods]
+    MethodNames = @(
+      "Find"
+      "Invoke"
+      "AsTree"
+      "ToDot"
+    )
+  }
+
+  [PSCustomObject]@{
     TargetClass = "CNTK.Value"
     ClassInfo = [Horker.PSCNTK.ValueMethods]
     MethodNames = @(

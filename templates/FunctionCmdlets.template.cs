@@ -129,7 +129,17 @@ foreach ($func in $funcs) {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.<% $func.Name %>(<% $arglist -join ", " %>);
+<%
+  if ($func.ReturnType -eq "FunctionPtr") {
+-%>
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
+<%
+  } else {
+-%>
             WriteObject(result);
+<%
+  }
+-%>
         }
     }
 <%
