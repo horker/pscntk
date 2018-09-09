@@ -8,10 +8,10 @@ namespace Horker.PSCNTK {
     public class NewCNTKClassificationError : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Prediction;
+        public WrappedVariable Prediction;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Variable Labels;
+        public WrappedVariable Labels;
 
         [Parameter(Position = 2, Mandatory = false)]
         public UInt32? TopN;
@@ -37,7 +37,7 @@ namespace Horker.PSCNTK {
                 else
                     result = CNTK.CNTKLib.ClassificationError(Prediction, Labels, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -46,16 +46,16 @@ namespace Horker.PSCNTK {
     public class NewCNTKCrop : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable NodeInput;
+        public WrappedVariable NodeInput;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Variable NodeReferent;
+        public WrappedVariable NodeReferent;
 
         [Parameter(Position = 2, Mandatory = true)]
-        public CNTK.Variable AncestorInput;
+        public WrappedVariable AncestorInput;
 
         [Parameter(Position = 3, Mandatory = true)]
-        public CNTK.Variable AncestorReferent;
+        public WrappedVariable AncestorReferent;
 
         [Parameter(Position = 4, Mandatory = false)]
         public string Name = "";
@@ -63,7 +63,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Crop(NodeInput, NodeReferent, AncestorInput, AncestorReferent, Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -72,10 +72,10 @@ namespace Horker.PSCNTK {
     public class NewCNTKCrop2 : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable NodeInput;
+        public WrappedVariable NodeInput;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Variable NodeReferent;
+        public WrappedVariable NodeReferent;
 
         [Parameter(Position = 2, Mandatory = true)]
         public UInt32 OffsetX;
@@ -89,7 +89,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Crop(NodeInput, NodeReferent, OffsetX, OffsetY, Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -98,10 +98,10 @@ namespace Horker.PSCNTK {
     public class NewCNTKCrop3 : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable NodeInput;
+        public WrappedVariable NodeInput;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Variable NodeReferent;
+        public WrappedVariable NodeReferent;
 
         [Parameter(Position = 2, Mandatory = false)]
         public string Name = "";
@@ -109,7 +109,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Crop(NodeInput, NodeReferent, Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -118,10 +118,10 @@ namespace Horker.PSCNTK {
     public class NewCNTKCrossEntropyWithSoftmax : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Prediction;
+        public WrappedVariable Prediction;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Variable Labels;
+        public WrappedVariable Labels;
 
         [Parameter(Position = 2, Mandatory = false)]
         public CNTK.Axis Axis;
@@ -138,7 +138,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.CrossEntropyWithSoftmax(Prediction, Labels, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -147,7 +147,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKELU : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 2, Mandatory = false)]
         public string Name = "";
@@ -155,7 +155,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ELU(Operand, Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -164,7 +164,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKFlatten : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
         public CNTK.Axis Axis;
@@ -181,7 +181,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.Flatten(Operand, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -190,10 +190,10 @@ namespace Horker.PSCNTK {
     public class NewCNTKFutureValue : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public CNTK.Variable InitialState;
+        public WrappedVariable InitialState;
 
         [Parameter(Position = 2, Mandatory = false)]
         public UInt32 Offset = 1;
@@ -210,7 +210,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.FutureValue(Operand, Offset, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -219,10 +219,10 @@ namespace Horker.PSCNTK {
     public class NewCNTKGatherOp : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Indices;
+        public WrappedVariable Indices;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Variable Reference;
+        public WrappedVariable Reference;
 
         [Parameter(Position = 2, Mandatory = false)]
         public CNTK.Axis Axis;
@@ -239,7 +239,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.GatherOp(Indices, Reference, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -248,7 +248,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKLogSoftmax : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
         public CNTK.Axis Axis;
@@ -265,7 +265,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.LogSoftmax(Operand, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -274,7 +274,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKMeanVarianceNormalization : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
         public double? Epsilon;
@@ -297,7 +297,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.MeanVarianceNormalization(Operand, UseStatsAcrossChannels, DoVarianceScaling, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -306,10 +306,10 @@ namespace Horker.PSCNTK {
     public class NewCNTKPastValue : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public CNTK.Variable InitialState;
+        public WrappedVariable InitialState;
 
         [Parameter(Position = 2, Mandatory = false)]
         public UInt32 Offset = 1;
@@ -326,7 +326,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.PastValue(Operand, Offset, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -335,7 +335,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKPerDimMeanVarianceNormalize : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.NDArrayView Mean;
@@ -349,7 +349,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.PerDimMeanVarianceNormalize(Operand, Mean, InvStdDev, Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -358,13 +358,13 @@ namespace Horker.PSCNTK {
     public class NewCNTKPerDimMeanVarianceNormalize2 : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Variable Mean;
+        public WrappedVariable Mean;
 
         [Parameter(Position = 2, Mandatory = true)]
-        public CNTK.Variable InvStdDev;
+        public WrappedVariable InvStdDev;
 
         [Parameter(Position = 3, Mandatory = false)]
         public string Name = "";
@@ -372,7 +372,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.PerDimMeanVarianceNormalize(Operand, Mean, InvStdDev, Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -381,7 +381,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKReduceLogSum : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Axis[] Axis;
@@ -392,7 +392,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ReduceLogSum(Operand, new CNTK.AxisVector(Axis), Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -401,7 +401,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKReduceMax : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Axis[] Axis;
@@ -412,7 +412,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ReduceMax(Operand, new CNTK.AxisVector(Axis), Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -421,7 +421,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKReduceMean : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Axis[] Axis;
@@ -432,7 +432,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ReduceMean(Operand, new CNTK.AxisVector(Axis), Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -441,7 +441,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKReduceMin : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Axis[] Axis;
@@ -452,7 +452,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ReduceMin(Operand, new CNTK.AxisVector(Axis), Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -461,7 +461,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKReduceProd : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Axis[] Axis;
@@ -472,7 +472,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ReduceProd(Operand, new CNTK.AxisVector(Axis), Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -481,7 +481,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKReduceSum : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Axis[] Axis;
@@ -492,7 +492,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.ReduceSum(Operand, new CNTK.AxisVector(Axis), Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -501,7 +501,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKReshape2 : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
         public int[] ReplacementShape;
@@ -518,7 +518,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Reshape(Operand, ReplacementShape, BeginAxis, EndAxis, Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -527,7 +527,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKReshape : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
         public int[] NewShape;
@@ -538,7 +538,7 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Reshape(Operand, NewShape, Name);
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -547,7 +547,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKSlice : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
         public CNTK.Axis[] Axis;
@@ -573,7 +573,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.Slice(Operand, new CNTK.AxisVector(Axis), new CNTK.IntVector(BeginIndex), new CNTK.IntVector(EndIndex), Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -582,7 +582,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKSoftmax : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
         public CNTK.Axis Axis;
@@ -599,7 +599,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.Softmax(Operand, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -608,7 +608,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKSqueeze : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
         public CNTK.Axis[] Axis;
@@ -625,7 +625,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.Squeeze(Operand, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -634,10 +634,10 @@ namespace Horker.PSCNTK {
     public class NewCNTKTimes : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable LeftOperand;
+        public WrappedVariable LeftOperand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Variable RightOperand;
+        public WrappedVariable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
         public UInt32? OutputRank;
@@ -663,7 +663,7 @@ namespace Horker.PSCNTK {
                 else
                     result = CNTK.CNTKLib.Times(LeftOperand, RightOperand, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -672,7 +672,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKTopK : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
         public UInt32 K;
@@ -692,7 +692,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.TopK(Operand, K, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -701,10 +701,10 @@ namespace Horker.PSCNTK {
     public class NewCNTKToSequence : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public CNTK.Variable SequenceLengths;
+        public WrappedVariable SequenceLengths;
 
         [Parameter(Position = 2, Mandatory = true)]
         public string SequenceAxisNamePrefix;
@@ -721,7 +721,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.ToSequence(Operand, SequenceAxisNamePrefix, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -730,7 +730,7 @@ namespace Horker.PSCNTK {
     public class NewCNTKTranspose : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
+        public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
         public CNTK.Axis[] Permutation;
@@ -747,7 +747,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.Transpose(Operand, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -756,10 +756,10 @@ namespace Horker.PSCNTK {
     public class NewCNTKTransposeTimes : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable LeftOperand;
+        public WrappedVariable LeftOperand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Variable RightOperand;
+        public WrappedVariable RightOperand;
 
         [Parameter(Position = 2, Mandatory = false)]
         public UInt32? OutputRank;
@@ -776,7 +776,7 @@ namespace Horker.PSCNTK {
             else
                 result = CNTK.CNTKLib.TransposeTimes(LeftOperand, RightOperand, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 }
