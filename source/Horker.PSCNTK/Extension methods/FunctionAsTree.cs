@@ -99,15 +99,7 @@ namespace Horker.PSCNTK
         private void putDataSource(DataSource<float> ds, string indent)
         {
             var shape = ds.Shape;
-
-            if (shape.GetSize(-1) <= 5)
-                _output.AppendFormat("{0}    {1}\r\n", indent, Converter.ArrayToString("->", ds.Data, shape, false));
-            else
-            {
-                var seg = new ArraySegment<float>(ds.Data, 0, 5);
-                var s = string.Join(" ", seg.Select(x => string.Format("{0:0.#####}", x)));
-                _output.AppendFormat("{0}    -> {1} [{2}...]\r\n", indent, shape, s);
-            }
+            _output.AppendFormat("{0}    {1}\r\n", indent, Converter.ArrayToString("->", ds.Data, shape, false));
         }
     }
 }

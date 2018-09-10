@@ -21,6 +21,20 @@ namespace Horker.PSCNTK
 
             result.Append(shape.ToString());
 
+            const int MAX_ELEMENT_COUNT = 5;
+            if (!longFormat && data.Count > MAX_ELEMENT_COUNT)
+            {
+                result.Append(" [");
+                for (var i = 0; i < MAX_ELEMENT_COUNT - 1; ++i)
+                {
+                    result.Append(data[i]);
+                    result.Append(' ');
+                }
+                result.Append(data[MAX_ELEMENT_COUNT - 1]);
+                result.Append("...]");
+                return result.ToString();
+            }
+
             if (longFormat)
                 result.AppendLine();
 
