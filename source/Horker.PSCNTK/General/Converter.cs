@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
@@ -198,6 +199,33 @@ namespace Horker.PSCNTK
                 value = (value as PSObject).BaseObject;
 
             return Convert.ToSingle(value);
+        }
+
+        public static Dictionary<K, V> HashtableToDictionary<K, V>(Hashtable h, Func<object, K> keyConverter, Func<object, V> valueConverter)
+        {
+            var result = new Dictionary<K, V>();
+
+            foreach (DictionaryEntry entry in h)
+            {
+                object key = entry.Key;
+                if (key is PSObject)
+                    key = (key as PSObject).BaseObject;
+
+                object value = entry.Value;
+                if (value is PSObject)
+                    value = (value as PSObject).BaseObject;
+
+                result.Add(keyConverter.Invoke(key), valueConverter.Invoke(value));
+            }
+
+            return result;
+        }
+
+        public static Dictionary<K, V> HashtableToDictionary<K, V>(Hashtable h)
+        {
+            var keyConverter = new Func<object, K>(x => (K)x);
+            var valueConverter = new Func<object, V>(x => (V)x);
+            return HashtableToDictionary<K, V>(h, keyConverter, valueConverter);
         }
     }
 }

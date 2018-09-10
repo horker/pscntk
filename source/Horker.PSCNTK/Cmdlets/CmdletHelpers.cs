@@ -15,9 +15,9 @@ namespace Horker.PSCNTK
                 func = (func as PSObject).BaseObject;
 
             if (func is Function)
-            {
                 return func as Function;
-            }
+            if (func is WrappedFunction)
+                return func as WrappedFunction;
             else if (func is string)
             {
                 var f = func as string;

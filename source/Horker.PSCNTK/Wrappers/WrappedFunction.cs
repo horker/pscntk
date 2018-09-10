@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management.Automation;
 using CNTK;
 
 namespace Horker.PSCNTK
@@ -54,10 +56,26 @@ namespace Horker.PSCNTK
 
         public WrappedFunction Clone(ParameterCloningMethod parameterCloningMethod, Hashtable replacements)
         {
-            var rep = new Dictionary<Variable, Variable>();
-            foreach (DictionaryEntry entry in replacements)
-                rep.Add((Variable)entry.Key, (Variable)entry.Value);
+            var converter = new Func<object, Variable>(x => {
+                if (x is PSObject)
+                    x = (x as PSObject).BaseObject;
 
+                if (x is Variable)
+                    return x as Variable;
+
+                if (x is WrappedVariable)
+                    return x as WrappedVariable;
+
+                if (x is Function)
+                    return x as Function;
+
+                if (x is WrappedFunction)
+                    return x as WrappedFunction;
+
+                throw new ArgumentException("Can't convert to Variable");
+            });
+
+            var rep = Converter.HashtableToDictionary<Variable, Variable>(replacements, converter, converter);
             return _f.Clone(parameterCloningMethod, rep);
         }
 
