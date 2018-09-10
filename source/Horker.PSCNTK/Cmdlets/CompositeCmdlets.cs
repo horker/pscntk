@@ -40,7 +40,7 @@ namespace Horker.PSCNTK
                 Name             // string name
             );
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -72,7 +72,8 @@ namespace Horker.PSCNTK
         protected override void EndProcessing()
         {
             var result = CNTKLib.Pooling(Input, PoolingType.Max, FilterShape, Strides, new BoolVector(AutoPadding), CeilOutDim, IncludePad, Name);
-            WriteObject(result);
+
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -104,7 +105,8 @@ namespace Horker.PSCNTK
         protected override void EndProcessing()
         {
             var result = CNTKLib.Pooling(Input, PoolingType.Average, FilterShape, Strides, new BoolVector(AutoPadding), CeilOutDim, IncludePad, Name);
-            WriteObject(result);
+
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -143,7 +145,7 @@ namespace Horker.PSCNTK
         {
             var result = Composite.BatchNormalization(Input, Spatial, InitialScale, NormalizationTimeConstant, BlendTimeConstant, Epsilon, UseCuDNNEngine, DisableRegularization, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
@@ -174,7 +176,7 @@ namespace Horker.PSCNTK
         {
             var result = Composite.OptimizedRNNStack(Input, HiddenSize, LayerSize, Bidirectional, CellType, Name);
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 }

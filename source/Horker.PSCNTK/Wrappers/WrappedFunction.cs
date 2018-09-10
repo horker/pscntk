@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using CNTK;
 
@@ -25,7 +26,9 @@ namespace Horker.PSCNTK
 
         #endregion
 
-        #region Delegate methods
+        #region Methods
+
+        // Delegates
 
         public override int GetHashCode() => _f.GetHashCode();
         public override string ToString() => _f.AsString();
@@ -33,7 +36,7 @@ namespace Horker.PSCNTK
         public CNTKDictionary Attributes() => _f.Attributes();
         public WrappedFunction BlockRoot() => _f.BlockRoot();
         public WrappedFunction Clone(ParameterCloningMethod parameterCloningMethod = 0) => _f.Clone(parameterCloningMethod);
-        public WrappedFunction Clone(ParameterCloningMethod parameterCloneMethod, System.Collections.Generic.IDictionary<Variable, Variable> replacements) => _f.Clone(parameterCloneMethod, replacements);
+        public WrappedFunction Clone(ParameterCloningMethod parameterCloneMethod, IDictionary<Variable, Variable> replacements) => _f.Clone(parameterCloneMethod, replacements);
         public WrappedFunction CloneFlattened() => _f.CloneFlattened();
         public WrappedFunction CloneFlattened(ParameterCloningMethod parameterCloningMethod) => _f.CloneFlattened(parameterCloningMethod);
         public ConstantVector Constants() => _f.Constants();
@@ -46,6 +49,17 @@ namespace Horker.PSCNTK
         public byte[] Save() => _f.Save();
         public void Save(string filepath) => _f.Save(filepath);
         public void SetName(string name) => _f.SetName(name);
+
+        // Additionally defined
+
+        public WrappedFunction Clone(ParameterCloningMethod parameterCloningMethod, Hashtable replacements)
+        {
+            var rep = new Dictionary<Variable, Variable>();
+            foreach (DictionaryEntry entry in replacements)
+                rep.Add((Variable)entry.Key, (Variable)entry.Value);
+
+            return _f.Clone(parameterCloningMethod, rep);
+        }
 
         #endregion
 
@@ -89,12 +103,12 @@ namespace Horker.PSCNTK
 
         #region Unary operators
 
-        public static WrappedFunction operator+(WrappedFunction f)
+        public static WrappedFunction operator +(WrappedFunction f)
         {
             return f;
         }
 
-        public static WrappedFunction operator-(WrappedFunction f)
+        public static WrappedFunction operator -(WrappedFunction f)
         {
             return CNTKLib.Negate(f._f);
         }
