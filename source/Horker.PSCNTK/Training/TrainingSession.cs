@@ -15,6 +15,7 @@ namespace Horker.PSCNTK
 
         public int Epoch { get; private set; }
         public int Iteration { get; private set; }
+        public bool EpochIncremented { get; private set; }
 
         public Minibatch Minibatch { get; private set; }
 
@@ -29,8 +30,6 @@ namespace Horker.PSCNTK
 
         public TrainingSession(Trainer trainer, ISampler sampler, Hashtable dataNameToInputMap = null)
         {
-            _stopwatch = Stopwatch.StartNew();
-
             Trainer = trainer;
             Sampler = sampler;
 
@@ -67,10 +66,13 @@ namespace Horker.PSCNTK
 
         public IEnumerable<TrainingSession> GetIterator(int maxIteration = int.MaxValue, DeviceDescriptor device = null)
         {
+            _stopwatch = Stopwatch.StartNew();
+
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();
 
             Epoch = 1;
+            EpochIncremented = false;
 
             for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
             {
@@ -100,8 +102,12 @@ namespace Horker.PSCNTK
 
                 yield return this;
 
+                EpochIncremented = false;
                 if (Minibatch.SweepEnd)
+                {
                     ++Epoch;
+                    EpochIncremented = true;
+                }
             }
         }
 
