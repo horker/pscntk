@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using System;
+using System.Management.Automation;
 using CNTK;
 
 namespace Horker.PSCNTK
@@ -17,16 +18,30 @@ namespace Horker.PSCNTK
         public Axis[] DynamicAxes = null;
 
         [Parameter(Position = 3, Mandatory = false)]
-        SwitchParameter Sparse = false;
+        public SwitchParameter Sparse = false;
 
         [Parameter(Position = 4, Mandatory = false)]
-        SwitchParameter NeedsGradient = false;
+        public SwitchParameter NeedsGradient = false;
 
         [Parameter(Position = 5, Mandatory = false)]
-        DataType DataType = DataType.Float;
+        public DataType DataType = DataType.Float;
+
+        [Parameter(Position = 6, Mandatory = false)]
+        public SwitchParameter WithSequenceAxis = false;
 
         protected override void EndProcessing()
         {
+            // Variable.InputVariable() creates two dynamic axes, a default dynamic axis and a default batch axis, when no axes are specified.
+            // However, a default dynamic axis is not necessary for non-sequential model.
+            // More often than not, its existence is troublesome because it often leads miscalculation of the shapes of minibatch data without any error.
+            // Thus we change the default behavior to create a default batch axis only unless the -WithSequenceAxis switch is set.
+
+            if (DynamicAxes != null && WithSequenceAxis)
+                throw new ArgumentException("-WithSequenceAxis and -DynamicAxes should not be specified at the same time");
+
+            if (DynamicAxes == null && !WithSequenceAxis)
+                DynamicAxes = new Axis[] { Axis.DefaultBatchAxis() };
+
             var result = Variable.InputVariable(Dimensions, DataType, Name, DynamicAxes, Sparse, NeedsGradient);
             WriteObject(new WrappedVariable(result));
         }
@@ -60,10 +75,10 @@ namespace Horker.PSCNTK
         public CNTKDictionary Initializer;
 
         [Parameter(Position = 2, Mandatory = false)]
-        DataType DataType = DataType.Float;
+        public DataType DataType = DataType.Float;
 
         [Parameter(Position = 3, Mandatory = false)]
-        DeviceDescriptor Device = DeviceDescriptor.UseDefaultDevice();
+        public DeviceDescriptor Device = DeviceDescriptor.UseDefaultDevice();
 
         [Parameter(Position = 4, Mandatory = false)]
         public string Name = "";

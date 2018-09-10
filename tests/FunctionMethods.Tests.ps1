@@ -7,7 +7,7 @@ Describe "Invoke()" {
 
     $result = $f.Invoke(@{ $i = (1,2,3) }).ToDataSource()
 
-    $result.Shape.Dimensions | Should -be @(1, 1)
+    $result.Shape.Dimensions | Should -be @(1)
     $result.Data | Should -Be @(6)
   }
 
@@ -18,7 +18,7 @@ Describe "Invoke()" {
 
     $result = $f.Invoke(@{ "input" = (1,2,3) }).ToDataSource()
 
-    $result.Shape.Dimensions | Should -be @(1, 1)
+    $result.Shape.Dimensions | Should -be @(1)
     $result.Data | Should -Be @(6)
   }
 
@@ -33,7 +33,7 @@ Describe "Invoke()" {
 
     $result = $f.Invoke($b).ToDataSource()
 
-    $result.Shape.Dimensions | Should -be @(1, 1)
+    $result.Shape.Dimensions | Should -be @(1)
     $result.Data | math.round -digits 5 | Should -Be @(($b.Features["input"].data.ToDataSource().ToArray().Sum() | math.round -digits 5))
   }
 

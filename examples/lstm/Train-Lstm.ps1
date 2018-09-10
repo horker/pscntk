@@ -26,7 +26,7 @@ $sampler = cntk.sampler @{ input = $features; labels = $labels } $SEQLEN .1
 # Build a model
 ############################################################
 
-$in = cntk.input 1 -Name input
+$in = cntk.input 1 -Name input -WithSequenceAxis
 
 $n = $in
 #$n = cntk.rnnstack $n 300 1
@@ -34,7 +34,7 @@ $n = cntk.lstm $n 30 30 30
 $n = cntk.dense $n 1 (cntk.glorotuniform)
 $out = $n
 
-$label = cntk.input 1 -Name labels -DynamicAxes (cntk.axis.defaultbatch)
+$label = cntk.input 1 -Name labels
 
 ############################################################
 # Training

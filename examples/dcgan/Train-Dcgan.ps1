@@ -104,8 +104,8 @@ function New-Discriminator {
 
 # build graphs
 
-$Z = cntk.input $NOISE_SHAPE -Name "noise" -DynamicAxes (cntk.axis.defaultbatch)
-$X_real = cntk.input $IMAGE_SHAPE -Name "input" -DynamicAxes (cntk.axis.defaultbatch)
+$Z = cntk.input $NOISE_SHAPE -Name "noise"
+$X_real = cntk.input $IMAGE_SHAPE -Name "input"
 
 $X_fake = New-Generator $Z "G_output"
 $D_real = New-Discriminator $X_real "D_output"
