@@ -12,19 +12,23 @@ namespace Horker.PSCNTK
         public string Name;
         public Shape Shape;
         public int MinibatchSize;
+        public int IterationsPerEpoch;
         public double Min;
         public double Max;
+
+        private int Iterations;
 
         private System.Random _random;
         private int _dataSize;
         private float[] _data;
         private DataSource<float> _samples;
 
-        public NoiseSampler(string name, int[] shape, int minibatchSize, double min, double max, int? seed = null)
+        public NoiseSampler(string name, int[] shape, int minibatchSize, int iterationsPerEpoch, double min, double max, int? seed = null)
         {
             Name = name;
             Shape = shape;
             MinibatchSize = minibatchSize;
+            IterationsPerEpoch = iterationsPerEpoch;
             Min = min;
             Max = max;
 
@@ -37,6 +41,8 @@ namespace Horker.PSCNTK
             minibatchShape[minibatchShape.Length - 2] = 1; // sequence
             minibatchShape[minibatchShape.Length - 1] = minibatchSize; // sample
             _samples = new DataSource<float>(_data, minibatchShape);
+
+            Iterations = 0;
         }
 
         public Minibatch GetNextBatch(DeviceDescriptor device = null)
@@ -47,7 +53,10 @@ namespace Horker.PSCNTK
             for (var i = 0; i < _dataSize * MinibatchSize; ++i)
                 _data[i] = (float)(_random.NextDouble() * (Max - Min) + Min);
 
-            var minibatch = new Minibatch(new Dictionary<string, DataSource<float>>() { { Name, _samples } }, false, device);
+            ++Iterations;
+            var sweepEnd = (Iterations + 1) % IterationsPerEpoch == 0;
+
+            var minibatch = new Minibatch(new Dictionary<string, DataSource<float>>() { { Name, _samples } }, sweepEnd, device);
             return minibatch;
         }
 

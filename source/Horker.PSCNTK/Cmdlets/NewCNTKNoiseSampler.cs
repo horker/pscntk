@@ -19,14 +19,17 @@ namespace Horker.PSCNTK
         public int MinibatchSize = 32;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public double Min = -1.0;
+        public int IterationsPerEpoch = int.MaxValue;
 
         [Parameter(Position = 4, Mandatory = false)]
+        public double Min = -1.0;
+
+        [Parameter(Position = 5, Mandatory = false)]
         public double Max = 1.0;
 
         protected override void EndProcessing()
         {
-            var sampler = new NoiseSampler(Name, Shape, MinibatchSize, Min, Max);
+            var sampler = new NoiseSampler(Name, Shape, MinibatchSize, IterationsPerEpoch, Min, Max);
             WriteObject(sampler);
         }
     }
