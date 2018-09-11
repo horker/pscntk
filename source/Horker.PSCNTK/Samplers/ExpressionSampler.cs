@@ -56,9 +56,9 @@ namespace Horker.PSCNTK
 
             Value value;
             if (InputVariable == null)
-                value = FunctionInvoke.Invoke(Expression, new Dictionary<Variable, Value>(), device, false);
+                value = FunctionInvoke.Invoke(Expression, new Dictionary<Variable, Value>(), device, false)[0];
             else
-                value = FunctionInvoke.Invoke(Expression, new Dictionary<Variable, Value>() { { InputVariable, PrevValue } }, device, false);
+                value = FunctionInvoke.Invoke(Expression, new Dictionary<Variable, Value>() { { InputVariable, PrevValue } }, device, false)[0];
 
             int sampleCount = 0;
             int rank = value.Shape.Rank;

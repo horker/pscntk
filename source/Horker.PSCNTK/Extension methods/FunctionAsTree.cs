@@ -50,14 +50,17 @@ namespace Horker.PSCNTK
             {
                 try
                 {
-                    Value value;
+                    Value[] values;
                     if (_minibatch == null)
-                        value = FunctionInvoke.Invoke(func, _arguments, null, false);
+                        values = FunctionInvoke.Invoke(func, _arguments, null, false);
                     else
-                        value = FunctionInvoke.Invoke(func, _minibatch, _dataNameToInputMap, null, false);
+                        values = FunctionInvoke.Invoke(func, _minibatch, _dataNameToInputMap, null, false);
 
-                    var ds = DataSource<float>.FromValue(value);
-                    putDataSource(ds, indent);
+                    foreach (var value in values)
+                    {
+                        var ds = DataSource<float>.FromValue(value);
+                        putDataSource(ds, indent);
+                    }
                 }
                 catch (Exception)
                 {

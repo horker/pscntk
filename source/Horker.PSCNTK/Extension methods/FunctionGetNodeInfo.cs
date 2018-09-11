@@ -18,7 +18,7 @@ namespace Horker.PSCNTK
         public string Parent;
         public string[] Children;
         public Shape Shape;
-        public DataSource<float> Value;
+        public DataSource<float>[] Values;
     }
 
     class FunctionGetNodeInfo : INodeWalker
@@ -71,12 +71,12 @@ namespace Horker.PSCNTK
 
         public bool ProcessFunction(Function func, int depth)
         {
-            DataSource<float> value = null;
+            DataSource<float>[] values = null;
             NodeInfo outputNode = null;
             if (_history.TryGetValue(func.Output.Uid, out outputNode))
-                value = outputNode.Value;
+                values = outputNode.Values;
             else
-                value = GetValue(func);
+                values = GetValues(func);
 
             var nodeInfo = new NodeInfo()
             {
@@ -88,7 +88,7 @@ namespace Horker.PSCNTK
                 Parent = func.Output.Uid,
                 Children = func.Inputs.Select(x => x.Uid).ToArray(),
                 Shape = func.Output.Shape,
-                Value = value
+                Values = values
             };
 
             _history.Add(func.Uid, nodeInfo);
@@ -102,12 +102,12 @@ namespace Horker.PSCNTK
             if (visited)
                 return true;
 
-            DataSource<float> value = null;
+            DataSource<float>[] values = null;
 
             if (va.Kind == VariableKind.Parameter || va.Kind == VariableKind.Constant)
-                value = DataSource<float>.FromVariable(va);
+                values = new DataSource<float>[] { DataSource<float>.FromVariable(va) };
             else if (va.Kind == VariableKind.Output)
-                value = GetValue(va.Owner);
+                values = GetValues(va.Owner);
 
             var nodeInfo = new NodeInfo()
             {
@@ -119,7 +119,7 @@ namespace Horker.PSCNTK
                 Parent = holder.Uid,
                 Children = va.Owner != null ? new string[] { va.Owner.Uid } : null,
                 Shape = va.Shape,
-                Value = value
+                Values = values
             };
 
             _history.Add(va.Uid, nodeInfo);
@@ -133,22 +133,22 @@ namespace Horker.PSCNTK
             _queue.Add(_poison);
         }
 
-        private DataSource<float> GetValue(Function func)
+        private DataSource<float>[] GetValues(Function func)
         {
-            Value value = null;
+            Value[] values = null;
             try
             {
                 if (_minibatch == null)
-                    value = FunctionInvoke.Invoke(func, _arguments, null, false);
+                    values = FunctionInvoke.Invoke(func, _arguments, null, false);
                 else
-                    value = FunctionInvoke.Invoke(func, _minibatch, _map, null, false);
+                    values = FunctionInvoke.Invoke(func, _minibatch, _map, null, false);
             }
             catch (Exception)
             {
                 // Pass
             }
 
-            return DataSource<float>.FromValue(value);
+            return values.Select(x => DataSource<float>.FromValue(x)).ToArray();
         }
 
         private string[] GetPath(string uid, string parentUid)

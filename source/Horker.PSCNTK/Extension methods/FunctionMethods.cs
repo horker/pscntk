@@ -33,7 +33,7 @@ namespace Horker.PSCNTK
             return w.Results.Select(x => (WrappedVariable)x).ToArray();
         }
 
-        public static Value Invoke(PSObject func, object arguments = null, DataNameToInputMap map = null)
+        public static Value[] Invoke(PSObject func, object arguments = null, DataNameToInputMap map = null)
         {
             Function f = ToFunction(func);
 
