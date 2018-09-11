@@ -21,11 +21,12 @@ namespace Horker.PSCNTK
 
         private float[] _initialBuffer;
 
-        public ExpressionSampler(string name, Function expression, Variable inputVariable = null, Value initialValue = null, int iterationsPerEpoch = int.MaxValue)
+        public ExpressionSampler(string name, Function expression, Variable inputVariable = null, int minibatchSize = 1, Value initialValue = null, int iterationsPerEpoch = int.MaxValue)
         {
             Name = name;
             Expression = expression;
             InputVariable = inputVariable;
+            MinibatchSize = minibatchSize;
 
             if (initialValue != null)
                 PrevValue = initialValue;
@@ -34,8 +35,12 @@ namespace Horker.PSCNTK
                 if (InputVariable != null)
                 {
                     var shape = expression.Output.Shape;
-                    _initialBuffer = new float[shape.TotalSize]; 
-                    PrevValue = new Value(new NDArrayView(shape, _initialBuffer, DeviceDescriptor.UseDefaultDevice(), true));
+                    _initialBuffer = new float[shape.TotalSize * minibatchSize];
+
+                    var dims = new int[shape.Rank + 1];
+                    shape.Dimensions.CopyTo(dims, 0);
+                    dims[shape.Rank] = minibatchSize;
+                    PrevValue = new Value(new NDArrayView(dims, _initialBuffer, DeviceDescriptor.UseDefaultDevice(), true));
                 }
             }
 

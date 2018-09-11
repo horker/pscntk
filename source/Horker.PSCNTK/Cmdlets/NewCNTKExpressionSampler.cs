@@ -21,9 +21,12 @@ namespace Horker.PSCNTK
         public object InputVariable = null;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public object InitialValue = null;
+        public int MinibatchSize = 1;
 
         [Parameter(Position = 4, Mandatory = false)]
+        public object InitialValue = null;
+
+        [Parameter(Position = 5, Mandatory = false)]
         public int IterationsPerEpoch = int.MaxValue;
 
         protected override void EndProcessing()
@@ -47,7 +50,7 @@ namespace Horker.PSCNTK
             if (InitialValue != null)
                 value = Converter.ToValue(InitialValue, input.Shape.Dimensions.ToArray());
 
-            var sampler = new ExpressionSampler(Name, Expression, input, value, IterationsPerEpoch);
+            var sampler = new ExpressionSampler(Name, Expression, input, MinibatchSize, value, IterationsPerEpoch);
 
             WriteObject(sampler);
         }

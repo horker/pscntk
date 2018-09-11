@@ -20,7 +20,7 @@ namespace UnitTest
         [TestMethod]
         public void TestWithoutParameter()
         {
-            var exp = new Constant(new int[] { 2, 3 }, DataType.Float, 0) + CNTKLib.Pow(Constant.Scalar(DataType.Float, 3), Constant.Scalar(DataType.Float, 3));
+            var exp = new Constant(new int[] { 2, 3 }, DataType.Float, 0) + Constant.Scalar(DataType.Float, 27);
             var sampler = new ExpressionSampler("value", exp, null);
 
             var batch = sampler.GetNextBatch();
@@ -31,34 +31,35 @@ namespace UnitTest
 
             CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 2, 3 });
 
-            CollectionAssert.AreEqual(DataSource<float>.FromValue(data.data).Data, new float[] { 27, 27, 27, 27, 27, 27 });
+            var ds = DataSource<float>.FromValue(data.data);
+            CollectionAssert.AreEqual(ds.Data, new float[] { 27, 27, 27, 27, 27, 27 });
         }
 
         [TestMethod]
         public void TestWithParameter()
         {
-            var input = Variable.InputVariable(new int[] { 1 }, DataType.Float, "input");
+            var input = Variable.InputVariable(new int[] { 1 }, DataType.Float, "input", new Axis[] { Axis.DefaultBatchAxis() });
             var exp = input + Constant.Scalar(DataType.Float, 1);
 
-            var sampler = new ExpressionSampler("value", exp, input);
+            var sampler = new ExpressionSampler("value", exp, input, 3);
 
             var batch = sampler.GetNextBatch();
             var data = batch["value"];
-            CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 1, 1, 1 });
+            CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 1, 3 });
             var ds = DataSource<float>.FromValue(data.data);
-            CollectionAssert.AreEqual(ds.Data, new float[] { 1 });
+            CollectionAssert.AreEqual(ds.Data, new float[] { 1, 1, 1 });
 
             batch = sampler.GetNextBatch();
             data = batch["value"];
-            CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 1, 1, 1 });
+            CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 1, 3 });
             ds = DataSource<float>.FromValue(data.data);
-            CollectionAssert.AreEqual(ds.Data, new float[] { 2 });
+            CollectionAssert.AreEqual(ds.Data, new float[] { 2, 2, 2 });
 
             batch = sampler.GetNextBatch();
             data = batch["value"];
-            CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 1, 1, 1 });
+            CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 1, 3 });
             ds = DataSource<float>.FromValue(data.data);
-            CollectionAssert.AreEqual(ds.Data, new float[] { 3 });
+            CollectionAssert.AreEqual(ds.Data, new float[] { 3, 3, 3 });
         }
     }
 }
