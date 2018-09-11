@@ -8,9 +8,9 @@ namespace Horker.PSCNTK
     {
         public Dictionary<string, MinibatchData> Features;
 
-        public MinibatchData this[string name] { get => Features[name]; }
+        public MinibatchData this[string name] => Features[name];
 
-        public int SampleCount { get => (int)Features.First().Value.numberOfSamples; }
+        public int SampleCount => (int)Features.First().Value.numberOfSamples;
 
         public bool SweepEnd
         {
@@ -18,9 +18,7 @@ namespace Horker.PSCNTK
             set
             {
                 foreach (var entry in Features)
-                {
                     entry.Value.sweepEnd = value;
-                }
             }
         }
 
@@ -43,10 +41,8 @@ namespace Horker.PSCNTK
             : this()
         {
             foreach (var m in minibatches)
-            {
                 foreach (var f in m.Features)
                     Features.Add(f.Key, f.Value);
-            }
         }
 
         public static MinibatchData GetMinibatchData(DataSource<float> dataSource, bool sweepEnd, DeviceDescriptor device)
@@ -56,9 +52,9 @@ namespace Horker.PSCNTK
 
             var shape = dataSource.Shape;
             var value = new Value(new NDArrayView(shape.Dimensions, dataSource.Data, device, true));
-            var minibatch = new MinibatchData(value, (uint)shape[-1], (uint)(shape[-1] * shape[-2]), sweepEnd);
+            var minibatchData = new MinibatchData(value, (uint)shape[-1], (uint)(shape[-1] * shape[-2]), sweepEnd);
 
-            return minibatch;
+            return minibatchData;
         }
     }
 }
