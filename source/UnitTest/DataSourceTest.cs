@@ -199,13 +199,45 @@ namespace UnitTest
         }
 
         [TestMethod]
+        public void TestAsString1()
+        {
+            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6 }, new int[] { 2, 3 });
+
+            var s = a.AsString();
+
+            var expected =
+                "DataSource [2 x 3]\r\n" +
+                " [ [1 2]\r\n" +
+                "   [3 4]\r\n" +
+                "   [5 6] ]";
+
+            Assert.AreEqual(expected, s);
+        }
+
+        [TestMethod]
         public void TestToString1()
         {
             var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6 }, new int[] { 2, 3 });
 
             var s = a.ToString();
 
-            var expected = "DataSource [2 x 3] [ [1 2] [3 4] [5 6] ]";
+            var expected = "DataSource [2 x 3] [1 2 3 4 5...]";
+
+            Assert.AreEqual(expected, s);
+        }
+
+        [TestMethod]
+        public void TestAsString2()
+        {
+            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
+
+            var s = a.AsString();
+
+            var expected =
+                "DataSource [2 x 2 x 3]\r\n" +
+                " [ [ [1 2] [3 4] ]\r\n" +
+                "   [ [5 6] [7 8] ]\r\n" +
+                "   [ [9 10] [11 12] ] ]";
 
             Assert.AreEqual(expected, s);
         }
@@ -217,7 +249,7 @@ namespace UnitTest
 
             var s = a.ToString();
 
-            var expected = "DataSource [2 x 2 x 3] [ [ [1 2] [3 4] ] [ [5 6] [7 8] ] [ [9 10] [11 12] ] ]";
+            var expected = "DataSource [2 x 2 x 3] [1 2 3 4 5...]";
 
             Assert.AreEqual(expected, s);
         }
