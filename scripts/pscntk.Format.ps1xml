@@ -59,5 +59,24 @@
                 </CustomEntries>
             </CustomControl>
         </View>
+        <View>
+            <Name>CNTK.DeviceDescriptor</Name>
+            <ViewSelectedBy>
+                <TypeName>CNTK.DeviceDescriptor</TypeName>
+            </ViewSelectedBy>
+            <CustomControl>
+                <CustomEntries>
+                    <CustomEntry>
+                        <CustomItem>
+                            <ExpressionBinding>
+                                <ScriptBlock>
+                                    $_.AsString()
+                                </ScriptBlock>
+                            </ExpressionBinding>
+                        </CustomItem>
+                    </CustomEntry>
+                </CustomEntries>
+            </CustomControl>
+        </View>
     </ViewDefinitions>
 </Configuration>
