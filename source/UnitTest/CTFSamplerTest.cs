@@ -31,7 +31,7 @@ namespace UnitTest
 
             var sampler = new CTFSampler(file, 1, false);
 
-            var m = sampler.GetNextBatch();
+            var m = sampler.GetNextMinibatch();
 
             Assert.AreEqual(2, m.Features.Count);
             Assert.AreEqual(1, (int)m.Features["f1"].numberOfSamples);
@@ -39,7 +39,7 @@ namespace UnitTest
 
             CollectionAssert.AreEqual(new float[] { 1, 2, 3, 4, 5 }, DataSource<float>.FromValue(m.Features["f1"].data).ToArray());
 
-            m = sampler.GetNextBatch();
+            m = sampler.GetNextMinibatch();
 
             Assert.AreEqual(2, m.Features.Count);
             Assert.AreEqual(1, (int)m.Features["f1"].numberOfSamples);

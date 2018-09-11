@@ -169,7 +169,7 @@ namespace Horker.PSCNTK
             return batch;
         }
 
-        public Minibatch GetNextBatch(DeviceDescriptor device = null)
+        public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
             InitializeOrder();
 
@@ -199,7 +199,7 @@ namespace Horker.PSCNTK
             return batch;
         }
 
-        public Minibatch GetValidationBatch(DeviceDescriptor device = null)
+        public Minibatch GetValidationMinibatch(DeviceDescriptor device = null)
         {
             InitializeOrder();
 

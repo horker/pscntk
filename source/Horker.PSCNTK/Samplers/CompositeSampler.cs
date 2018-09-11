@@ -19,14 +19,14 @@ namespace Horker.PSCNTK
             _samplers = samplers;
         }
 
-        public Minibatch GetNextBatch(DeviceDescriptor device = null)
+        public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
-            return new Minibatch(_samplers.Select(x => x.GetNextBatch(device)));
+            return new Minibatch(_samplers.Select(x => x.GetNextMinibatch(device)));
         }
 
-        public Minibatch GetValidationBatch(DeviceDescriptor device = null)
+        public Minibatch GetValidationMinibatch(DeviceDescriptor device = null)
         {
-            return new Minibatch(_samplers.Select(x => x.GetValidationBatch(device)));
+            return new Minibatch(_samplers.Select(x => x.GetValidationMinibatch(device)));
         }
     }
 }

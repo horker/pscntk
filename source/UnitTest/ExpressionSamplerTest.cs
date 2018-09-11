@@ -23,7 +23,7 @@ namespace UnitTest
             var exp = new Constant(new int[] { 2, 3 }, DataType.Float, 0) + Constant.Scalar(DataType.Float, 27);
             var sampler = new ExpressionSampler("value", exp, null);
 
-            var batch = sampler.GetNextBatch();
+            var batch = sampler.GetNextMinibatch();
 
             Assert.AreEqual(batch.Features.Count, 1);
 
@@ -43,19 +43,19 @@ namespace UnitTest
 
             var sampler = new ExpressionSampler("value", exp, input, 3);
 
-            var batch = sampler.GetNextBatch();
+            var batch = sampler.GetNextMinibatch();
             var data = batch["value"];
             CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 1, 3 });
             var ds = DataSource<float>.FromValue(data.data);
             CollectionAssert.AreEqual(ds.Data, new float[] { 1, 1, 1 });
 
-            batch = sampler.GetNextBatch();
+            batch = sampler.GetNextMinibatch();
             data = batch["value"];
             CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 1, 3 });
             ds = DataSource<float>.FromValue(data.data);
             CollectionAssert.AreEqual(ds.Data, new float[] { 2, 2, 2 });
 
-            batch = sampler.GetNextBatch();
+            batch = sampler.GetNextMinibatch();
             data = batch["value"];
             CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 1, 3 });
             ds = DataSource<float>.FromValue(data.data);

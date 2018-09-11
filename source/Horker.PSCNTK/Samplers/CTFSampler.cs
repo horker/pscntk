@@ -87,7 +87,7 @@ namespace Horker.PSCNTK
             }
         }
 
-        public Minibatch GetNextBatch(DeviceDescriptor device = null)
+        public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();
@@ -102,7 +102,7 @@ namespace Horker.PSCNTK
             return minibatch;
         }
 
-        public Minibatch GetValidationBatch(DeviceDescriptor device = null)
+        public Minibatch GetValidationMinibatch(DeviceDescriptor device = null)
         {
             return _validationMinibatch;
         }

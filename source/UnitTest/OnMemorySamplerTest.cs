@@ -25,7 +25,7 @@ namespace UnitTest
             var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
             var sampler = new OnMemorySampler(ds, 2, 0, false);
 
-            var batch = sampler.GetNextBatch();
+            var batch = sampler.GetNextMinibatch();
             var data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -33,7 +33,7 @@ namespace UnitTest
             Assert.AreEqual((uint)2, data.numberOfSequences);
             Assert.AreEqual(false, data.sweepEnd);
 
-            batch = sampler.GetNextBatch();
+            batch = sampler.GetNextMinibatch();
             data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 4, 5, 6, 7 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -43,7 +43,7 @@ namespace UnitTest
 
             // When not randomized, remnant data that is smaller than the minibatch size is ignored.
 
-            batch = sampler.GetNextBatch();
+            batch = sampler.GetNextMinibatch();
             data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -60,7 +60,7 @@ namespace UnitTest
             var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
             var sampler = new OnMemorySampler(ds, 2, .4, false);
 
-            var batch = sampler.GetNextBatch();
+            var batch = sampler.GetNextMinibatch();
             var data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -68,7 +68,7 @@ namespace UnitTest
             Assert.AreEqual((uint)2, data.numberOfSequences);
             Assert.AreEqual(true, data.sweepEnd);
 
-            batch = sampler.GetNextBatch();
+            batch = sampler.GetNextMinibatch();
             data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -76,7 +76,7 @@ namespace UnitTest
             Assert.AreEqual((uint)2, data.numberOfSequences);
             Assert.AreEqual(true, data.sweepEnd);
 
-            batch = sampler.GetValidationBatch();
+            batch = sampler.GetValidationMinibatch();
             data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 6, 7, 8, 9 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -93,7 +93,7 @@ namespace UnitTest
             var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
             var sampler = new OnMemorySampler(ds, 2, .4, false);
 
-            var batch = sampler.GetNextBatch();
+            var batch = sampler.GetNextMinibatch();
             var data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3, 4, 5, 6, 7 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 2, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -110,7 +110,7 @@ namespace UnitTest
             var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
             var sampler = new OnMemorySampler(ds, 2, .5, true);
 
-            var batch = sampler.GetValidationBatch();
+            var batch = sampler.GetValidationMinibatch();
             var data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 4, 5, 6, 7 }, DataSource<float>.FromValue(data.data).Data);
         }

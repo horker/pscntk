@@ -61,6 +61,7 @@
     <Compile Include="Cmdlets\NewCNTKCompositeSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKExpressionSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKNoiseSampler.cs" />
+    <Compile Include="Cmdlets\DeviceCmdlets.cs" />
     <Compile Include="Composite functions\CompositeHelper.cs" />
     <Compile Include="Composite functions\Lstm_orig.cs" />
     <Compile Include="Extension methods\FunctionAsTree.cs" />

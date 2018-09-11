@@ -79,7 +79,7 @@ namespace Horker.PSCNTK
             return AddMinibatch(set);
         }
 
-        public Minibatch GetNextBatch(DeviceDescriptor device = null)
+        public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
             DataSourceSet dataSourceSet;
             try
@@ -118,7 +118,7 @@ namespace Horker.PSCNTK
             _cancelTokenSourceForTake.Cancel();
         }
 
-        public Minibatch GetValidationBatch(DeviceDescriptor device = null)
+        public Minibatch GetValidationMinibatch(DeviceDescriptor device = null)
         {
             return _validationMinibatch;
         }

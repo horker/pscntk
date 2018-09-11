@@ -4,7 +4,7 @@ namespace Horker.PSCNTK
 {
     public interface ISampler
     {
-        Minibatch GetNextBatch(DeviceDescriptor device = null);
-        Minibatch GetValidationBatch(DeviceDescriptor device = null);
+        Minibatch GetNextMinibatch(DeviceDescriptor device = null);
+        Minibatch GetValidationMinibatch(DeviceDescriptor device = null);
     }
 }

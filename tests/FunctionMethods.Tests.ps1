@@ -29,7 +29,7 @@ Describe "Invoke()" {
     $f = cntk.reducesum $i -Axis (cntk.axis.allstatic)
 
     $s = cntk.noisesampler -Name "input" -Shape 3 -Min -1 -Max 1 -MinibatchSize 1
-    $b = $s.GetNextBatch()
+    $b = $s.GetNextMinibatch()
 
     $result = $f.Invoke($b).ToDataSource()
 

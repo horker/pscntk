@@ -76,7 +76,7 @@ namespace Horker.PSCNTK
 
             for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
             {
-                Minibatch = Sampler.GetNextBatch(device);
+                Minibatch = Sampler.GetNextMinibatch(device);
                 if (Minibatch == null)
                     break;
 
@@ -127,7 +127,7 @@ namespace Horker.PSCNTK
 
             if (_validationData == null)
             {
-                var batch = Sampler.GetValidationBatch(device);
+                var batch = Sampler.GetValidationMinibatch(device);
 
                 if (batch == null)
                     return 0.0;
