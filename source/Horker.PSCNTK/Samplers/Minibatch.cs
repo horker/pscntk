@@ -45,6 +45,11 @@ namespace Horker.PSCNTK
                     Features.Add(f.Key, f.Value);
         }
 
+        public void Add(string name, MinibatchData data)
+        {
+            Features.Add(name, data);
+        }
+
         public static MinibatchData GetMinibatchData(DataSource<float> dataSource, bool sweepEnd, DeviceDescriptor device)
         {
             if (device == null)
@@ -52,9 +57,9 @@ namespace Horker.PSCNTK
 
             var shape = dataSource.Shape;
             var value = new Value(new NDArrayView(shape.Dimensions, dataSource.Data, device, true));
-            var minibatchData = new MinibatchData(value, (uint)shape[-1], (uint)(shape[-1] * shape[-2]), sweepEnd);
+            var data = new MinibatchData(value, (uint)shape[-1], (uint)(shape[-1] * shape[-2]), sweepEnd);
 
-            return minibatchData;
+            return data;
         }
     }
 }

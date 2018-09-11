@@ -59,6 +59,7 @@
     <Compile Include="Cmdlets\ConvertToCNTKDot.cs" />
     <Compile Include="Cmdlets\LoadCNTKFunction.cs" />
     <Compile Include="Cmdlets\NewCNTKCompositeSampler.cs" />
+    <Compile Include="Cmdlets\NewCNTKExpressionSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKNoiseSampler.cs" />
     <Compile Include="Composite functions\CompositeHelper.cs" />
     <Compile Include="Composite functions\Lstm_orig.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="General\Random.cs" />
     <Compile Include="Generated files\WrappedFunctionOperators.cs" />
     <Compile Include="Generated files\WrappedVariableOperators.cs" />
+    <Compile Include="Samplers\ExpressionSampler.cs" />
     <Compile Include="Wrappers\IWrappedNode.cs" />
     <Compile Include="Wrappers\WrappedFunction.cs" />
     <Compile Include="Wrappers\WrappedVariable.cs" />
