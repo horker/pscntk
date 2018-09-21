@@ -149,28 +149,35 @@ while (!$eof) {
 ############################################################
 
 $EXCLUDES = @(
+  # Function methods
   "AsBlock"
-  "Atan"
-  "BroadcastAs"
   "Clone"
   "CloneFlattened"
   "CustomProxyOp"
-  "EyeLike"
-  "First"
-  "Gather"
-  "IsFirst"
-  "IsLast"
-  "Last"
-  "NCELoss"
   "operator+"
-  "OptimizedRNNStack"
   "ReplacePlaceholder"
   "ReplacePlaceholders"
-  "Scatter"
+
+  # No C# bindings
+  "Atan"
+  "EyeLike"
+  "NCELoss"
   "StraightThrough"
   "Tan"
-  "Unpack"
+
+  # Requires special implementation
+  "OptimizedRNNStack"
+
+  # Sequence functions
+  "IsFirst"
+  "IsLast"
+  "BroadcastAs"
+  "First"
+  "Gather"
+  "Last"
+  "Scatter"
   "Where"
+  "Unpack"
 )
 
 $funcs = $funcs | where { $EXCLUDES -NotContains $_.Name }
