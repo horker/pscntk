@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Management.Automation;
 using System.Text;
 
 namespace Horker.PSCNTK
@@ -100,6 +101,31 @@ namespace Horker.PSCNTK
                 dimensions = new int[] { rowCount, columns.Length };
 
             return new DataSource<T>(data, dimensions);
+        }
+
+        public static DataSource<T> FromPSObject(PSObject[] objects, Func<object, T> converter)
+        {
+            var obj = objects[0];
+            int rowCount = obj.Properties.Count();
+            int columnCount = objects.Length;
+
+            var data = new T[rowCount * columnCount];
+
+            int row = 0;
+            foreach (var prop in obj.Properties)
+            {
+                var name = prop.Name;
+                for (var column = 0; column < columnCount; ++column)
+                {
+                    var value = objects[column].Properties[name].Value;
+                    if (value is PSObject psobj)
+                        value = psobj.BaseObject;
+                    data[column * rowCount + row] = converter.Invoke(value);
+                }
+                ++row;
+            }
+
+            return new DataSource<T>(data, new int[] { rowCount, columnCount });
         }
 
         public static DataSource<float> FromValue(CNTK.Value value)

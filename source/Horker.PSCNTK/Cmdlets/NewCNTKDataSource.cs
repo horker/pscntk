@@ -36,17 +36,34 @@ namespace Horker.PSCNTK
         [Parameter(Position = 2, Mandatory = false, ParameterSetName = "new")]
         [Parameter(Position = 2, Mandatory = false, ParameterSetName = "rows")]
         [Parameter(Position = 2, Mandatory = false, ParameterSetName = "columns")]
-        public Type DataType = typeof(Single);
+        public DataSourceType DataType = DataSourceType.Float;
 
         protected override void EndProcessing()
         {
-            if (DataType == typeof(Double)) ProcessInternal(x => Converter.ToDouble(x));
-            else if (DataType == typeof(Single)) ProcessInternal(x => Converter.ToFloat(x));
-            else if (DataType == typeof(Int64)) ProcessInternal(x => Convert.ToInt64(x));
-            else if (DataType == typeof(Int32)) ProcessInternal(x => Convert.ToInt32(x));
-            else if (DataType == typeof(Int16)) ProcessInternal(x => Convert.ToInt16(x));
-            else if (DataType == typeof(Byte)) ProcessInternal(x => Convert.ToByte(x));
-            else if (DataType == typeof(SByte)) ProcessInternal(x => Convert.ToSByte(x));
+            switch (DataType)
+            {
+                case DataSourceType.Double:
+                    ProcessInternal(x => Converter.ToDouble(x));
+                    break;
+                case DataSourceType.Float:
+                    ProcessInternal(x => Converter.ToFloat(x));
+                    break;
+                case DataSourceType.Int64:
+                    ProcessInternal(x => Convert.ToInt64(x));
+                    break;
+                case DataSourceType.Int32:
+                    ProcessInternal(x => Convert.ToInt32(x));
+                    break;
+                case DataSourceType.Int16:
+                    ProcessInternal(x => Convert.ToInt16(x));
+                    break;
+                case DataSourceType.Byte:
+                    ProcessInternal(x => Convert.ToByte(x));
+                    break;
+                case DataSourceType.SByte:
+                    ProcessInternal(x => Convert.ToSByte(x));
+                    break;
+            }
         }
 
         private void ProcessInternal<T>(Func<object, T> converter)

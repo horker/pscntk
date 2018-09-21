@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cmdlets\ConvertToCNTKDataSource.cs" />
     <Compile Include="Cmdlets\ValueCmdlets.cs" />
     <Compile Include="Cmdlets\CmdletHelpers.cs" />
     <Compile Include="Cmdlets\ConvertToCNTKDot.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Extension methods\FunctionGetNodeInfo.cs" />
     <Compile Include="Extension methods\FunctionInvoke.cs" />
     <Compile Include="Extension methods\NDArrayViewMethods.cs" />
+    <Compile Include="General\DataSourceType.cs" />
     <Compile Include="General\DotGenerater.cs" />
     <Compile Include="General\NodeGroup.cs" />
     <Compile Include="General\NodeWalk.cs" />
