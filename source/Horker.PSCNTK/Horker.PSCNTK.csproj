@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cmdlets\ValueCmdlets.cs" />
     <Compile Include="Cmdlets\CmdletHelpers.cs" />
     <Compile Include="Cmdlets\ConvertToCNTKDot.cs" />
     <Compile Include="Cmdlets\LoadCNTKFunction.cs" />
