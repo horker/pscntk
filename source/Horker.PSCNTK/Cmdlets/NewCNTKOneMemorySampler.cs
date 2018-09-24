@@ -19,7 +19,7 @@ namespace Horker.PSCNTK
         [Parameter(Position = 2, Mandatory = false, ParameterSetName = "new")]
         public double ValidationRate = 0.0;
 
-        [Parameter(Position = 4, Mandatory = false, ParameterSetName = "new")]
+        [Parameter(Position = 3, Mandatory = false, ParameterSetName = "new")]
         public SwitchParameter NoRandomize = false;
 
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "load")]

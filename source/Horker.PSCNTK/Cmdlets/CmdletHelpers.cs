@@ -11,14 +11,16 @@ namespace Horker.PSCNTK
             if (func == null)
                 return null;
 
-            if (func is PSObject)
-                func = (func as PSObject).BaseObject;
+            if (func is PSObject psobj)
+                func = psobj.BaseObject;
 
-            if (func is Function)
-                return func as Function;
-            if (func is WrappedFunction)
-                return func as WrappedFunction;
-            else if (func is string)
+            if (func is Function fn)
+                return fn;
+
+            if (func is WrappedFunction wf)
+                return wf;
+
+            if (func is string)
             {
                 var f = func as string;
                 if (string.IsNullOrEmpty(f))

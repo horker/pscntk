@@ -51,8 +51,8 @@ namespace Horker.PSCNTK
         {
             var f = features.Values.First();
 
-            if (f.Shape.Rank < 3)
-                throw new ArgumentException("Source data should have more than or equal to three dimensions");
+            if (f.Shape.Rank < 2)
+                throw new ArgumentException("Source data should have a batch axis");
 
             if (f.Shape[-1] < minibatchSize)
                 throw new ArgumentException("Sample size is smaller than minibatch size");
