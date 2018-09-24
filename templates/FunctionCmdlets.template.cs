@@ -13,6 +13,7 @@ $TYPE_MAP = @{
   "const FunctionPtr&" = "WrappedFunction"
   "const NDArrayViewPtr&" = "CNTK.NDArrayView"
   "const NDShape&" = "int[]"
+  "const std::pair<size_t, int>&" = "CNTK.PairSizeTInt"
   "const std::vector<Axis>&" = "CNTK.Axis[]"
   "const std::vector<bool>&" = "bool[]"
   "const std::vector<int>&" = "int[]"
@@ -88,7 +89,18 @@ using System.Management.Automation;
 namespace Horker.PSCNTK {
 <%
 foreach ($func in $funcs) {
-  $alias = $func.Name.ToLower()
+
+  # Name
+  if ($func.Ns -eq "Sequence") {
+    $name = "Sequence" + $func.Name
+    $alias = "sequence." + $func.Name.ToLower()
+  }
+  else {
+    $name = $func.Name
+    $alias = $name.ToLower()
+  }
+
+  # Aliases
   if ($alias -match "initializer$") {
     $alias = $alias -replace "initializer$", ""
     if ($alias -match "^(he|glorot|xavier|normal|truncated|uniform)") {
@@ -99,17 +111,28 @@ foreach ($func in $funcs) {
     }
   }
   $alias = $alias | foreach { "cntk." + $_ }
+
+  # OutputType
+  switch ($func.ReturnType) {
+    "FunctionPtr" { $outputType = "Horker.PSCNTK.WrappedFunction" }
+    "ParameterInitializer" { $outputType = "CNTK.CNTKDictionary" }
+    default { Write-Error "Unknown return type: $($func.ReturnType)" }
+  }
 -%>
 
-    [Cmdlet("New", "CNTK<% $func.Name %>")]
+    [Cmdlet("New", "CNTK<% $name %>")]
     [Alias("<% $alias -join '", "' %>")]
-    public class NewCNTK<% $func.Name %> : PSCmdlet
+    [OutputType(typeof(<% $outputType %>))]
+    public class NewCNTK<% $name %> : PSCmdlet
     {
 <%
   $arglist = @()
   for ($i = 0; $i -lt $func.Args.Count; ++$i) {
     $arg = $func.Args[$i]
     $type = $TYPE_MAP[$arg.Type]
+    if ($null -eq $type) {
+      Write-Error "Unknown argument type: $($arg.Type)"
+    }
     $variable = ConvertTo-TitleCase $arg.Variable
     $value = Convert-Value $arg.Value
 
@@ -128,7 +151,7 @@ foreach ($func in $funcs) {
 -%>
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.<% $func.Name %>(<% $arglist -join ", " %>);
+            var result = CNTK.CNTKLib.<% $name %>(<% $arglist -join ", " %>);
 <%
   if ($func.ReturnType -eq "FunctionPtr") {
 -%>

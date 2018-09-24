@@ -33,7 +33,7 @@ foreach ($line in $lines) {
 
   $tokens.Add("<bol>")
 
-  foreach ($t in ($line -split "\s+|(\(|\)|&|<|>|,|\.|:+|;|//)")) {
+  foreach ($t in ($line -split "\s+|(\(|\)|{|}|&|<|>|,|\.|:+|;|//)")) {
     if ([string]::IsNullOrEmpty($t)) {
       continue;
     }
@@ -45,8 +45,6 @@ foreach ($line in $lines) {
     $tokens.Add($t)
   }
 }
-
-#$tokens
 
 ############################################################
 # Extract Signatures
@@ -104,17 +102,39 @@ $arg = New-Object Collections.Generic.List[object]
 
 $funcs = New-Object Collections.Generic.List[object]
 
+$namespaces = New-Object Collections.Generic.Stack[string]
+$namespaceDepths = New-Object Collections.Generic.Stack[int]
+
+$namespaces.Push("")
+$namespaceDepths.Push(-1)
+
+$depth = 0
+
 while (!$eof) {
   $t = Next
-#  Write-Host -NoNewLine "($($t) $($t)) "
 
   if ($t -eq "<eof>") {
     $eof = $true
   }
+  elseif ($t -eq "namespace") {
+    $t = Next
+    $namespaces.Push($t)
+    $namespaceDepths.Push($depth)
+  }
+  elseif ($t -eq "{") {
+    ++$depth
+  }
+  elseif ($t -eq "}") {
+    --$depth
+    if ($depth -eq $namespaceDepths.Peek()) {
+      $null = $namespaces.Pop()
+      $null = $namespaceDepths.Pop()
+    }
+  }
   elseif ($t -eq "<bol>") {
     if ((((Peek 0) -eq "CNTK_API" -or (Peek 0) -eq "inline") -and (Peek 1) -eq "FunctionPtr" -and (Peek 3) -eq "(") -or
         (((Peek 0) -eq "CNTK_API" -or (Peek 0) -eq "inline") -and (Peek 1) -eq "ParameterInitializer" -and (Peek 2) -match "Initializer$" -and (Peek 3) -eq "(")) {
-      $func = [PSCustomObject]@{ Name = (Peek 2); ReturnType = (Peek 1); Args = (New-Object Collections.Generic.List[object]) }
+      $func = [PSCustomObject]@{ Ns = $namespaces.Peek(); Name = (Peek 2); ReturnType = (Peek 1); Args = (New-Object Collections.Generic.List[object]) }
       $arg.Clear()
 
       $t = Next 5
@@ -155,10 +175,11 @@ $EXCLUDES = @(
   "CloneFlattened"
   "CustomProxyOp"
   "operator+"
+  "operator-"
   "ReplacePlaceholder"
   "ReplacePlaceholders"
 
-  # No C# bindings
+  # No .NET bindings
   "Atan"
   "EyeLike"
   "NCELoss"
@@ -167,17 +188,6 @@ $EXCLUDES = @(
 
   # Requires special implementation
   "OptimizedRNNStack"
-
-  # Sequence functions
-  "IsFirst"
-  "IsLast"
-  "BroadcastAs"
-  "First"
-  "Gather"
-  "Last"
-  "Scatter"
-  "Where"
-  "Unpack"
 )
 
 $funcs = $funcs | where { $EXCLUDES -NotContains $_.Name }
@@ -216,10 +226,10 @@ foreach ($func in $funcs) {
 # Save output
 ############################################################
 
-$dup = $funcs | group Name | where { $_.Count -gt 1 }
-$dup | select -expand Group | sort Name | Export-CliXml "$PSScriptRoot\dupfuncs.clixml"
+$dup = $funcs | group Ns, Name | where { $_.Count -gt 1 }
+$dup | select -expand Group | sort Ns, Name | Export-CliXml "$PSScriptRoot\dupfuncs.clixml"
 
 $dup = $dup | select -expand Name
-$funcs = $funcs | where { $dup -NotContains $_.Name }
+$funcs = $funcs | where { $dup -NotContains "$($_.NS), $($_.Name)" }
 
 $funcs | sort Name | Export-Clixml "$PSScriptRoot\cntkfuncs.clixml"

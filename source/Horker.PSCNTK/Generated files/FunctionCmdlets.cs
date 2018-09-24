@@ -2,12 +2,13 @@ using System;
 using System.Management.Automation;
 
 // DO NOT EDIT
-// This file was automatically generated at 2018/09/09 08:11:37
+// This file was automatically generated at 2018/09/24 14:01:56
 
 namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKAbs")]
     [Alias("cntk.abs")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKAbs : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -25,6 +26,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKAcos")]
     [Alias("cntk.acos")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKAcos : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -42,6 +44,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKAlias")]
     [Alias("cntk.alias")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKAlias : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -59,6 +62,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKArgmax")]
     [Alias("cntk.argmax")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKArgmax : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -79,6 +83,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKArgmin")]
     [Alias("cntk.argmin")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKArgmin : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -99,6 +104,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKAsComposite")]
     [Alias("cntk.ascomposite")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKAsComposite : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -116,6 +122,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKAsin")]
     [Alias("cntk.asin")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKAsin : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -133,6 +140,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKAsinh")]
     [Alias("cntk.asinh")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKAsinh : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -150,6 +158,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKAssign")]
     [Alias("cntk.assign")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKAssign : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -170,6 +179,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKAtanh")]
     [Alias("cntk.atanh")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKAtanh : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -187,6 +197,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKBatchNormalization")]
     [Alias("cntk.batchnormalization")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKBatchNormalization : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -237,6 +248,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKBernoulliRandom")]
     [Alias("cntk.bernoullirandom")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKBernoulliRandom : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -263,6 +275,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKBernoulliRandomLike")]
     [Alias("cntk.bernoullirandomlike")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKBernoulliRandomLike : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -286,6 +299,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKBilinearInitializer")]
     [Alias("cntk.init.bilinear")]
+    [OutputType(typeof(CNTK.CNTKDictionary))]
     public class NewCNTKBilinearInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -303,6 +317,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKBinaryCrossEntropy")]
     [Alias("cntk.binarycrossentropy")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKBinaryCrossEntropy : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -321,8 +336,30 @@ namespace Horker.PSCNTK {
         }
     }
 
+    [Cmdlet("New", "CNTKSequenceBroadcastAs")]
+    [Alias("cntk.sequence.broadcastas")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
+    public class NewCNTKSequenceBroadcastAs : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Operand;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public WrappedVariable BroadcastAs;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.SequenceBroadcastAs(Operand, BroadcastAs, Name);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
+        }
+    }
+
     [Cmdlet("New", "CNTKCast")]
     [Alias("cntk.cast")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKCast : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -343,6 +380,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKCeil")]
     [Alias("cntk.ceil")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKCeil : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -360,6 +398,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKClip")]
     [Alias("cntk.clip")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKClip : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -383,6 +422,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKCombine")]
     [Alias("cntk.combine")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKCombine : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -400,6 +440,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKConstantInitializer")]
     [Alias("cntk.init.constant")]
+    [OutputType(typeof(CNTK.CNTKDictionary))]
     public class NewCNTKConstantInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = false)]
@@ -414,6 +455,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKConvolution")]
     [Alias("cntk.convolution")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKConvolution : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -455,6 +497,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKConvolutionTranspose")]
     [Alias("cntk.convolutiontranspose")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKConvolutionTranspose : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -496,6 +539,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKCos")]
     [Alias("cntk.cos")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKCos : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -513,6 +557,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKCosh")]
     [Alias("cntk.cosh")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKCosh : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -530,6 +575,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKCosineDistance")]
     [Alias("cntk.cosinedistance")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKCosineDistance : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -550,6 +596,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKCosineDistanceWithNegativeSamples")]
     [Alias("cntk.cosinedistancewithnegativesamples")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKCosineDistanceWithNegativeSamples : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -576,6 +623,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKDepthToSpace")]
     [Alias("cntk.depthtospace")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKDepthToSpace : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -596,6 +644,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKDropout")]
     [Alias("cntk.dropout")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKDropout : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -619,6 +668,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKEditDistanceError")]
     [Alias("cntk.editdistanceerror")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKEditDistanceError : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -654,6 +704,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKElementAnd")]
     [Alias("cntk.elementand")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKElementAnd : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -674,6 +725,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKElementDivide")]
     [Alias("cntk.elementdivide")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKElementDivide : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -694,6 +746,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKElementMax")]
     [Alias("cntk.elementmax")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKElementMax : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -714,6 +767,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKElementMin")]
     [Alias("cntk.elementmin")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKElementMin : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -734,6 +788,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKElementNot")]
     [Alias("cntk.elementnot")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKElementNot : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -751,6 +806,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKElementOr")]
     [Alias("cntk.elementor")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKElementOr : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -771,6 +827,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKElementSelect")]
     [Alias("cntk.elementselect")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKElementSelect : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -794,6 +851,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKElementTimes")]
     [Alias("cntk.elementtimes")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKElementTimes : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -814,6 +872,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKElementXor")]
     [Alias("cntk.elementxor")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKElementXor : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -834,6 +893,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKEqual")]
     [Alias("cntk.equal")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKEqual : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -854,6 +914,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKExp")]
     [Alias("cntk.exp")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKExp : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -871,6 +932,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKExpandDims")]
     [Alias("cntk.expanddims")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKExpandDims : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -889,8 +951,27 @@ namespace Horker.PSCNTK {
         }
     }
 
+    [Cmdlet("New", "CNTKSequenceFirst")]
+    [Alias("cntk.sequence.first")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
+    public class NewCNTKSequenceFirst : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Operand;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.SequenceFirst(Operand, Name);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
+        }
+    }
+
     [Cmdlet("New", "CNTKFloor")]
     [Alias("cntk.floor")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKFloor : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -908,6 +989,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKForwardBackward")]
     [Alias("cntk.forwardbackward")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKForwardBackward : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -934,6 +1016,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKGlorotNormalInitializer")]
     [Alias("cntk.init.glorotnormal", "cntk.glorotnormal")]
+    [OutputType(typeof(CNTK.CNTKDictionary))]
     public class NewCNTKGlorotNormalInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = false)]
@@ -957,6 +1040,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKGlorotUniformInitializer")]
     [Alias("cntk.init.glorotuniform", "cntk.glorotuniform")]
+    [OutputType(typeof(CNTK.CNTKDictionary))]
     public class NewCNTKGlorotUniformInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = false)]
@@ -980,6 +1064,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKGreater")]
     [Alias("cntk.greater")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKGreater : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1000,6 +1085,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKGreaterEqual")]
     [Alias("cntk.greaterequal")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKGreaterEqual : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1020,6 +1106,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKGumbelRandom")]
     [Alias("cntk.gumbelrandom")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKGumbelRandom : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1049,6 +1136,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKGumbelRandomLike")]
     [Alias("cntk.gumbelrandomlike")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKGumbelRandomLike : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1075,6 +1163,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKHardmax")]
     [Alias("cntk.hardmax")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKHardmax : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1092,6 +1181,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKHardSigmoid")]
     [Alias("cntk.hardsigmoid")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKHardSigmoid : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1115,6 +1205,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKHeNormalInitializer")]
     [Alias("cntk.init.henormal", "cntk.henormal")]
+    [OutputType(typeof(CNTK.CNTKDictionary))]
     public class NewCNTKHeNormalInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = false)]
@@ -1138,6 +1229,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKHeUniformInitializer")]
     [Alias("cntk.init.heuniform", "cntk.heuniform")]
+    [OutputType(typeof(CNTK.CNTKDictionary))]
     public class NewCNTKHeUniformInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = false)]
@@ -1161,6 +1253,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKImageScaler")]
     [Alias("cntk.imagescaler")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKImageScaler : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1182,8 +1275,45 @@ namespace Horker.PSCNTK {
         }
     }
 
+    [Cmdlet("New", "CNTKSequenceIsFirst")]
+    [Alias("cntk.sequence.isfirst")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
+    public class NewCNTKSequenceIsFirst : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Operand;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.SequenceIsFirst(Operand, Name);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
+        }
+    }
+
+    [Cmdlet("New", "CNTKSequenceIsLast")]
+    [Alias("cntk.sequence.islast")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
+    public class NewCNTKSequenceIsLast : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Operand;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.SequenceIsLast(Operand, Name);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
+        }
+    }
+
     [Cmdlet("New", "CNTKLabelsToGraph")]
     [Alias("cntk.labelstograph")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKLabelsToGraph : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1201,6 +1331,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKLambdaRank")]
     [Alias("cntk.lambdarank")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKLambdaRank : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1222,8 +1353,27 @@ namespace Horker.PSCNTK {
         }
     }
 
+    [Cmdlet("New", "CNTKSequenceLast")]
+    [Alias("cntk.sequence.last")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
+    public class NewCNTKSequenceLast : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Operand;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.SequenceLast(Operand, Name);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
+        }
+    }
+
     [Cmdlet("New", "CNTKLatticeSequenceWithSoftmax")]
     [Alias("cntk.latticesequencewithsoftmax")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKLatticeSequenceWithSoftmax : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1289,6 +1439,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKLeakyReLU")]
     [Alias("cntk.leakyrelu")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKLeakyReLU : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1309,6 +1460,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKLess")]
     [Alias("cntk.less")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKLess : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1329,6 +1481,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKLessEqual")]
     [Alias("cntk.lessequal")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKLessEqual : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1349,6 +1502,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKLocalResponseNormalization")]
     [Alias("cntk.localresponsenormalization")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKLocalResponseNormalization : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1378,6 +1532,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKLog")]
     [Alias("cntk.log")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKLog : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1395,6 +1550,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKLogAddExp")]
     [Alias("cntk.logaddexp")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKLogAddExp : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1415,6 +1571,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKMean")]
     [Alias("cntk.mean")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKMean : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1432,6 +1589,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKMinus")]
     [Alias("cntk.minus")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKMinus : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1452,6 +1610,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKNDCGAt1")]
     [Alias("cntk.ndcgat1")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKNDCGAt1 : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1475,6 +1634,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKNegate")]
     [Alias("cntk.negate")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKNegate : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1492,6 +1652,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKNormalInitializer")]
     [Alias("cntk.init.normal", "cntk.normal")]
+    [OutputType(typeof(CNTK.CNTKDictionary))]
     public class NewCNTKNormalInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1515,6 +1676,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKNormalRandom")]
     [Alias("cntk.normalrandom")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKNormalRandom : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1544,6 +1706,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKNormalRandomLike")]
     [Alias("cntk.normalrandomlike")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKNormalRandomLike : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1570,6 +1733,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKNotEqual")]
     [Alias("cntk.notequal")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKNotEqual : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1590,6 +1754,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKOneHotOp")]
     [Alias("cntk.onehotop")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKOneHotOp : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1616,6 +1781,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKOnesLike")]
     [Alias("cntk.oneslike")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKOnesLike : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1633,6 +1799,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKPad")]
     [Alias("cntk.pad")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKPad : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1662,6 +1829,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKPlus")]
     [Alias("cntk.plus")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKPlus : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1682,6 +1850,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKPooling")]
     [Alias("cntk.pooling")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKPooling : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1717,6 +1886,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKPow")]
     [Alias("cntk.pow")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKPow : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1737,6 +1907,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKPReLU")]
     [Alias("cntk.prelu")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKPReLU : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1757,6 +1928,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKRandomSample")]
     [Alias("cntk.randomsample")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKRandomSample : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1783,6 +1955,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKRandomSampleInclusionFrequency")]
     [Alias("cntk.randomsampleinclusionfrequency")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKRandomSampleInclusionFrequency : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1809,6 +1982,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKReciprocal")]
     [Alias("cntk.reciprocal")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKReciprocal : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1826,6 +2000,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKReconcileDynamicAxes")]
     [Alias("cntk.reconciledynamicaxes")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKReconcileDynamicAxes : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1846,6 +2021,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKReduceL1")]
     [Alias("cntk.reducel1")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKReduceL1 : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1869,6 +2045,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKReduceL2")]
     [Alias("cntk.reducel2")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKReduceL2 : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1890,8 +2067,45 @@ namespace Horker.PSCNTK {
         }
     }
 
+    [Cmdlet("New", "CNTKSequenceReduceMax")]
+    [Alias("cntk.sequence.reducemax")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
+    public class NewCNTKSequenceReduceMax : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Operand;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.SequenceReduceMax(Operand, Name);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
+        }
+    }
+
+    [Cmdlet("New", "CNTKSequenceReduceSum")]
+    [Alias("cntk.sequence.reducesum")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
+    public class NewCNTKSequenceReduceSum : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Operand;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.SequenceReduceSum(Operand, Name);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
+        }
+    }
+
     [Cmdlet("New", "CNTKReduceSumSquare")]
     [Alias("cntk.reducesumsquare")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKReduceSumSquare : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1915,6 +2129,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKReLU")]
     [Alias("cntk.relu")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKReLU : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1932,6 +2147,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKROIPooling")]
     [Alias("cntk.roipooling")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKROIPooling : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1961,6 +2177,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKRound")]
     [Alias("cntk.round")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKRound : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -1978,6 +2195,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKSELU")]
     [Alias("cntk.selu")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSELU : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2001,6 +2219,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKSigmoid")]
     [Alias("cntk.sigmoid")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSigmoid : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2018,6 +2237,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKSin")]
     [Alias("cntk.sin")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSin : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2035,6 +2255,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKSinh")]
     [Alias("cntk.sinh")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSinh : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2050,8 +2271,51 @@ namespace Horker.PSCNTK {
         }
     }
 
+    [Cmdlet("New", "CNTKSequenceSlice")]
+    [Alias("cntk.sequence.slice")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
+    public class NewCNTKSequenceSlice : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Operand;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public int BeginIndex;
+
+        [Parameter(Position = 2, Mandatory = true)]
+        public int EndIndex;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.SequenceSlice(Operand, BeginIndex, EndIndex, Name);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
+        }
+    }
+
+    [Cmdlet("New", "CNTKSequenceSoftmax")]
+    [Alias("cntk.sequence.softmax")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
+    public class NewCNTKSequenceSoftmax : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Operand;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.SequenceSoftmax(Operand, Name);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
+        }
+    }
+
     [Cmdlet("New", "CNTKSoftplus")]
     [Alias("cntk.softplus")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSoftplus : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2069,6 +2333,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKSoftsign")]
     [Alias("cntk.softsign")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSoftsign : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2086,6 +2351,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKSpaceToDepth")]
     [Alias("cntk.spacetodepth")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSpaceToDepth : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2106,6 +2372,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKSplice")]
     [Alias("cntk.splice")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSplice : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2126,6 +2393,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKSqrt")]
     [Alias("cntk.sqrt")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSqrt : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2143,6 +2411,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKSquare")]
     [Alias("cntk.square")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSquare : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2160,6 +2429,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKSquaredError")]
     [Alias("cntk.squarederror")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSquaredError : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2180,6 +2450,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKStopGradient")]
     [Alias("cntk.stopgradient")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKStopGradient : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2197,6 +2468,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKSum")]
     [Alias("cntk.sum")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSum : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2214,6 +2486,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKTanh")]
     [Alias("cntk.tanh")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKTanh : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2231,6 +2504,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKToBatch")]
     [Alias("cntk.tobatch")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKToBatch : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2248,6 +2522,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKToSequenceLike")]
     [Alias("cntk.tosequencelike")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKToSequenceLike : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2268,6 +2543,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKTransposeAxes")]
     [Alias("cntk.transposeaxes")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKTransposeAxes : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2291,6 +2567,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKTruncatedNormalInitializer")]
     [Alias("cntk.init.truncatednormal", "cntk.truncatednormal")]
+    [OutputType(typeof(CNTK.CNTKDictionary))]
     public class NewCNTKTruncatedNormalInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = false)]
@@ -2308,6 +2585,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKUniformInitializer")]
     [Alias("cntk.init.uniform", "cntk.uniform")]
+    [OutputType(typeof(CNTK.CNTKDictionary))]
     public class NewCNTKUniformInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2325,6 +2603,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKUniformRandom")]
     [Alias("cntk.uniformrandom")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKUniformRandom : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2354,6 +2633,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKUniformRandomLike")]
     [Alias("cntk.uniformrandomlike")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKUniformRandomLike : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2378,8 +2658,33 @@ namespace Horker.PSCNTK {
         }
     }
 
+    [Cmdlet("New", "CNTKSequenceUnpack")]
+    [Alias("cntk.sequence.unpack")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
+    public class NewCNTKSequenceUnpack : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Operand;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public double PaddingValue;
+
+        [Parameter(Position = 2, Mandatory = true)]
+        public bool SupressMaskOutput;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.SequenceUnpack(Operand, PaddingValue, SupressMaskOutput, Name);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
+        }
+    }
+
     [Cmdlet("New", "CNTKUnpackBatch")]
     [Alias("cntk.unpackbatch")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKUnpackBatch : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2397,6 +2702,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKUnpooling")]
     [Alias("cntk.unpooling")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKUnpooling : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2429,6 +2735,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKWeightedBinaryCrossEntropy")]
     [Alias("cntk.weightedbinarycrossentropy")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKWeightedBinaryCrossEntropy : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -2450,8 +2757,27 @@ namespace Horker.PSCNTK {
         }
     }
 
+    [Cmdlet("New", "CNTKSequenceWhere")]
+    [Alias("cntk.sequence.where")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
+    public class NewCNTKSequenceWhere : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Condition;
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            var result = CNTK.CNTKLib.SequenceWhere(Condition, Name);
+            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
+        }
+    }
+
     [Cmdlet("New", "CNTKXavierInitializer")]
     [Alias("cntk.init.xavier", "cntk.xavier")]
+    [OutputType(typeof(CNTK.CNTKDictionary))]
     public class NewCNTKXavierInitializer : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = false)]
@@ -2475,6 +2801,7 @@ namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKZerosLike")]
     [Alias("cntk.zeroslike")]
+    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKZerosLike : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]

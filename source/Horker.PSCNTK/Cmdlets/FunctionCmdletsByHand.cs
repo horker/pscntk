@@ -154,6 +154,7 @@ namespace Horker.PSCNTK {
 
         protected override void EndProcessing()
         {
+            // ELU() has multiple signatures in C++, but not in C#.
             var result = CNTK.CNTKLib.ELU(Operand, Name);
             WriteObject(new WrappedFunction(result));
         }
@@ -775,6 +776,74 @@ namespace Horker.PSCNTK {
                 result = CNTK.CNTKLib.TransposeTimes(LeftOperand, RightOperand, OutputRank.Value, Name);
             else
                 result = CNTK.CNTKLib.TransposeTimes(LeftOperand, RightOperand, Name);
+
+            WriteObject(new WrappedFunction(result));
+        }
+    }
+
+    // Signatures:
+    // public static CNTK.Function SequenceGather(CNTK.Variable operand, CNTK.Variable condition)
+    // public static CNTK.Function SequenceGather(CNTK.Variable operand, CNTK.Variable condition, CNTK.PairSizeTInt newDerivedSequenceAxisScalingAndAdditiveFactor)
+    // public static CNTK.Function SequenceGather(CNTK.Variable operand, CNTK.Variable condition, CNTK.PairSizeTInt newDerivedSequenceAxisScalingAndAdditiveFactor, string name)
+    // public static CNTK.Function SequenceGather(CNTK.Variable operand, CNTK.Variable condition, string name)
+    [Cmdlet("New", "CNTKSequenceGather")]
+    [Alias("cntk.sequence.gather")]
+    public class NewCNTKSequenceGather : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Operand;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public WrappedVariable Condition;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public CNTK.PairSizeTInt NewDerivedSequenceAxisScalingAndAdditiveFactor;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            CNTK.Function result;
+
+            if (NewDerivedSequenceAxisScalingAndAdditiveFactor == null)
+                result = CNTK.CNTKLib.SequenceGather(Operand, Condition, Name);
+            else
+                result = CNTK.CNTKLib.SequenceGather(Operand, Condition, NewDerivedSequenceAxisScalingAndAdditiveFactor, Name);
+
+            WriteObject(new WrappedFunction(result));
+        }
+    }
+
+    // Signatures:
+    // public static CNTK.Function SequenceScatter(CNTK.Variable operand, CNTK.Variable condition)
+    // public static CNTK.Function SequenceScatter(CNTK.Variable operand, CNTK.Variable condition, CNTK.PairSizeTInt newDerivedSequenceAxisScalingAndAdditiveFactor)
+    // public static CNTK.Function SequenceScatter(CNTK.Variable operand, CNTK.Variable condition, CNTK.PairSizeTInt newDerivedSequenceAxisScalingAndAdditiveFactor, string name)
+    // public static CNTK.Function SequenceScatter(CNTK.Variable operand, CNTK.Variable condition, string name)
+    [Cmdlet("New", "CNTKSequenceScatter")]
+    [Alias("cntk.sequence.scatter")]
+    public class NewCNTKSequenceScatter : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public WrappedVariable Operand;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public WrappedVariable Condition;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public CNTK.PairSizeTInt NewDerivedSequenceAxisScalingAndAdditiveFactor;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public string Name = "";
+
+        protected override void EndProcessing()
+        {
+            CNTK.Function result;
+
+            if (NewDerivedSequenceAxisScalingAndAdditiveFactor == null)
+                result = CNTK.CNTKLib.SequenceScatter(Operand, Condition);
+            else
+                result = CNTK.CNTKLib.SequenceScatter(Operand, Condition, NewDerivedSequenceAxisScalingAndAdditiveFactor, Name);
 
             WriteObject(new WrappedFunction(result));
         }
