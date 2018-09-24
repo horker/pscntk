@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cmdlets\ConvertToCNTKDataSource.cs" />
+    <Compile Include="Training\TrainingProgress.cs" />
     <Compile Include="Cmdlets\ValueCmdlets.cs" />
     <Compile Include="Cmdlets\CmdletHelpers.cs" />
     <Compile Include="Cmdlets\ConvertToCNTKDot.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Generated files\WrappedFunctionOperators.cs" />
     <Compile Include="Generated files\WrappedVariableOperators.cs" />
     <Compile Include="Samplers\ExpressionSampler.cs" />
+    <Compile Include="Training\TrainingLoop.cs" />
     <Compile Include="Wrappers\IWrappedNode.cs" />
     <Compile Include="Wrappers\WrappedFunction.cs" />
     <Compile Include="Wrappers\WrappedVariable.cs" />
@@ -126,7 +128,7 @@
     <Compile Include="Cmdlets\NewCNTKOneMemorySampler.cs" />
     <Compile Include="Cmdlets\NewCNTKParallelSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKTrainer.cs" />
-    <Compile Include="Cmdlets\TrainingSessionCmdlet.cs" />
+    <Compile Include="Cmdlets\TrainingSessionCmdlets.cs" />
     <Compile Include="Cmdlets\UtilsCmdlets.cs" />
     <Compile Include="Cmdlets\CNTKTextFormatBuilderCmdlets.cs" />
     <Compile Include="Cmdlets\WritetCNTKCTextFormat.cs" />
