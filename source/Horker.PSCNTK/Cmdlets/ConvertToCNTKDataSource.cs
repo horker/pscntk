@@ -66,7 +66,7 @@ namespace Horker.PSCNTK
 
         private void ProcessInternal<T>(Func<object, T> converter)
         {
-            var ds = DataSource<T>.FromPSObject(_data.ToArray(), converter);
+            var ds = DataSource<T>.FromPSObjects(_data.ToArray(), converter);
 
             if (Dimensions != null)
                 ds.Reshape(Dimensions);

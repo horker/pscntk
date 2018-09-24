@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Management.Automation;
 using System.Text;
@@ -19,6 +20,8 @@ namespace Horker.PSCNTK
         [Parameter(Position = 1, Mandatory = false, ParameterSetName = "new")]
         [Parameter(Position = 1, Mandatory = false, ParameterSetName = "rows")]
         [Parameter(Position = 1, Mandatory = false, ParameterSetName = "columns")]
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "psobjects")]
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "datatable")]
         public int[] Dimensions = null;
 
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "load")]
@@ -33,9 +36,17 @@ namespace Horker.PSCNTK
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "columns")]
         public object[][] Columns;
 
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "psobjects")]
+        public PSObject[] PSObjects;
+
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "datatable")]
+        public DataTable DataTable;
+
         [Parameter(Position = 2, Mandatory = false, ParameterSetName = "new")]
         [Parameter(Position = 2, Mandatory = false, ParameterSetName = "rows")]
         [Parameter(Position = 2, Mandatory = false, ParameterSetName = "columns")]
+        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "psobjects")]
+        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "datatable")]
         public DataSourceType DataType = DataSourceType.Float;
 
         protected override void EndProcessing()
@@ -111,6 +122,24 @@ namespace Horker.PSCNTK
                 }
 
                 var result = DataSource<T>.FromColumns(data.ToArray(), Dimensions);
+                WriteObject(result);
+            }
+            else if (ParameterSetName == "psobjects")
+            {
+                var result = DataSource<T>.FromPSObjects(PSObjects, converter);
+
+                if (Dimensions != null)
+                    result.Reshape(Dimensions);
+
+                WriteObject(result);
+            }
+            else if (ParameterSetName == "datatable")
+            {
+                var result = DataSource<T>.FromDataTable(DataTable, converter);
+
+                if (Dimensions != null)
+                    result.Reshape(Dimensions);
+
                 WriteObject(result);
             }
             else

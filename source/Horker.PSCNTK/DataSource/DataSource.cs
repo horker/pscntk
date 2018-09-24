@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Management.Automation;
@@ -103,7 +104,7 @@ namespace Horker.PSCNTK
             return new DataSource<T>(data, dimensions);
         }
 
-        public static DataSource<T> FromPSObject(PSObject[] objects, Func<object, T> converter)
+        public static DataSource<T> FromPSObjects(PSObject[] objects, Func<object, T> converter)
         {
             var obj = objects[0];
             int rowCount = obj.Properties.Count();
@@ -123,6 +124,29 @@ namespace Horker.PSCNTK
                     data[column * rowCount + row] = converter.Invoke(value);
                 }
                 ++row;
+            }
+
+            return new DataSource<T>(data, new int[] { rowCount, columnCount });
+        }
+
+        public static DataSource<T> FromDataTable(DataTable table, Func<object, T> converter)
+        {
+            int rowCount = table.Columns.Count;
+            int columnCount = table.Rows.Count;
+
+            var data = new T[rowCount * columnCount];
+
+            int column = 0;
+            foreach (DataRow r in table.Rows)
+            {
+                for (var row = 0; row < rowCount; ++row)
+                {
+                    var value = r[row];
+                    if (value is PSObject psobj)
+                        value = psobj.BaseObject;
+                    data[column * rowCount + row] = converter.Invoke(value);
+                }
+                ++column;
             }
 
             return new DataSource<T>(data, new int[] { rowCount, columnCount });
