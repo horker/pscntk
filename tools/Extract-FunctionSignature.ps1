@@ -2,7 +2,9 @@ param(
   [string]$File = "$PSScriptRoot\CNTKLibrary.h"
 )
 
-# Location:
+# Obtain function signature information from the C++ header file.
+#
+# File location (in the CNTK source tree):
 # CNTK\Source\CNTKv2LibraryDll\API\CNTKLibrary.h
 
 Set-StrictMode -Version Latest
@@ -165,11 +167,11 @@ while (!$eof) {
 }
 
 ############################################################
-# Exclude mismatch
+# Exclude mismatches
 ############################################################
 
 $EXCLUDES = @(
-  # Function methods
+  # Methods of Function class itself
   "AsBlock"
   "Clone"
   "CloneFlattened"
