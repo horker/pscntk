@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="BackgroundScriptRunnerTest.cs" />
     <Compile Include="ExpressionSamplerTest.cs" />
+    <Compile Include="NDArrayViewTest.cs" />
     <Compile Include="NodeGroupTest.cs" />
     <Compile Include="FunctionTest.cs" />
     <Compile Include="CompositeFunctionTest.cs" />

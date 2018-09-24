@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using CNTK;
 
 namespace Horker.PSCNTK
 {
@@ -58,6 +59,9 @@ namespace Horker.PSCNTK
             }
 
             loaded = true;
+
+            // For debugging purpose
+            DeviceDescriptor.TrySetDefaultDevice(DeviceDescriptor.CPUDevice);
         }
     }
 }

@@ -163,7 +163,8 @@ namespace Horker.PSCNTK
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();
 
-            var value = new Value(new NDArrayView(shape.Dimensions, buffer, device, true));
+            var array = NDArrayViewMethods.SafeCreate(shape.Dimensions, buffer, device);
+            var value = new Value(array);
             var batch = new MinibatchData(value, (uint)batchSize, (uint)(batchSize * feature.Shape[-2]), sweepEnd);
 
             return batch;

@@ -17,7 +17,7 @@ $LIB_DIR = "$PSScriptRoot\lib"
 $METHOD_LIST = @(
   [PSCustomObject]@{
     TargetClass = "CNTK.Function"
-    ClassInfo = [Horker.PSCNTK.FunctionMethods]
+    ClassInfo = [Horker.PSCNTK.FunctionPSMethods]
     MethodNames = @(
       "Find"
       "Invoke"
@@ -29,7 +29,7 @@ $METHOD_LIST = @(
 
   [PSCustomObject]@{
     TargetClass = "Horker.PSCNTK.WrappedFunction"
-    ClassInfo = [Horker.PSCNTK.FunctionMethods]
+    ClassInfo = [Horker.PSCNTK.FunctionPSMethods]
     MethodNames = @(
       "Find"
       "Invoke"
@@ -41,7 +41,7 @@ $METHOD_LIST = @(
 
   [PSCustomObject]@{
     TargetClass = "CNTK.Value"
-    ClassInfo = [Horker.PSCNTK.ValueMethods]
+    ClassInfo = [Horker.PSCNTK.ValuePSMethods]
     MethodNames = @(
       "AsString"
       "ToDataSource"
@@ -51,7 +51,7 @@ $METHOD_LIST = @(
 
   [PSCustomObject]@{
     TargetClass = "CNTK.NDArrayView"
-    ClassInfo = [Horker.PSCNTK.NDArrayViewMethods]
+    ClassInfo = [Horker.PSCNTK.NDArrayViewPSMethods]
     MethodNames = @(
       "AsString"
     )

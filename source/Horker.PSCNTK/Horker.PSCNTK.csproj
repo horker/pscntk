@@ -70,11 +70,15 @@
     <Compile Include="Extension methods\FunctionFind.cs" />
     <Compile Include="Extension methods\FunctionGetNodeInfo.cs" />
     <Compile Include="Extension methods\FunctionInvoke.cs" />
+    <Compile Include="Extension methods\FunctionPSMethods.cs" />
     <Compile Include="Extension methods\NDArrayViewMethods.cs" />
+    <Compile Include="Extension methods\NDArrayViewPSMethods.cs" />
+    <Compile Include="Extension methods\ValuePSMethods.cs" />
     <Compile Include="General\DataSourceType.cs" />
     <Compile Include="General\DotGenerater.cs" />
     <Compile Include="General\NodeGroup.cs" />
     <Compile Include="General\NodeWalk.cs" />
+    <Compile Include="General\PinnedAddressAllocator.cs" />
     <Compile Include="General\Random.cs" />
     <Compile Include="Generated files\WrappedFunctionOperators.cs" />
     <Compile Include="Generated files\WrappedVariableOperators.cs" />
@@ -126,11 +130,9 @@
     <Compile Include="Cmdlets\UtilsCmdlets.cs" />
     <Compile Include="Cmdlets\CNTKTextFormatBuilderCmdlets.cs" />
     <Compile Include="Cmdlets\WritetCNTKCTextFormat.cs" />
-    <Compile Include="Extension methods\FunctionMethods.cs" />
     <Compile Include="Generated files\FunctionCmdlets.cs" />
     <Compile Include="Cmdlets\CompositeCmdlets.cs" />
     <Compile Include="Cmdlets\VariableCmdlets.cs" />
-    <Compile Include="Extension methods\ValueMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CTF\SeriesCTFBuilder.cs" />
     <Compile Include="DataSource\Shape.cs" />

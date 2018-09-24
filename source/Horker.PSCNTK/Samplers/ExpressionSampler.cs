@@ -40,7 +40,7 @@ namespace Horker.PSCNTK
                     var dims = new int[shape.Rank + 1];
                     shape.Dimensions.CopyTo(dims, 0);
                     dims[shape.Rank] = minibatchSize;
-                    PrevValue = new Value(new NDArrayView(dims, _initialBuffer, DeviceDescriptor.UseDefaultDevice(), true));
+                    PrevValue = new Value(NDArrayViewMethods.SafeCreate(dims, _initialBuffer, DeviceDescriptor.UseDefaultDevice()));
                 }
             }
 

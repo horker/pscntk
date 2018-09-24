@@ -7,7 +7,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class FunctionMethods
+    public class FunctionPSMethods
     {
         private static Function ToFunction(PSObject func)
         {

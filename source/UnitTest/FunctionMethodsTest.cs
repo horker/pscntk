@@ -25,7 +25,7 @@ namespace UnitTest
 
             var obj = new PSObject(f);
 
-            var output = FunctionMethods.Invoke(
+            var output = FunctionPSMethods.Invoke(
                 new PSObject(f),
                 new Hashtable() { { "input", new DataSource<float>(new float[] { 1, 3, 5 }, new int[] { 3 }).ToValue() } }
             );
@@ -44,7 +44,7 @@ namespace UnitTest
 
             var obj = new PSObject(f);
 
-            var output = FunctionMethods.Invoke(
+            var output = FunctionPSMethods.Invoke(
                 new PSObject(f),
                 new Hashtable() { { "input", new object[] { new PSObject(1), 3, 5, 9 } } }
             );
@@ -63,7 +63,7 @@ namespace UnitTest
 
             var obj = new PSObject(f);
 
-            var result = FunctionMethods.Find(new PSObject(f), "TestFind_w");
+            var result = FunctionPSMethods.Find(new PSObject(f), "TestFind_w");
 
             Assert.AreEqual("TestFind_w", ((Variable)result).Name);
         }
@@ -76,7 +76,7 @@ namespace UnitTest
 
             var obj = new PSObject(f);
 
-            var result = FunctionMethods.AsTree(obj, new Hashtable() { { input, new float[] { 1, 2 } } }, null, false, true);
+            var result = FunctionPSMethods.AsTree(obj, new Hashtable() { { input, new float[] { 1, 2 } } }, null, false, true);
 
             var expected =
                 "0 CompositeFunctionOpName \r\n" +

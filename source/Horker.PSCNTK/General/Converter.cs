@@ -92,7 +92,7 @@ namespace Horker.PSCNTK
             if (device == null)
                 device = CNTK.DeviceDescriptor.UseDefaultDevice();
 
-            return new CNTK.NDArrayView(dimensions, data, device);
+            return NDArrayViewMethods.SafeCreate(dimensions, data, device);
         }
 
         public static CNTK.Value ArrayToValue(float[] data, int[] dimensions, CNTK.DeviceDescriptor device = null)

@@ -26,6 +26,7 @@ namespace UnitTest
             var sampler = new OnMemorySampler(ds, 2, 0, false);
 
             var batch = sampler.GetNextMinibatch();
+            GC.Collect();
             var data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -34,6 +35,7 @@ namespace UnitTest
             Assert.AreEqual(false, data.sweepEnd);
 
             batch = sampler.GetNextMinibatch();
+            GC.Collect();
             data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 4, 5, 6, 7 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());
@@ -44,6 +46,7 @@ namespace UnitTest
             // When not randomized, remnant data that is smaller than the minibatch size is ignored.
 
             batch = sampler.GetNextMinibatch();
+            GC.Collect();
             data = batch.Features["input"];
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, DataSource<float>.FromValue(data.data).Data);
             CollectionAssert.AreEqual(new int[] { 2, 1, 2 }, data.data.Shape.Dimensions.ToArray());

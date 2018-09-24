@@ -26,13 +26,14 @@ namespace Horker.PSCNTK
                     var f = v.Owner;
                     _variable = null;
 
-                    // Setting trackResurrection to true is necessary because without this setting WeakRef
-                    // prematurely losts the target after garbage collection regardless of the target liveness.
-                    // By this setting, we can keep track of the object reference, however, its reference is not
-                    // valid so that accessing to it causes AccessViolationException (I don't know why).
-                    // Thus, the Node class keeps WeakRef but does not use the object reference obtained by it.
-                    // Instead, it keeps the node's uid and obtain the corresponding object from the network each time
-                    // when the object reference is needed. WeakRef is used only to track object liveness.
+                    // Setting trackResurrection to true is necessary because, without this setting, WeakRef
+                    // prematurely losts the target's reference regardless of its liveness after garbage collection occurred.
+                    // On the other hand, the reference that we can keep track of by this setting seems
+                    // sometimes "corrupt", that is, accessing to it will cause AccessViolationException.
+                    // I don't why this whole situation happens, but I have to address it.
+                    // For this purpose, the Node class keeps WeakRef but does not use the object reference obtained by it.
+                    // Instead, it keeps the node's uid and get the corresponding object reference from the network
+                    // each time when it is necessary. WeakRef is used only to track object liveness.
                     _function = new WeakReference<Function>(f, true);
 
                     _uid = f.Uid;

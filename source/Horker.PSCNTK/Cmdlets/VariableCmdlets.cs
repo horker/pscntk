@@ -117,7 +117,7 @@ namespace Horker.PSCNTK
                 result = new Constant(Dimensions, DataType, InitValue[0], Device, Name);
             else
             {
-                var array = new NDArrayView(Dimensions, InitValue, Device, false);
+                var array = NDArrayViewMethods.SafeCreate(Dimensions, InitValue, Device);
                 result = new Constant(array, Name);
             }
 

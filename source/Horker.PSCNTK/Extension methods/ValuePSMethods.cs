@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace Horker.PSCNTK
 {
-    public class ValueMethods
+    public class ValuePSMethods
     {
         public static string AsString(PSObject value, bool longFormat = true)
         {
