@@ -11,7 +11,7 @@ namespace Horker.PSCNTK
     public class NewCNTKOneMemorySampler : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "new")]
-        public Hashtable DataSources;
+        public DataSourceSet DataSources;
 
         [Parameter(Position = 1, Mandatory = false, ParameterSetName = "new")]
         public int MinibatchSize = 32;
@@ -43,17 +43,7 @@ namespace Horker.PSCNTK
             }
             else
             {
-                var ds = new Dictionary<string, DataSource<float>>();
-                foreach (DictionaryEntry entry in DataSources)
-                {
-                    var value = entry.Value;
-                    if (value is PSObject)
-                        value = (value as PSObject).BaseObject;
-
-                    ds.Add(entry.Key.ToString(), (DataSource<float>)value);
-                }
-
-                var sampler = new OnMemorySampler(ds, MinibatchSize, ValidationRate, !NoRandomize);
+                var sampler = new OnMemorySampler(DataSources, MinibatchSize, ValidationRate, !NoRandomize);
 
                 WriteObject(sampler);
             }

@@ -32,8 +32,8 @@ namespace Horker.PSCNTK
             foreach (DictionaryEntry entry in dataSet)
             {
                 var value = entry.Value;
-                if (value is PSObject)
-                    value = (value as PSObject).BaseObject;
+                if (value is PSObject psobj)
+                    value = psobj.BaseObject;
                 _data.Add((string)entry.Key, (DataSource<float>)value);
             }
         }
@@ -84,9 +84,9 @@ namespace Horker.PSCNTK
             Serializer.Serialize(this, path, compress);
         }
 
-        public void ToCTF(string path)
+        public void ToCTF(string path, bool hasSequenceAxis)
         {
-            DataSourceSetCTFBuilder.Write(path, this);
+            DataSourceSetCTFBuilder.Write(path, this, hasSequenceAxis);
         }
 
         public static implicit operator Hashtable(DataSourceSet dss)
@@ -96,6 +96,20 @@ namespace Horker.PSCNTK
                 result.Add(entry.Key, entry.Value);
 
             return result;
+        }
+
+        public static implicit operator Dictionary<string, DataSource<float>>(DataSourceSet dss)
+        {
+            var result = new Dictionary<string, DataSource<float>>();
+            foreach (var entry in dss._data)
+                result.Add(entry.Key, entry.Value);
+
+            return result;
+        }
+
+        public static implicit operator DataSourceSet(Hashtable hashtable)
+        {
+            return new DataSourceSet(hashtable);
         }
 
         public IEnumerator<KeyValuePair<string, DataSource<float>>> GetEnumerator()

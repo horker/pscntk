@@ -19,7 +19,7 @@ namespace UnitTest
             dss.Features.Add("data", ds1);
             dss.Features.Add("label", ds2);
 
-            DataSourceSetCTFBuilder.Write(writer, dss);
+            DataSourceSetCTFBuilder.Write(writer, dss, true);
             var s = writer.ToString();
 
             var expected =

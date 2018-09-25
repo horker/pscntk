@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cmdlets\ConvertToCNTKDataSource.cs" />
+    <Compile Include="Cmdlets\WritetCNTKTextFormat.cs" />
     <Compile Include="Training\TrainingProgress.cs" />
     <Compile Include="Cmdlets\ValueCmdlets.cs" />
     <Compile Include="Cmdlets\CmdletHelpers.cs" />
@@ -131,7 +132,6 @@
     <Compile Include="Cmdlets\TrainingSessionCmdlets.cs" />
     <Compile Include="Cmdlets\UtilsCmdlets.cs" />
     <Compile Include="Cmdlets\CNTKTextFormatBuilderCmdlets.cs" />
-    <Compile Include="Cmdlets\WritetCNTKCTextFormat.cs" />
     <Compile Include="Generated files\FunctionCmdlets.cs" />
     <Compile Include="Cmdlets\CompositeCmdlets.cs" />
     <Compile Include="Cmdlets\VariableCmdlets.cs" />

@@ -7,13 +7,16 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("Write", "CNTKTextFormat")]
-    public class WritetCNTKCTextFormat : PSCmdlet
+    public class WritetCNTKTextFormat : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
         public Hashtable DataSources;
 
         [Parameter(Position = 1, Mandatory = true)]
         public string Path;
+
+        [Parameter(Position = 2, Mandatory = false)]
+        public SwitchParameter HasSequenceAxis;
 
         protected override void EndProcessing()
         {
@@ -23,7 +26,7 @@ namespace Horker.PSCNTK
                 Path = SessionState.Path.Combine(current.ToString(), Path);
             }
 
-            DataSourceSetCTFBuilder.Write(Path, DataSources);
+            DataSourceSetCTFBuilder.Write(Path, DataSources, HasSequenceAxis);
         }
     }
 }

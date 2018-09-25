@@ -12,7 +12,7 @@ namespace Horker.PSCNTK
 {
     public class DataSourceSetCTFBuilder
     {
-        public static void Write(TextWriter writer, DataSourceSet dataSourceSet)
+        public static void Write(TextWriter writer, DataSourceSet dataSourceSet, bool hasSequenceAxis)
         {
             var builder = new CTFBuilder(writer, 0, false);
 
@@ -25,16 +25,22 @@ namespace Horker.PSCNTK
                 var name = entry.Key;
                 var ds = entry.Value;
 
-                if (ds.Shape.Rank < 3)
-                    throw new ArgumentException("DataSource shape should contain sequence and batch axes as the last two");
+                if (hasSequenceAxis && ds.Shape.Rank < 3)
+                    throw new ArgumentException("DataSource shape should have sequence and batch axes as the last two");
+
+                if (!hasSequenceAxis && ds.Shape.Rank < 2)
+                    throw new ArgumentException("DataSource shape should have a batch axis");
 
                 var count = ds.Shape[-1];
                 if (count != sampleCount)
                     throw new ArgumentException("Sample counts of data sources should be equal");
 
-                var seqLength = ds.Shape[-2];
-                if (seqLength > maxSeqLength)
-                    maxSeqLength = seqLength;
+                if (hasSequenceAxis)
+                {
+                    var seqLength = ds.Shape[-2];
+                    if (seqLength > maxSeqLength)
+                        maxSeqLength = seqLength;
+                }
             }
 
             for (var sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
@@ -45,11 +51,22 @@ namespace Horker.PSCNTK
                     {
                         var name = entry.Key;
                         var ds = entry.Value;
-                        var seqLength = ds.Shape[-2];
-                        if (seq >= seqLength)
-                            continue;
 
-                        var dim = ds.Shape.GetSize(ds.Shape.Rank - 3);
+                        int seqLength;
+                        int dim;
+                        if (hasSequenceAxis)
+                        {
+                            seqLength = ds.Shape[-2];
+                            if (seq >= seqLength)
+                                continue;
+
+                            dim = ds.Shape.GetSize(ds.Shape.Rank - 3);
+                        }
+                        else
+                        {
+                            seqLength = 1;
+                            dim = ds.Shape.GetSize(ds.Shape.Rank - 2);
+                        }
 
                         int index = sampleIndex * dim * seqLength + seq * dim;
                         builder.AddDenseSample(name, new ArraySegment<float>(ds.Data, index, dim));
@@ -62,36 +79,10 @@ namespace Horker.PSCNTK
             builder.Finish();
         }
 
-        public static void Write(TextWriter writer, Hashtable sourceSpec)
-        {
-            var set = new DataSourceSet();
-
-            foreach (DictionaryEntry entry in sourceSpec)
-            {
-                var name = entry.Key.ToString();
-
-                DataSource<float> ds;
-                if (entry.Value is PSObject)
-                    ds = (DataSource<float>)(entry.Value as PSObject).BaseObject;
-                else
-                    ds = (DataSource<float>)entry.Value;
-
-                set.Features.Add(name, ds);
-            }
-
-            Write(writer, set);
-        }
-
-        public static void Write(string path, DataSourceSet dataSourceSet)
+        public static void Write(string path, DataSourceSet dataSourceSet, bool hasSequenceAxis)
         {
             using (var writer = new StreamWriter(path, false, new UTF8Encoding(false)))
-                DataSourceSetCTFBuilder.Write(writer, dataSourceSet);
-        }
-
-        public static void Write(string path, Hashtable sourceSpec)
-        {
-            using (var writer = new StreamWriter(path, false, new UTF8Encoding(false)))
-                DataSourceSetCTFBuilder.Write(writer, sourceSpec);
+                Write(writer, dataSourceSet, hasSequenceAxis);
         }
     }
 }
