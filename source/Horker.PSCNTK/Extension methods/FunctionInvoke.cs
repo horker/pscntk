@@ -8,9 +8,9 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class FunctionInvoke
+    public static class FunctionInvoke
     {
-        public static Value[] Invoke(Function func, Dictionary<Variable, Value> inputs = null, DeviceDescriptor device = null, bool errorWhenArgumentUnused = true)
+        public static Value[] Invoke(this Function func, Dictionary<Variable, Value> inputs = null, DeviceDescriptor device = null, bool errorWhenArgumentUnused = true)
         {
             if (inputs == null)
                 inputs = new Dictionary<Variable, Value>();
@@ -34,7 +34,7 @@ namespace Horker.PSCNTK
             return results;
         }
 
-        public static Value[] Invoke(Function func, Hashtable arguments, DeviceDescriptor device = null, bool errorWhenArgumentUnused = true)
+        public static Value[] Invoke(this Function func, Hashtable arguments, DeviceDescriptor device = null, bool errorWhenArgumentUnused = true)
         {
             if (arguments == null)
                 arguments = new Hashtable();
@@ -47,13 +47,13 @@ namespace Horker.PSCNTK
                 Value value;
 
                 var entryKey = entry.Key;
-                if (entryKey is PSObject)
-                    entryKey = (entryKey as PSObject).BaseObject;
+                if (entryKey is PSObject psobj)
+                    entryKey = psobj.BaseObject;
 
-                if (entryKey is Variable)
-                    key = entryKey as Variable;
-                else if (entryKey is WrappedVariable)
-                    key = entryKey as WrappedVariable;
+                if (entryKey is Variable v)
+                    key = v;
+                else if (entryKey is WrappedVariable wv)
+                    key = wv;
                 else
                 {
                     var va = FunctionFind.FindVariable(func, entryKey.ToString());
@@ -76,7 +76,7 @@ namespace Horker.PSCNTK
             return Invoke(func, inputs, device, errorWhenArgumentUnused);
         }
 
-        public static Value[] Invoke(Function func, Minibatch batch, DataNameToInputMap map = null, DeviceDescriptor device = null, bool errorWhenArgumentUnused = true)
+        public static Value[] Invoke(this Function func, Minibatch batch, DataNameToInputMap map = null, DeviceDescriptor device = null, bool errorWhenArgumentUnused = true)
         {
             if (map == null)
                 map = new DataNameToInputMap(new Function[] { func });
