@@ -57,7 +57,7 @@ namespace UnitTest
         public void TestNodeGroupsLifecycle()
         {
             var input = CNTKLib.InputVariable(new int[] { 2 }, DataType.Float);
-            var lstm = Horker.PSCNTK.Microsoft.LSTMSequenceClassifierNet.Create(input, 2, 3, 4, DeviceDescriptor.UseDefaultDevice(), "LSTM");
+            var lstm = Horker.PSCNTK.Microsoft.LSTMSequenceClassifierNet.Create(input, 3, 4, false, DeviceDescriptor.UseDefaultDevice(), "LSTM");
 
             // Keep reference to the model
             model = lstm;

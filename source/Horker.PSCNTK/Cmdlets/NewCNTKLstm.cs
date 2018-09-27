@@ -11,13 +11,13 @@ namespace Horker.PSCNTK
         public CNTK.Variable Input;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public int EmbeddingDimension;
-
-        [Parameter(Position = 2, Mandatory = true)]
         public int LstmDimension;
 
-        [Parameter(Position = 3, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = true)]
         public int CellDimension;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public SwitchParameter ReturnSequences = false;
 
         [Parameter(Position = 4, Mandatory = false)]
         public CNTK.DeviceDescriptor Device = null;
@@ -30,7 +30,7 @@ namespace Horker.PSCNTK
             if (Device == null)
                 Device = CNTK.DeviceDescriptor.UseDefaultDevice();
 
-            var lstm = Microsoft.LSTMSequenceClassifierNet.Create(Input, EmbeddingDimension, LstmDimension, CellDimension, Device, Name);
+            var lstm = Microsoft.LSTMSequenceClassifierNet.Create(Input, LstmDimension, CellDimension, ReturnSequences, Device, Name);
 
             WriteObject(lstm);
         }

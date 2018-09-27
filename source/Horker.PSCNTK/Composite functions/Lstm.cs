@@ -319,37 +319,40 @@ namespace Horker.PSCNTK.Microsoft
         /// http://colah.github.io/posts/2015-08-Understanding-LSTMs/
         /// </summary>
         /// <param name="input">the input variable</param>
-        /// <param name="embeddingDim">dimension of the embedding layer</param>
         /// <param name="LSTMDim">LSTM output dimension</param>
         /// <param name="cellDim">cell dimension</param>
+        /// <param name="returnSequences">whether to return the last output in the output sequence, or the full sequence</param>
         /// <param name="device">CPU or GPU device to run the model</param>
         /// <param name="outputName">name of the model output</param>
         /// <returns>the RNN model</returns>
-        public static Function Create(Variable input, int embeddingDim, int LSTMDim, int cellDim, DeviceDescriptor device,
+        public static Function Create(Variable input, int LSTMDim, int cellDim, bool returnSequences, DeviceDescriptor device,
             string outputName)
         {
             try
             {
                 NodeGroup.EnterNewGroup(outputName);
 
-                Function embeddingFunction = Embedding(input, embeddingDim, device, outputName);
                 Func<Variable, Function> pastValueRecurrenceHook = (x) => CNTKLib.PastValue(x); 
                 Function LSTMFunction = LSTMPComponentWithSelfStabilization<float>(
-                    embeddingFunction,
+                    input,
                     new int[] { LSTMDim },
                     new int[] { cellDim },
                     pastValueRecurrenceHook,
                     pastValueRecurrenceHook,
                     device,
                     outputName).Item1;
-                Function thoughtVectorFunction = CNTKLib.SequenceLast(LSTMFunction);
-                Composite.Register(thoughtVectorFunction);
-                Composite.Register(thoughtVectorFunction.Inputs[0]);
-                Composite.Register(thoughtVectorFunction.Inputs[1]);
+                Composite.Register(LSTMFunction);
 
-                thoughtVectorFunction.RootFunction.SetName(outputName);
+                if (!returnSequences)
+                {
+                    var f = CNTKLib.SequenceLast(LSTMFunction);
+                    f.RootFunction.SetName(outputName);
+                    return f;
+                }
 
-                return thoughtVectorFunction;
+                LSTMFunction.RootFunction.SetName(outputName);
+
+                return LSTMFunction;
             }
             finally
             {
