@@ -16,6 +16,7 @@ namespace UnitTest
         public NodeGroupText()
         {
             UnmanagedDllLoader.Load(@"..\..\..\..\lib");
+            DeviceDescriptor.TrySetDefaultDevice(DeviceDescriptor.CPUDevice);
         }
 
         [TestMethod]

@@ -59,9 +59,6 @@ namespace Horker.PSCNTK
             }
 
             loaded = true;
-
-            // For debugging purpose
-            DeviceDescriptor.TrySetDefaultDevice(DeviceDescriptor.CPUDevice);
         }
     }
 }

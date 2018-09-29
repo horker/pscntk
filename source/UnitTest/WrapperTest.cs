@@ -7,6 +7,12 @@ namespace UnitTest
     [TestClass]
     public class WrapperTest
     {
+        public WrapperTest()
+        {
+            UnmanagedDllLoader.Load(@"..\..\..\..\lib");
+            DeviceDescriptor.TrySetDefaultDevice(DeviceDescriptor.CPUDevice);
+        }
+
         [TestMethod]
         public void TestOperator()
         {

@@ -216,16 +216,13 @@ namespace Horker.PSCNTK
             }
         }
 
-        public DataSourceBase<T, ListSlice<T>> Slice(int from, int to)
+        public DataSourceBase<T, ListSlice<T>> Slice(int offset, int count)
         {
-            if (to - from <= 0)
-                throw new ArgumentException("Range must not be zero or negative");
-
-            int chunkSize = _shape.GetSize(-1);
-            var slice = new ListSlice<T>(Data, chunkSize * from, chunkSize * (to - from));
+            int chunkSize = _shape.GetSize(-2);
+            var slice = new ListSlice<T>(Data, chunkSize * offset, chunkSize * count);
 
             var shape = _shape.Clone();
-            shape[-1] = to - from;
+            shape[-1] = count;
 
             return new DataSourceBase<T, ListSlice<T>>(slice, shape);
         }

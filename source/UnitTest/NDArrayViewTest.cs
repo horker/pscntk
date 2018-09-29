@@ -10,6 +10,12 @@ namespace UnitTest
     [TestClass]
     public class NDArrayViewTest
     {
+        public NDArrayViewTest()
+        {
+            UnmanagedDllLoader.Load(@"..\..\..\..\lib");
+            DeviceDescriptor.TrySetDefaultDevice(DeviceDescriptor.CPUDevice);
+        }
+
         [TestMethod]
         public void TestPrematureMemoryRelease()
         {

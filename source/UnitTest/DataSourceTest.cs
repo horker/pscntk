@@ -56,7 +56,7 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestDataJoinAxis0()
+        public void TestDataCombineAxis0()
         {
             var a = DataSourceFactory.Create(new float[] { 11, 12, 13, 14 }, new int[] { 2, 1, 2 });
             var b = DataSourceFactory.Create(new float[] { 21, 22, 23, 24, 25, 26 }, new int[] { 3, 1, 2 });
@@ -74,7 +74,7 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestDataJoinAxis1()
+        public void TestDataCombineAxis1()
         {
             var a = DataSourceFactory.Create(new float[] { 11, 12, 13, 14 }, new int[] { 2, 2, 1 });
             var b = DataSourceFactory.Create(new float[] { 21, 22, 23, 24, 25, 26 }, new int[] { 2, 3, 1 });
@@ -92,7 +92,7 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestDataJoinAxis2()
+        public void TestDataCombineAxis2()
         {
             var a = DataSourceFactory.Create(new float[] { 11, 12, 13, 14, 15, 16, 17, 18 }, new int[] { 2, 2, 2 });
             var b = DataSourceFactory.Create(new float[] { 21, 22, 23, 24, 25, 26, 27, 28, 29, 20, 21, 22 }, new int[] { 2, 2, 3 });
@@ -311,6 +311,17 @@ namespace UnitTest
 
             var b = a.Transpose(1, 2, 0);
             CollectionAssert.AreEqual(new int[] { 1, 4, 7, 10, 2, 5, 8, 11, 3, 6, 9, 12 }, b.TypedData);
+        }
+
+        [TestMethod]
+        public void TestSlice()
+        {
+            var a = DataSourceFactory.Create(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
+
+            var b = a.Slice(1, 2);
+
+            CollectionAssert.AreEqual(new int[] { 2, 2, 2 }, b.Shape.Dimensions);
+            CollectionAssert.AreEqual(new int[] { 5, 6, 7, 8, 9, 10, 11, 12 }, b.TypedData.ToArray());
         }
     }
 }

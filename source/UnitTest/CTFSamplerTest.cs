@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using CNTK;
 using Horker.PSCNTK;
 
 namespace UnitTest
@@ -10,6 +11,7 @@ namespace UnitTest
         public CTFSamplerTest()
         {
             UnmanagedDllLoader.Load(@"..\..\..\..\lib");
+            DeviceDescriptor.TrySetDefaultDevice(DeviceDescriptor.CPUDevice);
         }
 
         [TestMethod]

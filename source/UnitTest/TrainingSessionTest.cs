@@ -13,8 +13,8 @@ namespace UnitTest
     {
         public TrainingSessionTest()
         {
-            var path = Environment.ExpandEnvironmentVariables(@"..\..\..\..\lib");
-            UnmanagedDllLoader.Load(path);
+            UnmanagedDllLoader.Load(@"..\..\..\..\lib");
+            DeviceDescriptor.TrySetDefaultDevice(DeviceDescriptor.CPUDevice);
         }
 
         [TestMethod]

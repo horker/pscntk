@@ -15,6 +15,7 @@ namespace UnitTest
         public OnMemorySamplerTest()
         {
             UnmanagedDllLoader.Load(@"..\..\..\..\lib");
+            DeviceDescriptor.TrySetDefaultDevice(DeviceDescriptor.CPUDevice);
         }
 
         [TestMethod]
