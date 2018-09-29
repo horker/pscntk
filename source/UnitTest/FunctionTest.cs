@@ -36,8 +36,8 @@ namespace UnitTest
             // | 12  8 | = | (2 + 4)         4       | + | (2 + 4)         4       |
 
 
-            var inputData = new DataSource<float>(new float[] { 1, 2, 3, 4, 1, 2, 3, 4 }, new int[] { 2, 2, 2 });
-            var kernelData = new DataSource<float>(new float[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, new int[] { 2, 2, 2, 4 });
+            var inputData = DataSourceFactory.Create(new float[] { 1, 2, 3, 4, 1, 2, 3, 4 }, new int[] { 2, 2, 2 });
+            var kernelData = DataSourceFactory.Create(new float[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, new int[] { 2, 2, 2, 4 });
 
             var input = CNTKLib.InputVariable(new int[] { 2, 2, 2 }, DataType.Float);
 
@@ -49,7 +49,7 @@ namespace UnitTest
             var outputs = new Dictionary<Variable, Value>() { { f.Output, null } };
 
             f.Evaluate(inputs, outputs, DeviceDescriptor.UseDefaultDevice());
-            var result = DataSource<float>.FromValue(outputs[f.Output]);
+            var result = DataSourceFactory.FromValue(outputs[f.Output]);
 
             CollectionAssert.AreEqual(new int[] { 2, 2, 4, 1, 1 }, result.Shape.Dimensions);
             Assert.AreEqual(20, result.Data[0]);
@@ -77,8 +77,8 @@ namespace UnitTest
             //                           | 0 0 0 |
             //                           | 2 2 4 |
 
-            var inputData = new DataSource<float>(new float[] { 1, 2, 3, 4 }, new int[] { 2, 2, 1 });
-            var convData = new DataSource<float>(new float[] { 1, 0, 1, 0 }, new int[] { 2, 2, 1, 1 });
+            var inputData = DataSourceFactory.Create(new float[] { 1, 2, 3, 4 }, new int[] { 2, 2, 1 });
+            var convData = DataSourceFactory.Create(new float[] { 1, 0, 1, 0 }, new int[] { 2, 2, 1, 1 });
 
             var input = CNTKLib.InputVariable(new int[] { 2, 2, 1 }, DataType.Float);
 
@@ -90,7 +90,7 @@ namespace UnitTest
             var outputs = new Dictionary<Variable, Value>() { { f.Output, null } };
 
             f.Evaluate(inputs, outputs, DeviceDescriptor.UseDefaultDevice());
-            var result = DataSource<float>.FromValue(outputs[f.Output]);
+            var result = DataSourceFactory.FromValue(outputs[f.Output]);
 
             CollectionAssert.AreEqual(new int[] { 3, 3, 1, 1, 1 }, result.Shape.Dimensions);
             Assert.AreEqual(1, result.Data[0]);
@@ -102,8 +102,8 @@ namespace UnitTest
         [TestMethod]
         public void TestConvolutionTranspose2()
         {
-            var inputData = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
-            // var inputData = new DataSource<float>(new float[] { 1, 2, 3, 4 }, new int[] { 2, 2, 1 });
+            var inputData = DataSourceFactory.Create(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
+            // var inputData = DataSourceFactory.Create(new float[] { 1, 2, 3, 4 }, new int[] { 2, 2, 1 });
 
             var input = CNTKLib.InputVariable(new int[] { 2, 2, 3 }, DataType.Float);
 
@@ -115,7 +115,7 @@ namespace UnitTest
             var outputs = new Dictionary<Variable, Value>() { { f.Output, null } };
 
             f.Evaluate(inputs, outputs, DeviceDescriptor.UseDefaultDevice());
-            var result = DataSource<float>.FromValue(outputs[f.Output]);
+            var result = DataSourceFactory.FromValue(outputs[f.Output]);
 
             CollectionAssert.AreEqual(new int[] { 3, 3, 6, 1, 1 }, result.Shape.Dimensions);
             Assert.AreEqual(15, result.Data[0]);

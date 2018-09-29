@@ -21,7 +21,7 @@ namespace Horker.PSCNTK
             return (Byte)(Convert.ToSingle(value) * 255);
         }
 
-        public static Bitmap Do(DataSource<T> dataSource, ImageFormat imageFormat, bool scale)
+        public static Bitmap Do(IDataSource<T> dataSource, ImageFormat imageFormat, bool scale)
         {
             var width = dataSource.Shape[1];
             var height = dataSource.Shape[2];

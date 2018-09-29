@@ -14,7 +14,7 @@ namespace UnitTest
             var a = new float[] { 10, 20 };
             var b = new float[] { 30, 40, 50, 60 };
 
-            var result = DataSource<float>.Create(new float[][] { a, b }, new int[] { 2, 1, 3 });
+            var result = DataSourceFactory.CreateFromSet(new float[][] { a, b }, new int[] { 2, 1, 3 });
 
             Assert.AreEqual(3, result.Shape.Rank);
             CollectionAssert.AreEqual(new int[] { 2, 1, 3 }, result.Shape.Dimensions);
@@ -29,7 +29,7 @@ namespace UnitTest
             var a = new float[] { 10, 20, 30 };
             var b = new float[] { 40, 50, 60, 70 };
 
-            var result = DataSource<float>.FromRows(new float[][] { a, b });
+            var result = DataSourceFactory.FromRows(new float[][] { a, b });
 
             Assert.AreEqual(2, result.Shape.Rank);
             Assert.AreEqual(2, result.Shape.Dimensions[0]);
@@ -45,7 +45,7 @@ namespace UnitTest
             var a = new float[] { 10, 20, 30 };
             var b = new float[] { 40, 50, 60, 70 };
 
-            var result = DataSource<float>.FromColumns(new float[][] { a, b });
+            var result = DataSourceFactory.FromColumns(new float[][] { a, b });
 
             Assert.AreEqual(2, result.Shape.Rank);
             Assert.AreEqual(4, result.Shape.Dimensions[0]);
@@ -58,10 +58,10 @@ namespace UnitTest
         [TestMethod]
         public void TestDataJoinAxis0()
         {
-            var a = new DataSource<float>(new float[] { 11, 12, 13, 14 }, new int[] { 2, 1, 2 });
-            var b = new DataSource<float>(new float[] { 21, 22, 23, 24, 25, 26 }, new int[] { 3, 1, 2 });
+            var a = DataSourceFactory.Create(new float[] { 11, 12, 13, 14 }, new int[] { 2, 1, 2 });
+            var b = DataSourceFactory.Create(new float[] { 21, 22, 23, 24, 25, 26 }, new int[] { 3, 1, 2 });
 
-            var result = DataSource<float>.Combine(new DataSource<float>[] { a, b }, 0);
+            var result = DataSourceFactory.Combine(new IDataSource<float>[] { a, b }, 0);
 
             var newShape = new int[] { 5, 1, 2 };
             var newData = new float[] {
@@ -76,10 +76,10 @@ namespace UnitTest
         [TestMethod]
         public void TestDataJoinAxis1()
         {
-            var a = new DataSource<float>(new float[] { 11, 12, 13, 14 }, new int[] { 2, 2, 1 });
-            var b = new DataSource<float>(new float[] { 21, 22, 23, 24, 25, 26 }, new int[] { 2, 3, 1 });
+            var a = DataSourceFactory.Create(new float[] { 11, 12, 13, 14 }, new int[] { 2, 2, 1 });
+            var b = DataSourceFactory.Create(new float[] { 21, 22, 23, 24, 25, 26 }, new int[] { 2, 3, 1 });
 
-            var result = DataSource<float>.Combine(new DataSource<float>[] { a, b }, 1);
+            var result = DataSourceFactory.Combine(new IDataSource<float>[] { a, b }, 1);
 
             var newShape = new int[] { 2, 5, 1 };
             var newData = new float[] {
@@ -94,10 +94,10 @@ namespace UnitTest
         [TestMethod]
         public void TestDataJoinAxis2()
         {
-            var a = new DataSource<float>(new float[] { 11, 12, 13, 14, 15, 16, 17, 18 }, new int[] { 2, 2, 2 });
-            var b = new DataSource<float>(new float[] { 21, 22, 23, 24, 25, 26, 27, 28, 29, 20, 21, 22 }, new int[] { 2, 2, 3 });
+            var a = DataSourceFactory.Create(new float[] { 11, 12, 13, 14, 15, 16, 17, 18 }, new int[] { 2, 2, 2 });
+            var b = DataSourceFactory.Create(new float[] { 21, 22, 23, 24, 25, 26, 27, 28, 29, 20, 21, 22 }, new int[] { 2, 2, 3 });
 
-            var result = DataSource<float>.Combine(new DataSource<float>[] { a, b }, 2);
+            var result = DataSourceFactory.Combine(new IDataSource<float>[] { a, b }, 2);
 
             var newShape = new int[] { 2, 2, 5 };
             var newData = new float[] {
@@ -112,7 +112,7 @@ namespace UnitTest
         [TestMethod]
         public void TestSubsequence1()
         {
-            var a = new DataSource<float>(new float[] { 1, 2, 3, 4 }, new int[] { 1, 4, 1 });
+            var a = DataSourceFactory.Create(new float[] { 1, 2, 3, 4 }, new int[] { 1, 4, 1 });
 
             var result = a.GetSubsequences(3);
 
@@ -129,7 +129,7 @@ namespace UnitTest
         [TestMethod]
         public void TestSubsequence2()
         {
-            var a = new DataSource<float>(new float[] { 11, 12, 21, 22, 31, 32, 41, 42 }, new int[] { 2, 4, 1 });
+            var a = DataSourceFactory.Create(new float[] { 11, 12, 21, 22, 31, 32, 41, 42 }, new int[] { 2, 4, 1 });
 
             var result = a.GetSubsequences(2);
 
@@ -147,7 +147,7 @@ namespace UnitTest
         [TestMethod]
         public void TestSubsequence3()
         {
-            var a = new DataSource<float>(new float[] { 11, 21, 31, 41, 12, 22, 32, 42 }, new int[] { 1, 4, 2 });
+            var a = DataSourceFactory.Create(new float[] { 11, 21, 31, 41, 12, 22, 32, 42 }, new int[] { 1, 4, 2 });
 
             var result = a.GetSubsequences(3);
 
@@ -166,7 +166,7 @@ namespace UnitTest
         [TestMethod]
         public void TestSubsequence5()
         {
-            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 1, 2, 6, 1 });
+            var a = DataSourceFactory.Create(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 1, 2, 6, 1 });
 
             var result = a.GetSubsequences(2, 2);
 
@@ -183,7 +183,7 @@ namespace UnitTest
         [TestMethod]
         public void TestSplit()
         {
-            var a = new DataSource<float>(new float[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }, new int[] { 2, 6 });
+            var a = DataSourceFactory.Create(new float[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }, new int[] { 2, 6 });
 
             var results = a.Split(.34, 1);
 
@@ -201,7 +201,7 @@ namespace UnitTest
         [TestMethod]
         public void TestAsString1()
         {
-            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6 }, new int[] { 2, 3 });
+            var a = DataSourceFactory.Create(new float[] { 1, 2, 3, 4, 5, 6 }, new int[] { 2, 3 });
 
             var s = a.AsString();
 
@@ -217,7 +217,7 @@ namespace UnitTest
         [TestMethod]
         public void TestToString1()
         {
-            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6 }, new int[] { 2, 3 });
+            var a = DataSourceFactory.Create(new float[] { 1, 2, 3, 4, 5, 6 }, new int[] { 2, 3 });
 
             var s = a.ToString();
 
@@ -229,7 +229,7 @@ namespace UnitTest
         [TestMethod]
         public void TestAsString2()
         {
-            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
+            var a = DataSourceFactory.Create(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
 
             var s = a.AsString();
 
@@ -245,7 +245,7 @@ namespace UnitTest
         [TestMethod]
         public void TestToString2()
         {
-            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
+            var a = DataSourceFactory.Create(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
 
             var s = a.ToString();
 
@@ -257,60 +257,60 @@ namespace UnitTest
         [TestMethod]
         public void TestSerialization()
         {
-            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
+            var a = DataSourceFactory.Create(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
 
             var bytes = a.Serialize(false);
 
-            var b = DataSource<float>.Load(bytes, false);
+            var b = DataSourceFactory.Load<float>(bytes, false);
 
             Assert.AreEqual(a.Shape, b.Shape);
-            CollectionAssert.AreEqual(a.Data, b.Data);
+            CollectionAssert.AreEqual(a.TypedData, b.TypedData);
         }
 
         [TestMethod]
         public void TestCompression()
         {
-            var a = new DataSource<float>(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
+            var a = DataSourceFactory.Create(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
 
             var bytes = a.Serialize(true);
 
-            var b = DataSource<float>.Load(bytes, true);
+            var b = DataSourceFactory.Load<float>(bytes, true);
 
             Assert.AreEqual(a.Shape, b.Shape);
-            CollectionAssert.AreEqual(a.Data, b.Data);
+            CollectionAssert.AreEqual(a.TypedData, b.TypedData);
         }
 
         [TestMethod]
         public void TestTranspose()
         {
-            var a = new DataSource<int>(new int[] { 1, 2, 3, 4, 5, 6 }, new int[] { 2, 3 });
+            var a = DataSourceFactory.Create(new int[] { 1, 2, 3, 4, 5, 6 }, new int[] { 2, 3 });
 
             var b = a.Transpose(1, 0);
-            CollectionAssert.AreEqual(new int[] { 1, 3, 5, 2, 4, 6 }, b.Data);
+            CollectionAssert.AreEqual(new int[] { 1, 3, 5, 2, 4, 6 }, b.TypedData);
         }
 
         [TestMethod]
         public void TestTranspose2()
         {
-            var a = new DataSource<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 3, 2 });
+            var a = DataSourceFactory.Create(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 3, 2 });
 
             var b = a.Transpose(1, 0, 2);
-            CollectionAssert.AreEqual(new int[] { 1, 3, 5, 2, 4, 6, 7, 9, 11, 8, 10, 12 }, b.Data);
+            CollectionAssert.AreEqual(new int[] { 1, 3, 5, 2, 4, 6, 7, 9, 11, 8, 10, 12 }, b.TypedData);
 
             b = a.Transpose(1, 2, 0);
-            CollectionAssert.AreEqual(new int[] { 1, 3, 5, 7, 9, 11, 2, 4, 6, 8, 10, 12 }, b.Data);
+            CollectionAssert.AreEqual(new int[] { 1, 3, 5, 7, 9, 11, 2, 4, 6, 8, 10, 12 }, b.TypedData);
 
             b = a.Transpose(2, 1, 0);
-            CollectionAssert.AreEqual(new int[] { 1, 7, 3, 9, 5, 11, 2, 8, 4, 10, 6, 12 }, b.Data);
+            CollectionAssert.AreEqual(new int[] { 1, 7, 3, 9, 5, 11, 2, 8, 4, 10, 6, 12 }, b.TypedData);
         }
 
         [TestMethod]
         public void TestTranspose3()
         {
-            var a = new DataSource<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 3, 2, 2 });
+            var a = DataSourceFactory.Create(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 3, 2, 2 });
 
             var b = a.Transpose(1, 2, 0);
-            CollectionAssert.AreEqual(new int[] { 1, 4, 7, 10, 2, 5, 8, 11, 3, 6, 9, 12 }, b.Data);
+            CollectionAssert.AreEqual(new int[] { 1, 4, 7, 10, 2, 5, 8, 11, 3, 6, 9, 12 }, b.TypedData);
         }
     }
 }

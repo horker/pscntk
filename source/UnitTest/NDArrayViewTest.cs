@@ -20,8 +20,8 @@ namespace UnitTest
 
                 GC.Collect();
 
-                var ds = DataSource<float>.FromValue(new Value(a2));
-                Assert.AreEqual(6, ds.Data.Length);
+                var ds = DataSourceFactory.FromValue(new Value(a2));
+                Assert.AreEqual(6, ds.Data.Count);
                 Assert.AreEqual(1, ds.Data[0]);
             }
         }

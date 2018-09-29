@@ -58,7 +58,7 @@ namespace Horker.PSCNTK
 
                     foreach (var value in values)
                     {
-                        var ds = DataSource<float>.FromValue(value);
+                        var ds = DataSourceFactory.FromValue(value);
                         putDataSource(ds, indent);
                     }
                 }
@@ -87,7 +87,7 @@ namespace Horker.PSCNTK
 
             if (_showValue && (va.IsParameter || va.IsConstant))
             {
-                var ds = DataSource<float>.FromVariable(va);
+                var ds = DataSourceFactory.FromVariable(va);
                 putDataSource(ds, indent);
             }
 
@@ -99,7 +99,7 @@ namespace Horker.PSCNTK
             // Do nothing
         }
 
-        private void putDataSource(DataSource<float> ds, string indent)
+        private void putDataSource(IDataSource<float> ds, string indent)
         {
             var shape = ds.Shape;
             _output.AppendFormat("{0}    {1}\r\n", indent, Converter.ArrayToString("->", ds.Data, shape, false));

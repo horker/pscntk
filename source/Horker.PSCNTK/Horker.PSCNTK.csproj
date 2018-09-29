@@ -57,6 +57,10 @@
   <ItemGroup>
     <Compile Include="Cmdlets\ConvertToCNTKDataSource.cs" />
     <Compile Include="Cmdlets\WritetCNTKTextFormat.cs" />
+    <Compile Include="DataSource\DataSourceBase.cs" />
+    <Compile Include="DataSource\DataSourceFactory.cs" />
+    <Compile Include="DataSource\IDataSource.cs" />
+    <Compile Include="DataSource\ListSlice.cs" />
     <Compile Include="Training\TrainingProgress.cs" />
     <Compile Include="Cmdlets\ValueCmdlets.cs" />
     <Compile Include="Cmdlets\CmdletHelpers.cs" />
@@ -102,7 +106,6 @@
     <Compile Include="CTF\CTFBuilder.cs" />
     <Compile Include="Samplers\CompositeSampler.cs" />
     <Compile Include="Samplers\CTFSampler.cs" />
-    <Compile Include="DataSource\DataSource.cs" />
     <Compile Include="DataSource\DataSourceSet.cs" />
     <Compile Include="CTF\DataSourceSetCTFBuilder.cs" />
     <Compile Include="DataSource\DataSourceToBitmap.cs" />

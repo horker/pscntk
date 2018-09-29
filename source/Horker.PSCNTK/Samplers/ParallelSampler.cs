@@ -73,7 +73,7 @@ namespace Horker.PSCNTK
                 var value = entry.Value;
                 if (value is PSObject)
                     value = (value as PSObject).BaseObject;
-                set.Add((string)entry.Key, (DataSource<float>)value);
+                set.Add((string)entry.Key, (IDataSource<float>)value);
             }
 
             return AddMinibatch(set);
@@ -139,7 +139,7 @@ namespace Horker.PSCNTK
                 var value = entry.Value;
                 if (value is PSObject)
                     value = (value as PSObject).BaseObject;
-                set.Add((string)entry.Key, (DataSource<float>)value);
+                set.Add((string)entry.Key, (IDataSource<float>)value);
             }
 
             SetValidationData(set);

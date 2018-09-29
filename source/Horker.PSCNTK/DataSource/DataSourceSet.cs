@@ -8,18 +8,18 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Serializable]
-    public class DataSourceSet : IEnumerable<KeyValuePair<string, DataSource<float>>>
+    public class DataSourceSet : IEnumerable<KeyValuePair<string, IDataSource<float>>>
     {
-        public Dictionary<string, DataSource<float>> Features { get => _data; }
+        public Dictionary<string, IDataSource<float>> Features { get => _data; }
 
-        internal Dictionary<string, DataSource<float>> _data;
+        internal Dictionary<string, IDataSource<float>> _data;
 
         public DataSourceSet()
         {
-            _data = new Dictionary<string, DataSource<float>>();
+            _data = new Dictionary<string, IDataSource<float>>();
         }
 
-        public DataSourceSet(IDictionary<string, DataSource<float>> dataSources)
+        public DataSourceSet(IDictionary<string, IDataSource<float>> dataSources)
             : this()
         {
             foreach (var entry in dataSources)
@@ -34,7 +34,7 @@ namespace Horker.PSCNTK
                 var value = entry.Value;
                 if (value is PSObject psobj)
                     value = psobj.BaseObject;
-                _data.Add((string)entry.Key, (DataSource<float>)value);
+                _data.Add((string)entry.Key, (IDataSource<float>)value);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Horker.PSCNTK
             get => _data.First().Value.Shape[-1];
         }
 
-        public DataSource<float> this[string name]
+        public IDataSource<float> this[string name]
         {
             get => _data[name];
             set
@@ -52,7 +52,7 @@ namespace Horker.PSCNTK
             }
         }
 
-        public void Add(string name, DataSource<float> data)
+        public void Add(string name, IDataSource<float> data)
         {
             if (_data.Count > 0)
             {
@@ -84,11 +84,6 @@ namespace Horker.PSCNTK
             Serializer.Serialize(this, path, compress);
         }
 
-        public void ToCTF(string path, bool hasSequenceAxis)
-        {
-            DataSourceSetCTFBuilder.Write(path, this, hasSequenceAxis);
-        }
-
         public static implicit operator Hashtable(DataSourceSet dss)
         {
             var result = new Hashtable();
@@ -98,9 +93,9 @@ namespace Horker.PSCNTK
             return result;
         }
 
-        public static implicit operator Dictionary<string, DataSource<float>>(DataSourceSet dss)
+        public static implicit operator Dictionary<string, IDataSource<float>>(DataSourceSet dss)
         {
-            var result = new Dictionary<string, DataSource<float>>();
+            var result = new Dictionary<string, IDataSource<float>>();
             foreach (var entry in dss._data)
                 result.Add(entry.Key, entry.Value);
 
@@ -112,12 +107,12 @@ namespace Horker.PSCNTK
             return new DataSourceSet(hashtable);
         }
 
-        public static implicit operator DataSourceSet(Dictionary<string, DataSource<float>> dict)
+        public static implicit operator DataSourceSet(Dictionary<string, IDataSource<float>> dict)
         {
             return new DataSourceSet(dict);
         }
 
-        public IEnumerator<KeyValuePair<string, DataSource<float>>> GetEnumerator()
+        public IEnumerator<KeyValuePair<string, IDataSource<float>>> GetEnumerator()
         {
             return new DataSourceSetEnumerator(this);
         }
@@ -128,16 +123,16 @@ namespace Horker.PSCNTK
         }
     }
 
-    public class DataSourceSetEnumerator : IEnumerator<KeyValuePair<string, DataSource<float>>>
+    public class DataSourceSetEnumerator : IEnumerator<KeyValuePair<string, IDataSource<float>>>
     {
-        private IEnumerator<KeyValuePair<string, DataSource<float>>> _e;
+        private IEnumerator<KeyValuePair<string, IDataSource<float>>> _e;
 
         public DataSourceSetEnumerator(DataSourceSet dataSourceSet)
         {
             _e = dataSourceSet._data.GetEnumerator();
         }
 
-        public KeyValuePair<string, DataSource<float>> Current => _e.Current;
+        public KeyValuePair<string, IDataSource<float>> Current => _e.Current;
 
         object IEnumerator.Current => (object)_e.Current;
 

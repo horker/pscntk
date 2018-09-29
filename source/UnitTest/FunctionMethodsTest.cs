@@ -27,10 +27,10 @@ namespace UnitTest
 
             var output = FunctionPSMethods.Invoke(
                 new PSObject(f),
-                new Hashtable() { { "input", new DataSource<float>(new float[] { 1, 3, 5 }, new int[] { 3 }).ToValue() } }
+                new Hashtable() { { "input", DataSourceFactory.Create(new float[] { 1, 3, 5 }, new int[] { 3 }).ToValue() } }
             );
 
-            var result = DataSource<float>.FromValue(output[0]);
+            var result = DataSourceFactory.FromValue(output[0]);
 
             CollectionAssert.AreEqual(new int[] { 1, 1 }, result.Shape.Dimensions);
             CollectionAssert.AreEqual(new float[] { 9 }, result.Data.ToArray());
@@ -49,7 +49,7 @@ namespace UnitTest
                 new Hashtable() { { "input", new object[] { new PSObject(1), 3, 5, 9 } } }
             );
 
-            var result = DataSource<float>.FromValue(output[0]);
+            var result = DataSourceFactory.FromValue(output[0]);
 
             CollectionAssert.AreEqual(new int[] { 1, 1 }, result.Shape.Dimensions);
             CollectionAssert.AreEqual(new float[] { 1 + 3 + 5 + 9 }, result.Data.ToArray());

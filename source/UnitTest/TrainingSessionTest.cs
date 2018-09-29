@@ -22,10 +22,10 @@ namespace UnitTest
         {
             // Data
 
-            var features = new DataSource<float>(new float[] { 0, 0, 0, 1, 1, 0, 1, 1, 3, 4, 3, 5, 4, 4, 4, 5 }, new int[] { 2, 1, -1 });
-            var labels   = new DataSource<float>(new float[] { 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0 }, new int[] { 2, 1, -1 });
+            var features = DataSourceFactory.Create(new float[] { 0, 0, 0, 1, 1, 0, 1, 1, 3, 4, 3, 5, 4, 4, 4, 5 }, new int[] { 2, 1, -1 });
+            var labels   = DataSourceFactory.Create(new float[] { 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0 }, new int[] { 2, 1, -1 });
 
-            var sampler = new OnMemorySampler(new Dictionary<string, DataSource<float>>()
+            var sampler = new OnMemorySampler(new Dictionary<string, IDataSource<float>>()
             {
                 { "input", features },
                 { "label", labels }

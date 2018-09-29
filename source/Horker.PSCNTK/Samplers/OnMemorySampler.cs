@@ -10,7 +10,7 @@ namespace Horker.PSCNTK
     [Serializable]
     public class OnMemorySampler : ISampler
     {
-        public Dictionary<string, DataSource<float>> Features
+        public Dictionary<string, IDataSource<float>> Features
         {
             get => _features;
             private set { _features = value; }
@@ -38,7 +38,7 @@ namespace Horker.PSCNTK
         public int Total { get; private set; }
         public int Current { get; private set; }
 
-        private Dictionary<string, DataSource<float>> _features;
+        private Dictionary<string, IDataSource<float>> _features;
 
         private int _minibatchSize;
         private double _validationRate;
@@ -144,7 +144,7 @@ namespace Horker.PSCNTK
             }
         }
 
-        private MinibatchData GetBatch(DataSource<float> feature, int cur, int batchSize, bool sweepEnd, DeviceDescriptor device)
+        private MinibatchData GetBatch(IDataSource<float> feature, int cur, int batchSize, bool sweepEnd, DeviceDescriptor device)
         {
             var chunkSize = feature.Shape.GetSize(-2);
 

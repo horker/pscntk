@@ -31,8 +31,8 @@ namespace UnitTest
 
             CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 2, 3 });
 
-            var ds = DataSource<float>.FromValue(data.data);
-            CollectionAssert.AreEqual(ds.Data, new float[] { 27, 27, 27, 27, 27, 27 });
+            var ds = DataSourceFactory.FromValue(data.data);
+            CollectionAssert.AreEqual(ds.TypedData, new float[] { 27, 27, 27, 27, 27, 27 });
         }
 
         [TestMethod]
@@ -46,20 +46,20 @@ namespace UnitTest
             var batch = sampler.GetNextMinibatch();
             var data = batch["value"];
             CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 1, 3 });
-            var ds = DataSource<float>.FromValue(data.data);
-            CollectionAssert.AreEqual(ds.Data, new float[] { 1, 1, 1 });
+            var ds = DataSourceFactory.FromValue(data.data);
+            CollectionAssert.AreEqual(ds.TypedData, new float[] { 1, 1, 1 });
 
             batch = sampler.GetNextMinibatch();
             data = batch["value"];
             CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 1, 3 });
-            ds = DataSource<float>.FromValue(data.data);
-            CollectionAssert.AreEqual(ds.Data, new float[] { 2, 2, 2 });
+            ds = DataSourceFactory.FromValue(data.data);
+            CollectionAssert.AreEqual(ds.TypedData, new float[] { 2, 2, 2 });
 
             batch = sampler.GetNextMinibatch();
             data = batch["value"];
             CollectionAssert.AreEqual(data.data.Shape.Dimensions.ToArray(), new int[] { 1, 3 });
-            ds = DataSource<float>.FromValue(data.data);
-            CollectionAssert.AreEqual(ds.Data, new float[] { 3, 3, 3 });
+            ds = DataSourceFactory.FromValue(data.data);
+            CollectionAssert.AreEqual(ds.TypedData, new float[] { 3, 3, 3 });
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Horker.PSCNTK
                         }
 
                         int index = sampleIndex * dim * seqLength + seq * dim;
-                        builder.AddDenseSample(name, new ArraySegment<float>(ds.Data, index, dim));
+                        builder.AddDenseSample(name, new ListSlice<float>(ds.Data, index, dim));
                     }
                     builder.NextLine();
                 }

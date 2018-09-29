@@ -37,7 +37,7 @@ namespace UnitTest
             Assert.AreEqual(1, (int)m.Features["f1"].numberOfSamples);
             Assert.AreEqual(1, (int)m.Features["f2"].numberOfSamples);
 
-            CollectionAssert.AreEqual(new float[] { 1, 2, 3, 4, 5 }, DataSource<float>.FromValue(m.Features["f1"].data).ToArray());
+            CollectionAssert.AreEqual(new float[] { 1, 2, 3, 4, 5 }, DataSourceFactory.FromValue(m.Features["f1"].data).ToArray());
 
             m = sampler.GetNextMinibatch();
 
@@ -45,7 +45,7 @@ namespace UnitTest
             Assert.AreEqual(1, (int)m.Features["f1"].numberOfSamples);
             Assert.AreEqual(1, (int)m.Features["f2"].numberOfSamples);
 
-            CollectionAssert.AreEqual(new float[] { 6, 5, 4 }, DataSource<float>.FromValue(m.Features["f2"].data).ToArray());
+            CollectionAssert.AreEqual(new float[] { 6, 5, 4 }, DataSourceFactory.FromValue(m.Features["f2"].data).ToArray());
         }
     }
 }

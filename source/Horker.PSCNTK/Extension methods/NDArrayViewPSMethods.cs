@@ -12,7 +12,7 @@ namespace Horker.PSCNTK
         public static string AsString(PSObject value, bool longFormat = true)
         {
             var a = value.BaseObject as NDArrayView;
-            var ds = DataSource<float>.FromValue(new Value(a));
+            var ds = DataSourceFactory.FromValue(new Value(a));
 
             return Converter.ArrayToString<float>("CNTK.NDArrayView", ds.Data, ds.Shape, longFormat);
         }

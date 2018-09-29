@@ -21,7 +21,7 @@ namespace Horker.PSCNTK
         private System.Random _random;
         private int _dataSize;
         private float[] _data;
-        private DataSource<float> _samples;
+        private IDataSource<float> _samples;
 
         public NoiseSampler(string name, int[] shape, int minibatchSize, int iterationsPerEpoch, double min, double max, int? seed = null)
         {
@@ -40,7 +40,7 @@ namespace Horker.PSCNTK
             shape.CopyTo(minibatchShape, 0);
             minibatchShape[minibatchShape.Length - 2] = 1; // sequence
             minibatchShape[minibatchShape.Length - 1] = minibatchSize; // sample
-            _samples = new DataSource<float>(_data, minibatchShape);
+            _samples = DataSourceFactory.Create(_data, minibatchShape);
 
             Iterations = 0;
         }
@@ -56,7 +56,7 @@ namespace Horker.PSCNTK
             ++Iterations;
             var sweepEnd = (Iterations + 1) % IterationsPerEpoch == 0;
 
-            var minibatch = new Minibatch(new Dictionary<string, DataSource<float>>() { { Name, _samples } }, sweepEnd, device);
+            var minibatch = new Minibatch(new Dictionary<string, IDataSource<float>>() { { Name, _samples } }, sweepEnd, device);
             return minibatch;
         }
 

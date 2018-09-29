@@ -20,7 +20,7 @@ namespace UnitTest
         [TestMethod]
         public void TestConv()
         {
-            var inputData = new DataSource<float>(new float[] { 1, 2, 3, 4, 1, 2, 3, 4 }, new int[] { 2, 2, 2 });
+            var inputData = DataSourceFactory.Create(new float[] { 1, 2, 3, 4, 1, 2, 3, 4 }, new int[] { 2, 2, 2 });
 
             var input = CNTKLib.InputVariable(new int[] { 2, 2, 2 }, DataType.Float);
 
@@ -30,7 +30,7 @@ namespace UnitTest
             var outputs = new Dictionary<Variable, Value>() { { f.Output, null } };
 
             f.Evaluate(inputs, outputs, DeviceDescriptor.UseDefaultDevice());
-            var result = DataSource<float>.FromValue(outputs[f.Output]);
+            var result = DataSourceFactory.FromValue(outputs[f.Output]);
 
             CollectionAssert.AreEqual(new int[] { 2, 2, 4, 1, 1 }, result.Shape.Dimensions);
             Assert.AreEqual(20, result.Data[0]);
@@ -42,7 +42,7 @@ namespace UnitTest
         [TestMethod]
         public void TestConvTrans()
         {
-            var inputData = new DataSource<float>(new float[] { 1, 2, 3, 4 }, new int[] { 2, 2, 1 });
+            var inputData = DataSourceFactory.Create(new float[] { 1, 2, 3, 4 }, new int[] { 2, 2, 1 });
 
             var input = CNTKLib.InputVariable(new int[] { 2, 2, 1 }, DataType.Float);
 
@@ -52,7 +52,7 @@ namespace UnitTest
             var outputs = new Dictionary<Variable, Value>() { { f.Output, null } };
 
             f.Evaluate(inputs, outputs, DeviceDescriptor.UseDefaultDevice());
-            var result = DataSource<float>.FromValue(outputs[f.Output]);
+            var result = DataSourceFactory.FromValue(outputs[f.Output]);
 
             CollectionAssert.AreEqual(new int[] { 3, 3, 1, 1, 1 }, result.Shape.Dimensions);
             Assert.AreEqual(1, result.Data[0]);

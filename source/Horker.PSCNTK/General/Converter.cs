@@ -115,29 +115,17 @@ namespace Horker.PSCNTK
             return result[0].ToArray();
         }
 
-        public static DataSource<float> ValueToDataSource(CNTK.Value value)
+        public static IDataSource<float> ValueToDataSource(CNTK.Value value)
         {
-            return new DataSource<float>(ValueToArray(value), value.Shape.Dimensions.ToArray());
+            return DataSourceFactory.FromValue(value);
         }
 
-        public static DataSource<float> VariableToDataSource(CNTK.Variable variable)
+        public static IDataSource<float> VariableToDataSource(CNTK.Variable variable)
         {
-            var array = variable.GetValue();
-
-            if (array.IsSparse)
-                throw new NotImplementedException("Sparse value is not supported yet");
-
-            if (array.DataType != CNTK.DataType.Float)
-                throw new NotImplementedException("Only float value is supported");
-
-            var value = new CNTK.Value(array);
-
-            var result = value.GetDenseData<float>(variable);
-
-            return new DataSource<float>(result[0].ToArray(), value.Shape.Dimensions.ToArray());
+            return DataSourceFactory.FromVariable(variable);
         }
 
-        public static CNTK.Value DataSourceToValue(DataSource<float> ds)
+        public static CNTK.Value DataSourceToValue(IDataSource<float> ds)
         {
             return ds.ToValue();
         }
@@ -150,9 +138,9 @@ namespace Horker.PSCNTK
             if (value is CNTK.Value)
                 return value as CNTK.Value;
 
-            if (value is DataSource<float>)
+            if (value is IDataSource<float>)
             {
-                var ds = value as DataSource<float>;
+                var ds = value as IDataSource<float>;
                 ds.Reshape(dimensions);
                 return ds.ToValue();
             }
@@ -182,7 +170,7 @@ namespace Horker.PSCNTK
             }
 
             // single element value
-            return new DataSource<float>(new float[] { Convert.ToSingle(value is PSObject ? (value as PSObject).BaseObject : value) }, new int[] { 1 }).ToValue();
+            return new DataSourceBase<float, float[]>(new float[] { Convert.ToSingle(value is PSObject ? (value as PSObject).BaseObject : value) }, new int[] { 1 }).ToValue();
         }
 
         public static double ToDouble(object value)

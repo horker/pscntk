@@ -12,8 +12,8 @@ namespace UnitTest
         {
             var writer = new StringWriter();
 
-            var ds1 = new DataSource<float>(new float[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 }, new int[] { 2, 3, 3 });
-            var ds2 = new DataSource<float>(new float[] { 0, 1, 2, 3, 4, 5 }, new int[] { 2, 1, 3 });
+            var ds1 = DataSourceFactory.Create(new float[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 }, new int[] { 2, 3, 3 });
+            var ds2 = DataSourceFactory.Create(new float[] { 0, 1, 2, 3, 4, 5 }, new int[] { 2, 1, 3 });
 
             var dss = new DataSourceSet();
             dss.Features.Add("data", ds1);

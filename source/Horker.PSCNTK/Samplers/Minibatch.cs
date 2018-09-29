@@ -27,7 +27,7 @@ namespace Horker.PSCNTK
             Features = new Dictionary<string, MinibatchData>();
         }
 
-        public Minibatch(IDictionary<string, DataSource<float>> dataSources, bool sweepEnd = false, DeviceDescriptor device = null)
+        public Minibatch(IDictionary<string, IDataSource<float>> dataSources, bool sweepEnd = false, DeviceDescriptor device = null)
             : this()
         {
             foreach (var entry in dataSources)
@@ -50,13 +50,13 @@ namespace Horker.PSCNTK
             Features.Add(name, data);
         }
 
-        public static MinibatchData GetMinibatchData(DataSource<float> dataSource, bool sweepEnd, DeviceDescriptor device)
+        public static MinibatchData GetMinibatchData(IDataSource<float> dataSource, bool sweepEnd, DeviceDescriptor device)
         {
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();
 
             var shape = dataSource.Shape;
-            var value = new Value(NDArrayViewMethods.SafeCreate(shape.Dimensions, dataSource.Data, device));
+            var value = new Value(NDArrayViewMethods.SafeCreate(shape.Dimensions, dataSource.Data.ToArray(), device));
             var data = new MinibatchData(value, (uint)shape[-1], (uint)(shape[-1] * shape[-2]), sweepEnd);
 
             return data;

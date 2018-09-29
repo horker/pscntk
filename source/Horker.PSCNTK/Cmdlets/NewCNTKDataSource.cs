@@ -87,7 +87,7 @@ namespace Horker.PSCNTK
                     Path = SessionState.Path.Combine(current.ToString(), Path);
                 }
 
-                var result = DataSource<T>.Load(Path, !NoDecompress);
+                var result = DataSourceFactory.Load<float>(Path, !NoDecompress);
                 WriteObject(result);
             }
             else if (ParameterSetName == "rows")
@@ -104,7 +104,7 @@ namespace Horker.PSCNTK
                     data.Add(r.ToArray());
                 }
 
-                var result = DataSource<T>.FromRows(data.ToArray(), Dimensions);
+                var result = DataSourceFactory.FromRows<T>(data, Dimensions);
                 WriteObject(result);
             }
             else if (ParameterSetName == "columns")
@@ -121,12 +121,12 @@ namespace Horker.PSCNTK
                     data.Add(c.ToArray());
                 }
 
-                var result = DataSource<T>.FromColumns(data.ToArray(), Dimensions);
+                var result = DataSourceFactory.FromColumns(data, Dimensions);
                 WriteObject(result);
             }
             else if (ParameterSetName == "psobjects")
             {
-                var result = DataSource<T>.FromPSObjects(PSObjects, converter);
+                var result = DataSourceFactory.FromPSObjects(PSObjects, converter);
 
                 if (Dimensions != null)
                     result.Reshape(Dimensions);
@@ -135,7 +135,7 @@ namespace Horker.PSCNTK
             }
             else if (ParameterSetName == "datatable")
             {
-                var result = DataSource<T>.FromDataTable(DataTable, converter);
+                var result = DataSourceFactory.FromDataTable(DataTable, converter);
 
                 if (Dimensions != null)
                     result.Reshape(Dimensions);
@@ -145,7 +145,7 @@ namespace Horker.PSCNTK
             else
             {
                 // new
-                var result = new DataSource<T>(Data.Select(x => converter.Invoke(x)).ToArray(), Dimensions);
+                var result = DataSourceFactory.Create(Data.Select(x => converter.Invoke(x)).ToArray(), Dimensions);
                 WriteObject(result);
             }
         }

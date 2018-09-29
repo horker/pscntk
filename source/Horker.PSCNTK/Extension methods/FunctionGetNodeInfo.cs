@@ -18,7 +18,7 @@ namespace Horker.PSCNTK
         public string Parent;
         public string[] Children;
         public Shape Shape;
-        public DataSource<float>[] Values;
+        public IDataSource<float>[] Values;
     }
 
     class FunctionGetNodeInfo : INodeWalker
@@ -71,7 +71,7 @@ namespace Horker.PSCNTK
 
         public bool ProcessFunction(Function func, int depth)
         {
-            DataSource<float>[] values = null;
+            IDataSource<float>[] values = null;
             NodeInfo outputNode = null;
             if (_history.TryGetValue(func.Output.Uid, out outputNode))
                 values = outputNode.Values;
@@ -102,10 +102,10 @@ namespace Horker.PSCNTK
             if (visited)
                 return true;
 
-            DataSource<float>[] values = null;
+            IDataSource<float>[] values = null;
 
             if (va.Kind == VariableKind.Parameter || va.Kind == VariableKind.Constant)
-                values = new DataSource<float>[] { DataSource<float>.FromVariable(va) };
+                values = new IDataSource<float>[] { DataSourceFactory.FromVariable(va) };
             else if (va.Kind == VariableKind.Output)
                 values = GetValues(va.Owner);
 
@@ -133,7 +133,7 @@ namespace Horker.PSCNTK
             _queue.Add(_poison);
         }
 
-        private DataSource<float>[] GetValues(Function func)
+        private IDataSource<float>[] GetValues(Function func)
         {
             Value[] values = null;
             try
@@ -148,7 +148,7 @@ namespace Horker.PSCNTK
                 // Pass
             }
 
-            return values.Select(x => DataSource<float>.FromValue(x)).ToArray();
+            return values.Select(x => DataSourceFactory.FromValue(x)).ToArray();
         }
 
         private string[] GetPath(string uid, string parentUid)
