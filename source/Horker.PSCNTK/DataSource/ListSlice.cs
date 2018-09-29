@@ -49,7 +49,7 @@ namespace Horker.PSCNTK
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return new Enumerator(this);
         }
 
         public int IndexOf(T item)
@@ -78,7 +78,39 @@ namespace Horker.PSCNTK
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return new Enumerator(this);
+        }
+           
+        private class Enumerator : IEnumerator<T>
+        {
+            private ListSlice<T> _slice;
+            private int _index;
+
+            public Enumerator(ListSlice<T> slice)
+            {
+                _slice = slice;
+                _index = -1;
+            }
+
+            public T Current => _slice[_index];
+
+            object IEnumerator.Current => _slice[_index];
+
+            public void Dispose()
+            {
+                // Do nothing
+            }
+
+            public bool MoveNext()
+            {
+                ++_index;
+                return _index < _slice.Count;
+            }
+
+            public void Reset()
+            {
+                _index = -1;
+            }
         }
     }
 }
