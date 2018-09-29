@@ -12,7 +12,7 @@ namespace Horker.PSCNTK
 {
     public class DataSourceSetCTFBuilder
     {
-        public static void Write(TextWriter writer, DataSourceSet dataSourceSet, bool hasSequenceAxis)
+        public static void Write(TextWriter writer, DataSourceSet dataSourceSet, bool withSequenceAxis)
         {
             var builder = new CTFBuilder(writer, 0, false);
 
@@ -25,17 +25,17 @@ namespace Horker.PSCNTK
                 var name = entry.Key;
                 var ds = entry.Value;
 
-                if (hasSequenceAxis && ds.Shape.Rank < 3)
+                if (withSequenceAxis && ds.Shape.Rank < 3)
                     throw new ArgumentException("DataSource shape should have sequence and batch axes as the last two");
 
-                if (!hasSequenceAxis && ds.Shape.Rank < 2)
+                if (!withSequenceAxis && ds.Shape.Rank < 2)
                     throw new ArgumentException("DataSource shape should have a batch axis");
 
                 var count = ds.Shape[-1];
                 if (count != sampleCount)
                     throw new ArgumentException("Sample counts of data sources should be equal");
 
-                if (hasSequenceAxis)
+                if (withSequenceAxis)
                 {
                     var seqLength = ds.Shape[-2];
                     if (seqLength > maxSeqLength)
@@ -54,7 +54,7 @@ namespace Horker.PSCNTK
 
                         int seqLength;
                         int dim;
-                        if (hasSequenceAxis)
+                        if (withSequenceAxis)
                         {
                             seqLength = ds.Shape[-2];
                             if (seq >= seqLength)

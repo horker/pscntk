@@ -20,7 +20,7 @@ $features = $features.GetSubsequences($SEQLEN)
 $labels = $seq.y0 | select -skip $SEQLEN
 $labels = cntk.datasource $labels 1, 1, -1
 
-$sampler = cntk.sampler @{ input = $features; labels = $labels } $SEQLEN .1
+$sampler = cntk.sampler @{ input = $features; labels = $labels } $SEQLEN .1 -WithSequenceAxis
 
 ############################################################
 # Build a model
@@ -30,7 +30,7 @@ $in = cntk.input 1 -Name input -WithSequenceAxis
 
 $n = $in
 #$n = cntk.rnnstack $n 300 1
-$n = cntk.lstm $n 30 30 30
+$n = cntk.lstm $n 30 30
 $n = cntk.dense $n 1 (cntk.glorotuniform)
 $out = $n
 

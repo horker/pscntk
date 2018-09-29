@@ -11,7 +11,7 @@ namespace Horker.PSCNTK
     public class NewCNTKOneMemorySampler : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "new")]
-        public DataSourceSet DataSources;
+        public DataSourceSet DataSourceSet;
 
         [Parameter(Position = 1, Mandatory = false, ParameterSetName = "new")]
         public int MinibatchSize = 32;
@@ -21,6 +21,9 @@ namespace Horker.PSCNTK
 
         [Parameter(Position = 3, Mandatory = false, ParameterSetName = "new")]
         public SwitchParameter NoRandomize = false;
+
+        [Parameter(Position = 4, Mandatory = false, ParameterSetName = "new")]
+        public SwitchParameter WithSequenceAxis = false;
 
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "load")]
         public string Path;
@@ -43,7 +46,7 @@ namespace Horker.PSCNTK
             }
             else
             {
-                var sampler = new OnMemorySampler(DataSources, MinibatchSize, ValidationRate, !NoRandomize);
+                var sampler = new OnMemorySampler(DataSourceSet, MinibatchSize, ValidationRate, !NoRandomize, WithSequenceAxis);
 
                 WriteObject(sampler);
             }

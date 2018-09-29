@@ -16,7 +16,7 @@ namespace Horker.PSCNTK
         public string Path;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public SwitchParameter HasSequenceAxis;
+        public SwitchParameter WithSequenceAxis;
 
         protected override void EndProcessing()
         {
@@ -26,7 +26,7 @@ namespace Horker.PSCNTK
                 Path = SessionState.Path.Combine(current.ToString(), Path);
             }
 
-            DataSourceSetCTFBuilder.Write(Path, DataSources, HasSequenceAxis);
+            DataSourceSetCTFBuilder.Write(Path, DataSources, WithSequenceAxis);
         }
     }
 }

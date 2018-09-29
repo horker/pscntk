@@ -23,7 +23,7 @@ namespace UnitTest
             var features = new DataSource<float>(new float[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, new int[] { 2, 1, -1 });
 
             var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
-            var sampler = new OnMemorySampler(ds, 2, 0, false);
+            var sampler = new OnMemorySampler(ds, 2, 0, false, true);
 
             var batch = sampler.GetNextMinibatch();
             GC.Collect();
@@ -61,7 +61,7 @@ namespace UnitTest
             var features = new DataSource<float>(new float[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, new int[] { 2, 1, -1 });
 
             var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
-            var sampler = new OnMemorySampler(ds, 2, .4, false);
+            var sampler = new OnMemorySampler(ds, 2, .4, false, true);
 
             var batch = sampler.GetNextMinibatch();
             var data = batch.Features["input"];
@@ -94,7 +94,7 @@ namespace UnitTest
             var features = new DataSource<float>(new float[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new int[] { 2, 2, -1 });
 
             var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
-            var sampler = new OnMemorySampler(ds, 2, .4, false);
+            var sampler = new OnMemorySampler(ds, 2, .4, false, true);
 
             var batch = sampler.GetNextMinibatch();
             var data = batch.Features["input"];
@@ -111,7 +111,7 @@ namespace UnitTest
             var features = new DataSource<float>(new float[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new int[] { 1, 2, -1 });
 
             var ds = new Dictionary<string, DataSource<float>>() { { "input", features } };
-            var sampler = new OnMemorySampler(ds, 2, .5, true);
+            var sampler = new OnMemorySampler(ds, 2, .5, true, true);
 
             var batch = sampler.GetValidationMinibatch();
             var data = batch.Features["input"];

@@ -112,6 +112,11 @@ namespace Horker.PSCNTK
             return new DataSourceSet(hashtable);
         }
 
+        public static implicit operator DataSourceSet(Dictionary<string, DataSource<float>> dict)
+        {
+            return new DataSourceSet(dict);
+        }
+
         public IEnumerator<KeyValuePair<string, DataSource<float>>> GetEnumerator()
         {
             return new DataSourceSetEnumerator(this);

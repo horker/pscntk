@@ -34,7 +34,7 @@ namespace Horker.PSCNTK
             set { ResetInternalState(); _randomized = value; }
         }
 
-        public bool IsSeriesData { get; private set; }
+        public bool WithSequenceAxis { get; private set; }
         public int Total { get; private set; }
         public int Current { get; private set; }
 
@@ -47,9 +47,9 @@ namespace Horker.PSCNTK
         private int _validationStart;
         private int[] _order;
 
-        public OnMemorySampler(Dictionary<string, DataSource<float>> features, int minibatchSize, double validationRate = .3, bool randomize = true)
+        public OnMemorySampler(DataSourceSet features, int minibatchSize, double validationRate = .3, bool randomize = true, bool withSequenceAxis = false)
         {
-            var f = features.Values.First();
+            var f = features.Features.Values.First();
 
             if (f.Shape.Rank < 2)
                 throw new ArgumentException("Source data should have a batch axis");
@@ -66,13 +66,15 @@ namespace Horker.PSCNTK
                     throw new ArgumentException("Features should have the same sample size");
 
                 if (entry.Value.Shape[-2] > 1)
-                    IsSeriesData = true;
+                    WithSequenceAxis = true;
             }
 
             _features = features;
             _minibatchSize = minibatchSize;
             _validationRate = validationRate;
             _randomized = randomize;
+
+            WithSequenceAxis = withSequenceAxis;
         }
 
         public static OnMemorySampler Load(byte[] data, bool decompress = true)
@@ -129,7 +131,7 @@ namespace Horker.PSCNTK
             var randomEnd = f.Shape[-1];
 
             // for series data, validation data always keeps its order and is obtained from the latest portion
-            if (IsSeriesData)
+            if (WithSequenceAxis)
                 randomEnd = _validationStart;
 
             var random = Random.GetInstance();
@@ -165,7 +167,8 @@ namespace Horker.PSCNTK
 
             var array = NDArrayViewMethods.SafeCreate(shape.Dimensions, buffer, device);
             var value = new Value(array);
-            var batch = new MinibatchData(value, (uint)batchSize, (uint)(batchSize * feature.Shape[-2]), sweepEnd);
+            var numSamples = WithSequenceAxis ? batchSize * feature.Shape[-2] : batchSize;
+            var batch = new MinibatchData(value, (uint)batchSize, (uint)numSamples, sweepEnd);
 
             return batch;
         }
