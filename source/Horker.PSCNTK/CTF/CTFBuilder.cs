@@ -70,7 +70,7 @@ namespace Horker.PSCNTK
 
             foreach (var v in _values) {
                 s.Write(' ');
-                s.Write(v);
+                s.Write(v.ToString("g"));
             }
         }
     }
@@ -110,7 +110,7 @@ namespace Horker.PSCNTK
                 s.Write(' ');
                 s.Write(v.Index);
                 s.Write(':');
-                s.Write(v.Value.ToString());
+                s.Write(v.Value.ToString("g"));
             }
         }
     }
@@ -159,7 +159,7 @@ namespace Horker.PSCNTK
     public class CTFBuilder
     {
         private int _seq;
-        private bool _seqAutIncrement;
+        private bool _seqAutoIncrement;
         private bool _bol;
         private bool _first;
 
@@ -176,7 +176,7 @@ namespace Horker.PSCNTK
         public CTFBuilder(TextWriter writer, int initialSeq = 0, bool seqAutoIncrement = true)
         {
             _seq = initialSeq;
-            _seqAutIncrement = seqAutoIncrement;
+            _seqAutoIncrement = seqAutoIncrement;
             _bol = true;
             _first = true;
 
@@ -192,7 +192,7 @@ namespace Horker.PSCNTK
             FlushSample();
 
             _bol = true;
-            if (_seqAutIncrement) {
+            if (_seqAutoIncrement) {
                 ++_seq;
             }
 
@@ -212,6 +212,8 @@ namespace Horker.PSCNTK
             if (_sample != null) {
                 NextLine();
             }
+
+            _writer.Flush();
 
             _finished = true;
         }

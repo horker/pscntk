@@ -18,7 +18,7 @@ namespace Horker.PSCNTK
         public int InitialSequence = 0;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public SwitchParameter ManualIncerement;
+        public SwitchParameter ManualIncrement;
 
         protected override void EndProcessing()
         {
@@ -29,7 +29,7 @@ namespace Horker.PSCNTK
             }
 
             var writer = new StreamWriter(Path, false, Encoding.UTF8);
-            var builder = new CTFBuilder(writer, InitialSequence, !ManualIncerement);
+            var builder = new CTFBuilder(writer, InitialSequence, !ManualIncrement);
 
             WriteObject(builder);
         }
@@ -50,7 +50,10 @@ namespace Horker.PSCNTK
             finally
             {
                 if (CTFBuilder.Writer != null)
+                {
                     CTFBuilder.Writer.Close();
+                    CTFBuilder.Writer.Dispose();
+                }
             }
         }
     }
