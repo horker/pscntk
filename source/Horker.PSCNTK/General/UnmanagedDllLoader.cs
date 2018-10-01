@@ -27,17 +27,17 @@ namespace Horker.PSCNTK
           "mklml.dll",
           "mkldnn.dll",
 
-          "Cntk.Math-2.5.1.dll",
-          "Cntk.PerformanceProfiler-2.5.1.dll",
+          "Cntk.Math-2.6.dll",
+          "Cntk.PerformanceProfiler-2.6.dll",
 
-          "Cntk.Core-2.5.1.dll",
+          "Cntk.Core-2.6.dll",
 
-          "Cntk.Deserializers.Binary-2.5.1.dll",
-          "Cntk.Deserializers.HTK-2.5.1.dll",
-//          "Cntk.Deserializers.Image-2.5.1.dll",
-          "Cntk.Deserializers.TextFormat-2.5.1.dll",
-          "Cntk.Composite-2.5.1.dll",
-          "Cntk.Core.CSBinding-2.5.1.dll"
+          "Cntk.Deserializers.Binary-2.6.dll",
+          "Cntk.Deserializers.HTK-2.6.dll",
+//          "Cntk.Deserializers.Image-2.6.dll",
+          "Cntk.Deserializers.TextFormat-2.6.dll",
+          "Cntk.Composite-2.6.dll",
+          "Cntk.Core.CSBinding-2.6.dll"
         };
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]

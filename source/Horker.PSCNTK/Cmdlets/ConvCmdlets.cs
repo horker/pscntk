@@ -44,6 +44,9 @@ namespace Horker.PSCNTK
         public int MaxTempMemSizeInSamples = 0;
 
         [Parameter(Position = 12, Mandatory = false)]
+        public bool Sequential = false;
+
+        [Parameter(Position = 13, Mandatory = false)]
         public string Name = "Conv";
 
         protected override void EndProcessing()
@@ -62,6 +65,7 @@ namespace Horker.PSCNTK
                 ReductionRank,           // int reductionRank
                 1,                       // int groups
                 MaxTempMemSizeInSamples, // int maxTempMemSizeInSamples
+                Sequential,              // int sequential (from v2.6.0)
                 Name                     // string name
             );
 
@@ -110,9 +114,12 @@ namespace Horker.PSCNTK
         public int MaxTempMemSizeInSamples = 0;
 
         [Parameter(Position = 12, Mandatory = false)]
-        public string Name = "Conv1d";
+        public bool Sequential = false;
 
         [Parameter(Position = 13, Mandatory = false)]
+        public string Name = "Conv1d";
+
+        [Parameter(Position = 14, Mandatory = false)]
         public SwitchParameter ChannelFirst = false;
 
         protected override void EndProcessing()
@@ -133,6 +140,7 @@ namespace Horker.PSCNTK
                 ReductionRank,           // int reductionRank
                 1,                       // int groups
                 MaxTempMemSizeInSamples, // int maxTempMemSizeInSamples
+                Sequential,              // bool sequential (from v2.6.0)
                 Name                     // string name
             );
 
@@ -181,9 +189,12 @@ namespace Horker.PSCNTK
         public int MaxTempMemSizeInSamples = 0;
 
         [Parameter(Position = 12, Mandatory = false)]
-        public string Name = "Conv2d";
+        public bool Sequential = false;
 
         [Parameter(Position = 13, Mandatory = false)]
+        public string Name = "Conv2d";
+
+        [Parameter(Position = 14, Mandatory = false)]
         public SwitchParameter ChannelFirst = false;
 
         protected override void EndProcessing()
@@ -204,6 +215,7 @@ namespace Horker.PSCNTK
                 ReductionRank,           // int reductionRank
                 1,                       // int groups
                 MaxTempMemSizeInSamples, // int maxTempMemSizeInSamples
+                Sequential,              // bool sequential (from v2.6.0)
                 Name                     // string name
             );
 
@@ -252,9 +264,12 @@ namespace Horker.PSCNTK
         public int MaxTempMemSizeInSamples = 0;
 
         [Parameter(Position = 12, Mandatory = false)]
-        public string Name = "Conv3d";
+        public bool Sequential = false;
 
         [Parameter(Position = 13, Mandatory = false)]
+        public string Name = "Conv3d";
+
+        [Parameter(Position = 14, Mandatory = false)]
         public SwitchParameter ChannelFirst = false;
 
         protected override void EndProcessing()
@@ -275,6 +290,7 @@ namespace Horker.PSCNTK
                 ReductionRank,           // int reductionRank
                 1,                       // int groups
                 MaxTempMemSizeInSamples, // int maxTempMemSizeInSamples
+                Sequential,              // bool sequential (from v2.6.0)
                 Name                     // string name
             );
 

@@ -385,14 +385,14 @@ namespace Horker.PSCNTK {
         public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Axis[] Axis;
+        public CNTK.Axis Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
         public string Name = "";
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceLogSum(Operand, new CNTK.AxisVector(Axis), Name);
+            var result = CNTK.CNTKLib.ReduceLogSum(Operand, Axis, Name);
             WriteObject(new WrappedFunction(result));
         }
     }
@@ -405,14 +405,14 @@ namespace Horker.PSCNTK {
         public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Axis[] Axis;
+        public CNTK.Axis Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
         public string Name = "";
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceMax(Operand, new CNTK.AxisVector(Axis), Name);
+            var result = CNTK.CNTKLib.ReduceMax(Operand, Axis, Name);
             WriteObject(new WrappedFunction(result));
         }
     }
@@ -425,14 +425,14 @@ namespace Horker.PSCNTK {
         public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Axis[] Axis;
+        public CNTK.Axis Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
         public string Name = "";
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceMean(Operand, new CNTK.AxisVector(Axis), Name);
+            var result = CNTK.CNTKLib.ReduceMean(Operand, Axis, Name);
             WriteObject(new WrappedFunction(result));
         }
     }
@@ -445,14 +445,14 @@ namespace Horker.PSCNTK {
         public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Axis[] Axis;
+        public CNTK.Axis Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
         public string Name = "";
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceMin(Operand, new CNTK.AxisVector(Axis), Name);
+            var result = CNTK.CNTKLib.ReduceMin(Operand, Axis, Name);
             WriteObject(new WrappedFunction(result));
         }
     }
@@ -465,14 +465,14 @@ namespace Horker.PSCNTK {
         public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Axis[] Axis;
+        public CNTK.Axis Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
         public string Name = "";
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceProd(Operand, new CNTK.AxisVector(Axis), Name);
+            var result = CNTK.CNTKLib.ReduceProd(Operand, Axis, Name);
             WriteObject(new WrappedFunction(result));
         }
     }
@@ -485,14 +485,14 @@ namespace Horker.PSCNTK {
         public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.Axis[] Axis;
+        public CNTK.Axis Axis;
 
         [Parameter(Position = 2, Mandatory = false)]
         public string Name = "";
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.ReduceSum(Operand, new CNTK.AxisVector(Axis), Name);
+            var result = CNTK.CNTKLib.ReduceSum(Operand, Axis, Name);
             WriteObject(new WrappedFunction(result));
         }
     }

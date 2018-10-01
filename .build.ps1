@@ -17,14 +17,15 @@ $MODULE_PATH_DEBUG = "$PSScriptRoot\debug\pscntk"
 
 $SOLUTION_FILE = "$PSScriptRoot\source\pscntk.sln"
 
+$CNTK_VERSION = "2.6.0"
+
 $OBJECT_FILES = @(
-  "Cntk.Core.Managed-2.5.1.dll"
+  "Cntk.Core.Managed-2.6.dll"
   "Horker.PSCNTK.dll"
   "Horker.PSCNTK.pdb"
 )
 
-$LIB_PATH = "$PSScriptRoot\lib\Release"
-$LIB_PATH_DEBUG = "$PSScriptRoot\lib\Debug"
+$LIB_PATH = "$PSScriptRoot\lib"
 
 $TEMPLATE_INPUT_PATH = "$PSScriptRoot\templates"
 $TEMPLATE_OUTPUT_PATH = "$PSScriptRoot\source\Horker.PSCNTK\Generated files"
@@ -72,12 +73,14 @@ function Remove-Item2 {
     [string]$Path
   )
 
-  try {
-    Remove-Item $Path -EA Stop
-    Write-Host -ForegroundColor DarkCyan "$Path removed"
-  }
-  catch {
-    Write-Host -ForegroundColor DarkYellow $_
+  Resolve-Path $PATH | foreach {
+    try {
+      Remove-Item $_ -EA Stop -Recurse -Force
+      Write-Host -ForegroundColor DarkCyan "$_ removed"
+    }
+    catch {
+      Write-Host -ForegroundColor DarkYellow $_
+    }
   }
 }
 
@@ -133,8 +136,8 @@ task ImportDebug {
 }
 
 task Clean {
-  Remove-Item2 "$MODULE_PATH\*" -Force -Recurse -EA Continue
-  Remove-Item2 "$MODULE_PATH_DEBUG\*" -Force -Recurse -EA Continue
+  Remove-Item2 "$MODULE_PATH\*"
+  Remove-Item2 "$MODULE_PATH_DEBUG\*"
 }
 
 task Templates {
@@ -148,8 +151,21 @@ task Templates {
 }
 
 task CopyLib {
+  New-Folder2 "$MODULE_PATH\lib"
   Copy-Item2 "$LIB_PATH\*.dll" "$MODULE_PATH\lib"
   Copy-Item2 "$LIB_PATH\*.pdb" "$MODULE_PATH\lib"
+
+  New-Folder2 "$MODULE_PATH_DEBUG\lib"
   Copy-Item2 "$LIB_PATH\*.dll" "$MODULE_PATH_DEBUG\lib"
   Copy-Item2 "$LIB_PATH\*.pdb" "$MODULE_PATH_DEBUG\lib"
+}
+
+task CollectUnmanagedLib {
+  Get-ChildItem -Recurse "$PSScriptRoot\source\packages" -Filter *.dll |
+  where {
+    $_.fullname -match $CNTK_VERSION -and $_.fullname -notmatch "Debug"
+  } |
+  foreach {
+    Copy-Item2 $_.FullName $LIB_PATH
+  }
 }

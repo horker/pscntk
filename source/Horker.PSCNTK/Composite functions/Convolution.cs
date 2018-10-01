@@ -7,7 +7,7 @@ namespace Horker.PSCNTK
 {
     public partial class Composite
     {
-        public static Function Convolution(Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, int[] strides, bool[] padding, int[] dilation, int reductionRank, int groups, int maxTempMemSizeInSamples, string name)
+        public static Function Convolution(Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, int[] strides, bool[] padding, int[] dilation, int reductionRank, int groups, int maxTempMemSizeInSamples, bool sequential, string name)
         {
             try
             {
@@ -41,6 +41,7 @@ namespace Horker.PSCNTK
                     (uint)reductionRank,                 // uint reductionRank
                     (uint)groups,                        // uint groups
                     (uint)maxTempMemSizeInSamples,       // uint maxTempMemSizeInSamples
+                    sequential,                          // from v2.6.0
                     ""                                   // string name
                 );
                 Register(conv);
@@ -80,7 +81,7 @@ namespace Horker.PSCNTK
             return result;
         }
 
-        public static Function ConvolutionxD(int numDimensions, bool channelFirst, Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, int[] strides, bool[] padding, int[] dilation, int reductionRank, int groups, int maxTempMemSizeInSamples, string name)
+        public static Function ConvolutionxD(int numDimensions, bool channelFirst, Variable input, int[] filterShape, int numFilters, string activation, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, int[] strides, bool[] padding, int[] dilation, int reductionRank, int groups, int maxTempMemSizeInSamples, bool sequential, string name)
         {
             if (input.Shape.Rank != numDimensions + 1)
                 throw new ArgumentException("Rank of input variable should be " + (numDimensions + 1) + " for " + numDimensions + "-dimensional convolution");
@@ -94,7 +95,7 @@ namespace Horker.PSCNTK
             var fil = FillShapeArray(filterShape, numDimensions, input, channelFirst);
             var st = FillShapeArray(strides, numDimensions, input, channelFirst);
 
-            return Convolution(input, fil, numFilters, activation, initializer, useBias, biasInitializer, st, padding, dilation, reductionRank, groups, maxTempMemSizeInSamples, name);
+            return Convolution(input, fil, numFilters, activation, initializer, useBias, biasInitializer, st, padding, dilation, reductionRank, groups, maxTempMemSizeInSamples, sequential, name);
         }
     }
 }
