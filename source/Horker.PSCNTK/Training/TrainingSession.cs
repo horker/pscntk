@@ -9,6 +9,11 @@ namespace Horker.PSCNTK
 {
     public class TrainingSession
     {
+        private Stopwatch _stopwatch;
+        public TimeSpan Elapsed => _stopwatch.Elapsed;
+
+        private Minibatch _validationData;
+
         public Trainer Trainer { get; private set; }
         public ISampler Sampler { get; private set; }
         public DataNameToInputMap DataNameToInputMap { get; private set; }
@@ -19,39 +24,16 @@ namespace Horker.PSCNTK
 
         public Minibatch Minibatch { get; private set; }
 
-        public int SampleCount => (int)Trainer.PreviousMinibatchSampleCount();
-
-        public double Loss
-        {
-            get
-            {
-                if (Trainer.LossFunction() == null)
-                    return 0;
-
-                return Trainer.PreviousMinibatchLossAverage();
-            }
-        }
-
-        public double Metric
-        {
-            get
-            {
-                if (Trainer.EvaluationFunction() == null)
-                    return 0;
-
-                return Trainer.PreviousMinibatchEvaluationAverage();
-            }
-        }
-
-        private Stopwatch _stopwatch;
-        public TimeSpan Elapsed => _stopwatch.Elapsed;
-
-        private UnorderedMapVariableMinibatchData _validationData;
+        public int SampleCount { get; private set; }
+        public double Loss { get; private set; }
+        public double Metric { get; private set; }
 
         public TrainingSession(Trainer trainer, ISampler sampler, Hashtable dataNameToInputMap = null)
         {
             Trainer = trainer;
             Sampler = sampler;
+
+            _validationData = null;
 
             DataNameToInputMap = new DataNameToInputMap(
                 new Function[] { trainer.Model(), trainer.LossFunction(), trainer.EvaluationFunction() },
@@ -106,6 +88,10 @@ namespace Horker.PSCNTK
 
                 Trainer.TrainMinibatch(arguments, device);
 
+                SampleCount = (int)Trainer.PreviousMinibatchSampleCount();
+                Loss = Trainer.PreviousMinibatchLossAverage();
+                Metric = Trainer.PreviousMinibatchEvaluationAverage();
+
                 yield return this;
 
                 EpochIncremented = false;
@@ -131,20 +117,20 @@ namespace Horker.PSCNTK
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();
 
-            if (_validationData == null)
-            {
-                var batch = Sampler.GetValidationMinibatch(device);
+//            if (_validationData == null)
+//            {
+                _validationData = Sampler.GetValidationMinibatch(device);
 
-                if (batch == null)
+                if (_validationData == null)
                     return 0.0;
+//            }
 
-                _validationData = new UnorderedMapVariableMinibatchData();
-                var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(batch);
-                foreach (var entry in arguments)
-                    _validationData.Add(entry.Key, entry.Value);
-            }
+            var map = new UnorderedMapVariableMinibatchData();
+            var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(_validationData);
+            foreach (var entry in arguments)
+                map.Add(entry.Key, entry.Value);
 
-            return Trainer.TestMinibatch(_validationData, device);
+            return Trainer.TestMinibatch(map, device);
         }
     }
 }

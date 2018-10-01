@@ -144,7 +144,7 @@ namespace Horker.PSCNTK
             }
         }
 
-        private MinibatchData GetBatch(IDataSource<float> feature, int cur, int batchSize, bool sweepEnd, DeviceDescriptor device)
+        private Value GetValue(IDataSource<float> feature, int cur, int batchSize, DeviceDescriptor device)
         {
             var chunkSize = feature.Shape.GetSize(-2);
 
@@ -165,10 +165,23 @@ namespace Horker.PSCNTK
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();
 
-            var array = NDArrayViewMethods.SafeCreate(shape.Dimensions, buffer, device);
-            var value = new Value(array);
-            var numSamples = WithSequenceAxis ? batchSize * feature.Shape[-2] : batchSize;
-            var batch = new MinibatchData(value, (uint)batchSize, (uint)numSamples, sweepEnd);
+            return new Value(NDArrayViewMethods.SafeCreate(shape.Dimensions, buffer, device));
+        }
+
+        private Minibatch GetMinibatch(int batchSize, int position, DeviceDescriptor device, bool sweepEnd)
+        {
+            var batch = new Minibatch();
+
+            foreach (var entry in _features)
+            {
+                var name = entry.Key;
+                var feature = entry.Value;
+                var value = GetValue(feature, position, batchSize, device);
+                var numSamples = WithSequenceAxis ? batchSize * feature.Shape[-2] : batchSize;
+                batch.AddNewMinibatch(name, value, batchSize, numSamples, sweepEnd);
+            }
+
+            batch.SweepEnd = sweepEnd;
 
             return batch;
         }
@@ -188,15 +201,7 @@ namespace Horker.PSCNTK
             if (Current + _minibatchSize * 2 > _validationStart)
                 sweepEnd = true;
 
-            var batch = new Minibatch();
-
-            foreach (var entry in _features)
-            {
-                var b = GetBatch(entry.Value, Current, _minibatchSize, sweepEnd, device);
-                batch.Features.Add(entry.Key, b);
-            }
-
-            batch.SweepEnd = sweepEnd;
+            var batch = GetMinibatch(_minibatchSize, Current, device, sweepEnd);
 
             Current += _minibatchSize;
 
@@ -212,17 +217,7 @@ namespace Horker.PSCNTK
             if (batchSize == 0)
                 return null;
 
-            var batch = new Minibatch();
-
-            foreach (var entry in _features)
-            {
-                var b = GetBatch(entry.Value, _validationStart, batchSize, false, device);
-                batch.Features.Add(entry.Key, b);
-            }
-
-            batch.SweepEnd = false;
-
-            return batch;
+            return GetMinibatch(batchSize, _validationStart, device, false);
         }
     }
 }

@@ -204,7 +204,7 @@ $trainer = cntk.trainer $out $label CrossEntropyWithSoftmax ClassificationError 
 $sampler = cntk.ctfsampler $TRAIN_FILE $MINIBATCH_SIZE
 
 $testsampler = cntk.ctfsampler $TEST_FILE $VALIDATION_SIZE
-$sampler.SetValidationData($testsampler.GetNextBatch())
+$sampler.SetValidationData($testsampler.GetNextMinibatch())
 
 cntk.starttraining $trainer $sampler -MaxIteration 50000 -ProgressOutputStep 500
 

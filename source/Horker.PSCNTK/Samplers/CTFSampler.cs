@@ -97,7 +97,7 @@ namespace Horker.PSCNTK
             var minibatch = new Minibatch();
 
             foreach (var info in _streamInfos)
-                minibatch.Features[info.Key] = minibatchData[info.Value];
+                minibatch.Add(info.Key, minibatchData[info.Value]);
 
             return minibatch;
         }
