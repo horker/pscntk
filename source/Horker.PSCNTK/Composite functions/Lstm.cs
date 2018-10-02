@@ -72,7 +72,7 @@ namespace Horker.PSCNTK.Microsoft
         }
 
         static Tuple<Function, Function> LSTMPCellWithSelfStabilization<ElementType>(
-            Variable input, Variable prevOutput, Variable prevCellState, DeviceDescriptor device, string baseName)
+            Variable input, Variable prevOutput, Variable prevCellState, bool stabilize, DeviceDescriptor device, string baseName)
         {
             int outputDim = prevOutput.Shape[0];
             int cellDim = prevCellState.Shape[0];
@@ -107,8 +107,13 @@ namespace Horker.PSCNTK.Microsoft
                 return param;
             };
 
-            Function stabilizedPrevOutput = Stabilize<ElementType>(prevOutput, device, baseName + "_prevOutput");
-            Function stabilizedPrevCellState = Stabilize<ElementType>(prevCellState, device, baseName + "_prevCellState");
+            var stabilizedPrevOutput = prevOutput;
+            var stabilizedPrevCellState = prevCellState;
+            if (stabilize)
+            {
+                stabilizedPrevOutput = Stabilize<ElementType>(prevOutput, device, baseName + "_prevOutput");
+                stabilizedPrevCellState = Stabilize<ElementType>(prevCellState, device, baseName + "_prevCellState");
+            }
 
             Func<string, Variable> projectInput = (name) => {
                 var param = createProjectionParam(cellDim, name) * input;
@@ -223,7 +228,12 @@ namespace Horker.PSCNTK.Microsoft
                 Composite.Register(ot);
                 ot = projectInput(name) + ot;
                 Composite.Register(ot);
-                var ot2 = CNTKLib.ElementTimes(createDiagWeightParam(cellDim, name), Stabilize<ElementType>(ct, device, name));
+
+                var stabilizedCt = ct;
+                if (stabilize)
+                    stabilizedCt = Stabilize<ElementType>(ct, device, name);
+
+                var ot2 = CNTKLib.ElementTimes(createDiagWeightParam(cellDim, name), stabilizedCt);
                 Composite.Register(ot2);
                 ot = (Variable)ot + ot2;
                 Composite.Register(ot);
@@ -257,7 +267,11 @@ namespace Horker.PSCNTK.Microsoft
                 var name = baseName + "_h";
                 NodeGroup.EnterNewGroup(name);
 
-                h = (outputDim != cellDim) ? (createProjectionParam(outputDim, name) * Stabilize<ElementType>(ht, device, name + "_stab")) : ht;
+                var stabilizedHt = ht;
+                if (stabilize)
+                    stabilizedHt = Stabilize<ElementType>(ht, device, name + "_stab");
+
+                h = (outputDim != cellDim) ? (createProjectionParam(outputDim, name) * stabilizedHt) : ht;
                 Composite.Register(h);
             }
             finally
@@ -272,13 +286,14 @@ namespace Horker.PSCNTK.Microsoft
             NDShape outputShape, NDShape cellShape,
             Func<Variable, Function> recurrenceHookH,
             Func<Variable, Function> recurrenceHookC,
+            bool stabilize,
             DeviceDescriptor device,
             string baseName)
         {
             var dh = Variable.PlaceholderVariable(outputShape, input.DynamicAxes);
             var dc = Variable.PlaceholderVariable(cellShape, input.DynamicAxes);
 
-            var LSTMCell = LSTMPCellWithSelfStabilization<ElementType>(input, dh, dc, device, baseName);
+            var LSTMCell = LSTMPCellWithSelfStabilization<ElementType>(input, dh, dc, stabilize, device, baseName);
             var actualDh = recurrenceHookH(LSTMCell.Item1);
             Composite.Register(actualDh);
             Composite.Register(actualDh.Inputs[1]);
@@ -325,8 +340,8 @@ namespace Horker.PSCNTK.Microsoft
         /// <param name="device">CPU or GPU device to run the model</param>
         /// <param name="outputName">name of the model output</param>
         /// <returns>the RNN model</returns>
-        public static Function Create(Variable input, int LSTMDim, int cellDim, bool returnSequences, DeviceDescriptor device,
-            string outputName)
+        public static Function Create(Variable input, int LSTMDim, int cellDim, bool returnSequences, bool stabilize,
+            DeviceDescriptor device, string outputName)
         {
             try
             {
@@ -339,6 +354,7 @@ namespace Horker.PSCNTK.Microsoft
                     new int[] { cellDim },
                     pastValueRecurrenceHook,
                     pastValueRecurrenceHook,
+                    stabilize,
                     device,
                     outputName).Item1;
                 Composite.Register(LSTMFunction);

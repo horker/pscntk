@@ -20,9 +20,12 @@ namespace Horker.PSCNTK
         public SwitchParameter ReturnSequences = false;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public CNTK.DeviceDescriptor Device = null;
+        public SwitchParameter Stabilize = false;
 
         [Parameter(Position = 5, Mandatory = false)]
+        public CNTK.DeviceDescriptor Device = null;
+
+        [Parameter(Position = 6, Mandatory = false)]
         public string Name = "LSTM";
 
         protected override void EndProcessing()
@@ -30,7 +33,7 @@ namespace Horker.PSCNTK
             if (Device == null)
                 Device = CNTK.DeviceDescriptor.UseDefaultDevice();
 
-            var lstm = Microsoft.LSTMSequenceClassifierNet.Create(Input, LstmDimension, CellDimension, ReturnSequences, Device, Name);
+            var lstm = Microsoft.LSTMSequenceClassifierNet.Create(Input, LstmDimension, CellDimension, ReturnSequences, Stabilize, Device, Name);
 
             WriteObject(lstm);
         }
