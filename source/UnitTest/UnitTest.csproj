@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackgroundScriptRunnerTest.cs" />
+    <Compile Include="CTFToolsTest.cs" />
     <Compile Include="ExpressionSamplerTest.cs" />
     <Compile Include="MinibatchDataTest.cs" />
     <Compile Include="NDArrayViewTest.cs" />
