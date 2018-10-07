@@ -171,7 +171,7 @@ namespace Horker.PSCNTK
 
         public string NEWLINE = "\r\n";
 
-        public TextWriter Writer { get; }
+        public TextWriter Writer => _writer;
 
         public CTFBuilder(TextWriter writer, int initialSeq = 0, bool seqAutoIncrement = true)
         {

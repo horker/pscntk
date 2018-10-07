@@ -11,20 +11,27 @@ namespace Horker.PSCNTK
     {
         public static NDArrayView SafeCreate(NDShape shape, float[] data, DeviceDescriptor device)
         {
-            // NOTE 1)
-            // The readOnly flag is meaningless because the data of NDArrayView are inaccessible from .NET anyway.
-            // We always set it to false.
-            // NOTE 2)
-            // An NDArrayView object created by NDArrayView(NDShape, float[], DeviceDescriptor, readOnly) constructor
-            // DOES NOT hold reference to its data. This will cause destructive memory corruption and make the whole process crash.
-            // To make the object keep track of its data by itself, make a copy of it by calling DeepClone().
+            if (device == null)
+                device = DeviceDescriptor.UseDefaultDevice();
 
-            // Enclose with unsafe to avoid garbage collection.
-            unsafe
+            if (device == DeviceDescriptor.CPUDevice)
             {
-                var a = new NDArrayView(shape, data, DeviceDescriptor.CPUDevice, false);
-                return a.DeepClone(device, false);
+                unsafe
+                {
+                    fixed (float* f = data)
+                    {
+                        using (var a = new NDArrayView(shape, data, DeviceDescriptor.CPUDevice, false))
+                        {
+                            // The NDArrayview constructor with float[] data does not copy nor hold the reference to the source data.
+                            // To make the object keep track of its data by itself, make a copy of it by calling DeepClone().
+                            return a.DeepClone(device, false);
+                        }
+                    }
+                }
             }
+
+            // Allocating in GPU memory inevitably causes copying.
+            return new NDArrayView(shape, data, device, false);
         }
     }
 }

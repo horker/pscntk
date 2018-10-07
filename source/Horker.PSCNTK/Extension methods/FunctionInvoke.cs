@@ -34,6 +34,27 @@ namespace Horker.PSCNTK
             return results;
         }
 
+        public static Value[] Invoke(this Function func, Dictionary<string, Value> arguments, DeviceDescriptor device = null, bool errorWhenArgumentUnused = true)
+        {
+            var inputs = new Dictionary<Variable, Value>();
+
+            foreach (var entry in arguments)
+            {
+                var key = FunctionFind.FindVariable(func, entry.Key);
+                if (key == null)
+                {
+                    if (errorWhenArgumentUnused)
+                        throw new ArgumentException(string.Format("Unknown argument key '{0}'", entry.Key));
+                    else
+                        continue;
+                }
+
+                inputs.Add(key, entry.Value);
+            }
+
+            return Invoke(func, inputs, device, errorWhenArgumentUnused);
+        }
+
         public static Value[] Invoke(this Function func, Hashtable arguments, DeviceDescriptor device = null, bool errorWhenArgumentUnused = true)
         {
             if (arguments == null)

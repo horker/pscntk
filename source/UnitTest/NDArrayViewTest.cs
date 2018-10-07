@@ -17,18 +17,30 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestPrematureMemoryRelease()
+        public void TestDataIngegrityAfterGarbageCollection()
         {
-            for (var i = 0; i < 1000; ++i)
+            for (var i = 0; i < 100; ++i)
             {
-                var a = new NDArrayView(new int[] { 3, 2 }, new float[] { 1, 2, 3, 4, 5, 6 }, DeviceDescriptor.CPUDevice);
-                var a2 = a.DeepClone();
+                NDArrayView a2;
+                using (var a = new NDArrayView(new int[] { 3, 2 }, new float[] { 1, 2, 3, 4, 5, 6 }, DeviceDescriptor.CPUDevice))
+                {
+                    a2 = a.DeepClone();
+                }
 
                 GC.Collect();
+                GC.Collect();
+                GC.Collect();
 
-                var ds = DataSourceFactory.FromValue(new Value(a2));
+                var value = new Value(a2);
+
+                GC.Collect();
+                GC.Collect();
+                GC.Collect();
+
+                var ds = DataSourceFactory.FromValue(value);
                 Assert.AreEqual(6, ds.Data.Count);
-                Assert.AreEqual(1, ds.Data[0]);
+                CollectionAssert.AreEqual(new int[] { 3, 2 }, ds.Shape.Dimensions);
+                CollectionAssert.AreEqual(new float[] { 1, 2, 3, 4, 5, 6 }, ds.TypedData);
             }
         }
     }

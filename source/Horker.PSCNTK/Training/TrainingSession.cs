@@ -22,16 +22,18 @@ namespace Horker.PSCNTK
         public int Iteration { get; private set; }
         public bool EpochIncremented { get; private set; }
 
-        public Minibatch Minibatch { get; private set; }
+        public bool KeepMinibatch { get; private set; }
+        public Dictionary<string, Value> Minibatch { get; private set; }
 
         public int SampleCount { get; private set; }
         public double Loss { get; private set; }
         public double Metric { get; private set; }
 
-        public TrainingSession(Trainer trainer, ISampler sampler, Hashtable dataNameToInputMap = null)
+        public TrainingSession(Trainer trainer, ISampler sampler, Hashtable dataNameToInputMap = null, bool keepMinibatch = false)
         {
             Trainer = trainer;
             Sampler = sampler;
+            KeepMinibatch = keepMinibatch;
 
             _validationData = null;
 
@@ -78,13 +80,16 @@ namespace Horker.PSCNTK
 
             for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
             {
-                Minibatch = Sampler.GetNextMinibatch(device);
-                if (Minibatch == null)
+                var minibatch = Sampler.GetNextMinibatch(device);
+                if (minibatch == null)
                     break;
 
-                DataNameToInputMap.InitializeByMinibatch(Minibatch);
+                if (KeepMinibatch)
+                    Minibatch = minibatch.GetCopy();
 
-                var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(Minibatch);
+                DataNameToInputMap.InitializeByMinibatch(minibatch);
+
+                var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(minibatch);
 
                 Trainer.TrainMinibatch(arguments, device);
 
@@ -95,7 +100,7 @@ namespace Horker.PSCNTK
                 yield return this;
 
                 EpochIncremented = false;
-                if (Minibatch.SweepEnd)
+                if (minibatch.SweepEnd)
                 {
                     ++Epoch;
                     EpochIncremented = true;

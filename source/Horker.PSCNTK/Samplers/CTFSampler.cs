@@ -92,12 +92,12 @@ namespace Horker.PSCNTK
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();
 
-            var minibatchData = _minibatchSource.GetNextMinibatch((uint)MinibatchSize, device);
+            var minibatchMap = _minibatchSource.GetNextMinibatch((uint)MinibatchSize, device);
 
-            var minibatch = new Minibatch();
+            var minibatch = new Minibatch(minibatchMap);
 
             foreach (var info in _streamInfos)
-                minibatch.Add(info.Key, minibatchData[info.Value]);
+                minibatch.Add(info.Key, minibatchMap[info.Value]);
 
             return minibatch;
         }

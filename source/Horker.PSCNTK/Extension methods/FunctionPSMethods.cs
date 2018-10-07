@@ -40,13 +40,19 @@ namespace Horker.PSCNTK
             if (arguments == null)
                 return FunctionInvoke.Invoke(f, new Dictionary<Variable, Value>(), null, false);
 
-            if (arguments is Dictionary<Variable, Value>)
-                return FunctionInvoke.Invoke(f, arguments as Dictionary<Variable, Value>, null, false);
+            if (arguments is Dictionary<Variable, Value> vvdic)
+                return FunctionInvoke.Invoke(f, vvdic, null, false);
 
-            if (arguments is Hashtable)
-                return FunctionInvoke.Invoke(f, arguments as Hashtable, null, false);
+            if (arguments is Dictionary<string, Value> svdic)
+                return FunctionInvoke.Invoke(f, svdic, null, false);
 
-            return FunctionInvoke.Invoke(f, arguments as Minibatch, map, null, false);
+            if (arguments is Hashtable ht)
+                return FunctionInvoke.Invoke(f, ht, null, false);
+
+            if (arguments is Minibatch mb)
+                return FunctionInvoke.Invoke(f, mb, map, null, false);
+
+            throw new ArgumentException("Invalid type: arguments");
         }
 
         public static string AsTree(PSObject func, object arguments = null, DataNameToInputMap map = null, bool showUid = true, bool showValue = true)

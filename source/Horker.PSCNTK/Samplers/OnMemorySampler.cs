@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CNTK;
 
 namespace Horker.PSCNTK
@@ -30,8 +28,8 @@ namespace Horker.PSCNTK
 
         public bool Randomized
         {
-            get => _randomized;
-            set { ResetInternalState(); _randomized = value; }
+            get => _randomize;
+            set { ResetInternalState(); _randomize = value; }
         }
 
         public bool WithSequenceAxis { get; private set; }
@@ -42,7 +40,7 @@ namespace Horker.PSCNTK
 
         private int _minibatchSize;
         private double _validationRate;
-        private bool _randomized;
+        private bool _randomize;
 
         private int _validationStart;
         private int[] _order;
@@ -72,7 +70,7 @@ namespace Horker.PSCNTK
             _features = features;
             _minibatchSize = minibatchSize;
             _validationRate = validationRate;
-            _randomized = randomize;
+            _randomize = randomize;
 
             WithSequenceAxis = withSequenceAxis;
         }
@@ -124,7 +122,7 @@ namespace Horker.PSCNTK
 
         private void Randomize()
         {
-            if (!_randomized)
+            if (!_randomize)
                 return;
 
             var f = _features.Values.First();

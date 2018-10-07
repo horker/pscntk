@@ -31,7 +31,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Trainer, Sampler, DataToInputMap);
+            var session = new TrainingSession(Trainer, Sampler, DataToInputMap, false);
             foreach (var progress in TrainingLoop.Start(session, MaxIteration, ProgressOutputStep))
                 WriteObject(progress);
         }
@@ -51,9 +51,12 @@ namespace Horker.PSCNTK
         [Parameter(Position = 2, Mandatory = false)]
         public Hashtable DataToInputMap = null;
 
+        [Parameter(Position = 3, Mandatory = false)]
+        public SwitchParameter KeepMinibatch;
+
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Trainer, Sampler, DataToInputMap);
+            var session = new TrainingSession(Trainer, Sampler, DataToInputMap, KeepMinibatch);
             WriteObject(session);
         }
     }

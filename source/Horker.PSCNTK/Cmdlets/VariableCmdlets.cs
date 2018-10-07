@@ -59,6 +59,9 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
+            if (DynamicAxes == null)
+                DynamicAxes = new Axis[0];
+
             var result = Variable.PlaceholderVariable(Dimensions, DynamicAxes);
             WriteObject(new WrappedVariable(result));
         }
