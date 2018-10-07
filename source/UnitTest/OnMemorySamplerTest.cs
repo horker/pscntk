@@ -28,8 +28,8 @@ namespace UnitTest
 
             {
                 var batch = sampler.GetNextMinibatch();
-                GC.Collect();
-                GC.Collect();
+//                GC.Collect();
+//                GC.Collect();
                 var data = batch.Features["input"];
                 // var c1 = SharedPtrMethods.GetUseCountOf(data);
                 // var c2 = SharedPtrMethods.GetUseCountOf(data.data);
@@ -44,7 +44,7 @@ namespace UnitTest
 
             {
                 var batch = sampler.GetNextMinibatch();
-                GC.Collect();
+//                GC.Collect();
                 var data = batch.Features["input"];
                 // var c1 = SharedPtrMethods.GetUseCountOf(data);
                 // var c2 = SharedPtrMethods.GetUseCountOf(data.data);
@@ -60,7 +60,7 @@ namespace UnitTest
             // When not randomized, remnant data that is smaller than the minibatch size is ignored.
             {
                 var batch = sampler.GetNextMinibatch();
-                GC.Collect();
+//                GC.Collect();
                 var data = batch.Features["input"];
                 var ds = DataSourceFactory.FromValue(data.data);
                 CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, ds.TypedData);
