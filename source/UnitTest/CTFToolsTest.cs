@@ -24,10 +24,10 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestIterate()
+        public void TestLineInfoReader()
         {
             var reader = new StringReader(_ctf);
-            var e = CTFTools.Iterate(reader).GetEnumerator();
+            var e = CTFTools.GetLineInfoReader(reader).GetEnumerator();
 
             {
                 var state = e.MoveNext();
@@ -108,6 +108,86 @@ namespace UnitTest
                 "1\t|data 10 11\r\n";
 
             Assert.AreEqual(expected, s);
+        }
+
+        [TestMethod]
+        public void TestSampleReader()
+        {
+            var reader = new StringReader(_ctf);
+
+            var e = CTFTools.GetSampleReader(reader).GetEnumerator();
+
+            var c = e.MoveNext();
+            Assert.IsTrue(c);
+            var s = e.Current;
+
+            Assert.AreEqual(1, s.LineCount);
+            Assert.AreEqual(1, s.SequenceCount);
+            Assert.AreEqual("0", s.SequenceId);
+
+            CollectionAssert.AreEqual(new string[] { "data", "label" }, s.DataSet.Features.Keys);
+            CollectionAssert.AreEqual(new int[] { 2, 2, 1 }, s.DataSet["data"].Shape.Dimensions);
+            CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, s.DataSet["data"].Data.ToArray());
+            CollectionAssert.AreEqual(new int[] { 2, 2, 1 }, s.DataSet["label"].Shape.Dimensions);
+            CollectionAssert.AreEqual(new float[] { 0, 1, 0, 0 }, s.DataSet["label"].Data.ToArray());
+
+            c = e.MoveNext();
+            Assert.IsTrue(c);
+            s = e.Current;
+
+            Assert.AreEqual(3, s.LineCount);
+            Assert.AreEqual(2, s.SequenceCount);
+            Assert.AreEqual("1", s.SequenceId);
+
+            CollectionAssert.AreEqual(new string[] { "data", "label" }, s.DataSet.Features.Keys);
+            CollectionAssert.AreEqual(new int[] { 2, 3, 1 }, s.DataSet["data"].Shape.Dimensions);
+            CollectionAssert.AreEqual(new float[] { 6, 7, 8, 9, 10, 11 }, s.DataSet["data"].Data.ToArray());
+            CollectionAssert.AreEqual(new int[] { 2, 3, 1 }, s.DataSet["label"].Shape.Dimensions);
+            CollectionAssert.AreEqual(new float[] { 2, 3, 0, 0, 0, 0 }, s.DataSet["label"].Data.ToArray());
+
+            c = e.MoveNext();
+            Assert.IsTrue(c);
+            s = e.Current;
+
+            Assert.AreEqual(6, s.LineCount);
+            Assert.AreEqual(3, s.SequenceCount);
+            Assert.AreEqual("2", s.SequenceId);
+
+            CollectionAssert.AreEqual(new string[] { "data", "label" }, s.DataSet.Features.Keys);
+            CollectionAssert.AreEqual(new int[] { 2, 3, 1 }, s.DataSet["data"].Shape.Dimensions);
+            CollectionAssert.AreEqual(new float[] { 12, 13, 14, 15, 16, 17 }, s.DataSet["data"].Data.ToArray());
+            CollectionAssert.AreEqual(new int[] { 2, 3, 1 }, s.DataSet["label"].Shape.Dimensions);
+            CollectionAssert.AreEqual(new float[] { 4, 5, 0, 0, 0, 0 }, s.DataSet["label"].Data.ToArray());
+
+            c = e.MoveNext();
+            Assert.IsFalse(c);
+        }
+
+        [TestMethod]
+        public void TestSampleReaderComment()
+        {
+            var ctf =
+                "99\t|data 9 8 7|  # comment1 \t\r\n" +
+                "99\t|#comment2\t|data 6 5 4\r\n";
+
+            var reader = new StringReader(ctf);
+            var e = CTFTools.GetSampleReader(reader).GetEnumerator();
+
+            var c = e.MoveNext();
+            Assert.IsTrue(c);
+            var s = e.Current;
+
+            Assert.AreEqual(1, s.LineCount);
+            Assert.AreEqual(1, s.SequenceCount);
+            Assert.AreEqual("99", s.SequenceId);
+
+            CollectionAssert.AreEqual(new string[] { "data" }, s.DataSet.Features.Keys);
+            CollectionAssert.AreEqual(new int[] { 3, 2, 1 }, s.DataSet["data"].Shape.Dimensions);
+            CollectionAssert.AreEqual(new float[] { 9, 8, 7, 6, 5, 4 }, s.DataSet["data"].Data.ToArray());
+            CollectionAssert.AreEqual(new string[] { "comment1", "comment2" }, s.Comments.ToArray());
+
+            c = e.MoveNext();
+            Assert.IsFalse(c);
         }
     }
 }
