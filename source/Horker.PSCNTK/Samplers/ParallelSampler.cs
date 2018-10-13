@@ -16,9 +16,6 @@ namespace Horker.PSCNTK
         private int _totalSampleCount;
         private int _epoch;
 
-        private DataSourceSet _validationData;
-        private Minibatch _validationMinibatch;
-
         private DataSourceSet _lastMinibatch;
 
         private CancellationTokenSource _cancelTokenSourceForAdd;
@@ -40,8 +37,6 @@ namespace Horker.PSCNTK
 
             _dataQueue = new BlockingCollection<DataSourceSet>(queueSize);
 
-            _validationData = null;
-            _validationMinibatch = null;
             _lastMinibatch = null;
 
             _cancelTokenSourceForAdd = new CancellationTokenSource();
@@ -116,33 +111,6 @@ namespace Horker.PSCNTK
         public void CancelTaking()
         {
             _cancelTokenSourceForTake.Cancel();
-        }
-
-        public Minibatch GetValidationMinibatch(DeviceDescriptor device = null)
-        {
-            return _validationMinibatch;
-        }
-
-        public void SetValidationData(DataSourceSet validationData)
-        {
-            // Keep the original data to avoid data being garbage-collected.
-            _validationData = validationData;
-
-            _validationMinibatch = new Minibatch(validationData.Features, false, null);
-        }
-
-        public void SetValidationData(Hashtable dataSet)
-        {
-            var set = new DataSourceSet();
-            foreach (DictionaryEntry entry in dataSet)
-            {
-                var value = entry.Value;
-                if (value is PSObject)
-                    value = (value as PSObject).BaseObject;
-                set.Add((string)entry.Key, (IDataSource<float>)value);
-            }
-
-            SetValidationData(set);
         }
     }
 }

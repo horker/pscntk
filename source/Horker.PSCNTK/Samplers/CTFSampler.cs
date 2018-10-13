@@ -17,9 +17,6 @@ namespace Horker.PSCNTK
         private MinibatchSource _minibatchSource;
         private Dictionary<string, StreamInformation> _streamInfos;
 
-        private DataSourceSet _validationData;
-        private Minibatch _validationMinibatch;
-
         public int MinibatchSize { get => _minibatchSize; }
         public IList<StreamConfiguration> StreamConfigurations { get => _streamConfigurations; }
 
@@ -100,24 +97,6 @@ namespace Horker.PSCNTK
                 minibatch.Add(info.Key, minibatchMap[info.Value]);
 
             return minibatch;
-        }
-
-        public Minibatch GetValidationMinibatch(DeviceDescriptor device = null)
-        {
-            return _validationMinibatch;
-        }
-
-        public void SetValidationData(DataSourceSet validationData)
-        {
-            // Keep the original data to avoid data being garbage-collected.
-            _validationData = validationData;
-
-            _validationMinibatch = new Minibatch(validationData.Features, false, null);
-        }
-
-        public void SetValidationData(Minibatch minibatch)
-        {
-            _validationMinibatch = minibatch;
         }
     }
 }

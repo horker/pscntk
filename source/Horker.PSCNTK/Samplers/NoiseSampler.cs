@@ -59,10 +59,5 @@ namespace Horker.PSCNTK
             var minibatch = new Minibatch(new Dictionary<string, IDataSource<float>>() { { Name, _samples } }, sweepEnd, device);
             return minibatch;
         }
-
-        public Minibatch GetValidationMinibatch(DeviceDescriptor device = null)
-        {
-            return null;
-        }
     }
 }

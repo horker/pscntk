@@ -30,7 +30,7 @@ $data = cntk.datasourceset -Path $MNIST_CACHE_FILE
 
 $noiseSampler = cntk.noisesampler "noise" $NOISE_SHAPE $MINIBATCH_SIZE -Min -1.0 -Max 1.0
 
-$imageSampler = cntk.sampler $data -MinibatchSize $MINIBATCH_SIZE -ValidationRate 0.0
+$imageSampler = cntk.sampler $data -MinibatchSize $MINIBATCH_SIZE
 $compositeSampler = cntk.compositesampler $imageSampler, $noiseSampler
 
 ############################################################

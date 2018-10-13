@@ -6,50 +6,25 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKOnMemorySampler")]
-    [CmdletBinding(DefaultParameterSetName = "new")]
     [Alias("cntk.sampler")]
     public class NewCNTKOneMemorySampler : PSCmdlet
     {
-        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "new")]
+        [Parameter(Position = 0, Mandatory = true)]
         public DataSourceSet DataSourceSet;
 
-        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "new")]
+        [Parameter(Position = 1, Mandatory = false)]
         public int MinibatchSize = 32;
 
-        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "new")]
-        public double ValidationRate = 0.0;
-
-        [Parameter(Position = 3, Mandatory = false, ParameterSetName = "new")]
+        [Parameter(Position = 2, Mandatory = false)]
         public SwitchParameter NoRandomize = false;
 
-        [Parameter(Position = 4, Mandatory = false, ParameterSetName = "new")]
+        [Parameter(Position = 3, Mandatory = false)]
         public SwitchParameter WithSequenceAxis = false;
-
-        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "load")]
-        public string Path;
-
-        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "load")]
-        public SwitchParameter NoDecompress;
 
         protected override void EndProcessing()
         {
-            if (ParameterSetName == "load")
-            {
-                if (!System.IO.Path.IsPathRooted(Path))
-                {
-                    var current = SessionState.Path.CurrentFileSystemLocation;
-                    Path = SessionState.Path.Combine(current.ToString(), Path);
-                }
-
-                var result = OnMemorySampler.Load(Path, !NoDecompress);
-                WriteObject(result);
-            }
-            else
-            {
-                var sampler = new OnMemorySampler(DataSourceSet, MinibatchSize, ValidationRate, !NoRandomize, WithSequenceAxis);
-
-                WriteObject(sampler);
-            }
+            var sampler = new OnMemorySampler(DataSourceSet, MinibatchSize, !NoRandomize, WithSequenceAxis);
+            WriteObject(sampler);
         }
     }
 }

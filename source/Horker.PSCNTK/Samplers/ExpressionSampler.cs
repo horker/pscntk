@@ -77,10 +77,5 @@ namespace Horker.PSCNTK
 
             return minibatch;
         }
-
-        public Minibatch GetValidationMinibatch(DeviceDescriptor device = null)
-        {
-            return null;
-        }
     }
 }

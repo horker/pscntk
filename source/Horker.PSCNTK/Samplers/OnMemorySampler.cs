@@ -20,12 +20,6 @@ namespace Horker.PSCNTK
             set { ResetInternalState(); _minibatchSize = value; }
         }
 
-        public double ValidationRate
-        {
-            get => _validationRate;
-            set { ResetInternalState(); _validationRate = value; }
-        }
-
         public bool Randomized
         {
             get => _randomize;
@@ -39,13 +33,11 @@ namespace Horker.PSCNTK
         private Dictionary<string, IDataSource<float>> _features;
 
         private int _minibatchSize;
-        private double _validationRate;
         private bool _randomize;
 
-        private int _validationStart;
         private int[] _order;
 
-        public OnMemorySampler(DataSourceSet features, int minibatchSize, double validationRate = .3, bool randomize = true, bool withSequenceAxis = false)
+        public OnMemorySampler(DataSourceSet features, int minibatchSize, bool randomize = true, bool withSequenceAxis = false)
         {
             var f = features.Features.Values.First();
 
@@ -69,7 +61,6 @@ namespace Horker.PSCNTK
 
             _features = features;
             _minibatchSize = minibatchSize;
-            _validationRate = validationRate;
             _randomize = randomize;
 
             WithSequenceAxis = withSequenceAxis;
@@ -110,8 +101,6 @@ namespace Horker.PSCNTK
                 Total = f.Shape[-1];
                 Current = 0;
 
-                _validationStart = (int)(f.Shape[-1] * (1 - _validationRate));
-
                 _order = new int[f.Shape[-1]];
                 for (var i = 0; i < f.Shape[-1]; ++i)
                     _order[i] = i;
@@ -127,10 +116,6 @@ namespace Horker.PSCNTK
 
             var f = _features.Values.First();
             var randomEnd = f.Shape[-1];
-
-            // for series data, validation data always keeps its order and is obtained from the latest portion
-            if (WithSequenceAxis)
-                randomEnd = _validationStart;
 
             var random = Random.GetInstance();
             for (var i = 0; i < randomEnd; ++i)
@@ -190,13 +175,13 @@ namespace Horker.PSCNTK
 
             bool sweepEnd = false;
 
-            if (Current + _minibatchSize > _validationStart)
+            if (Current + _minibatchSize > _order.Length)
             {
                 Randomize();
                 Current = 0;
             }
 
-            if (Current + _minibatchSize * 2 > _validationStart)
+            if (Current + _minibatchSize * 2 > _order.Length)
                 sweepEnd = true;
 
             var batch = GetMinibatch(_minibatchSize, Current, device, sweepEnd);
@@ -204,18 +189,6 @@ namespace Horker.PSCNTK
             Current += _minibatchSize;
 
             return batch;
-        }
-
-        public Minibatch GetValidationMinibatch(DeviceDescriptor device = null)
-        {
-            InitializeOrder();
-
-            var batchSize = Total - _validationStart;
-
-            if (batchSize == 0)
-                return null;
-
-            return GetMinibatch(batchSize, _validationStart, device, false);
         }
     }
 }
