@@ -95,16 +95,8 @@ namespace Horker.PSCNTK
 
             // Get absolute paths
 
-            var current = SessionState.Path.CurrentFileSystemLocation;
-
-            if (!System.IO.Path.IsPathRooted(Path))
-                Path = SessionState.Path.Combine(current.ToString(), Path);
-
             for (var i = 0; i < OutFiles.Length; ++i)
-            {
-                if (!System.IO.Path.IsPathRooted(Path))
-                    OutFiles[i] = SessionState.Path.Combine(current.ToString(), OutFiles[i]);
-            }
+                OutFiles[i] = IO.GetAbsolutePath(this, OutFiles[i]);
 
             // Write partial files
 

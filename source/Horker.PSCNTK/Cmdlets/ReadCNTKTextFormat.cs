@@ -22,11 +22,7 @@ namespace Horker.PSCNTK
 
         protected override void BeginProcessing()
         {
-            if (!System.IO.Path.IsPathRooted(Path))
-            {
-                var current = SessionState.Path.CurrentFileSystemLocation;
-                Path = SessionState.Path.Combine(current.ToString(), Path);
-            }
+            Path = IO.GetAbsolutePath(this, Path);
 
             if (AsEnumerator)
             {

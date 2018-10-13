@@ -24,12 +24,7 @@ namespace Horker.PSCNTK
         {
             if (ParameterSetName == "load")
             {
-                if (!System.IO.Path.IsPathRooted(Path))
-                {
-                    var current = SessionState.Path.CurrentFileSystemLocation;
-                    Path = SessionState.Path.Combine(current.ToString(), Path);
-                }
-
+                Path = IO.GetAbsolutePath(this, Path);
                 var dss = DataSourceSet.Load(Path, !NoDecompress);
                 WriteObject(dss);
             }

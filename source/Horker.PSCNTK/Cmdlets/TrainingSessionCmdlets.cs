@@ -42,13 +42,7 @@ namespace Horker.PSCNTK
             Logger logger = null;
             if (LogFile != null)
             {
-                if (!Path.IsPathRooted(LogFile))
-                {
-                    var current = SessionState.Path.CurrentFileSystemLocation;
-                    LogFile = SessionState.Path.Combine(current.ToString(), LogFile);
-                }
-
-                var writer = new StreamWriter(LogFile, true, new UTF8Encoding(false));
+                var writer = new StreamWriter(IO.GetAbsolutePath(this, LogFile), true, new UTF8Encoding(false));
                 logger = new Logger(writer);
             }
 

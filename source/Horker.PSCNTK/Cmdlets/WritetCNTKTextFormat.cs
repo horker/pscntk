@@ -20,12 +20,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            if (!System.IO.Path.IsPathRooted(Path))
-            {
-                var current = SessionState.Path.CurrentFileSystemLocation;
-                Path = SessionState.Path.Combine(current.ToString(), Path);
-            }
-
+            Path = IO.GetAbsolutePath(this, Path);
             DataSourceSetCTFBuilder.Write(Path, DataSources, WithSequenceAxis);
         }
     }

@@ -23,12 +23,7 @@ namespace Horker.PSCNTK
 
         protected override void BeginProcessing()
         {
-            // Get absolute path
-
-            var current = SessionState.Path.CurrentFileSystemLocation;
-
-            if (!System.IO.Path.IsPathRooted(Path))
-                Path = SessionState.Path.Combine(current.ToString(), Path);
+            Path = IO.GetAbsolutePath(this, Path);
 
             // Count sequeneces
 

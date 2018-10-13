@@ -22,12 +22,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            if (!System.IO.Path.IsPathRooted(Path))
-            {
-                var current = SessionState.Path.CurrentFileSystemLocation;
-                Path = SessionState.Path.Combine(current.ToString(), Path);
-            }
-
+            Path = IO.GetAbsolutePath(this, Path);
             var writer = new StreamWriter(Path, false, new UTF8Encoding(false));
             var builder = new CTFBuilder(writer, InitialSequence, !ManualIncrement);
 
