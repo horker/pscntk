@@ -113,7 +113,7 @@ namespace Horker.PSCNTK
                 string lastLine = null;
                 for (var i = 0; i < OutFiles.Length; ++i)
                 {
-                    using (var writer = new StreamWriter(OutFiles[i], false, Encoding.UTF8))
+                    using (var writer = new StreamWriter(OutFiles[i], false, new UTF8Encoding(false)))
                     {
                         lastLine = CTFTools.WritePartial(reader, writer, SequenceCounts[i], lastLine);
                     }

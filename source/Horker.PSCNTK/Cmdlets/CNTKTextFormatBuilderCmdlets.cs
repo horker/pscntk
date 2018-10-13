@@ -28,7 +28,7 @@ namespace Horker.PSCNTK
                 Path = SessionState.Path.Combine(current.ToString(), Path);
             }
 
-            var writer = new StreamWriter(Path, false, Encoding.UTF8);
+            var writer = new StreamWriter(Path, false, new UTF8Encoding(false));
             var builder = new CTFBuilder(writer, InitialSequence, !ManualIncrement);
 
             WriteObject(builder);
