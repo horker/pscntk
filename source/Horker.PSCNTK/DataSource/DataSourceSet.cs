@@ -10,7 +10,7 @@ namespace Horker.PSCNTK
     [Serializable]
     public class DataSourceSet : IEnumerable<KeyValuePair<string, IDataSource<float>>>
     {
-        public Dictionary<string, IDataSource<float>> Features { get => _data; }
+        public Dictionary<string, IDataSource<float>> Features => _data;
 
         internal Dictionary<string, IDataSource<float>> _data;
 
@@ -82,6 +82,23 @@ namespace Horker.PSCNTK
         public void Save(string path, bool compress = true)
         {
             Serializer.Serialize(this, path, compress);
+        }
+
+        public DataSourceSet[] Split(params double[] rates)
+        {
+            var results = new DataSourceSet[rates.Length];
+
+            for (var i = 0; i < rates.Length; ++i)
+                results[i] = new DataSourceSet();
+
+            foreach (var ds in _data)
+            {
+                var split = ds.Value.Split(rates);
+                for (var i = 0; i < split.Length; ++i)
+                    results[i].Add(ds.Key, split[i]);
+            }
+
+            return results;
         }
 
         public static implicit operator Hashtable(DataSourceSet dss)
