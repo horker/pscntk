@@ -44,14 +44,14 @@ namespace Horker.PSCNTK
                         p.Validation = Math.Round(t.GetValidationMetric(), 5);
                         p.Elapsed = t.Elapsed;
 
+                        if (logger != null)
+                            logger.Info(p, "Training Progress");
+
                         yield return p;
 
                         sampleCount = 0;
                         loss = 0.0;
                         metric = 0.0;
-
-                        if (logger != null)
-                            logger.Info(p, "Training Progress");
                     }
                 }
             }
