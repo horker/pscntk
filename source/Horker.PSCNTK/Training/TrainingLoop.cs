@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace Horker.PSCNTK
 {
     public class TrainingLoop
     {
-        public static IEnumerable<TrainingProgress> Start(TrainingSession session, int maxIteration, int progressOutputStep)
+        public static IEnumerable<TrainingProgress> Start(TrainingSession session, int maxIteration, int progressOutputStep, Logger logger)
         {
             int sampleCount = 0;
             var loss = 0.0;
@@ -48,6 +49,9 @@ namespace Horker.PSCNTK
                         sampleCount = 0;
                         loss = 0.0;
                         metric = 0.0;
+
+                        if (logger != null)
+                            logger.Info(p, "Training Progress");
                     }
                 }
             }

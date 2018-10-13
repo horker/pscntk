@@ -5,6 +5,8 @@ using System.Linq;
 using System.Collections;
 using System.Reflection;
 using CNTK;
+using System.IO;
+using System.Text;
 
 namespace Horker.PSCNTK
 {
@@ -32,11 +34,35 @@ namespace Horker.PSCNTK
         [Parameter(Position = 5, Mandatory = false)]
         public int ProgressOutputStep = 100;
 
+        [Parameter(Position = 6, Mandatory = false)]
+        public string LogFile = null;
+
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Trainer, Sampler, ValidationSampler, DataToInputMap, null, null, false);
-            foreach (var progress in TrainingLoop.Start(session, MaxIteration, ProgressOutputStep))
-                WriteObject(progress);
+            Logger logger = null;
+            if (LogFile != null)
+            {
+                if (!Path.IsPathRooted(LogFile))
+                {
+                    var current = SessionState.Path.CurrentFileSystemLocation;
+                    LogFile = SessionState.Path.Combine(current.ToString(), LogFile);
+                }
+
+                var writer = new StreamWriter(LogFile, true, new UTF8Encoding(false));
+                logger = new Logger(writer);
+            }
+
+            try
+            {
+                var session = new TrainingSession(Trainer, Sampler, ValidationSampler, DataToInputMap, null, null, false);
+                foreach (var progress in TrainingLoop.Start(session, MaxIteration, ProgressOutputStep, logger))
+                    WriteObject(progress);
+            }
+            finally
+            {
+                if (logger != null)
+                    logger.Writer.Close();
+            }
         }
     }
 

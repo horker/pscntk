@@ -23,3 +23,4 @@ CNTK/
 *.sqlite
 *.dot
 *.ctf
+*.log

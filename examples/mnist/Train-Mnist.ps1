@@ -19,7 +19,9 @@ Set-CNTKRandomSeed 1234
 ############################################################
 
 $data = cntk.datasourceset -Path $MNIST_CACHE_FILE
-$sampler = cntk.sampler $data -MinibatchSize 64 -ValidationRate .2
+$trainData, $testData = $data.Split(@(.8, .2))
+$sampler = cntk.sampler $trainData -MinibatchSize 64
+$testSampler = cntk.sampler $testData -MinibatchSize 64
 
 ############################################################
 # Model
@@ -59,4 +61,4 @@ $learner = cntk.momentumsgd $out .1 .9
 
 $trainer = cntk.trainer $out $label CrossEntropyWithSoftmax ClassificationError $learner
 
-cntk.starttraining $trainer $sampler -MaxIteration 10000 -ProgressOutputStep 500
+cntk.starttraining $trainer $sampler $testSampler -MaxIteration 10000 -ProgressOutputStep 500 -LogFile "$PSScriptRoot\mnist_log.log"
