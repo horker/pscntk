@@ -20,18 +20,21 @@ namespace Horker.PSCNTK
         [Parameter(Position = 1, Mandatory = true)]
         public ISampler Sampler;
 
-        [Parameter(Position = 2, Mandatory = false)]
-        public Hashtable DataToInputMap = null;
+        [Parameter(Position = 2, Mandatory = true)]
+        public ISampler ValidationSampler;
 
         [Parameter(Position = 3, Mandatory = false)]
-        public int MaxIteration = 10000;
+        public Hashtable DataToInputMap = null;
 
         [Parameter(Position = 4, Mandatory = false)]
+        public int MaxIteration = 10000;
+
+        [Parameter(Position = 5, Mandatory = false)]
         public int ProgressOutputStep = 100;
 
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Trainer, Sampler, DataToInputMap, false);
+            var session = new TrainingSession(Trainer, Sampler, ValidationSampler, DataToInputMap, null, null, false);
             foreach (var progress in TrainingLoop.Start(session, MaxIteration, ProgressOutputStep))
                 WriteObject(progress);
         }
@@ -48,15 +51,18 @@ namespace Horker.PSCNTK
         [Parameter(Position = 1, Mandatory = true)]
         public ISampler Sampler;
 
-        [Parameter(Position = 2, Mandatory = false)]
-        public Hashtable DataToInputMap = null;
+        [Parameter(Position = 2, Mandatory = true)]
+        public ISampler ValidationSampler;
 
         [Parameter(Position = 3, Mandatory = false)]
+        public Hashtable DataToInputMap = null;
+
+        [Parameter(Position = 4, Mandatory = false)]
         public SwitchParameter KeepMinibatch;
 
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Trainer, Sampler, DataToInputMap, KeepMinibatch);
+            var session = new TrainingSession(Trainer, Sampler, ValidationSampler, DataToInputMap, null, null, KeepMinibatch);
             WriteObject(session);
         }
     }

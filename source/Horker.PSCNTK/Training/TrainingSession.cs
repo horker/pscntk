@@ -12,11 +12,14 @@ namespace Horker.PSCNTK
         private Stopwatch _stopwatch;
         public TimeSpan Elapsed => _stopwatch.Elapsed;
 
-        private Minibatch _validationData;
-
         public Trainer Trainer { get; private set; }
+
         public ISampler Sampler { get; private set; }
+        public ISampler TestSampler { get; private set; }
         public DataNameToInputMap DataNameToInputMap { get; private set; }
+
+        public DeviceDescriptor TrainingDevice { get; private set; }
+        public DeviceDescriptor TestDevice { get; private set; }
 
         public int Epoch { get; private set; }
         public int Iteration { get; private set; }
@@ -29,13 +32,21 @@ namespace Horker.PSCNTK
         public double Loss { get; private set; }
         public double Metric { get; private set; }
 
-        public TrainingSession(Trainer trainer, ISampler sampler, Hashtable dataNameToInputMap = null, bool keepMinibatch = false)
+        public TrainingSession(Trainer trainer, ISampler sampler, ISampler testSampler, Hashtable dataNameToInputMap = null, DeviceDescriptor trainingDevice = null, DeviceDescriptor testDevice = null, bool keepMinibatch = false)
         {
             Trainer = trainer;
             Sampler = sampler;
-            KeepMinibatch = keepMinibatch;
+            TestSampler = testSampler;
 
-            _validationData = null;
+            TrainingDevice = trainingDevice;
+            if (TrainingDevice == null)
+                TrainingDevice = DeviceDescriptor.UseDefaultDevice();
+
+            TestDevice = testDevice;
+            if (TestDevice == null)
+                TestDevice = DeviceDescriptor.UseDefaultDevice();
+
+            KeepMinibatch = keepMinibatch;
 
             DataNameToInputMap = new DataNameToInputMap(
                 new Function[] { trainer.Model(), trainer.LossFunction(), trainer.EvaluationFunction() },
@@ -68,19 +79,16 @@ namespace Horker.PSCNTK
             return null;
         }
 
-        public IEnumerable<TrainingSession> GetIterator(int maxIteration = int.MaxValue, DeviceDescriptor device = null)
+        public IEnumerable<TrainingSession> GetIterator(int maxIteration = int.MaxValue)
         {
             _stopwatch = Stopwatch.StartNew();
-
-            if (device == null)
-                device = DeviceDescriptor.UseDefaultDevice();
 
             Epoch = 1;
             EpochIncremented = false;
 
             for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
             {
-                var minibatch = Sampler.GetNextMinibatch(device);
+                var minibatch = Sampler.GetNextMinibatch(TrainingDevice);
                 if (minibatch == null)
                     break;
 
@@ -91,7 +99,7 @@ namespace Horker.PSCNTK
 
                 var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(minibatch);
 
-                Trainer.TrainMinibatch(arguments, device);
+                Trainer.TrainMinibatch(arguments, TrainingDevice);
 
                 SampleCount = (int)Trainer.PreviousMinibatchSampleCount();
                 Loss = Trainer.PreviousMinibatchLossAverage();
@@ -108,34 +116,36 @@ namespace Horker.PSCNTK
             }
         }
 
-        public IEnumerator<TrainingSession> GetEnumerator(int maxIteration = int.MaxValue, DeviceDescriptor device = null)
+        public IEnumerator<TrainingSession> GetEnumerator(int maxIteration = int.MaxValue)
         {
             // In Powershell we can't call GetEnumerator()
-            return GetIterator(maxIteration, device).GetEnumerator();
+            return GetIterator(maxIteration).GetEnumerator();
         }
 
-        public double GetValidationMetric(DeviceDescriptor device = null)
+        public double GetValidationMetric()
         {
-            if (Trainer.EvaluationFunction() == null)
+            if (TestSampler == null || Trainer.EvaluationFunction() == null)
                 return 0.0;
 
-            if (device == null)
-                device = DeviceDescriptor.UseDefaultDevice();
+            double metric = 0.0;
+            int count = 0;
 
-//            if (_validationData == null)
-//            {
-                _validationData = Sampler.GetValidationMinibatch(device);
+            Minibatch testData;
+            do
+            {
+                testData = TestSampler.GetNextMinibatch(TestDevice);
 
-                if (_validationData == null)
-                    return 0.0;
-//            }
+                var map = new UnorderedMapVariableMinibatchData();
+                var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(testData);
+                foreach (var entry in arguments)
+                    map.Add(entry.Key, entry.Value);
 
-            var map = new UnorderedMapVariableMinibatchData();
-            var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(_validationData);
-            foreach (var entry in arguments)
-                map.Add(entry.Key, entry.Value);
+                metric += Trainer.TestMinibatch(map, TestDevice);
+                ++count;
+            }
+            while (!testData.SweepEnd);
 
-            return Trainer.TestMinibatch(map, device);
+            return metric / count;
         }
     }
 }

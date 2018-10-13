@@ -111,7 +111,7 @@ namespace benchmarkapp
 
                 var trainer = CNTKLib.CreateTrainer(output, loss, metric, new LearnerVector(new Learner[] { learner }));
 
-                var session = new TrainingSession(trainer, sampler);
+                var session = new TrainingSession(trainer, sampler, null);
 
                 var progress = session.GetIterator().GetEnumerator();
                 for (var i = 0; i < 10000; ++i)
