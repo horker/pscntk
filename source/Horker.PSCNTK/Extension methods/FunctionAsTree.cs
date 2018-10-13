@@ -9,25 +9,27 @@ namespace Horker.PSCNTK
 {
     public class FunctionAsTree : INodeWalker
     {
+        private bool _showValue;
+
         private Hashtable _arguments;
         private Minibatch _minibatch;
         private DataNameToInputMap _dataNameToInputMap;
 
         private bool _shouUid;
-        private bool _showValue;
 
         private StringBuilder _output;
 
         public string Result { get => _output.ToString(); }
 
-        public FunctionAsTree(Function func, Hashtable arguments = null, Minibatch minibatch = null, DataNameToInputMap dataNameToInputMap = null, bool showUid = true, bool showValue = true)
+        public FunctionAsTree(Function func, bool showValue, Hashtable arguments = null, Minibatch minibatch = null, DataNameToInputMap dataNameToInputMap = null, bool showUid = true)
         {
+            _showValue = showValue;
+
             _arguments = arguments;
             _minibatch = minibatch;
             _dataNameToInputMap = dataNameToInputMap;
 
             _shouUid = showUid;
-            _showValue = showValue;
 
             _output = new StringBuilder();
 

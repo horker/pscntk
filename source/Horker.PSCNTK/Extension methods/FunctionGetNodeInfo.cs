@@ -23,6 +23,7 @@ namespace Horker.PSCNTK
 
     class FunctionGetNodeInfo : INodeWalker
     {
+        private bool _showValues;
         private Hashtable _arguments;
         private Minibatch _minibatch;
         private DataNameToInputMap _map;
@@ -32,8 +33,9 @@ namespace Horker.PSCNTK
         private NodeInfo _poison;
         private Exception _exception;
 
-        public FunctionGetNodeInfo(Function func, Hashtable arguments = null, Minibatch minibatch = null, DataNameToInputMap map = null)
+        public FunctionGetNodeInfo(Function func, bool showValues, Hashtable arguments = null, Minibatch minibatch = null, DataNameToInputMap map = null)
         {
+            _showValues = showValues;
             _arguments = arguments;
             _minibatch = minibatch;
             _map = map;
@@ -135,6 +137,9 @@ namespace Horker.PSCNTK
 
         private IDataSource<float>[] GetValues(Function func)
         {
+            if (!_showValues)
+                return null;
+
             Value[] values = null;
             try
             {

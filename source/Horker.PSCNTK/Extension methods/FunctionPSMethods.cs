@@ -55,32 +55,46 @@ namespace Horker.PSCNTK
             throw new ArgumentException("Invalid type: arguments");
         }
 
-        public static string AsTree(PSObject func, object arguments = null, DataNameToInputMap map = null, bool showUid = true, bool showValue = true)
+        public static string AsTree(PSObject func)
+        {
+            Function f = ToFunction(func);
+            FunctionAsTree w = new FunctionAsTree(f, false);
+            return w.Result;
+        }
+
+        public static string AsTreeWithValues(PSObject func, object arguments = null, DataNameToInputMap map = null, bool showUid = true)
         {
             Function f = ToFunction(func);
             FunctionAsTree w;
 
             if (arguments == null)
-                w = new FunctionAsTree(f, null, null, null, showUid, showValue);
+                w = new FunctionAsTree(f, true, null, null, null);
             else if (arguments is Hashtable)
-                w = new FunctionAsTree(f, arguments as Hashtable, null, null, showUid, showValue);
+                w = new FunctionAsTree(f, true, arguments as Hashtable, null, null, showUid);
             else
-                w = new FunctionAsTree(f, null, arguments as Minibatch, map, showUid, showValue);
+                w = new FunctionAsTree(f, true, null, arguments as Minibatch, map, showUid);
 
             return w.Result;
         }
 
-        public static IEnumerable<NodeInfo> GetNodeInfo(PSObject func, object arguments = null, DataNameToInputMap map = null)
+        public static IEnumerable<NodeInfo> GetNodeInfo(PSObject func)
         {
             Function f = ToFunction(func);
-            var w = new FunctionGetNodeInfo(f);
+            var w = new FunctionGetNodeInfo(f, false);
+            return w.GetNodeInfo();
+        }
+
+        public static IEnumerable<NodeInfo> GetNodeInfoWithValues(PSObject func, object arguments = null, DataNameToInputMap map = null)
+        {
+            Function f = ToFunction(func);
+            FunctionGetNodeInfo w;
 
             if (arguments == null)
-                w = new FunctionGetNodeInfo(f, null, null);
+                w = new FunctionGetNodeInfo(f, true, null, null);
             else if (arguments is Hashtable)
-                w = new FunctionGetNodeInfo(f, arguments as Hashtable);
+                w = new FunctionGetNodeInfo(f, true, arguments as Hashtable);
             else
-                w = new FunctionGetNodeInfo(f, null, arguments as Minibatch, map);
+                w = new FunctionGetNodeInfo(f, true, null, arguments as Minibatch, map);
 
             return w.GetNodeInfo();
         }
