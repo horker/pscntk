@@ -17,11 +17,15 @@ namespace Horker.PSCNTK
         StreamConfiguration GetStreamConfiguration(string name, string alias = "");
         IDataSource<T> GetSubsequences(int subseqLength, int step = 1, int sequenceAxis = -1);
         void Reshape(params int[] dimensions);
+
         void Save(string path, bool compress = true);
         byte[] Serialize(bool compress = true);
+
         void Shuffle(int? seed = null);
-        IDataSource<T> Slice(int from, int to);
+        IDataSource<T> Slice(int offset, int count, int axis = -1);
         IDataSource<T>[] Split(params double[] rates);
+        IDataSource<T> Transpose(params int[] order);
+
         T[] ToArray();
         Bitmap ToBitmap(ImageFormat imageFormat, bool scale);
         IDataSource<float> ToDataSourceFloat();
@@ -30,6 +34,5 @@ namespace Horker.PSCNTK
         string ToString();
         Value ToValue(DeviceDescriptor device = null);
         Variable ToVariable(DeviceDescriptor device = null);
-        IDataSource<T> Transpose(params int[] order);
     }
 }

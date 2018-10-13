@@ -216,13 +216,20 @@ namespace Horker.PSCNTK
             }
         }
 
-        public DataSourceBase<T, ListSlice<T>> Slice(int offset, int count)
+        public DataSourceBase<T, ListSlice<T>> Slice(int offset, int count, int axis = -1)
         {
-            int chunkSize = _shape.GetSize(-2);
+            if (axis < 0)
+                axis = _shape.Rank + axis;
+
+            for (var i = axis + 1; i < _shape.Rank; ++i)
+                if (_shape[i] != 1)
+                    throw new ArgumentException("All axes greater than the argument 'axis' shold be 1");
+
+            int chunkSize = _shape.GetSize(axis - 1);
             var slice = new ListSlice<T>(Data, chunkSize * offset, chunkSize * count);
 
             var shape = _shape.Clone();
-            shape[-1] = count;
+            shape[axis] = count;
 
             return new DataSourceBase<T, ListSlice<T>>(slice, shape);
         }
@@ -304,9 +311,9 @@ namespace Horker.PSCNTK
 
         T IDataSource<T>.this[params int[] indexes] { get => this[indexes]; set { this[indexes] = value; } }
 
-        IDataSource<T> IDataSource<T>.Slice(int from, int to)
+        IDataSource<T> IDataSource<T>.Slice(int offset, int count, int axis)
         {
-            return Slice(from, to);
+            return Slice(offset, count, axis);
         }
 
         IDataSource<T>[] IDataSource<T>.Split(params double[] rates)

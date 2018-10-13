@@ -66,6 +66,10 @@ namespace Horker.PSCNTK
 
             var splitLines = new List<string[]>();
 
+            var comments = new List<string>();
+            var startIndexMap = new Dictionary<string, int>();
+            var endIndexMap = new Dictionary<string, int>();
+
             while ((line = reader.ReadLine()) != null)
             {
                 ++lineCount;
@@ -87,7 +91,10 @@ namespace Horker.PSCNTK
                 var seqDim = splitLines.Count;
 
                 var dss = new DataSourceSet();
-                var comments = new List<string>();
+
+                comments.Clear();
+                startIndexMap.Clear();
+                endIndexMap.Clear();
 
                 for (var i = 0; i < splitLines.Count; ++i)
                 {
@@ -125,12 +132,25 @@ namespace Horker.PSCNTK
                             data = new float[featureDim * seqDim];
                             ds = DataSourceFactory.Create(data, new int[] { featureDim, seqDim, 1 });
                             dss.Add(name, ds);
+                            startIndexMap[name] = i;
                         }
 
                         var baseIndex = ds.Shape.GetSequentialIndex(new int[] { 0, i, 0 });
                         for (var k = 0; k < featureDim; ++k)
                             data[baseIndex + k] = Converter.ToFloat(items[k + 1]);
+                        endIndexMap[name] = i;
                     }
+                }
+
+                foreach (var name in dss.Features.Keys.ToArray())
+                {
+                    var start = startIndexMap[name];
+                    var end = endIndexMap[name];
+                    if (start == 0 && end == splitLines.Count - 1)
+                        continue;
+
+                    var ds = dss[name];
+                    dss.Features[name] = ds.Slice(start, end - start + 1, -2);
                 }
 
                 yield return new CTFSample()

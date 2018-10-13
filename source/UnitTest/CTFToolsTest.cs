@@ -128,8 +128,8 @@ namespace UnitTest
             CollectionAssert.AreEqual(new string[] { "data", "label" }, s.DataSet.Features.Keys);
             CollectionAssert.AreEqual(new int[] { 2, 2, 1 }, s.DataSet["data"].Shape.Dimensions);
             CollectionAssert.AreEqual(new float[] { 0, 1, 2, 3 }, s.DataSet["data"].Data.ToArray());
-            CollectionAssert.AreEqual(new int[] { 2, 2, 1 }, s.DataSet["label"].Shape.Dimensions);
-            CollectionAssert.AreEqual(new float[] { 0, 1, 0, 0 }, s.DataSet["label"].Data.ToArray());
+            CollectionAssert.AreEqual(new int[] { 2, 1, 1 }, s.DataSet["label"].Shape.Dimensions);
+            CollectionAssert.AreEqual(new float[] { 0, 1 }, s.DataSet["label"].Data.ToArray());
 
             c = e.MoveNext();
             Assert.IsTrue(c);
@@ -142,8 +142,8 @@ namespace UnitTest
             CollectionAssert.AreEqual(new string[] { "data", "label" }, s.DataSet.Features.Keys);
             CollectionAssert.AreEqual(new int[] { 2, 3, 1 }, s.DataSet["data"].Shape.Dimensions);
             CollectionAssert.AreEqual(new float[] { 6, 7, 8, 9, 10, 11 }, s.DataSet["data"].Data.ToArray());
-            CollectionAssert.AreEqual(new int[] { 2, 3, 1 }, s.DataSet["label"].Shape.Dimensions);
-            CollectionAssert.AreEqual(new float[] { 2, 3, 0, 0, 0, 0 }, s.DataSet["label"].Data.ToArray());
+            CollectionAssert.AreEqual(new int[] { 2, 1, 1 }, s.DataSet["label"].Shape.Dimensions);
+            CollectionAssert.AreEqual(new float[] { 2, 3 }, s.DataSet["label"].Data.ToArray());
 
             c = e.MoveNext();
             Assert.IsTrue(c);
@@ -156,8 +156,8 @@ namespace UnitTest
             CollectionAssert.AreEqual(new string[] { "data", "label" }, s.DataSet.Features.Keys);
             CollectionAssert.AreEqual(new int[] { 2, 3, 1 }, s.DataSet["data"].Shape.Dimensions);
             CollectionAssert.AreEqual(new float[] { 12, 13, 14, 15, 16, 17 }, s.DataSet["data"].Data.ToArray());
-            CollectionAssert.AreEqual(new int[] { 2, 3, 1 }, s.DataSet["label"].Shape.Dimensions);
-            CollectionAssert.AreEqual(new float[] { 4, 5, 0, 0, 0, 0 }, s.DataSet["label"].Data.ToArray());
+            CollectionAssert.AreEqual(new int[] { 2, 1, 1 }, s.DataSet["label"].Shape.Dimensions);
+            CollectionAssert.AreEqual(new float[] { 4, 5 }, s.DataSet["label"].Data.ToArray());
 
             c = e.MoveNext();
             Assert.IsFalse(c);
