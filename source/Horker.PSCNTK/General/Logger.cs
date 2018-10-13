@@ -38,10 +38,17 @@ namespace Horker.PSCNTK
 
         public void Write(string value)
         {
-            // TODO: escape
             _writer.Write('"');
-            _writer.Write(value);
+            _writer.Write(EscapeString(value));
             _writer.Write('"');
+        }
+
+        public string EscapeString(string s)
+        {
+            if (s.IndexOf('"') < 0)
+                return s;
+
+            return s.Replace("\"", "\\\"");
         }
 
         public void Write(bool value)

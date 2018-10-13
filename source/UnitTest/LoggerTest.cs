@@ -99,5 +99,16 @@ namespace UnitTest
 
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void TestLoggingEscape()
+        {
+            string actual;
+            string expected;
+
+            actual = OutputLog("abc\"def\"");
+            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Category\":\"\",DataType:\"System.String\",Data:\"abc\\\"def\\\"\"}\r\n";
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
