@@ -52,6 +52,12 @@ namespace Horker.PSCNTK
             if (arguments is Minibatch mb)
                 return FunctionInvoke.Invoke(f, mb, map, null, false);
 
+            if (arguments is IDictionary<string, IDataSource<float>> sddic)
+                return FunctionInvoke.Invoke(f, sddic, null, false);
+
+            if (arguments is DataSourceSet dss)
+                return FunctionInvoke.Invoke(f, dss, null, false);
+
             throw new ArgumentException("Invalid type: arguments");
         }
 

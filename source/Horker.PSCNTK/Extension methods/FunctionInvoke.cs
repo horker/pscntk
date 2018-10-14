@@ -97,6 +97,39 @@ namespace Horker.PSCNTK
             return Invoke(func, inputs, device, errorWhenArgumentUnused);
         }
 
+        public static Value[] Invoke(this Function func, IDictionary<string, IDataSource<float>> dataSet, DeviceDescriptor device = null, bool errorWhenArgumentUnused = true)
+        {
+            var inputs = new Dictionary<Variable, Value>();
+
+            foreach (var entry in dataSet)
+            {
+                Variable key;
+                Value value;
+
+                var va = FunctionFind.FindVariable(func, entry.Key); ;
+                if (va == null)
+                {
+                    if (errorWhenArgumentUnused)
+                        throw new ArgumentException(string.Format("Unknown argument key '{0}'", entry.Key));
+                    else
+                        continue;
+                }
+
+                key = va;
+
+                value = entry.Value.ToValue();
+
+                inputs.Add(key, value);
+            }
+
+            return Invoke(func, inputs, device, errorWhenArgumentUnused);
+        }
+
+        public static Value[] Invoke(this Function func, DataSourceSet dataSet, DeviceDescriptor device = null, bool errorWhenArgumentUnused = true)
+        {
+            return Invoke(func, (IDictionary<string, IDataSource<float>>)dataSet.Features, device, errorWhenArgumentUnused);
+        }
+
         public static Value[] Invoke(this Function func, Minibatch batch, DataNameToInputMap map = null, DeviceDescriptor device = null, bool errorWhenArgumentUnused = true)
         {
             if (map == null)
