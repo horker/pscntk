@@ -5,7 +5,7 @@ Import-Module oxyplotcli
 
 $SEQLEN = 100
 
-$f = cntk.restore "$PSScriptRoot\lstm.model"
+$f = cntk.restore "$PSScriptRoot\sinewave.model"
 
 $initial = seq 0 ($SEQLEN * .1) .1 -func { math.sin $x }
 
@@ -19,7 +19,7 @@ for ($i = 0; $i -lt 500; ++$i) {
   $predicted.CopyTo(($predicted.Count - $SEQLEN), $in, 0, $SEQLEN)
 #  Write-Host (($in | foreach { $_.ToString(".##") }) -join " ")
 
-  $output = $f.Invoke(@{ input = (cntk.datasource $in 1, $SEQLEN, 1) })
+  $output = $f.Invoke(@{ input = $in })
 
   $predicted.Add($output.ToArray()[0])
 }

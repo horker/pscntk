@@ -179,7 +179,8 @@ namespace Horker.PSCNTK.Microsoft
                 Composite.Register(ft);
                 var ft2 = CNTKLib.ElementTimes(createDiagWeightParam(cellDim, name), stabilizedPrevCellState);
                 Composite.Register(ft2);
-                ft = (Variable)ft + ft2;
+                var ftb = new Parameter(new int[] { cellDim }, dataType, 1.0);
+                ft = (Variable)ft + ft2 + ftb;
                 Composite.Register(ft);
                 ft = CNTKLib.Sigmoid(ft);
                 Composite.Register(ft);
