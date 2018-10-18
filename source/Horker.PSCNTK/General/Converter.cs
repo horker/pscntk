@@ -196,12 +196,12 @@ namespace Horker.PSCNTK
             foreach (DictionaryEntry entry in h)
             {
                 object key = entry.Key;
-                if (key is PSObject)
-                    key = (key as PSObject).BaseObject;
+                if (key is PSObject pskey)
+                    key = pskey.BaseObject;
 
                 object value = entry.Value;
-                if (value is PSObject)
-                    value = (value as PSObject).BaseObject;
+                if (value is PSObject psvalue)
+                    value = psvalue.BaseObject;
 
                 result.Add(keyConverter.Invoke(key), valueConverter.Invoke(value));
             }

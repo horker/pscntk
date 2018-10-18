@@ -45,7 +45,6 @@ namespace Horker.PSCNTK
         public CNTKDictionary GetCustomAttributes() => _f.GetCustomAttributes();
         public IList<Parameter> Parameters() => _f.Parameters();
         public VariableVector Placeholders() => _f.Placeholders();
-        // TODO: ReplacePlaceholder()
         public void ResetCustomAttributes() => _f.ResetCustomAttributes();
         public void Restore(string filepath) => _f.Restore(filepath);
         public byte[] Save() => _f.Save();
@@ -77,6 +76,32 @@ namespace Horker.PSCNTK
 
             var rep = Converter.HashtableToDictionary<Variable, Variable>(replacements, converter, converter);
             return _f.Clone(parameterCloningMethod, rep);
+        }
+
+        public void ReplacePlaceholders(IDictionary<Variable, Variable> placeholderReplacements)
+        {
+            _f.ReplacePlaceholders(placeholderReplacements);
+        }
+
+        public void ReplacePlaceholders(Hashtable placeholderReplacements)
+        {
+            var converter = new Func<object, Variable>(x => {
+                Variable va;
+                if (x is Variable v)
+                    va = v;
+                else if (x is WrappedVariable wv)
+                    va = wv;
+                else if (x is Function f)
+                    va = f;
+                else if (x is WrappedFunction wf)
+                    va = wf;
+                else
+                    va = (Variable)x;
+
+                return va;
+            });
+
+            ReplacePlaceholders(Converter.HashtableToDictionary(placeholderReplacements, converter, converter));
         }
 
         #endregion

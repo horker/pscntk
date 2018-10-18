@@ -1,3 +1,7 @@
+param(
+    [string]$Type = "gru"
+)
+
 Set-StrictMode -Version Latest
 
 Import-Module psmath
@@ -36,7 +40,12 @@ Write-Host "Building model..."
 $in = cntk.input 1 -Name input -WithSequenceAxis
 
 $n = $in
-$n = cntk.lstm $n 30 30
+
+switch ($Type) {
+"lstm" { $n = cntk.lstm $n 30 30 }
+"gru"  { $n = cntk.dense $n 30; $n = New-CNTKGru $n }
+}
+
 $n = cntk.dense $n 1 (cntk.glorotuniform)
 $out = $n
 
