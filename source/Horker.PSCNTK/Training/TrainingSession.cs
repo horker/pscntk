@@ -12,10 +12,12 @@ namespace Horker.PSCNTK
         private Stopwatch _stopwatch;
         public TimeSpan Elapsed => _stopwatch.Elapsed;
 
+        public Learner Learner { get; private set; }
+
         public Trainer Trainer { get; private set; }
 
         public ISampler Sampler { get; private set; }
-        public ISampler TestSampler { get; private set; }
+        public ISampler ValidationSampler { get; private set; }
         public DataNameToInputMap DataNameToInputMap { get; private set; }
 
         public DeviceDescriptor TrainingDevice { get; private set; }
@@ -32,11 +34,13 @@ namespace Horker.PSCNTK
         public double Loss { get; private set; }
         public double Metric { get; private set; }
 
-        public TrainingSession(Trainer trainer, ISampler sampler, ISampler testSampler, Hashtable dataNameToInputMap = null, DeviceDescriptor trainingDevice = null, DeviceDescriptor testDevice = null, bool keepMinibatch = false)
+        public TrainingSession(WrappedFunction model, WrappedFunction lossFunction, WrappedFunction evaluationFunction, Learner learner, ISampler sampler, ISampler validationSampler, Hashtable dataNameToInputMap = null, DeviceDescriptor trainingDevice = null, DeviceDescriptor testDevice = null, bool keepMinibatch = false)
         {
-            Trainer = trainer;
+            Learner = learner;
+            Trainer = Trainer.CreateTrainer(model, lossFunction, evaluationFunction, new Learner[] { learner });
+
             Sampler = sampler;
-            TestSampler = testSampler;
+            ValidationSampler = validationSampler;
 
             TrainingDevice = trainingDevice;
             if (TrainingDevice == null)
@@ -49,7 +53,7 @@ namespace Horker.PSCNTK
             KeepMinibatch = keepMinibatch;
 
             DataNameToInputMap = new DataNameToInputMap(
-                new Function[] { trainer.Model(), trainer.LossFunction(), trainer.EvaluationFunction() },
+                new Function[] { model, lossFunction, evaluationFunction },
                 dataNameToInputMap);
         }
 
@@ -124,7 +128,7 @@ namespace Horker.PSCNTK
 
         public double GetValidationMetric()
         {
-            if (TestSampler == null || Trainer.EvaluationFunction() == null)
+            if (ValidationSampler == null || Trainer.EvaluationFunction() == null)
                 return 0.0;
 
             double metric = 0.0;
@@ -133,7 +137,7 @@ namespace Horker.PSCNTK
             Minibatch testData;
             do
             {
-                testData = TestSampler.GetNextMinibatch(TestDevice);
+                testData = ValidationSampler.GetNextMinibatch(TestDevice);
 
                 var map = new UnorderedMapVariableMinibatchData();
                 var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(testData);

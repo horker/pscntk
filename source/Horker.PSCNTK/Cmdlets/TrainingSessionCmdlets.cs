@@ -17,24 +17,33 @@ namespace Horker.PSCNTK
     public class StartCNTKTraining : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public Trainer Trainer;
+        public WrappedFunction Model;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public ISampler Sampler;
+        public WrappedFunction LossFunction;
 
         [Parameter(Position = 2, Mandatory = true)]
+        public WrappedFunction EvaluationFunction;
+
+        [Parameter(Position = 3, Mandatory = true)]
+        public Learner Learner;
+
+        [Parameter(Position = 4, Mandatory = true)]
+        public ISampler Sampler;
+
+        [Parameter(Position = 5, Mandatory = true)]
         public ISampler ValidationSampler;
 
-        [Parameter(Position = 3, Mandatory = false)]
+        [Parameter(Position = 6, Mandatory = false)]
         public Hashtable DataToInputMap = null;
 
-        [Parameter(Position = 4, Mandatory = false)]
-        public int MaxIteration = 10000;
+        [Parameter(Position = 7, Mandatory = false)]
+        public int MaxIteration = int.MaxValue;
 
-        [Parameter(Position = 5, Mandatory = false)]
+        [Parameter(Position = 8, Mandatory = false)]
         public int ProgressOutputStep = 100;
 
-        [Parameter(Position = 6, Mandatory = false)]
+        [Parameter(Position = 9, Mandatory = false)]
         public string LogFile = null;
 
         protected override void EndProcessing()
@@ -48,7 +57,7 @@ namespace Horker.PSCNTK
 
             try
             {
-                var session = new TrainingSession(Trainer, Sampler, ValidationSampler, DataToInputMap, null, null, false);
+                var session = new TrainingSession(Model, LossFunction, EvaluationFunction, Learner, Sampler, ValidationSampler, DataToInputMap, null, null, false);
                 foreach (var progress in TrainingLoop.Start(session, MaxIteration, ProgressOutputStep, logger))
                     WriteObject(progress);
             }
@@ -66,23 +75,32 @@ namespace Horker.PSCNTK
     public class NewCNTKTrainingSession : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public Trainer Trainer;
+        public WrappedFunction Model;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public ISampler Sampler;
+        public WrappedFunction LossFunction;
 
         [Parameter(Position = 2, Mandatory = true)]
+        public WrappedFunction EvaluationFunction;
+
+        [Parameter(Position = 3, Mandatory = true)]
+        public Learner Learner;
+
+        [Parameter(Position = 4, Mandatory = true)]
+        public ISampler Sampler;
+
+        [Parameter(Position = 5, Mandatory = true)]
         public ISampler ValidationSampler;
 
-        [Parameter(Position = 3, Mandatory = false)]
+        [Parameter(Position = 6, Mandatory = false)]
         public Hashtable DataToInputMap = null;
 
-        [Parameter(Position = 4, Mandatory = false)]
+        [Parameter(Position = 7, Mandatory = false)]
         public SwitchParameter KeepMinibatch;
 
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Trainer, Sampler, ValidationSampler, DataToInputMap, null, null, KeepMinibatch);
+            var session = new TrainingSession(Model, LossFunction, EvaluationFunction, Learner, Sampler, ValidationSampler, DataToInputMap, null, null, KeepMinibatch);
             WriteObject(session);
         }
     }

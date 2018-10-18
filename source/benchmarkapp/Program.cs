@@ -103,15 +103,13 @@ namespace benchmarkapp
                 var output = model.Item1;
                 var label = model.Item2;
 
-                var lr = new TrainingParameterScheduleDouble(.05);
-                var learner = CNTKLib.SGDLearner(new ParameterVector(output.Parameters().ToArray()), lr);
-
                 var loss = CNTKLib.BinaryCrossEntropy(output, label);
                 var metric = CNTKLib.ClassificationError(output, label);
 
-                var trainer = CNTKLib.CreateTrainer(output, loss, metric, new LearnerVector(new Learner[] { learner }));
+                var lr = new TrainingParameterScheduleDouble(.05);
+                var learner = CNTKLib.SGDLearner(new ParameterVector(output.Parameters().ToArray()), lr);
 
-                var session = new TrainingSession(trainer, sampler, null);
+                var session = new TrainingSession(output, loss, metric, learner, sampler, null);
 
                 var progress = session.GetIterator().GetEnumerator();
                 for (var i = 0; i < 10000; ++i)

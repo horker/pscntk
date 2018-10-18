@@ -52,9 +52,7 @@ namespace UnitTest
 
             var learner = Learner.MomentumSGDLearner(output.Parameters(), lr, m, true);
 
-            var trainer = Trainer.CreateTrainer(output, loss, error, new List<Learner>() { learner });
-
-            var session = new TrainingSession(trainer, sampler, null);
+            var session = new TrainingSession(output, loss, error, learner, sampler, null);
             var iteration = session.GetEnumerator();
 
             for (var i = 0; i < 1000; ++i)
