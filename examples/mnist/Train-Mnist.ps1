@@ -31,14 +31,14 @@ $in = cntk.input (28, 28, 1) -Name input
 $n = $in
 
 if ($UseConv) {
-    # conv1: 28 x 28 x 1 -> 28 x 28 x 8 -> 14 x 14 x 8
-    $n = cntk.conv2d $n (3, 3) 8 (1, 1) $true (cntk.init.truncatednormal .1)
+    # conv1: 28 x 28 x 1 -> 28 x 28 x 32 -> 14 x 14 x 32
+    $n = cntk.conv2d $n (5, 5) 32 (1, 1) $true (cntk.init.truncatednormal .1)
     $n = cntk.batchnorm $n
     $n = cntk.relu $n
     $n = cntk.maxpooling $n (3, 3) (2, 2)
 
-    # conv2: 14 x 14 x 8 -> 14 x 14 x 32 -> 7 x 7 x 32
-    $n = cntk.conv2d $n (3, 3) 32 (1, 1) $true (cntk.init.truncatednormal .1)
+    # conv2: 14 x 14 x 32 -> 14 x 14 x 64 -> 7 x 7 x 64
+    $n = cntk.conv2d $n (5, 5) 64 (1, 1) $true (cntk.init.truncatednormal .1)
     $n = cntk.batchnorm $n
     $n = cntk.relu $n
     $n = cntk.maxpooling $n (3, 3) (2, 2)
@@ -47,9 +47,7 @@ if ($UseConv) {
     $n = cntk.dense $n $OUT_CLASSES (cntk.init.glorotuniform)
 }
 else {
-    $n = cntk.dense $n 1000 (cntk.init.heuniform) relu
-    $n = cntk.dense $n 1000 (cntk.init.heuniform) relu
-    $n = cntk.dense $n 1000 (cntk.init.heuniform) relu
+    $n = cntk.dense $n 64 (cntk.init.heuniform) relu
     $n = cntk.dense $n $OUT_CLASSES (cntk.init.glorotuniform)
 }
 
