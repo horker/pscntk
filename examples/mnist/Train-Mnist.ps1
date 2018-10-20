@@ -44,11 +44,11 @@ if ($UseConv) {
     $n = cntk.maxpooling $n (3, 3) (2, 2)
 
     # fc
-    $n = cntk.dense $n $OUT_CLASSES (cntk.init.glorotuniform)
+    $n = cntk.dense $n $OUT_CLASSES
 }
 else {
     $n = cntk.dense $n 64 (cntk.init.heuniform) relu
-    $n = cntk.dense $n $OUT_CLASSES (cntk.init.glorotuniform)
+    $n = cntk.dense $n $OUT_CLASSES
 }
 
 $out = $n
