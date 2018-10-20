@@ -133,8 +133,15 @@ foreach ($func in $funcs) {
     if ($null -eq $type) {
       Write-Error "Unknown argument type: $($arg.Type)"
     }
+
     $variable = ConvertTo-TitleCase $arg.Variable
-    $value = Convert-Value $arg.Value
+    if ("CNTK.DataType" -eq $type) {
+      $arg.Value = "CNTK.DataType.Float"
+      $value = "CNTK.DataType.Float"
+    }
+    else {
+      $value = Convert-Value $arg.Value
+    }
 
     $casted = $variable
     if ($CAST_MAP.ContainsKey($type)) {

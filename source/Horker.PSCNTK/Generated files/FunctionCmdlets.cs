@@ -2,7 +2,7 @@ using System;
 using System.Management.Automation;
 
 // DO NOT EDIT
-// This file was automatically generated at 2018/10/20 19:28:01
+// This file was automatically generated at 2018/10/20 19:35:57
 
 namespace Horker.PSCNTK {
 
@@ -254,8 +254,8 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public int[] Shape;
 
-        [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.DataType DataType;
+        [Parameter(Position = 1, Mandatory = false)]
+        public CNTK.DataType DataType = CNTK.DataType.Float;
 
         [Parameter(Position = 2, Mandatory = false)]
         public double Mean = 0.5;
@@ -365,8 +365,8 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public WrappedVariable NodeInput;
 
-        [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.DataType OutputType;
+        [Parameter(Position = 1, Mandatory = false)]
+        public CNTK.DataType OutputType = CNTK.DataType.Float;
 
         [Parameter(Position = 2, Mandatory = false)]
         public string Name = "";
@@ -1112,8 +1112,8 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public int[] Shape;
 
-        [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.DataType DataType;
+        [Parameter(Position = 1, Mandatory = false)]
+        public CNTK.DataType DataType = CNTK.DataType.Float;
 
         [Parameter(Position = 2, Mandatory = false)]
         public double Loc = 0.0;
@@ -1682,8 +1682,8 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public int[] Shape;
 
-        [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.DataType DataType;
+        [Parameter(Position = 1, Mandatory = false)]
+        public CNTK.DataType DataType = CNTK.DataType.Float;
 
         [Parameter(Position = 2, Mandatory = false)]
         public double Mean = 0.0;
@@ -2609,8 +2609,8 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 0, Mandatory = true)]
         public int[] Shape;
 
-        [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.DataType DataType;
+        [Parameter(Position = 1, Mandatory = false)]
+        public CNTK.DataType DataType = CNTK.DataType.Float;
 
         [Parameter(Position = 2, Mandatory = false)]
         public double Low = 0.0;
