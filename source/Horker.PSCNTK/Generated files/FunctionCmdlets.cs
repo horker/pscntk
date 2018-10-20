@@ -2,7 +2,7 @@ using System;
 using System.Management.Automation;
 
 // DO NOT EDIT
-// This file was automatically generated at 2018/09/24 14:01:56
+// This file was automatically generated at 2018/10/20 19:28:01
 
 namespace Horker.PSCNTK {
 
@@ -486,14 +486,11 @@ namespace Horker.PSCNTK {
         public UInt32 MaxTempMemSizeInSamples = 0;
 
         [Parameter(Position = 9, Mandatory = false)]
-        public bool Sequential = false;
-
-        [Parameter(Position = 10, Mandatory = false)]
         public string Name = "";
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, new CNTK.BoolVector(Sharing), new CNTK.BoolVector(AutoPadding), Dilation, ReductionRank, Groups, MaxTempMemSizeInSamples, Sequential, Name);
+            var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, new CNTK.BoolVector(Sharing), new CNTK.BoolVector(AutoPadding), Dilation, ReductionRank, Groups, MaxTempMemSizeInSamples, Name);
             WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }

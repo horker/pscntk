@@ -17,10 +17,10 @@ $MODULE_PATH_DEBUG = "$PSScriptRoot\debug\pscntk"
 
 $SOLUTION_FILE = "$PSScriptRoot\source\pscntk.sln"
 
-$CNTK_VERSION = "2.6.0"
+$CNTK_VERSION = "2.5.1"
 
 $OBJECT_FILES = @(
-  "Cntk.Core.Managed-2.6.dll"
+  "Cntk.Core.Managed-2.5.1.dll"
   "Horker.PSCNTK.dll"
   "Horker.PSCNTK.pdb"
 )

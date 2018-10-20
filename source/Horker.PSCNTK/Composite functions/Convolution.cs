@@ -41,7 +41,7 @@ namespace Horker.PSCNTK
                     (uint)reductionRank,                 // uint reductionRank
                     (uint)groups,                        // uint groups
                     (uint)maxTempMemSizeInSamples,       // uint maxTempMemSizeInSamples
-                    sequential,                          // from v2.6.0
+                    // sequential,                          // from v2.6.0
                     ""                                   // string name
                 );
                 Register(conv);

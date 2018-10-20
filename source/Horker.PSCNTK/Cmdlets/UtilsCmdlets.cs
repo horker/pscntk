@@ -56,7 +56,7 @@ namespace Horker.PSCNTK
     [Alias("cntk.setrandomseed")]
     public class SetCNTRandomSeed : PSCmdlet
     {
-        [DllImport("Cntk.Core-2.6.dll", EntryPoint = "?SetFixedRandomSeed@Internal@CNTK@@YAXK@Z", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("Cntk.Core-2.5.1.dll", EntryPoint = "?SetFixedRandomSeed@Internal@CNTK@@YAXK@Z", CallingConvention = CallingConvention.Cdecl)]
         public static extern bool SetFixedRandomSeed(uint value);
 
         [Parameter(Position = 0, Mandatory = false)]
