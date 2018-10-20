@@ -169,7 +169,7 @@ namespace Horker.PSCNTK
 
         private bool _finished;
 
-        public string NEWLINE = "\r\n";
+        public string NewlineString { get; set; }
 
         public TextWriter Writer => _writer;
 
@@ -179,12 +179,12 @@ namespace Horker.PSCNTK
             _seqAutoIncrement = seqAutoIncrement;
             _bol = true;
             _first = true;
+            _finished = false;
 
             _sample = null;
-
             _writer = writer;
 
-            _finished = false;
+            NewlineString = "\r\n";
         }
 
         public void NextLine()
@@ -226,7 +226,7 @@ namespace Horker.PSCNTK
 
             if (_bol) {
                 if (!_first) {
-                    _writer.Write(NEWLINE);
+                    _writer.Write(NewlineString);
                 }
                 _first = false;
                 _writer.Write(_seq);
