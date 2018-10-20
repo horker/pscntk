@@ -50,10 +50,10 @@ namespace Horker.PSCNTK
         public double L2RegularizationWeight = 0.0;
 
         [Parameter(Position = 92, Mandatory = false)]
-        public double GradientClippingThresholdPerSample = double.NaN;
+        public double GradientClippingThresholdPerSample = double.PositiveInfinity;
 
         [Parameter(Position = 93, Mandatory = false)]
-        public bool GradientClippingWithTruncation = false;
+        public bool GradientClippingWithTruncation = true;
 
         [Parameter(Position = 99, Mandatory = false)]
         public AdditionalLearningOptions Options = new AdditionalLearningOptions();
