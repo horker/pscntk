@@ -4,12 +4,15 @@ Set-StrictMode -Version Latest
 # Configuration
 ############################################################
 
-$MNIST_CACHE_FILE = "$PSScriptRoot\mnist_seq.bin"
+$MNIST_DATA_FILE = "$PSScriptRoot\mnist_seq.bin"
+
+$MNIST_TRAIN_FILE = "$PSScriptRoot\mnist_seq_train.ctf"
+$MNIST_TEST_FILE = "$PSScriptRoot\mnist_seq_test.ctf"
 
 $OUT_CLASSES = 10
 $IMAGE_SIZE = 28 * 28
 
-$CELL_DIM = 200
+$CELL_DIM = 32
 
 Set-CNTKRandomSeed 1234
 
@@ -19,10 +22,14 @@ Set-CNTKRandomSeed 1234
 
 Write-Host "Loading data..."
 
-$data = cntk.datasourceset -Path $MNIST_CACHE_FILE
-$trainData, $testData = $data.Split(@(.8, .2))
-$sampler = cntk.sampler $trainData -MinibatchSize 16
-$testSampler = cntk.sampler $testData -MinibatchSize 16
+#$data = cntk.datasourceset -Path $MNIST_DATA_FILE
+#$trainData, $testData = $data.Split(@(.8, .2))
+#$sampler = cntk.sampler $trainData -MinibatchSize 16
+#$testSampler = cntk.sampler $testData -MinibatchSize 16
+
+$sampler = cntk.ctfsampler $MNIST_TRAIN_FILE -MinibatchSize 16
+$testSampler = cntk.ctfsampler $MNIST_TEST_FILE -MinibatchSize 16 -NoRandomize
+
 
 ############################################################
 # Model
@@ -37,10 +44,8 @@ function Get-Model($in) {
     $n = cntk.dense $n $CELL_DIM
     $n = cntk.dropout $n .5
     $n = cntk.gru $n -ReturnSequences -InitialState $values
-    $n = cntk.batchnorm $n -InitialScale .01
     $n = cntk.dropout $n .5
     $n = cntk.gru $n
-    $n = cntk.batchnorm $n -InitialScale .01
     $n = cntk.dense $n $OUT_CLASSES
     $n
 }
@@ -56,11 +61,18 @@ $label = cntk.input $OUT_CLASSES -Name label
 
 Write-Host "Training started..."
 
-$learner = cntk.adam $out .001 -GradientClippingThresholdPerSample 1 -GradientClippingWithTruncation $true
+$learner = cntk.adam $out .001 -GradientClippingThresholdPerSample 1
 
-$trainer = cntk.trainer $out $label CrossEntropyWithSoftmax ClassificationError $learner
-
-cntk.starttraining $trainer $sampler $testSampler -MaxIteration 10000 -ProgressOutputStep 500 -LogFile "$PSScriptRoot\mnist_log.log"
+cntk.starttraining `
+    $out `
+    (cntk.crossEntropyWithSoftmax $out $label) `
+    (cntk.classificationError $out $label) `
+    $learner `
+    $sampler `
+    $testSampler `
+    -MaxIteration 20000 `
+    -ProgressOutputStep 100 `
+    -LogFile "$PSScriptRoot\rnn-mnist.log"
 
 Write-Host "Saving model..."
 

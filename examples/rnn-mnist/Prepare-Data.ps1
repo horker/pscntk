@@ -15,6 +15,8 @@ Set-StrictMode -Version Latest
 $MNIST_IMAGE_FILE = "$PSScriptRoot\..\..\data\MNIST\train-images.idx3-ubyte"
 $MNIST_LABEL_FILE = "$PSScriptRoot\..\..\data\MNIST\train-labels.idx1-ubyte"
 
+$MNIST_DATA_FILE = "$PSScriptRoot\mnist_seq.bin"
+
 $MNIST_TRAIN_CTF = "$PSScriptRoot\mnist_seq_train.ctf"
 $MNIST_TEST_CTF = "$PSScriptRoot\mnist_seq_test.ctf"
 
