@@ -12,7 +12,7 @@ $MNIST_TEST_FILE = "$PSScriptRoot\mnist_seq_test.ctf"
 $OUT_CLASSES = 10
 $IMAGE_SIZE = 28 * 28
 
-$CELL_DIM = 32
+$CELL_DIM = 100
 
 Set-CNTKRandomSeed 1234
 
@@ -22,14 +22,13 @@ Set-CNTKRandomSeed 1234
 
 Write-Host "Loading data..."
 
-#$data = cntk.datasourceset -Path $MNIST_DATA_FILE
-#$trainData, $testData = $data.Split(@(.8, .2))
-#$sampler = cntk.sampler $trainData -MinibatchSize 16
-#$testSampler = cntk.sampler $testData -MinibatchSize 16
+$data = cntk.datasourceset -Path $MNIST_DATA_FILE
+$trainData, $testData = $data.Split(@(.8, .2))
+$sampler = cntk.sampler $trainData -MinibatchSize 16
+$testSampler = cntk.sampler $testData -MinibatchSize 16
 
-$sampler = cntk.ctfsampler $MNIST_TRAIN_FILE -MinibatchSize 16
-$testSampler = cntk.ctfsampler $MNIST_TEST_FILE -MinibatchSize 16 -NoRandomize
-
+#$sampler = cntk.ctfsampler $MNIST_TRAIN_FILE -MinibatchSize 16
+#$testSampler = cntk.ctfsampler $MNIST_TEST_FILE -MinibatchSize 16 -NoRandomize
 
 ############################################################
 # Model
@@ -38,7 +37,7 @@ $testSampler = cntk.ctfsampler $MNIST_TEST_FILE -MinibatchSize 16 -NoRandomize
 Write-Host "Building model..."
 
 function Get-Model($in) {
-    $values = cntk.constant $CELL_DIM (cntk.normalrandom $CELL_DIM -DataType float).Invoke().ToArray()
+    $values = cntk.constant $CELL_DIM (cntk.normalRandom $CELL_DIM).Invoke().ToArray()
 
     $n = $in
     $n = cntk.dense $n $CELL_DIM
@@ -71,7 +70,7 @@ cntk.starttraining `
     $sampler `
     $testSampler `
     -MaxIteration 20000 `
-    -ProgressOutputStep 100 `
+    -ProgressOutputStep 500 `
     -LogFile "$PSScriptRoot\rnn-mnist.log"
 
 Write-Host "Saving model..."
