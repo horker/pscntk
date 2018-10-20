@@ -15,7 +15,8 @@ Set-StrictMode -Version Latest
 $MNIST_IMAGE_FILE = "$PSScriptRoot\..\..\data\MNIST\train-images.idx3-ubyte"
 $MNIST_LABEL_FILE = "$PSScriptRoot\..\..\data\MNIST\train-labels.idx1-ubyte"
 
-$MNIST_DATA_FILE = "$PSScriptRoot\mnist_seq.bin"
+$MNIST_TRAIN_CTF = "$PSScriptRoot\mnist_seq_train.ctf"
+$MNIST_TEST_CTF = "$PSScriptRoot\mnist_seq_test.ctf"
 
 ############################################################
 # Prepraring data
@@ -40,3 +41,8 @@ $label = cntk.datasource $label (10, 1, -1)
 Write-Host "Saving..."
 $set = cntk.datasourceset @{ input = $data; label = $label }
 $set.Save($MNIST_DATA_FILE)
+
+$train, $test = $set.Split(@(.8, .2))
+
+Write-CNTKTextFormat $train $MNIST_TRAIN_CTF -WithSequenceAxis
+Write-CNTKTextFormat $test $MNIST_TEST_CTF -WithSequenceAxis
