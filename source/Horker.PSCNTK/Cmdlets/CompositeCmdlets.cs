@@ -26,17 +26,28 @@ namespace Horker.PSCNTK
         public CNTKDictionary BiasInitializer = null;
 
         [Parameter(Position = 6, Mandatory = false)]
+        public SwitchParameter Stabilize = false;
+
+        [Parameter(Position = 7, Mandatory = false)]
+        public DeviceDescriptor Device = null;
+
+        [Parameter(Position = 8, Mandatory = false)]
         public string Name = "Dense";
 
         protected override void EndProcessing()
         {
+            if (Device == null)
+                Device = DeviceDescriptor.UseDefaultDevice();
+
             var result = Composite.Dense(
                 Input,           // Variable input,
                 Shape,           // Shape outputShape,
                 Initializer,     // CNTKDictionary initializer,
                 !NoBias,         // bool hasBias,
                 BiasInitializer, // CNTKDictionary biasInitializer,
+                Stabilize,       // bool Stabilize,
                 Activation,      // string activation
+                Device,          // DeviceDescriptor device,
                 Name             // string name
             );
 

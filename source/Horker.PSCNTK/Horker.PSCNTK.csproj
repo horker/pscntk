@@ -57,9 +57,12 @@
   <ItemGroup>
     <Compile Include="Cmdlets\ConvertToCNTKDataSource.cs" />
     <Compile Include="Cmdlets\MeasureCNTKTextFormat.cs" />
+    <Compile Include="Cmdlets\NewCNTKAccuracy.cs" />
+    <Compile Include="Cmdlets\NewCNTKStabilize.cs" />
     <Compile Include="Cmdlets\ReadCNTKTextFormat.cs" />
     <Compile Include="Cmdlets\WriteCNTKPartitionedCTF.cs" />
     <Compile Include="Cmdlets\WritetCNTKTextFormat.cs" />
+    <Compile Include="Composite functions\Stabilize.cs" />
     <Compile Include="CTF\CTFTools.cs" />
     <Compile Include="DataSource\DataSourceBase.cs" />
     <Compile Include="DataSource\DataSourceFactory.cs" />
@@ -129,7 +132,7 @@
     <Compile Include="Training\TrainingSession.cs" />
     <Compile Include="General\UnmanagedDllLoader.cs" />
     <Compile Include="Cmdlets\AxisCmdlets.cs" />
-    <Compile Include="Cmdlets\FunctionCmdletsByHand.cs" />
+    <Compile Include="Cmdlets\HandWrittenFunctionCmdlets.cs" />
     <Compile Include="Cmdlets\LearnerCmdlets.cs" />
     <Compile Include="Cmdlets\NewCNTKBackgroundScriptRunner.cs" />
     <Compile Include="Cmdlets\NewCNTKCTFSampler.cs" />

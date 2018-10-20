@@ -46,10 +46,9 @@ function New-CNTKGruCell {
     $w = cntk.parameter ($dim, ($dim * 2)) -Initializer (cntk.init.glorotuniform) -Device $Device
     $b = cntk.parameter $dim -Initializer (cntk.init.constant 0)
 
-    $htxt = cntk.splice @($ht1, $xt) 0
-    $zt = cntk.sigmoid ((cntk.times $wz (st $htxt)) + $bz)
-    $rt = cntk.sigmoid ((cntk.times $wr (st $htxt)) + $br)
-    $hhatt = cntk.tanh ((cntk.times $w (st (cntk.splice @(($rt * $ht1), $xt) 0))) + $b)
+    $zt = cntk.sigmoid ((cntk.times $wz (cntk.splice @((st $ht1), (st $xt)) 0)) + $bz)
+    $rt = cntk.sigmoid ((cntk.times $wr (cntk.splice @((st $ht1), (st $xt)) 0)) + $br)
+    $hhatt = cntk.tanh ((cntk.times $w (cntk.splice @((st ($rt * $ht1)), (st $xt)) 0)) + $b)
     $ht = (1 - $zt) * $ht1 + $zt * $hhatt
 
     $ht.SetName($Name)

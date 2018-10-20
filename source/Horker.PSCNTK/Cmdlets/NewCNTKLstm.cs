@@ -38,28 +38,4 @@ namespace Horker.PSCNTK
             WriteObject(lstm);
         }
     }
-
-    [Cmdlet("New", "CNTKStabilize")]
-    [Alias("cntk.stabilize")]
-    public class NewCNTKStabilize : PSCmdlet
-    {
-        [Parameter(Position = 0, Mandatory = true)]
-        public CNTK.Variable Operand;
-
-        [Parameter(Position = 1, Mandatory = false)]
-        public CNTK.DeviceDescriptor Device = null;
-
-        [Parameter(Position = 2, Mandatory = false)]
-        public string Name = "";
-
-        protected override void EndProcessing()
-        {
-            if (Device == null)
-                Device = CNTK.DeviceDescriptor.UseDefaultDevice();
-
-            var result = Microsoft.LSTMSequenceClassifierNet.Stabilize<float>(Operand, Device, Name);
-
-            WriteObject(result);
-        }
-    }
 }
