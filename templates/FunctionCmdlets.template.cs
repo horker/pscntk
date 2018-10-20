@@ -93,14 +93,17 @@ foreach ($func in $funcs) {
   # Name
   if ($func.Ns -eq "Sequence") {
     $name = "Sequence" + $func.Name
-    $alias = "sequence." + $func.Name.ToLower()
   }
   else {
     $name = $func.Name
-    $alias = $name.ToLower()
   }
 
   # Aliases
+  $alias = [Char]::ToLower($name[0]) + $name.Substring(1)
+  if ($func.Ns -eq "Sequence") {
+    $alias = "sequence." + $alias
+  }
+
   if ($alias -match "initializer$") {
     $alias = $alias -replace "initializer$", ""
     if ($alias -match "^(he|glorot|xavier|normal|truncated|uniform)") {

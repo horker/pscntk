@@ -1,7 +1,7 @@
 using CNTK;
 
 // DO NOT EDIT
-// This file was automatically generated at 2018/10/20 19:35:57
+// This file was automatically generated at 2018/10/20 19:57:37
 
 namespace Horker.PSCNTK {
 
