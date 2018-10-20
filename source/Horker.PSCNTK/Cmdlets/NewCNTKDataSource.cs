@@ -11,7 +11,7 @@ namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKDataSource")]
     [CmdletBinding(DefaultParameterSetName = "new")]
-    [Alias("cntk.datasource")]
+    [Alias("cntk.dataSource")]
     public class NewCNTKDataSource : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "new")]

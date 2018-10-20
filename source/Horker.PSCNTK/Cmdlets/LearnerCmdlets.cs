@@ -93,7 +93,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKMomentumSGD")]
-    [Alias("cntk.momentumsgd")]
+    [Alias("cntk.momentumSgd")]
     public class NewCNTKMomentumSGD : LearnerCmdletBase
     {
         [Parameter(Position = 2, Mandatory = false)]
@@ -111,7 +111,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKAdaGrad")]
-    [Alias("cntk.adagrad")]
+    [Alias("cntk.adaGrad")]
     public class NewCNTKAdaGrad : LearnerCmdletBase
     {
         [Parameter(Position = 2, Mandatory = false)]
@@ -124,7 +124,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKFSAdaGrad")]
-    [Alias("cntk.fsadagrad")]
+    [Alias("cntk.fsAdaGrad")]
     public class NewCNTKFSAdaGrad : LearnerCmdletBase
     {
         [Parameter(Position = 2, Mandatory = false)]
@@ -148,7 +148,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKRMSProp")]
-    [Alias("cntk.rmsprop")]
+    [Alias("cntk.rmsProp")]
     public class NewCNTKRMSProp : LearnerCmdletBase
     {
         [Parameter(Position = 2, Mandatory = true)]
@@ -176,7 +176,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKAdaDelta")]
-    [Alias("cntk.adadelta")]
+    [Alias("cntk.adaDelta")]
     public class NewCNTKAdaDelta : LearnerCmdletBaseWithoutLR
     {
         [Parameter(Position = 1, Mandatory = false)]

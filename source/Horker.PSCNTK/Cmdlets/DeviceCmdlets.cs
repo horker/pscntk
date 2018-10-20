@@ -33,7 +33,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("Get", "CNTKAllDevices")]
-    [Alias("cntk.alldevices")]
+    [Alias("cntk.allDevices")]
     public class GetCNTKAllDevices : PSCmdlet
     {
         protected override void EndProcessing()
@@ -44,7 +44,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("Set", "CNTKDefaultDevice")]
-    [Alias("cntk.setdefaultdevice")]
+    [Alias("cntk.setDefaultDevice")]
     public class SetCNTKDefaultDevice : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "gpu")]
@@ -72,7 +72,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("Set", "CNTKExcludedDevice")]
-    [Alias("cntk.setexcludeddevice")]
+    [Alias("cntk.setExcludedDevice")]
     public class SetCNTKExcludedDevice : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]

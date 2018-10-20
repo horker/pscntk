@@ -12,7 +12,7 @@ namespace Horker.PSCNTK
 {
 
     [Cmdlet("Start", "CNTKTraining")]
-    [Alias("cntk.starttraining")]
+    [Alias("cntk.startTraining")]
     [OutputType(typeof(TrainingProgress))]
     public class StartCNTKTraining : PSCmdlet
     {
@@ -70,7 +70,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKTrainingSession")]
-    [Alias("cntk.trainingsession")]
+    [Alias("cntk.trainingSession")]
     [OutputType(typeof(TrainingSession))]
     public class NewCNTKTrainingSession : PSCmdlet
     {

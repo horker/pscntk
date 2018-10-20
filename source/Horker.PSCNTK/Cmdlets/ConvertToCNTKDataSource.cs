@@ -11,8 +11,7 @@ using Horker.PSCNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("ConvertTo", "CNTKDataSource")]
-    [CmdletBinding(DefaultParameterSetName = "new")]
-    [Alias("cntk.converttodatasource")]
+    [Alias("cntk.toDataSource")]
     public class ConvertToCNTKDataSource : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true)]

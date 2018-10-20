@@ -6,7 +6,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKNoiseSampler")]
-    [Alias("cntk.noisesampler")]
+    [Alias("cntk.noiseSampler")]
     public class NewCNTKNoiseSampler : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]

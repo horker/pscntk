@@ -4,7 +4,7 @@ using System.Management.Automation;
 namespace Horker.PSCNTK {
 
     [Cmdlet("New", "CNTKClassificationError")]
-    [Alias("cntk.classificationerror")]
+    [Alias("cntk.classificationError")]
     public class NewCNTKClassificationError : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -114,7 +114,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKCrossEntropyWithSoftmax")]
-    [Alias("cntk.crossentropywithsoftmax")]
+    [Alias("cntk.crossEntropyWithSoftmax")]
     public class NewCNTKCrossEntropyWithSoftmax : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -187,7 +187,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKFutureValue")]
-    [Alias("cntk.futurevalue")]
+    [Alias("cntk.futureValue")]
     public class NewCNTKFutureValue : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -216,7 +216,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKGatherOp")]
-    [Alias("cntk.gatherop")]
+    [Alias("cntk.gatherOp")]
     public class NewCNTKGatherOp : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -245,7 +245,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKLogSoftmax")]
-    [Alias("cntk.logsoftmax")]
+    [Alias("cntk.logSoftmax")]
     public class NewCNTKLogSoftmax : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -271,7 +271,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKMeanVarianceNormalization")]
-    [Alias("cntk.meanvariancenormalization")]
+    [Alias("cntk.meanVarianceNormalization")]
     public class NewCNTKMeanVarianceNormalization : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -303,7 +303,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKPastValue")]
-    [Alias("cntk.pastvalue")]
+    [Alias("cntk.pastValue")]
     public class NewCNTKPastValue : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -332,7 +332,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKPerDimMeanVarianceNormalize")]
-    [Alias("cntk.perdimmeanvariancenormalize")]
+    [Alias("cntk.perDimMeanVarianceNormalize")]
     public class NewCNTKPerDimMeanVarianceNormalize : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -355,7 +355,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKPerDimMeanVarianceNormalize2")]
-    [Alias("cntk.perdimmeanvariancenormalize2")]
+    [Alias("cntk.perDimMeanVarianceNormalize2")]
     public class NewCNTKPerDimMeanVarianceNormalize2 : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -378,7 +378,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKReduceLogSum")]
-    [Alias("cntk.reducelogsum")]
+    [Alias("cntk.reduceLogSum")]
     public class NewCNTKReduceLogSum : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -398,7 +398,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKReduceMax")]
-    [Alias("cntk.reducemax")]
+    [Alias("cntk.reduceMax")]
     public class NewCNTKReduceMax : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -418,7 +418,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKReduceMean")]
-    [Alias("cntk.reducemean")]
+    [Alias("cntk.reduceMean")]
     public class NewCNTKReduceMean : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -438,7 +438,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKReduceMin")]
-    [Alias("cntk.reducemin")]
+    [Alias("cntk.reduceMin")]
     public class NewCNTKReduceMin : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -458,7 +458,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKReduceProd")]
-    [Alias("cntk.reduceprod")]
+    [Alias("cntk.reduceProd")]
     public class NewCNTKReduceProd : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -478,7 +478,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKReduceSum")]
-    [Alias("cntk.reducesum")]
+    [Alias("cntk.reduceSum")]
     public class NewCNTKReduceSum : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -669,7 +669,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKTopK")]
-    [Alias("cntk.topk")]
+    [Alias("cntk.topK")]
     public class NewCNTKTopK : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -698,7 +698,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKToSequence")]
-    [Alias("cntk.tosequence")]
+    [Alias("cntk.toSequence")]
     public class NewCNTKToSequence : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -753,7 +753,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKTransposeTimes")]
-    [Alias("cntk.transposetimes")]
+    [Alias("cntk.transposeTimes")]
     public class NewCNTKTransposeTimes : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]

@@ -7,7 +7,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("ConvertTo", "CNTKDot")]
-    [Alias("cntk.todot")]
+    [Alias("cntk.toDot")]
     public class ConvertToCNTKDot : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]

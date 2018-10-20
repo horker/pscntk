@@ -5,7 +5,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("Get", "CNTKMaxNumCPUThreads")]
-    [Alias("cntk.getmaxcputhreads", "cntk.maxcputhreads")]
+    [Alias("cntk.getMaxCpuThreads", "cntk.maxCpuThreads")]
     public class GetCNTKMaxCPUThreadCount : PSCmdlet
     {
         protected override void EndProcessing()
@@ -16,7 +16,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("Set", "CNTKMaxCPUThreadCount")]
-    [Alias("cntk.setmaxcputhreads")]
+    [Alias("cntk.setMaxCpuThreads")]
     public class SetCNTKMaxCPUThreadCount : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -29,7 +29,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("Get", "CNTKTraceLevel")]
-    [Alias("cntk.gettracelevel", "cntk.tracelevel")]
+    [Alias("cntk.getTraceLevel", "cntk.traceLevel")]
     public class GetCNTKTraceLvel : PSCmdlet
     {
         protected override void EndProcessing()
@@ -40,7 +40,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("Set", "CNTKTraceLevel")]
-    [Alias("cntk.settracelevel")]
+    [Alias("cntk.setTraceLevel")]
     public class SetCNTTraceLevel : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -53,7 +53,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("Set", "CNTKRandomSeed")]
-    [Alias("cntk.setrandomseed")]
+    [Alias("cntk.setRandomSeed")]
     public class SetCNTRandomSeed : PSCmdlet
     {
         [DllImport("Cntk.Core-2.5.1.dll", EntryPoint = "?SetFixedRandomSeed@Internal@CNTK@@YAXK@Z", CallingConvention = CallingConvention.Cdecl)]
@@ -69,7 +69,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("Reset", "CNTKRandomSeed")]
-    [Alias("cntk.resetrandomseed")]
+    [Alias("cntk.resetRandomSeed")]
     public class ResetCNTRandomSeed : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = false)]
@@ -85,7 +85,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("Get", "CNTKRandomSeed")]
-    [Alias("cntk.getrandomseed", "cntk.randomseed")]
+    [Alias("cntk.getRandomSeed", "cntk.randomSeed")]
     public class GetCNTRandomSeed : PSCmdlet
     {
         protected override void EndProcessing()
@@ -95,7 +95,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("Test", "CNTKRandomSeedFixed")]
-    [Alias("cntk.testrandomseedfixed", "cntk.israndomseedfixed")]
+    [Alias("cntk.testRandomSeedFixed", "cntk.isRandomSeedFixed")]
     public class TestCNTRandomSeedFixed : PSCmdlet
     {
         protected override void EndProcessing()

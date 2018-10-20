@@ -8,7 +8,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKExpressionSampler")]
-    [Alias("cntk.expressionsampler")]
+    [Alias("cntk.expressionSampler")]
     public class NewCNTKExpressionSampler : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]

@@ -4,7 +4,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKBatchOfSequences")]
-    [Alias("cntk.batchofsequences")]
+    [Alias("cntk.batchOfSequences")]
     public class NewCNTKBatchOfSequenses : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]

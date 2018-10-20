@@ -3,7 +3,7 @@
 namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKBackgroundScriptRunner")]
-    [Alias("cntk.backgroundscriptrunner")]
+    [Alias("cntk.backgroundScriptRunner")]
     public class NewCNTKBackgroundScriptRunner : PSCmdlet
     {
         protected override void EndProcessing()

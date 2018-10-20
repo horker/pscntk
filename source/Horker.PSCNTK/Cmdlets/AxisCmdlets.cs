@@ -46,7 +46,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKAllStaticAxis")]
-    [Alias("cntk.axis.allstatic")]
+    [Alias("cntk.axis.allStatic")]
     public class NewCNTKStaticAxis : PSCmdlet
     {
         protected override void EndProcessing()
@@ -57,7 +57,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKDefaultBatchAxis")]
-    [Alias("cntk.axis.defaultbatch")]
+    [Alias("cntk.axis.defaultBatch")]
     public class NewCNTKDefaultBatchAxis : PSCmdlet
     {
         protected override void EndProcessing()
@@ -68,7 +68,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKDefaultInputVariableDynamicAxes")]
-    [Alias("cntk.axis.defaultinputvariabledynamic")]
+    [Alias("cntk.axis.defaultInputVariableDynamic")]
     public class NewCNTKDefaultDynamicAxes : PSCmdlet
     {
         protected override void EndProcessing()
@@ -79,7 +79,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKEndStaticAxis")]
-    [Alias("cntk.axis.endstatic")]
+    [Alias("cntk.axis.endStatic")]
     public class NewCNTKEndStaticAxis : PSCmdlet
     {
         protected override void EndProcessing()
@@ -90,7 +90,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKUniqueDynamicAxis")]
-    [Alias("cntk.axis.uniquedynamic")]
+    [Alias("cntk.axis.uniqueDynamic")]
     public class NewCNTKUniqueDyanamicAxis : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -107,7 +107,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKOperandSequenceAxis")]
-    [Alias("cntk.axis.operandsequence")]
+    [Alias("cntk.axis.operandSequence")]
     public class NewCNTKOperandSequenceAxis : PSCmdlet
     {
         protected override void EndProcessing()
@@ -118,7 +118,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKUnknownDynamicAxis")]
-    [Alias("cntk.axis.unknowndynamicaxis")]
+    [Alias("cntk.axis.unknownDynamic")]
     public class NewCNTKUnknownDynamicAxis : PSCmdlet
     {
         protected override void EndProcessing()

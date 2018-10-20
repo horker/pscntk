@@ -45,7 +45,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKMaxPooling")]
-    [Alias("cntk.maxpooling")]
+    [Alias("cntk.maxPooling")]
     public class NewCNTKMaxPooling : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -78,7 +78,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKAveragePooling")]
-    [Alias("cntk.averagepooling")]
+    [Alias("cntk.averagePooling")]
     public class NewCNTKAveragePooling : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -111,7 +111,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKBatchNorm")]
-    [Alias("cntk.batchnorm")]
+    [Alias("cntk.batchNorm")]
     public class NewCNTKBatchNorm : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -150,7 +150,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKOptimizedRNNStack")]
-    [Alias("cntk.rnnstack")]
+    [Alias("cntk.rnnStack")]
     public class NewCNTKOptimizedRNNStack : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]

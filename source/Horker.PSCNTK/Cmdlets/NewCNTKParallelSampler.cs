@@ -5,7 +5,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKParallelSampler")]
-    [Alias("cntk.parallelsampler")]
+    [Alias("cntk.parallelSampler")]
     public class NewCNTKParallelSampler : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = false)]

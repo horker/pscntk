@@ -4,7 +4,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKConvTrans")]
-    [Alias("cntk.convtrans")]
+    [Alias("cntk.convTrans")]
     public class NewCNTKConvTrans : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -73,7 +73,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKConvTrans1D")]
-    [Alias("cntk.convtrans1d")]
+    [Alias("cntk.convTrans1d")]
     public class NewCNTKConvTrans1D : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -147,7 +147,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKConvTrans2D")]
-    [Alias("cntk.convtrans2d")]
+    [Alias("cntk.convTrans2d")]
     public class NewCNTKConvTrans2D : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -221,7 +221,7 @@ namespace Horker.PSCNTK
     }
 
     [Cmdlet("New", "CNTKConvTrans3D")]
-    [Alias("cntk.convtrans3d")]
+    [Alias("cntk.convTrans3d")]
     public class NewCNTKConvTrans3D : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
