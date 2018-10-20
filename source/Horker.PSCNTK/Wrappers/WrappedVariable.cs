@@ -92,6 +92,16 @@ namespace Horker.PSCNTK
             return Constant.Scalar(DataType.Float, value);
         }
 
+        public static implicit operator WrappedVariable(Value value)
+        {
+            return new Constant(value.Data);
+        }
+
+        public static implicit operator WrappedVariable(NDArrayView value)
+        {
+            return new Constant(value);
+        }
+
         #endregion
 
         #region Unary operators
