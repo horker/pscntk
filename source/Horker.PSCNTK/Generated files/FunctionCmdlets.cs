@@ -2,7 +2,7 @@ using System;
 using System.Management.Automation;
 
 // DO NOT EDIT
-// This file was automatically generated at 2018/10/20 19:57:36
+// This file was automatically generated at 2018/10/20 22:36:08
 
 namespace Horker.PSCNTK {
 
@@ -337,7 +337,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKSequenceBroadcastAs")]
-    [Alias("cntk.sequence.sequenceBroadcastAs")]
+    [Alias("cntk.sequence.broadcastAs")]
     [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSequenceBroadcastAs : PSCmdlet
     {
@@ -952,7 +952,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKSequenceFirst")]
-    [Alias("cntk.sequence.sequenceFirst")]
+    [Alias("cntk.sequence.first")]
     [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSequenceFirst : PSCmdlet
     {
@@ -1276,7 +1276,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKSequenceIsFirst")]
-    [Alias("cntk.sequence.sequenceIsFirst")]
+    [Alias("cntk.sequence.isFirst")]
     [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSequenceIsFirst : PSCmdlet
     {
@@ -1294,7 +1294,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKSequenceIsLast")]
-    [Alias("cntk.sequence.sequenceIsLast")]
+    [Alias("cntk.sequence.isLast")]
     [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSequenceIsLast : PSCmdlet
     {
@@ -1354,7 +1354,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKSequenceLast")]
-    [Alias("cntk.sequence.sequenceLast")]
+    [Alias("cntk.sequence.last")]
     [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSequenceLast : PSCmdlet
     {
@@ -2068,7 +2068,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKSequenceReduceMax")]
-    [Alias("cntk.sequence.sequenceReduceMax")]
+    [Alias("cntk.sequence.reduceMax")]
     [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSequenceReduceMax : PSCmdlet
     {
@@ -2086,7 +2086,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKSequenceReduceSum")]
-    [Alias("cntk.sequence.sequenceReduceSum")]
+    [Alias("cntk.sequence.reduceSum")]
     [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSequenceReduceSum : PSCmdlet
     {
@@ -2272,7 +2272,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKSequenceSlice")]
-    [Alias("cntk.sequence.sequenceSlice")]
+    [Alias("cntk.sequence.slice")]
     [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSequenceSlice : PSCmdlet
     {
@@ -2296,7 +2296,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKSequenceSoftmax")]
-    [Alias("cntk.sequence.sequenceSoftmax")]
+    [Alias("cntk.sequence.softmax")]
     [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSequenceSoftmax : PSCmdlet
     {
@@ -2659,7 +2659,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKSequenceUnpack")]
-    [Alias("cntk.sequence.sequenceUnpack")]
+    [Alias("cntk.sequence.unpack")]
     [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSequenceUnpack : PSCmdlet
     {
@@ -2758,7 +2758,7 @@ namespace Horker.PSCNTK {
     }
 
     [Cmdlet("New", "CNTKSequenceWhere")]
-    [Alias("cntk.sequence.sequenceWhere")]
+    [Alias("cntk.sequence.where")]
     [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
     public class NewCNTKSequenceWhere : PSCmdlet
     {

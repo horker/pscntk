@@ -99,7 +99,7 @@ foreach ($func in $funcs) {
   }
 
   # Aliases
-  $alias = [Char]::ToLower($name[0]) + $name.Substring(1)
+  $alias = [Char]::ToLower($func.Name[0]) + $func.Name.Substring(1)
   if ($func.Ns -eq "Sequence") {
     $alias = "sequence." + $alias
   }
