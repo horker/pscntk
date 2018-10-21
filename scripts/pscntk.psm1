@@ -28,6 +28,7 @@ $METHOD_LIST = @(
       "Find"
       "Invoke"
       "AsTree"
+      "AsTreeWithValues"
       "ToDot"
       "GetNodeInfo"
     )
@@ -40,6 +41,7 @@ $METHOD_LIST = @(
       "Find"
       "Invoke"
       "AsTree"
+      "AsTreeWithValues"
       "ToDot"
       "GetNodeInfo"
     )
