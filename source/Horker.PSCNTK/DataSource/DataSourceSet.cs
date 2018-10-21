@@ -58,7 +58,7 @@ namespace Horker.PSCNTK
             {
                 var f = _data.Values.First();
                 if (f.Shape[-1] != data.Shape[-1])
-                    throw new ArgumentException("Sample count should be the same among all data");
+                    throw new ArgumentException("Sample sizes should be the same among all data");
             }
 
             _data.Add(name, data);

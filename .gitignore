@@ -24,3 +24,4 @@ CNTK/
 *.dot
 *.ctf
 *.log
+*.msgpack

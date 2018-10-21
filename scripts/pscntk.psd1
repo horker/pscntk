@@ -56,7 +56,10 @@ ProcessorArchitecture = 'Amd64'
 # RequiredModules = @()
 
 # Assemblies that must be loaded prior to importing this module
-RequiredAssemblies = @()
+RequiredAssemblies = @(
+  "Cntk.Core.Managed-2.5.1.dll"
+  "MsgPack.dll"
+)
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
 # ScriptsToProcess = @()

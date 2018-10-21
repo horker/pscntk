@@ -40,6 +40,9 @@
     <Reference Include="Cntk.Core.Managed-2.5.1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a82c1f3f67b62253, processorArchitecture=AMD64">
       <HintPath>..\packages\CNTK.GPU.2.5.1\lib\net45\x64\Cntk.Core.Managed-2.5.1.dll</HintPath>
     </Reference>
+    <Reference Include="MsgPack, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a2625990d5dc0167, processorArchitecture=MSIL">
+      <HintPath>..\packages\MsgPack.Cli.1.0.0\lib\net46\MsgPack.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -57,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Cmdlets\ConvertToCNTKDataSource.cs" />
     <Compile Include="Cmdlets\MeasureCNTKTextFormat.cs" />
+    <Compile Include="Cmdlets\MsgPackCmdlets.cs" />
     <Compile Include="Cmdlets\NewCNTKAccuracy.cs" />
     <Compile Include="Cmdlets\NewCNTKStabilize.cs" />
     <Compile Include="Cmdlets\ReadCNTKTextFormat.cs" />
@@ -68,6 +72,7 @@
     <Compile Include="DataSource\DataSourceFactory.cs" />
     <Compile Include="DataSource\IDataSource.cs" />
     <Compile Include="DataSource\ListSlice.cs" />
+    <Compile Include="DataSource\MsgPackSerializer.cs" />
     <Compile Include="General\IO.cs" />
     <Compile Include="General\Logger.cs" />
     <Compile Include="General\RingBuffer.cs" />

@@ -21,6 +21,7 @@ $CNTK_VERSION = "2.5.1"
 
 $OBJECT_FILES = @(
   "Cntk.Core.Managed-2.5.1.dll"
+  "MsgPack.dll"
   "Horker.PSCNTK.dll"
   "Horker.PSCNTK.pdb"
 )
