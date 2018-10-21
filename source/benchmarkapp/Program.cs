@@ -75,8 +75,8 @@ namespace benchmarkapp
         static Tuple<Function, Variable> GetModel()
         {
             var input = CNTKLib.InputVariable(new int[] { 2 }, DataType.Float, "input");
-            var n = Composite.Dense(input, new int[] { 100 }, CNTKLib.HeNormalInitializer(), true, CNTKLib.ConstantInitializer(0), false, "relu", null, "");
-            var output = Composite.Dense(n, new int[] { 2 }, CNTKLib.GlorotNormalInitializer(), true, CNTKLib.ConstantInitializer(0), false, "sigmoid", null, "");
+            var n = Composite.Dense(input, new int[] { 100 }, CNTKLib.HeNormalInitializer(), true, CNTKLib.ConstantInitializer(0), false, "relu", DeviceDescriptor.UseDefaultDevice(), "");
+            var output = Composite.Dense(n, new int[] { 2 }, CNTKLib.GlorotNormalInitializer(), true, CNTKLib.ConstantInitializer(0), false, "sigmoid", DeviceDescriptor.UseDefaultDevice(), "");
 
             var label = CNTKLib.InputVariable(new int[] { 2 }, DataType.Float, "label");
 
@@ -85,7 +85,7 @@ namespace benchmarkapp
 
         static void TestApp()
         {
-            var sampler = new ParallelSampler(10000, 1000);
+            var sampler = new ParallelSampler(10000, 1000, true, 1000);
 
             var runners = new BackgroundScriptRunner[2];
 

@@ -24,12 +24,15 @@ namespace Horker.PSCNTK
         private int _timeoutForAdd;
         private int _timeoutForTake;
 
-        public int CountInQueue { get => _dataQueue.Count; }
+        public int CountInQueue => _dataQueue.Count;
 
-        public int TimeoutForAdd { get => _timeoutForAdd; }
-        public int TimeoutForTake { get => _timeoutForTake; }
+        public int TimeoutForAdd => _timeoutForAdd;
+        public int TimeoutForTake => _timeoutForTake;
 
-        public ParallelSampler(int sampleCountPerEpoch, int queueSize, int timeoutForAdd = 60 * 1000, int timeoutForTake = 30 * 1000)
+        private bool _reuseSamples;
+        private RingBuffer<DataSourceSet> _ringBuffer;
+
+        public ParallelSampler(int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 60 * 1000, int timeoutForTake = 30 * 1000)
         {
             _sampleCountPerEpoch = sampleCountPerEpoch;
             _totalSampleCount = 0;
@@ -44,6 +47,10 @@ namespace Horker.PSCNTK
 
             _timeoutForAdd = timeoutForAdd;
             _timeoutForTake = timeoutForTake;
+
+            _reuseSamples = reuseSamples;
+            if (reuseSamples)
+                _ringBuffer = new RingBuffer<DataSourceSet>(bufferSize);
         }
 
         public bool AddMinibatch(DataSourceSet dataSourceSet)
@@ -60,31 +67,32 @@ namespace Horker.PSCNTK
             }
         }
 
-        public bool AddMinibatch(Hashtable dataSet)
-        {
-            var set = new DataSourceSet();
-            foreach (DictionaryEntry entry in dataSet)
-            {
-                var value = entry.Value;
-                if (value is PSObject)
-                    value = (value as PSObject).BaseObject;
-                set.Add((string)entry.Key, (IDataSource<float>)value);
-            }
-
-            return AddMinibatch(set);
-        }
-
         public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
-            DataSourceSet dataSourceSet;
-            try
+            DataSourceSet dataSourceSet = null;
+
+            if (_reuseSamples)
             {
-                _cancelTokenSourceForTake.CancelAfter(_timeoutForTake);
-                dataSourceSet = _dataQueue.Take(_cancelTokenSourceForTake.Token);
+                if (_dataQueue.TryTake(out dataSourceSet))
+                    _ringBuffer.WriteNext(dataSourceSet);
+                else
+                {
+                    if (_ringBuffer.Peek() != null)
+                        dataSourceSet = _ringBuffer.ReadNext();
+                }
             }
-            catch (OperationCanceledException)
+
+            if (dataSourceSet == null)
             {
-                return null;
+                try
+                {
+                    _cancelTokenSourceForTake.CancelAfter(_timeoutForTake);
+                    dataSourceSet = _dataQueue.Take(_cancelTokenSourceForTake.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    return null;
+                }
             }
 
             var minibatch = new Minibatch(dataSourceSet.Features, false, device);

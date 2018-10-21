@@ -15,14 +15,20 @@ namespace Horker.PSCNTK
         public int QueueSize = 1000;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public int TimeoutForAdd = 15 * 1000;
+        public SwitchParameter ReuseSamples;
 
         [Parameter(Position = 3, Mandatory = false)]
+        public int BufferSize = 1000;
+
+        [Parameter(Position = 4, Mandatory = false)]
+        public int TimeoutForAdd = 15 * 1000;
+
+        [Parameter(Position = 5, Mandatory = false)]
         public int TimeoutForTake = 15 * 1000;
 
         protected override void EndProcessing()
         {
-            var sampler = new ParallelSampler(SampleCountPerEpoch, QueueSize, TimeoutForAdd, TimeoutForTake);
+            var sampler = new ParallelSampler(SampleCountPerEpoch, QueueSize, ReuseSamples, BufferSize, TimeoutForAdd, TimeoutForTake);
             WriteObject(sampler);
         }
     }

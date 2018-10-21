@@ -70,6 +70,7 @@
     <Compile Include="DataSource\ListSlice.cs" />
     <Compile Include="General\IO.cs" />
     <Compile Include="General\Logger.cs" />
+    <Compile Include="General\RingBuffer.cs" />
     <Compile Include="General\SwigMethods.cs" />
     <Compile Include="Training\TrainingProgress.cs" />
     <Compile Include="Cmdlets\ValueCmdlets.cs" />
