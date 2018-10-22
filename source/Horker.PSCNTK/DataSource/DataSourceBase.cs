@@ -223,7 +223,7 @@ namespace Horker.PSCNTK
 
             for (var i = axis + 1; i < _shape.Rank; ++i)
                 if (_shape[i] != 1)
-                    throw new ArgumentException("All axes greater than the argument 'axis' shold be 1");
+                    throw new ArgumentException("The dimensions of all axes greater than the argument 'axis' should be 1");
 
             int chunkSize = _shape.GetSize(axis - 1);
             var slice = new ListSlice<T>(Data, chunkSize * offset, chunkSize * count);

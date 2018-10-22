@@ -14,14 +14,14 @@ namespace ConsoleApp1
         static MinibatchData GetMinibatchData()
         {
             var value = GetValue();
-            return new MinibatchData(value.DeepClone());
+            return new MinibatchData(value);
         }
 
         static void Main(string[] args)
         {
             DeviceDescriptor.TrySetDefaultDevice(DeviceDescriptor.CPUDevice);
 
-            var value = GetMinibatchData().data;
+            var value = GetMinibatchData().data.DeepClone();
 //            var value = GetValue();
 
             GC.Collect();

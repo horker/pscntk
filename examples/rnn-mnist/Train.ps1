@@ -9,6 +9,9 @@ $MNIST_DATA_FILE = "$PSScriptRoot\mnist_seq.bin"
 $MNIST_TRAIN_FILE = "$PSScriptRoot\mnist_seq_train.ctf"
 $MNIST_TEST_FILE = "$PSScriptRoot\mnist_seq_test.ctf"
 
+$MNIST_TRAIN_MP = "$PSScriptRoot\mnist_seq_train.msgpack"
+$MNIST_TEST_MP = "$PSScriptRoot\mnist_seq_test.msgpack"
+
 $OUT_CLASSES = 10
 $IMAGE_SIZE = 28 * 28
 
@@ -22,13 +25,16 @@ Set-CNTKRandomSeed 1234
 
 Write-Host "Loading data..."
 
-$data = cntk.datasourceset -Path $MNIST_DATA_FILE
-$trainData, $testData = $data.Split(@(.8, .2))
-$sampler = cntk.sampler $trainData -MinibatchSize 16
-$testSampler = cntk.sampler $testData -MinibatchSize 16
+#$data = cntk.datasourceset -Path $MNIST_DATA_FILE
+#$trainData, $testData = $data.Split(@(.8, .2))
+#$sampler = cntk.sampler $trainData -MinibatchSize 8
+#$testSampler = cntk.sampler $testData -MinibatchSize 8
 
 #$sampler = cntk.ctfsampler $MNIST_TRAIN_FILE -MinibatchSize 16
 #$testSampler = cntk.ctfsampler $MNIST_TEST_FILE -MinibatchSize 16 -NoRandomize
+
+$sampler = cntk.msgPackSampler $MNIST_TRAIN_MP (60000 * .8) 100 -ReuseSamples
+$testSampler = cntk.msgPackSampler $MNIST_TEST_MP (60000 * .2) 100 -ReuseSamples
 
 ############################################################
 # Model
@@ -70,7 +76,7 @@ cntk.starttraining `
     $sampler `
     $testSampler `
     -MaxIteration 20000 `
-    -ProgressOutputStep 500 `
+    -ProgressOutputStep 100 `
     -LogFile "$PSScriptRoot\rnn-mnist.log"
 
 Write-Host "Saving model..."

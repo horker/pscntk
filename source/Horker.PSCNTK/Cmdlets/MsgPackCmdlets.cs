@@ -5,14 +5,14 @@ using MsgPack.Serialization;
 
 namespace Horker.PSCNTK
 {
-    [Cmdlet("Set", "CNTKDataSourceSet")]
-    public class SetCNTKDataSourseSet : PSCmdlet
+    [Cmdlet("Set", "CNTKMsgPack")]
+    public class SetCNTKMsgPack : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public string Path;
+        public DataSourceSet DataSourceSet;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public DataSourceSet DataSourceSet;
+        public string Path;
 
         protected override void BeginProcessing()
         {
@@ -25,14 +25,14 @@ namespace Horker.PSCNTK
         }
     }
 
-    [Cmdlet("Add", "CNTKDataSourceSet")]
-    public class AddCNTKDataSourseSet : PSCmdlet
+    [Cmdlet("Add", "CNTKMsgPack")]
+    public class AddCNTKMsgPack : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public string Path;
+        public DataSourceSet DataSourceSet;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public DataSourceSet DataSourceSet;
+        public string Path;
 
         protected override void BeginProcessing()
         {
@@ -45,8 +45,8 @@ namespace Horker.PSCNTK
         }
     }
 
-    [Cmdlet("Get", "CNTKDataSourceSet")]
-    public class GetCNTKDataSourceSet : PSCmdlet
+    [Cmdlet("Get", "CNTKMsgPack")]
+    public class GetCNTKMsgPack : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
         public string Path;

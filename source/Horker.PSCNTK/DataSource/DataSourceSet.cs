@@ -10,9 +10,9 @@ namespace Horker.PSCNTK
     [Serializable]
     public class DataSourceSet : IEnumerable<KeyValuePair<string, IDataSource<float>>>
     {
-        public Dictionary<string, IDataSource<float>> Features => _data;
-
         internal Dictionary<string, IDataSource<float>> _data;
+
+        public Dictionary<string, IDataSource<float>> Features => _data;
 
         public DataSourceSet()
         {
@@ -99,6 +99,19 @@ namespace Horker.PSCNTK
             }
 
             return results;
+        }
+
+        public DataSourceSet Slice(int offset, int count, int axis = -1)
+        {
+            var result = new DataSourceSet();
+
+            foreach (var ds in _data)
+            {
+                var slice = ds.Value.Slice(offset, count, axis);
+                result.Add(ds.Key, slice);
+            }
+
+            return result;
         }
 
         public static implicit operator Hashtable(DataSourceSet dss)

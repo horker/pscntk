@@ -1,15 +1,15 @@
-Describe "Set-CNTKDataSourceSet/Get-CNTKDataSourceSet" {
+Describe "Set-CNTKMsgPack/Get-CNTKMsgPack" {
 
   $file = "$PSScriptRoot\temp.msgpack"
 
-  It "can save and load a DataSourceSet" {
+  It "can save and load a DataSourceSet in MsgPack" {
       $a = cntk.dataSource (1, 2, 3, 4) (2, 2, 1)
       $b = cntk.dataSource (10, 20, 30, 40, 50, 60) (2, 3, 1)
       $dss = cntk.dataSourceSet @{ a = $a; b = $b }
 
-      Set-CNTKDataSourceSet $file $dss
+      Set-CNTKMsgPack $dss $file
 
-      $result = Get-CNTKDataSourceSet $file
+      $result = Get-CNTKMsgPack $file
 
       $result.Features.Count | Should -Be 2
 
@@ -19,16 +19,16 @@ Describe "Set-CNTKDataSourceSet/Get-CNTKDataSourceSet" {
       $d.Data | Should -Be (1, 2, 3, 4)
   }
 
-  It "can save and load multiple DataSourceSets" {
+  It "can save and load multiple DataSourceSets in MsgPack" {
       $a = cntk.dataSource (1, 2, 3, 4) (2, 2, 1)
       $dss = cntk.dataSourceSet @{ a = $a }
-      Set-CNTKDataSourceSet $file $dss
+      Set-CNTKMsgPack $dss $file
 
       $b = cntk.dataSource (10, 20, 30, 40, 50, 60) (2, 3, 1)
       $dss = cntk.dataSourceSet @{ b = $b }
-      Add-CNTKDataSourceSet $file $dss
+      Add-CNTKMsgPack $dss $file
 
-      $results = Get-CNTKDataSourceSet $file
+      $results = Get-CNTKMsgPack $file
 
       $results.Count | Should -Be 2
 

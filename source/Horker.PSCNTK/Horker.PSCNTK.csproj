@@ -62,6 +62,7 @@
     <Compile Include="Cmdlets\MeasureCNTKTextFormat.cs" />
     <Compile Include="Cmdlets\MsgPackCmdlets.cs" />
     <Compile Include="Cmdlets\NewCNTKAccuracy.cs" />
+    <Compile Include="Cmdlets\NewCNTKMsgPackSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKStabilize.cs" />
     <Compile Include="Cmdlets\ReadCNTKTextFormat.cs" />
     <Compile Include="Cmdlets\WriteCNTKPartitionedCTF.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="General\Logger.cs" />
     <Compile Include="General\RingBuffer.cs" />
     <Compile Include="General\SwigMethods.cs" />
+    <Compile Include="Samplers\MsgPackSampler.cs" />
     <Compile Include="Training\TrainingProgress.cs" />
     <Compile Include="Cmdlets\ValueCmdlets.cs" />
     <Compile Include="Cmdlets\CmdletHelpers.cs" />

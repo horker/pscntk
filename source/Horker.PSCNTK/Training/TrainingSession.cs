@@ -138,6 +138,8 @@ namespace Horker.PSCNTK
             do
             {
                 testData = ValidationSampler.GetNextMinibatch(TestDevice);
+                if (testData == null)
+                    break;
 
                 var map = new UnorderedMapVariableMinibatchData();
                 var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(testData);

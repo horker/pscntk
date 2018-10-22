@@ -12,9 +12,15 @@ namespace Horker.PSCNTK
     {
         private BlockingCollection<DataSourceSet> _dataQueue;
 
+        private bool _reuseSamples;
+        private RingBuffer<DataSourceSet> _ringBuffer;
+
         private int _sampleCountPerEpoch;
-        private int _totalSampleCount;
+        private long _totalSampleCount;
         private int _epoch;
+
+        private long _readCount;
+        private long _writeCount;
 
         private DataSourceSet _lastMinibatch;
 
@@ -26,17 +32,25 @@ namespace Horker.PSCNTK
 
         public int CountInQueue => _dataQueue.Count;
 
+        public bool ReuseSamples => _reuseSamples;
+
+        public int SampleCountPerEpoch => _sampleCountPerEpoch;
+        public long TotalSampleCount => _totalSampleCount;
+        public int Epoch => _epoch;
+
+        public long ReadCount => _readCount;
+        public long WriteCount => _writeCount;
+
         public int TimeoutForAdd => _timeoutForAdd;
         public int TimeoutForTake => _timeoutForTake;
 
-        private bool _reuseSamples;
-        private RingBuffer<DataSourceSet> _ringBuffer;
-
-        public ParallelSampler(int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 60 * 1000, int timeoutForTake = 30 * 1000)
+        public ParallelSampler(int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 10 * 1000, int timeoutForTake = 10 * 1000)
         {
             _sampleCountPerEpoch = sampleCountPerEpoch;
             _totalSampleCount = 0;
             _epoch = 0;
+
+            _readCount = _writeCount = 0;
 
             _dataQueue = new BlockingCollection<DataSourceSet>(queueSize);
 
@@ -59,6 +73,7 @@ namespace Horker.PSCNTK
             {
                 _cancelTokenSourceForAdd.CancelAfter(_timeoutForAdd);
                 _dataQueue.Add(dataSourceSet, _cancelTokenSourceForAdd.Token);
+                ++_writeCount;
                 return true;
             }
             catch (OperationCanceledException)
@@ -107,6 +122,8 @@ namespace Horker.PSCNTK
 
             // Preserve the last data source until the next call to avoid it being garbage-collected.
             _lastMinibatch = dataSourceSet;
+
+            ++_readCount;
 
             return minibatch;
         }
