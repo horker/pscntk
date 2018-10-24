@@ -3,6 +3,7 @@ using System.IO;
 using CNTK;
 using Horker.PSCNTK;
 using System.Linq;
+using System.Diagnostics;
 
 namespace UnitTest
 {
@@ -32,7 +33,7 @@ namespace UnitTest
                 }
             }
 
-            using (var sampler = new MsgPackSampler(NUM_SAMPLES, 10, false, 100))
+            using (var sampler = new MsgPackSampler(3, 10, false, 100))
             {
                 sampler.StartLoading(file);
 
@@ -43,13 +44,15 @@ namespace UnitTest
                         var batch = sampler.GetNextMinibatch();
                         Assert.AreEqual(1, batch.Features.Count);
                         Assert.IsTrue(batch.Features.ContainsKey("a"));
-                        var b = batch["a"];
-                        CollectionAssert.AreEqual(new int[] { 3, 1, 1 }, b.data.Shape.Dimensions.ToArray());
+                        Assert.AreEqual((i * 1000 + j + 1) % 3 == 0, batch.SweepEnd);
 
-                        var ds = DataSourceFactory.FromValue(b.data).ToArray();
+                        var value = batch["a"];
+                        CollectionAssert.AreEqual(new int[] { 3, 1, 1 }, value.Shape.Dimensions.ToArray());
+
+                        var ds = DataSourceFactory.FromValue(value).ToArray();
+//                        Debug.WriteLine(string.Join(", ", ds));
                         CollectionAssert.AreEqual(new float[] { j, j * 10, j * 100 }, ds);
 
-                        // Assert.AreEqual((i * 1000 + j + 1) % 3 == 0, b.sweepEnd);
                     }
                 }
             }

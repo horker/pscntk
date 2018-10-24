@@ -72,9 +72,9 @@ namespace Horker.PSCNTK
             }
         }
 
-        public Dictionary<Variable, MinibatchData> GetVariableMinibatchDataMap(Minibatch batch)
+        public Dictionary<Variable, Value> GetVariableValueMap(Minibatch batch)
         {
-            var arguments = new Dictionary<Variable, MinibatchData>();
+            var arguments = new Dictionary<Variable, Value>();
             foreach (var entry in batch.Features)
             {
                 Variable v = null;
@@ -83,25 +83,9 @@ namespace Horker.PSCNTK
             }
 
             if (arguments.Count == 0)
-                throw new ApplicationException("Minibatch is empty or contains no data corresponding to arguments");
-
-            return arguments;
-        }
-
-        public Dictionary<Variable, Value> GetVariableValueMap(Minibatch batch)
-        {
-            var inputs = new Dictionary<Variable, Value>();
-            foreach (var entry in batch.Features)
-            {
-                Variable v = null;
-                if (_map.TryGetValue(entry.Key, out v))
-                    inputs.Add(v, entry.Value.data);
-            }
-
-            if (inputs.Count == 0)
                 throw new ApplicationException("Minibatch is empty or contains no data corresponding to the input variables of the model");
 
-            return inputs;
+            return arguments;
         }
     }
 }

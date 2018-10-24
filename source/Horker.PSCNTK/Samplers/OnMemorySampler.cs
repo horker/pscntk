@@ -160,8 +160,7 @@ namespace Horker.PSCNTK
                 var name = entry.Key;
                 var feature = entry.Value;
                 var value = GetValue(feature, position, batchSize, device);
-                var numSamples = WithSequenceAxis ? batchSize * feature.Shape[-2] : batchSize;
-                batch.AddNewMinibatch(name, value, batchSize, numSamples, sweepEnd);
+                batch.Add(name, value, sweepEnd);
             }
 
             batch.SweepEnd = sweepEnd;

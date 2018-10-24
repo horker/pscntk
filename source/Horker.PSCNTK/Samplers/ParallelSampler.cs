@@ -44,7 +44,7 @@ namespace Horker.PSCNTK
         public int TimeoutForAdd => _timeoutForAdd;
         public int TimeoutForTake => _timeoutForTake;
 
-        public ParallelSampler(int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 10 * 1000, int timeoutForTake = 10 * 1000)
+        public ParallelSampler(int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 10 * 1000, int timeoutForTake = 60 * 60 * 10000)
         {
             _sampleCountPerEpoch = sampleCountPerEpoch;
             _totalSampleCount = 0;
@@ -76,9 +76,9 @@ namespace Horker.PSCNTK
                 ++_writeCount;
                 return true;
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException ex)
             {
-                return false;
+                throw new TimeoutException("Posting data into queue timed out", ex);
             }
         }
 
@@ -104,9 +104,9 @@ namespace Horker.PSCNTK
                     _cancelTokenSourceForTake.CancelAfter(_timeoutForTake);
                     dataSourceSet = _dataQueue.Take(_cancelTokenSourceForTake.Token);
                 }
-                catch (OperationCanceledException)
+                catch (OperationCanceledException ex)
                 {
-                    return null;
+                    throw new TimeoutException("Taking data from queue timed out", ex);
                 }
             }
 

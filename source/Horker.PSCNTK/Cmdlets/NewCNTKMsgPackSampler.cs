@@ -29,7 +29,7 @@ namespace Horker.PSCNTK
         public int TimeoutForAdd = 10 * 1000;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public int TimeoutForTake = 10 * 1000;
+        public int TimeoutForTake = 60 * 60 * 1000;
 
         protected override void EndProcessing()
         {

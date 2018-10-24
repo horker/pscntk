@@ -74,6 +74,7 @@
     <Compile Include="DataSource\IDataSource.cs" />
     <Compile Include="DataSource\ListSlice.cs" />
     <Compile Include="DataSource\MsgPackSerializer.cs" />
+    <Compile Include="Extension methods\ValueMethods.cs" />
     <Compile Include="General\IO.cs" />
     <Compile Include="General\Logger.cs" />
     <Compile Include="General\RingBuffer.cs" />

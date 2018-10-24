@@ -24,13 +24,13 @@ Describe "Set-CNTKRandomSeed" {
     Set-CNTKRandomSeed 1234
 
     $s = cntk.noisesampler "random" 1 1
-    $r1 = $s.GetNextMinibatch()["random"].Data.ToArray()
+    $r1 = $s.GetNextMinibatch()["random"].ToArray()
 
     $s = cntk.noisesampler "random" 1 1
-    $r2 = $s.GetNextMinibatch()["random"].Data.ToArray()
+    $r2 = $s.GetNextMinibatch()["random"].ToArray()
 
     $s = cntk.noisesampler "random" 1 1
-    $r3 = $s.GetNextMinibatch()["random"].Data.ToArray()
+    $r3 = $s.GetNextMinibatch()["random"].ToArray()
 
     $r1 | Should -Be $r2
     $r1 | Should -Be $r3

@@ -27,14 +27,13 @@ namespace Horker.PSCNTK
         public int Iteration { get; private set; }
         public bool EpochIncremented { get; private set; }
 
-        public bool KeepMinibatch { get; private set; }
-        public Dictionary<string, Value> Minibatch { get; private set; }
+        public Minibatch Minibatch { get; private set; }
 
         public int SampleCount { get; private set; }
         public double Loss { get; private set; }
         public double Metric { get; private set; }
 
-        public TrainingSession(WrappedFunction model, WrappedFunction lossFunction, WrappedFunction evaluationFunction, Learner learner, ISampler sampler, ISampler validationSampler, Hashtable dataNameToInputMap = null, DeviceDescriptor trainingDevice = null, DeviceDescriptor testDevice = null, bool keepMinibatch = false)
+        public TrainingSession(WrappedFunction model, WrappedFunction lossFunction, WrappedFunction evaluationFunction, Learner learner, ISampler sampler, ISampler validationSampler, Hashtable dataNameToInputMap = null, DeviceDescriptor trainingDevice = null, DeviceDescriptor testDevice = null)
         {
             Learner = learner;
             Trainer = Trainer.CreateTrainer(model, lossFunction, evaluationFunction, new Learner[] { learner });
@@ -49,8 +48,6 @@ namespace Horker.PSCNTK
             TestDevice = testDevice;
             if (TestDevice == null)
                 TestDevice = DeviceDescriptor.UseDefaultDevice();
-
-            KeepMinibatch = keepMinibatch;
 
             DataNameToInputMap = new DataNameToInputMap(
                 new Function[] { model, lossFunction, evaluationFunction },
@@ -96,14 +93,11 @@ namespace Horker.PSCNTK
                 if (minibatch == null)
                     break;
 
-                if (KeepMinibatch)
-                    Minibatch = minibatch.GetCopy();
-
                 DataNameToInputMap.InitializeByMinibatch(minibatch);
 
-                var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(minibatch);
+                var arguments = DataNameToInputMap.GetVariableValueMap(minibatch);
 
-                Trainer.TrainMinibatch(arguments, TrainingDevice);
+                Trainer.TrainMinibatch(arguments, minibatch.SweepEnd, TrainingDevice);
 
                 SampleCount = (int)Trainer.PreviousMinibatchSampleCount();
                 Loss = Trainer.PreviousMinibatchLossAverage();
@@ -141,8 +135,8 @@ namespace Horker.PSCNTK
                 if (testData == null)
                     break;
 
-                var map = new UnorderedMapVariableMinibatchData();
-                var arguments = DataNameToInputMap.GetVariableMinibatchDataMap(testData);
+                var map = new UnorderedMapVariableValuePtr();
+                var arguments = DataNameToInputMap.GetVariableValueMap(testData);
                 foreach (var entry in arguments)
                     map.Add(entry.Key, entry.Value);
 

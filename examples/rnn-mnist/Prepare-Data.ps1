@@ -70,7 +70,7 @@ if (Test-Path $MNIST_TRAIN_MP) {
 
 for ($i = 0; $i -lt $length * .8; $i += $MINIBATCH_SIZE) {
     $slice = $set.Slice($i, $MINIBATCH_SIZE)
-    Add-CNTKMessagePack $slice $MNIST_TRAIN_MP
+    Add-CNTKMsgPack $slice $MNIST_TRAIN_MP
 }
 
 if (Test-Path $MNIST_TEST_MP) {
@@ -80,5 +80,5 @@ if (Test-Path $MNIST_TEST_MP) {
 for ($i; $i -lt $length; $i += $MINIBATCH_SIZE) {
     $size = [Math]::Min($MINIBATCH_SIZE, $length - $i)
     $slice = $set.Slice($i, $size)
-    Add-CNTKMessagePack $slice $MNIST_TEST_MP
+    Add-CNTKMsgPack $slice $MNIST_TEST_MP
 }

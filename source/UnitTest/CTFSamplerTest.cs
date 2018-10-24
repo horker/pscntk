@@ -2,6 +2,7 @@
 using System.IO;
 using CNTK;
 using Horker.PSCNTK;
+using System.Linq;
 
 namespace UnitTest
 {
@@ -36,18 +37,15 @@ namespace UnitTest
             var m = sampler.GetNextMinibatch();
 
             Assert.AreEqual(2, m.Features.Count);
-            Assert.AreEqual(1, (int)m.Features["f1"].numberOfSamples);
-            Assert.AreEqual(1, (int)m.Features["f2"].numberOfSamples);
+            Assert.AreEqual(1, m.SampleCount);
 
-            CollectionAssert.AreEqual(new float[] { 1, 2, 3, 4, 5 }, DataSourceFactory.FromValue(m.Features["f1"].data).ToArray());
+            CollectionAssert.AreEqual(new int[] { 5, 1, 1 }, m.Features["f1"].Shape.Dimensions.ToArray());
+            CollectionAssert.AreEqual(new float[] { 1, 2, 3, 4, 5 }, DataSourceFactory.FromValue(m.Features["f1"]).ToArray());
 
             m = sampler.GetNextMinibatch();
 
-            Assert.AreEqual(2, m.Features.Count);
-            Assert.AreEqual(1, (int)m.Features["f1"].numberOfSamples);
-            Assert.AreEqual(1, (int)m.Features["f2"].numberOfSamples);
-
-            CollectionAssert.AreEqual(new float[] { 6, 5, 4 }, DataSourceFactory.FromValue(m.Features["f2"].data).ToArray());
+            CollectionAssert.AreEqual(new int[] { 3, 1, 1 }, m.Features["f2"].Shape.Dimensions.ToArray());
+            CollectionAssert.AreEqual(new float[] { 6, 5, 4 }, DataSourceFactory.FromValue(m.Features["f2"]).ToArray());
         }
     }
 }

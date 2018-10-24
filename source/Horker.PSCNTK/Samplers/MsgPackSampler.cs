@@ -36,7 +36,7 @@ namespace Horker.PSCNTK
 
         public Exception LastException => _lastException;
 
-        public MsgPackSampler(int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 10 * 1000, int timeoutForTake = 10 * 1000)
+        public MsgPackSampler(int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 10 * 1000, int timeoutForTake = 60 * 60 * 1000)
         {
             _parallelSampler = new ParallelSampler(sampleCountPerEpoch, queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake);
 

@@ -22,6 +22,11 @@ $MNIST_DATA_FILE = "$PSScriptRoot\mnist_seq2.bin"
 $MNIST_TRAIN_CTF = "$PSScriptRoot\mnist_seq2_train.ctf"
 $MNIST_TEST_CTF = "$PSScriptRoot\mnist_seq2_test.ctf"
 
+$MNIST_TRAIN_MP = "$PSScriptRoot\mnist_seq2_train.msgpack"
+$MNIST_TEST_MP = "$PSScriptRoot\mnist_seq2_test.msgpack"
+
+$MINIBATCH_SIZE = 8
+
 ############################################################
 # Prepraring data
 ############################################################
@@ -42,11 +47,39 @@ $label = $label.Slice(@(8, 0))
 $label = $label.OneHot(10).ToFlatArray($true)
 $label = cntk.datasource $label (10, 1, -1)
 
-Write-Host "Saving..."
 $set = cntk.datasourceset @{ input = $data; label = $label }
-$set.Save($MNIST_DATA_FILE)
 
-$train, $test = $set.Split(@(.8, .2))
+Write-Host "Saving..."
 
+# Serialization
+
+#$set.Save($MNIST_DATA_FILE)
+
+#$train, $test = $set.Split(@(.8, .2))
+
+#CTF
 #Write-CNTKTextFormat $train $MNIST_TRAIN_CTF -WithSequenceAxis
 #Write-CNTKTextFormat $test $MNIST_TEST_CTF -WithSequenceAxis
+
+# MessagePack
+
+$length = $data.Shape[-1]
+
+if (Test-Path $MNIST_TRAIN_MP) {
+    Remove-Item $MNIST_TRAIN_MP
+}
+
+for ($i = 0; $i -lt $length * .8; $i += $MINIBATCH_SIZE) {
+    $slice = $set.Slice($i, $MINIBATCH_SIZE)
+    Add-CNTKMsgPack $slice $MNIST_TRAIN_MP
+}
+
+if (Test-Path $MNIST_TEST_MP) {
+    Remove-Item $MNIST_TEST_MP
+}
+
+for ($i; $i -lt $length; $i += $MINIBATCH_SIZE) {
+    $size = [Math]::Min($MINIBATCH_SIZE, $length - $i)
+    $slice = $set.Slice($i, $size)
+    Add-CNTKMsgPack $slice $MNIST_TEST_MP
+}

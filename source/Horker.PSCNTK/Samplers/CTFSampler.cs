@@ -91,7 +91,7 @@ namespace Horker.PSCNTK
 
             var minibatchMap = _minibatchSource.GetNextMinibatch((uint)MinibatchSize, device);
 
-            var minibatch = new Minibatch(minibatchMap);
+            var minibatch = new Minibatch();
 
             foreach (var info in _streamInfos)
                 minibatch.Add(info.Key, minibatchMap[info.Value]);

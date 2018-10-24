@@ -57,7 +57,7 @@ namespace Horker.PSCNTK
 
             try
             {
-                var session = new TrainingSession(Model, LossFunction, EvaluationFunction, Learner, Sampler, ValidationSampler, DataToInputMap, null, null, false);
+                var session = new TrainingSession(Model, LossFunction, EvaluationFunction, Learner, Sampler, ValidationSampler, DataToInputMap, null, null);
                 foreach (var progress in TrainingLoop.Start(session, MaxIteration, ProgressOutputStep, logger))
                     WriteObject(progress);
             }
@@ -95,12 +95,9 @@ namespace Horker.PSCNTK
         [Parameter(Position = 6, Mandatory = false)]
         public Hashtable DataToInputMap = null;
 
-        [Parameter(Position = 7, Mandatory = false)]
-        public SwitchParameter KeepMinibatch;
-
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Model, LossFunction, EvaluationFunction, Learner, Sampler, ValidationSampler, DataToInputMap, null, null, KeepMinibatch);
+            var session = new TrainingSession(Model, LossFunction, EvaluationFunction, Learner, Sampler, ValidationSampler, DataToInputMap, null, null);
             WriteObject(session);
         }
     }

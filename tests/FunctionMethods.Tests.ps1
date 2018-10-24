@@ -34,7 +34,7 @@ Describe "Invoke()" {
     $result = $f.Invoke($b).ToDataSource()
 
     $result.Shape.Dimensions | Should -be @(1)
-    $result.Data | math.round -digits 5 | Should -Be @(($b.Features["input"].data.ToDataSource().ToArray().Sum() | math.round -digits 5))
+    $result.Data | math.round -digits 5 | Should -Be @(($b.Features["input"].ToArray().Sum() | math.round -digits 5))
   }
 
 }
