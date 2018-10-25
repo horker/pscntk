@@ -486,11 +486,14 @@ namespace Horker.PSCNTK {
         public UInt32 MaxTempMemSizeInSamples = 0;
 
         [Parameter(Position = 9, Mandatory = false)]
+        public bool Sequential = false;
+
+        [Parameter(Position = 9, Mandatory = false)]
         public string Name = "";
 
         protected override void EndProcessing()
         {
-            var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, new CNTK.BoolVector(Sharing), new CNTK.BoolVector(AutoPadding), Dilation, ReductionRank, Groups, MaxTempMemSizeInSamples, Name);
+            var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, new CNTK.BoolVector(Sharing), new CNTK.BoolVector(AutoPadding), Dilation, ReductionRank, Groups, MaxTempMemSizeInSamples, Sequential, Name);
             WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }

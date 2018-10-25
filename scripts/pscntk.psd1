@@ -57,7 +57,7 @@ ProcessorArchitecture = 'Amd64'
 
 # Assemblies that must be loaded prior to importing this module
 RequiredAssemblies = @(
-  "Cntk.Core.Managed-2.5.1.dll"
+  "Cntk.Core.Managed-2.6.dll"
   "MsgPack.dll"
 )
 

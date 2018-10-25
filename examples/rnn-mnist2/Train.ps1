@@ -26,13 +26,13 @@ Set-CNTKRandomSeed 1234
 
 Write-Host "Loading data..."
 
-$data = cntk.dataSourceSet -Path $MNIST_DATA_FILE
-$trainData, $testData = $data.Split(@(.8, .2))
-$sampler = cntk.sampler $trainData -MinibatchSize $MINIBATCH_SIZE
-$testSampler = cntk.sampler $testData -MinibatchSize 16
+#$data = cntk.dataSourceSet -Path $MNIST_DATA_FILE
+#$trainData, $testData = $data.Split(@(.8, .2))
+#$sampler = cntk.sampler $trainData -MinibatchSize $MINIBATCH_SIZE
+#$testSampler = cntk.sampler $testData -MinibatchSize 16
 
-#$sampler = cntk.msgPackSampler $MNIST_TRAIN_MP (60000 * .8) 100 -TimeoutForAdd (60 * 60 * 1000)
-#$testSampler = cntk.msgPackSampler $MNIST_TEST_MP (60000 * .2) 100 -TimeoutForAdd (60 * 60 * 1000)
+$sampler = cntk.msgPackSampler $MNIST_TRAIN_MP (60000 * .8) 100 -TimeoutForAdd (60 * 60 * 1000)
+$testSampler = cntk.msgPackSampler $MNIST_TEST_MP (60000 * .2) 100 -TimeoutForAdd (60 * 60 * 1000)
 
 ############################################################
 # Model

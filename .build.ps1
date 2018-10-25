@@ -17,16 +17,16 @@ $MODULE_PATH_DEBUG = "$PSScriptRoot\debug\pscntk"
 
 $SOLUTION_FILE = "$PSScriptRoot\source\pscntk.sln"
 
-$CNTK_VERSION = "2.5.1"
+$CNTK_VERSION = "2.6"
 
 $OBJECT_FILES = @(
-  "Cntk.Core.Managed-2.5.1.dll"
+  "Cntk.Core.Managed-2.6.dll"
   "MsgPack.dll"
   "Horker.PSCNTK.dll"
   "Horker.PSCNTK.pdb"
 )
 
-$LIB_PATH = "$PSScriptRoot\lib"
+$LIB_PATH = "$PSScriptRoot\lib\$CNTK_VERSION"
 
 $TEMPLATE_INPUT_PATH = "$PSScriptRoot\templates"
 $TEMPLATE_OUTPUT_PATH = "$PSScriptRoot\source\Horker.PSCNTK\Generated files"
@@ -152,13 +152,15 @@ task Templates {
 }
 
 task CopyLib {
-  New-Folder2 "$MODULE_PATH\lib"
-  Copy-Item2 "$LIB_PATH\*.dll" "$MODULE_PATH\lib"
-  Copy-Item2 "$LIB_PATH\*.pdb" "$MODULE_PATH\lib"
+  $dir = "$MODULE_PATH\lib\$CNTK_VERSION"
+  New-Folder2 $dir
+  Copy-Item2 "$LIB_PATH\*.dll" $dir
+  Copy-Item2 "$LIB_PATH\*.pdb" $dir
 
-  New-Folder2 "$MODULE_PATH_DEBUG\lib"
-  Copy-Item2 "$LIB_PATH\*.dll" "$MODULE_PATH_DEBUG\lib"
-  Copy-Item2 "$LIB_PATH\*.pdb" "$MODULE_PATH_DEBUG\lib"
+  $dir = "$MODULE_PATH_DEBUG\lib\$CNTK_VERSION"
+  New-Folder2 $dir
+  Copy-Item2 "$LIB_PATH\*.dll" $dir
+  Copy-Item2 "$LIB_PATH\*.pdb" $dir
 }
 
 task CollectUnmanagedLib {
