@@ -34,8 +34,8 @@ namespace UnitTest
             // Model
 
             var input = CNTKLib.InputVariable(new int[] { 2 }, false, DataType.Float, "input");
-            var h = Composite.Dense(input, new int[] { 100 }, CNTKLib.HeNormalInitializer(), true, null, false, "relu", DeviceDescriptor.UseDefaultDevice(), "");
-            h = Composite.Dense(h, new int[] { 2 }, CNTKLib.GlorotNormalInitializer(), true, null, false, "sigmoid", DeviceDescriptor.UseDefaultDevice(), "");
+            var h = Composite.Dense(input, new int[] { 100 }, CNTKLib.HeNormalInitializer(), true, null, false, 4, "relu", DeviceDescriptor.UseDefaultDevice(), "");
+            h = Composite.Dense(h, new int[] { 2 }, CNTKLib.GlorotNormalInitializer(), true, null, false, 4, "sigmoid", DeviceDescriptor.UseDefaultDevice(), "");
             var output = h;
 
             var label = CNTKLib.InputVariable(new int[] { 2 }, DataType.Float, "label");

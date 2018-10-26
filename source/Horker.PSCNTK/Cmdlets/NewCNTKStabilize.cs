@@ -11,9 +11,12 @@ namespace Horker.PSCNTK
         public WrappedVariable Operand;
 
         [Parameter(Position = 1, Mandatory = false)]
-        public DeviceDescriptor Device = null;
+        public double Steepness = 4;
 
         [Parameter(Position = 2, Mandatory = false)]
+        public DeviceDescriptor Device = null;
+
+        [Parameter(Position = 3, Mandatory = false)]
         public string Name = "";
 
         protected override void EndProcessing()
@@ -21,7 +24,7 @@ namespace Horker.PSCNTK
             if (Device == null)
                 Device = DeviceDescriptor.UseDefaultDevice();
 
-            var result = Composite.Stabilize(Operand, Device, Name);
+            var result = Composite.Stabilize(Operand, Steepness, Device, Name);
 
             WriteObject(new WrappedFunction(result));
         }

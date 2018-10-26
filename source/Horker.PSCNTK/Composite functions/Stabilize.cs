@@ -1,24 +1,19 @@
-﻿using CNTK;
+﻿using System;
+using CNTK;
 
 namespace Horker.PSCNTK
 {
     public partial class Composite
     {
-        // ref. https://github.com/Microsoft/CNTK/blob/master/Examples/TrainingCSharp/Common/LSTMSequenceClassifier.cs
-
-        public static Function Stabilize(Variable input, DeviceDescriptor device, string name)
+        public static Function Stabilize(Variable input, double steepness, DeviceDescriptor device, string name = "")
         {
-            var f = Constant.Scalar(4.0f, device);
-            var fInv = Constant.Scalar(f.DataType, 1.0 / 4.0f);
+            var f = Constant.Scalar(DataType.Float, steepness, device);
+            var fInv = Constant.Scalar(DataType.Float, 1.0 / steepness, device);
 
-            var weight = new Parameter(new NDShape(), f.DataType, 0.99537863 /* 1/f*ln (e^f-1) */, device);
+            var initial = Math.Log(Math.Exp(steepness) - 1) / steepness;
 
-            var beta = CNTKLib.ElementTimes(
-                fInv,
-                CNTKLib.Log(
-                    Constant.Scalar(DataType.Float, 1.0) +
-                    CNTKLib.Exp(CNTKLib.ElementTimes(f, weight))));
-
+            var param = new Parameter(new NDShape(), DataType.Float, initial, device, name + "_param");
+            var beta = CNTKLib.ElementTimes(fInv, CNTKLib.Softplus(CNTKLib.ElementTimes(f, param)));
             return CNTKLib.ElementTimes(beta, input, name);
         }
     }

@@ -59,7 +59,7 @@ namespace UnitTest
         public void TestFind()
         {
             var input = Variable.InputVariable(new int[] { 1, 2 }, CNTK.DataType.Float, "input");
-            var f = Composite.Dense(input, new int[] { 5 }, null, true, null, false, "sigmoid", DeviceDescriptor.UseDefaultDevice(), "TestFind");
+            var f = Composite.Dense(input, new int[] { 5 }, null, true, null, false, 4, "sigmoid", DeviceDescriptor.UseDefaultDevice(), "TestFind");
 
             var obj = new PSObject(f);
 
@@ -72,7 +72,7 @@ namespace UnitTest
         public void TestAsTree()
         {
             var input = Variable.InputVariable(new int[] { 2 }, CNTK.DataType.Float, "input");
-            var f = Composite.Dense(input, new int[] { 5 }, CNTKLib.ConstantInitializer(0.0), true, null, false, null, DeviceDescriptor.UseDefaultDevice(), "test");
+            var f = Composite.Dense(input, new int[] { 5 }, CNTKLib.ConstantInitializer(0.0), true, null, false, 4, null, DeviceDescriptor.UseDefaultDevice(), "test");
 
             var obj = new PSObject(f);
 

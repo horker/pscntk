@@ -5,11 +5,17 @@ function New-CNTKGruCell {
     param(
         [Parameter(Position = 0, Mandatory = $true)]
         [Horker.PSCNTK.WrappedVariable]$Operand,
+
         [Parameter(Position = 1, Mandatory = $false)]
         [switch]$Stabilize = $false,
+
         [Parameter(Position = 2, Mandatory = $false)]
-        [CNTK.DeviceDescriptor]$Device = [CNTK.DeviceDescriptor]::UseDefaultDevice(),
+        [double]$Steepness = 4,
+
         [Parameter(Position = 3, Mandatory = $false)]
+        [CNTK.DeviceDescriptor]$Device = [CNTK.DeviceDescriptor]::UseDefaultDevice(),
+
+        [Parameter(Position = 4, Mandatory = $false)]
         [string]$Name = ""
     )
 
@@ -28,7 +34,7 @@ function New-CNTKGruCell {
     }
 
     if ($Stabilize) {
-        function script:st($x) { cntk.stabilize $x }
+        function script:st($x) { cntk.stabilize $x $Steepness }
     }
     else {
         function script:st($x) { $x }
@@ -61,19 +67,27 @@ function New-CNTKGru {
     param(
         [Parameter(Position = 0, Mandatory = $true)]
         [Horker.PSCNTK.WrappedVariable]$Operand,
+
         [Parameter(Position = 1, Mandatory = $false)]
         [Horker.PSCNTK.WrappedVariable]$InitialState = $null,
+
         [Parameter(Position = 2, Mandatory = $false)]
         [switch]$Stabilize = $false,
+
         [Parameter(Position = 3, Mandatory = $false)]
-        [switch]$ReturnSequences,
+        [double]$Steepness = 4,
+
         [Parameter(Position = 4, Mandatory = $false)]
-        [CNTK.DeviceDescriptor]$Device = [CNTK.DeviceDescriptor]::UseDefaultDevice(),
+        [switch]$ReturnSequences,
+
         [Parameter(Position = 5, Mandatory = $false)]
+        [CNTK.DeviceDescriptor]$Device = [CNTK.DeviceDescriptor]::UseDefaultDevice(),
+
+        [Parameter(Position = 6, Mandatory = $false)]
         [string]$Name = ""
     )
 
-    $cell, $ht1 = New-CNTKGruCell $Operand -Stabilize:$Stabilize -Device $Device
+    $cell, $ht1 = New-CNTKGruCell $Operand -Stabilize:$Stabilize -Steepness 4 -Device $Device
     $cell.ReplacePlaceholders(@{ $ht1 = (cntk.pastvalue $cell $InitialState) })
 
     if (!$ReturnSequences) {

@@ -29,9 +29,12 @@ namespace Horker.PSCNTK
         public SwitchParameter Stabilize = false;
 
         [Parameter(Position = 7, Mandatory = false)]
-        public DeviceDescriptor Device = null;
+        public double Steepness = 4;
 
         [Parameter(Position = 8, Mandatory = false)]
+        public DeviceDescriptor Device = null;
+
+        [Parameter(Position = 9, Mandatory = false)]
         public string Name = "Dense";
 
         protected override void EndProcessing()
@@ -45,7 +48,8 @@ namespace Horker.PSCNTK
                 Initializer,     // CNTKDictionary initializer,
                 !NoBias,         // bool hasBias,
                 BiasInitializer, // CNTKDictionary biasInitializer,
-                Stabilize,       // bool Stabilize,
+                Stabilize,       // bool stabilize,
+                Steepness,       // double steepness
                 Activation,      // string activation
                 Device,          // DeviceDescriptor device,
                 Name             // string name

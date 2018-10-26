@@ -7,7 +7,7 @@ namespace Horker.PSCNTK
 {
     public partial class Composite
     {
-        public static Function Dense(Variable input, Shape outputShape, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, bool stabilize, string activation, DeviceDescriptor device, string name)
+        public static Function Dense(Variable input, Shape outputShape, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, bool stabilize, double steepness, string activation, DeviceDescriptor device, string name)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace Horker.PSCNTK
                 }
 
                 if (stabilize)
-                    input = Stabilize(input, device, name + "_st");
+                    input = Stabilize(input, steepness, device, name + "_st");
 
                 var output = GetAffine(input, weight, bias);
 

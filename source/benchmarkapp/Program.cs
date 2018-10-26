@@ -75,8 +75,8 @@ namespace benchmarkapp
         static Tuple<Function, Variable> GetModel()
         {
             var input = CNTKLib.InputVariable(new int[] { 2 }, DataType.Float, "input");
-            var n = Composite.Dense(input, new int[] { 100 }, CNTKLib.HeNormalInitializer(), true, CNTKLib.ConstantInitializer(0), false, "relu", DeviceDescriptor.UseDefaultDevice(), "");
-            var output = Composite.Dense(n, new int[] { 2 }, CNTKLib.GlorotNormalInitializer(), true, CNTKLib.ConstantInitializer(0), false, "sigmoid", DeviceDescriptor.UseDefaultDevice(), "");
+            var n = Composite.Dense(input, new int[] { 100 }, CNTKLib.HeNormalInitializer(), true, CNTKLib.ConstantInitializer(0), false, 4, "relu", DeviceDescriptor.UseDefaultDevice(), "");
+            var output = Composite.Dense(n, new int[] { 2 }, CNTKLib.GlorotNormalInitializer(), true, CNTKLib.ConstantInitializer(0), false, 4, "sigmoid", DeviceDescriptor.UseDefaultDevice(), "");
 
             var label = CNTKLib.InputVariable(new int[] { 2 }, DataType.Float, "label");
 
