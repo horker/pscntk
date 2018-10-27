@@ -1,5 +1,5 @@
 param(
-  [string]$File = "$PSScriptRoot\CNTKLibrary.h"
+  [string]$File = "$PSScriptRoot\2.6\CNTKLibrary.h"
 )
 
 # Obtain function signature information from the C++ header file.

@@ -2,7 +2,7 @@ using System;
 using System.Management.Automation;
 
 // DO NOT EDIT
-// This file was automatically generated at 2018/10/20 22:36:08
+// This file was automatically generated at 2018/10/27 13:07:50
 
 namespace Horker.PSCNTK {
 
@@ -488,54 +488,12 @@ namespace Horker.PSCNTK {
         [Parameter(Position = 9, Mandatory = false)]
         public bool Sequential = false;
 
-        [Parameter(Position = 9, Mandatory = false)]
+        [Parameter(Position = 10, Mandatory = false)]
         public string Name = "";
 
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Convolution(ConvolutionMap, Operand, Strides, new CNTK.BoolVector(Sharing), new CNTK.BoolVector(AutoPadding), Dilation, ReductionRank, Groups, MaxTempMemSizeInSamples, Sequential, Name);
-            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
-        }
-    }
-
-    [Cmdlet("New", "CNTKConvolutionTranspose")]
-    [Alias("cntk.convolutionTranspose")]
-    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
-    public class NewCNTKConvolutionTranspose : PSCmdlet
-    {
-        [Parameter(Position = 0, Mandatory = true)]
-        public WrappedVariable ConvolutionMap;
-
-        [Parameter(Position = 1, Mandatory = true)]
-        public WrappedVariable Operand;
-
-        [Parameter(Position = 2, Mandatory = false)]
-        public int[] Strides = new int[] { 1 };
-
-        [Parameter(Position = 3, Mandatory = false)]
-        public bool[] Sharing = new bool[] { true };
-
-        [Parameter(Position = 4, Mandatory = false)]
-        public bool[] AutoPadding = new bool[] { true };
-
-        [Parameter(Position = 5, Mandatory = false)]
-        public int[] OutputShape = new int[] { 0 };
-
-        [Parameter(Position = 6, Mandatory = false)]
-        public int[] Dilation = new int[] { 1 };
-
-        [Parameter(Position = 7, Mandatory = false)]
-        public UInt32 ReductionRank = 1;
-
-        [Parameter(Position = 8, Mandatory = false)]
-        public UInt32 MaxTempMemSizeInSamples = 0;
-
-        [Parameter(Position = 9, Mandatory = false)]
-        public string Name = "";
-
-        protected override void EndProcessing()
-        {
-            var result = CNTK.CNTKLib.ConvolutionTranspose(ConvolutionMap, Operand, Strides, new CNTK.BoolVector(Sharing), new CNTK.BoolVector(AutoPadding), OutputShape, Dilation, ReductionRank, MaxTempMemSizeInSamples, Name);
             WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
@@ -1847,42 +1805,6 @@ namespace Horker.PSCNTK {
         protected override void EndProcessing()
         {
             var result = CNTK.CNTKLib.Plus(LeftOperand, RightOperand, Name);
-            WriteObject(new Horker.PSCNTK.WrappedFunction(result));
-        }
-    }
-
-    [Cmdlet("New", "CNTKPooling")]
-    [Alias("cntk.pooling")]
-    [OutputType(typeof(Horker.PSCNTK.WrappedFunction))]
-    public class NewCNTKPooling : PSCmdlet
-    {
-        [Parameter(Position = 0, Mandatory = true)]
-        public WrappedVariable Operand;
-
-        [Parameter(Position = 1, Mandatory = true)]
-        public CNTK.PoolingType PoolingType;
-
-        [Parameter(Position = 2, Mandatory = true)]
-        public int[] PoolingWindowShape;
-
-        [Parameter(Position = 3, Mandatory = false)]
-        public int[] Strides = new int[] { 1 };
-
-        [Parameter(Position = 4, Mandatory = false)]
-        public bool[] AutoPadding = new bool[] { false };
-
-        [Parameter(Position = 5, Mandatory = false)]
-        public bool CeilOutDim = false;
-
-        [Parameter(Position = 6, Mandatory = false)]
-        public bool IncludePad = false;
-
-        [Parameter(Position = 7, Mandatory = false)]
-        public string Name = "";
-
-        protected override void EndProcessing()
-        {
-            var result = CNTK.CNTKLib.Pooling(Operand, PoolingType, PoolingWindowShape, Strides, new CNTK.BoolVector(AutoPadding), CeilOutDim, IncludePad, Name);
             WriteObject(new Horker.PSCNTK.WrappedFunction(result));
         }
     }
