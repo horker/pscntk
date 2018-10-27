@@ -3,9 +3,9 @@
 <Configuration>
     <ViewDefinitions>
         <View>
-            <Name>Horker.PSCNTK.DataSource`1[[System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</Name>
+            <Name>Horker.PSCNTK.DataSourceBase`2[[System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.Single[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</Name>
             <ViewSelectedBy>
-                <TypeName>Horker.PSCNTK.DataSource`1[[System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</TypeName>
+                <TypeName>Horker.PSCNTK.DataSourceBase`2[[System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.Single[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</TypeName>
             </ViewSelectedBy>
             <CustomControl>
                 <CustomEntries>
