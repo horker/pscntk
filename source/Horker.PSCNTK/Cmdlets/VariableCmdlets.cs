@@ -95,33 +95,52 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKConstant")]
     [Alias("cntk.constant")]
+    [CmdletBinding(DefaultParameterSetName = "values")]
     public class NewCNTKConstant : PSCmdlet
     {
-        [Parameter(Position = 0, Mandatory = true)]
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "values")]
+        public float[] Values = new float[] { 0.0f };
+
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "dim")]
         public int[] Dimensions;
 
-        [Parameter(Position = 1, Mandatory = false)]
-        public float[] InitValue = new float[] { 0.0f };
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "dim")]
+        public float[] InitialValue = new float[] { 0.0f };
 
-        [Parameter(Position = 2, Mandatory = false)]
+        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "dim")]
         public DataType DataType = DataType.Float;
 
-        [Parameter(Position = 3, Mandatory = false)]
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "values")]
+        [Parameter(Position = 3, Mandatory = false, ParameterSetName = "dim")]
         public DeviceDescriptor Device = DeviceDescriptor.UseDefaultDevice();
 
-        [Parameter(Position = 4, Mandatory = false)]
+        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "values")]
+        [Parameter(Position = 4, Mandatory = false, ParameterSetName = "dim")]
         public string Name = "";
 
         protected override void EndProcessing()
         {
             CNTK.Constant result;
 
-            if (InitValue.Length == 1)
-                result = new Constant(Dimensions, DataType, InitValue[0], Device, Name);
+            if (ParameterSetName == "values")
+            {
+                if (Values.Length == 1)
+                    result = Constant.Scalar(DataType.Float, Values[0]);
+                else
+                {
+                    var array = NDArrayViewMethods.SafeCreate(new int[] { Values.Length }, Values, Device);
+                    result = new Constant(array, Name);
+                }
+            }
             else
             {
-                var array = NDArrayViewMethods.SafeCreate(Dimensions, InitValue, Device);
-                result = new Constant(array, Name);
+                if (InitialValue.Length == 1)
+                    result = new Constant(Dimensions, DataType, InitialValue[0], Device, Name);
+                else
+                {
+                    var array = NDArrayViewMethods.SafeCreate(Dimensions, InitialValue, Device);
+                    result = new Constant(array, Name);
+                }
             }
 
             WriteObject(new WrappedVariable(result));

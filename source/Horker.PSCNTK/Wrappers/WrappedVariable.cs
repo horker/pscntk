@@ -82,6 +82,11 @@ namespace Horker.PSCNTK
             return new WrappedFunction(va._va);
         }
 
+        public static implicit operator WrappedVariable(float value)
+        {
+            return Constant.Scalar(DataType.Float, value);
+        }
+
         public static implicit operator WrappedVariable(double value)
         {
             return Constant.Scalar(DataType.Float, value);

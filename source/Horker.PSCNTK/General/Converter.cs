@@ -130,47 +130,71 @@ namespace Horker.PSCNTK
             return ds.ToValue();
         }
 
-        public static CNTK.Value ToValue(object value, int[] dimensions)
+        public static CNTK.NDArrayView ToNDArrayView(object value, int[] dimensions = null)
         {
-            if (value is PSObject)
-                value = (value as PSObject).BaseObject;
+            if (value is PSObject psobj)
+                value = psobj.BaseObject;
 
-            if (value is CNTK.Value)
-                return value as CNTK.Value;
+            if (value is CNTK.NDArrayView a)
+                return a;
 
-            if (value is IDataSource<float>)
+            if (value is CNTK.Value v)
+                return v.Data;
+
+            if (value is IDataSource<float> ds)
             {
-                var ds = value as IDataSource<float>;
-                ds.Reshape(dimensions);
-                return ds.ToValue();
+                if (dimensions != null)
+                    ds.Reshape(dimensions);
+                return ds.ToNDArrayView();
             }
 
-            if (value is float[])
+            if (value is float[] floatValues)
             {
-                var values = value as float[];
-                return ArrayToValue(values, dimensions);
+                return ArrayToNDArrayView(floatValues, dimensions);
             }
 
-            if (value is double[])
+            if (value is double[] doubleValues)
             {
-                var values = (value as double[]).Select(x => (float)x).ToArray();
-                return ArrayToValue(values, dimensions);
+                var values = doubleValues.Select(x => (float)x).ToArray();
+                if (dimensions == null)
+                    dimensions = new int[] { values.Length };
+                return ArrayToNDArrayView(values, dimensions);
             }
 
-            if (value is int[])
+            if (value is int[] intValues)
             {
-                var values = (value as int[]).Select(x => (float)x).ToArray();
-                return ArrayToValue(values, dimensions);
+                var values = intValues.Select(x => (float)x).ToArray();
+                if (dimensions == null)
+                    dimensions = new int[] { values.Length };
+                return ArrayToNDArrayView(values, dimensions);
             }
 
-            if (value is object[])
+            if (value is object[] objs)
             {
-                var values = (value as object[]).Select(x => Convert.ToSingle(x is PSObject ? (x as PSObject).BaseObject : x)).ToArray();
-                return ArrayToValue(values, dimensions);
+                var values = objs.Select(x => Convert.ToSingle(x is PSObject ? (x as PSObject).BaseObject : x)).ToArray();
+                if (dimensions == null)
+                    dimensions = new int[] { values.Length };
+                return ArrayToNDArrayView(values, dimensions);
             }
 
-            // single element value
-            return new DataSourceBase<float, float[]>(new float[] { Convert.ToSingle(value is PSObject ? (value as PSObject).BaseObject : value) }, new int[] { 1 }).ToValue();
+            // Single value
+
+            if (dimensions != null && (dimensions.Length != 1 || dimensions[0] != 1))
+                throw new ArgumentException("Dimensions exepct [1] is invalid because Value is a single value");
+
+            return new DataSourceBase<float, float[]>(new float[] { Convert.ToSingle(value is PSObject pso ? pso.BaseObject : value) }, new int[] { 1 }).ToNDArrayView();
+        }
+
+        public static CNTK.Value ToValue(object value, int[] dimensions = null)
+        {
+            if (value is PSObject psobj)
+                value = psobj.BaseObject;
+
+            if (value is CNTK.Value v)
+                return v;
+
+            var a = ToNDArrayView(value, dimensions);
+            return new CNTK.Value(a);
         }
 
         public static double ToDouble(object value)
