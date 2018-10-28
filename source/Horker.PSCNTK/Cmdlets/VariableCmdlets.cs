@@ -33,8 +33,8 @@ namespace Horker.PSCNTK
         {
             // Variable.InputVariable() creates two dynamic axes, a default dynamic axis and a default batch axis, when no axes are specified.
             // However, a default dynamic axis is not necessary for non-sequential model.
-            // More often than not, its existence is troublesome because it often leads miscalculation of the shapes of minibatch data without any error.
-            // Thus we change the default behavior to create a default batch axis only unless the -WithSequenceAxis switch is set.
+            // More often than not, its existence is troublesome because it tends to cause miscalculation of shapes of minibatch data without any error.
+            // Thus we change the default behavior to create a default batch axis only when the -WithSequenceAxis switch is set.
 
             if (DynamicAxes != null && WithSequenceAxis)
                 throw new ArgumentException("-WithSequenceAxis and -DynamicAxes should not be specified at the same time");
@@ -57,10 +57,21 @@ namespace Horker.PSCNTK
         [Parameter(Position = 1, Mandatory = false)]
         public Axis[] DynamicAxes = null;
 
+        [Parameter(Position = 2, Mandatory = false)]
+        public SwitchParameter WithSequenceAxis = false;
+
         protected override void EndProcessing()
         {
+            if (DynamicAxes != null && WithSequenceAxis)
+                throw new ArgumentException("-WithSequenceAxis and -DynamicAxes should not be specified at the same time");
+
             if (DynamicAxes == null)
-                DynamicAxes = new Axis[0];
+            {
+                if (WithSequenceAxis)
+                    DynamicAxes = new Axis[] { Axis.DefaultDynamicAxis(), Axis.DefaultBatchAxis() };
+                else
+                    DynamicAxes = new Axis[] { Axis.DefaultBatchAxis() };
+            }
 
             var result = Variable.PlaceholderVariable(Dimensions, DynamicAxes);
             WriteObject(new WrappedVariable(result));
