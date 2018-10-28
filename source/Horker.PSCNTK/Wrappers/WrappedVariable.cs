@@ -11,7 +11,16 @@ namespace Horker.PSCNTK
 
         // Delegates
 
-        public int CurrentValueTimeStamp => _va.CurrentValueTimeStamp;
+        public int? CurrentValueTimeStamp
+        {
+            get
+            {
+                if (_va.IsParameter || _va.IsConstant)
+                    return _va.CurrentValueTimeStamp;
+                return null;
+            }
+        }
+
         public DataType DataType => _va.DataType;
         public IList<Axis> DynamicAxes => _va.DynamicAxes;
         public bool IsConstant => _va.IsConstant;
@@ -27,9 +36,17 @@ namespace Horker.PSCNTK
         public Shape Shape => _va.Shape;
         public string Uid => _va.Uid;
 
-        // Additional
+        // Additional properties
 
-        public NDArrayView Value => _va.GetValue();
+        public NDArrayView Value
+        {
+            get
+            {
+                if (_va.IsParameter || _va.IsConstant)
+                    return _va.GetValue();
+                return null;
+            }
+        }
 
         #endregion
 
