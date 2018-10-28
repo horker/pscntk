@@ -3,9 +3,9 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    [Cmdlet("Restore", "CNTKFunction")]
-    [Alias("cntk.restore", "cntk.load")]
-    public class LoadCNTKFunction : PSCmdlet
+    [Cmdlet("Import", "CNTKFunction")]
+    [Alias("cntk.load")]
+    public class ImportCNTKFunction : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
         public string Path;

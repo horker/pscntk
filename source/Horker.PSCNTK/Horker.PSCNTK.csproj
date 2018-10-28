@@ -61,6 +61,7 @@
     <Compile Include="Cmdlets\ConvertToCNTKDataSource.cs" />
     <Compile Include="Cmdlets\ExportCNTKPartitionedCTF.cs" />
     <Compile Include="Cmdlets\ExporttCNTKTextFormat.cs" />
+    <Compile Include="Cmdlets\ImportCNTKFunction.cs" />
     <Compile Include="Cmdlets\ImportCNTKTextFormat.cs" />
     <Compile Include="Cmdlets\MeasureCNTKTextFormat.cs" />
     <Compile Include="Cmdlets\MsgPackCmdlets.cs" />
@@ -84,7 +85,6 @@
     <Compile Include="Cmdlets\ValueCmdlets.cs" />
     <Compile Include="Cmdlets\CmdletHelpers.cs" />
     <Compile Include="Cmdlets\ConvertToCNTKDot.cs" />
-    <Compile Include="Cmdlets\LoadCNTKFunction.cs" />
     <Compile Include="Cmdlets\NewCNTKCompositeSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKExpressionSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKNoiseSampler.cs" />
