@@ -6,8 +6,8 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    [Cmdlet("Write", "CNTKTextFormat")]
-    public class WritetCNTKTextFormat : PSCmdlet
+    [Cmdlet("Export", "CNTKTextFormat")]
+    public class ExporttCNTKTextFormat : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
         public Hashtable DataSources;

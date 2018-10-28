@@ -8,8 +8,8 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    [Cmdlet("Read", "CNTKTextFormat")]
-    public class ReadCNTKTextFormat : PSCmdlet
+    [Cmdlet("Import", "CNTKTextFormat")]
+    public class ImportCNTKTextFormat : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
         public string Path;
