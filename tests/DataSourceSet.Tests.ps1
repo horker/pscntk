@@ -42,4 +42,49 @@ Describe "Set-CNTKMsgPack/Get-CNTKMsgPack" {
       $d.Shape.Dimensions | Should -Be (2, 3, 1)
       $d.Data | Should -Be (10, 20, 30, 40, 50, 60)
   }
+
+  It "can save and load split DataSourceSets in MsgPack" {
+      $a = cntk.dataSource (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14) (2, 7)
+      $dss = cntk.dataSourceSet @{ a = $a }
+      Set-CNTKMsgPack $dss $file -SplitSize 3
+
+      $results = Get-CNTKMsgPack $file
+
+      $results.Count | Should -Be 3
+
+      $d = $results[0]["a"]
+      $d | Should -BeOfType [Horker.PSCNTK.IDataSource[float]]
+      $d.Shape.Dimensions | Should -Be (2, 3)
+      $d.Data | Should -Be (1, 2, 3, 4, 5, 6)
+
+      $d = $results[1]["a"]
+      $d | Should -BeOfType [Horker.PSCNTK.IDataSource[float]]
+      $d.Shape.Dimensions | Should -Be (2, 3)
+      $d.Data | Should -Be (7, 8, 9, 10, 11, 12)
+
+      $d = $results[2]["a"]
+      $d | Should -BeOfType [Horker.PSCNTK.IDataSource[float]]
+      $d.Shape.Dimensions | Should -Be (2, 1)
+      $d.Data | Should -Be (13, 14)
+  }
+
+  It "can omit fraction in MsgPack" {
+      $a = cntk.dataSource (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14) (2, 7)
+      $dss = cntk.dataSourceSet @{ a = $a }
+      Set-CNTKMsgPack $dss $file -SplitSize 3 -OmitFraction
+
+      $results = Get-CNTKMsgPack $file
+
+      $results.Count | Should -Be 2
+
+      $d = $results[0]["a"]
+      $d | Should -BeOfType [Horker.PSCNTK.IDataSource[float]]
+      $d.Shape.Dimensions | Should -Be (2, 3)
+      $d.Data | Should -Be (1, 2, 3, 4, 5, 6)
+
+      $d = $results[1]["a"]
+      $d | Should -BeOfType [Horker.PSCNTK.IDataSource[float]]
+      $d.Shape.Dimensions | Should -Be (2, 3)
+      $d.Data | Should -Be (7, 8, 9, 10, 11, 12)
+  }
 }

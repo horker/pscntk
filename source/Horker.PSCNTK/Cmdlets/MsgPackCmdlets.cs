@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Management.Automation;
 using MsgPack;
 using MsgPack.Serialization;
@@ -14,13 +15,28 @@ namespace Horker.PSCNTK
         [Parameter(Position = 1, Mandatory = true)]
         public string Path;
 
+        [Parameter(Position = 2, Mandatory = false)]
+        public int SplitSize = int.MaxValue;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public SwitchParameter OmitFraction = false;
+
         protected override void BeginProcessing()
         {
             var path = IO.GetAbsolutePath(this, Path);
 
             using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write))
             {
-                MsgPackSerializer.Serialize(DataSourceSet, stream);
+                var count = DataSourceSet.SampleCount;
+                for (var i = 0; i < count; i += SplitSize)
+                {
+                    var size = Math.Min(SplitSize, count - i);
+                    if (OmitFraction && size < SplitSize)
+                        break;
+
+                    var chunk = DataSourceSet.Slice(i, size);
+                    MsgPackSerializer.Serialize(chunk, stream);
+                }
             }
         }
     }
@@ -34,13 +50,28 @@ namespace Horker.PSCNTK
         [Parameter(Position = 1, Mandatory = true)]
         public string Path;
 
+        [Parameter(Position = 2, Mandatory = false)]
+        public int SplitSize = int.MaxValue;
+
+        [Parameter(Position = 3, Mandatory = false)]
+        public SwitchParameter OmitFraction = false;
+
         protected override void BeginProcessing()
         {
             var path = IO.GetAbsolutePath(this, Path);
 
             using (var stream = new FileStream(path, FileMode.Append, FileAccess.Write))
             {
-                MsgPackSerializer.Serialize(DataSourceSet, stream);
+                var count = DataSourceSet.SampleCount;
+                for (var i = 0; i < count; i += SplitSize)
+                {
+                    var size = Math.Min(SplitSize, count - i);
+                    if (OmitFraction && size < SplitSize)
+                        break;
+
+                    var chunk = DataSourceSet.Slice(i, size);
+                    MsgPackSerializer.Serialize(chunk, stream);
+                }
             }
         }
     }
