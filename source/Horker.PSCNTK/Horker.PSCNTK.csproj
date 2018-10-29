@@ -73,6 +73,8 @@
     <Compile Include="DataSource\DataSourceBase.cs" />
     <Compile Include="DataSource\DataSourceFactory.cs" />
     <Compile Include="DataSource\IDataSource.cs" />
+    <Compile Include="DataSource\JoinedDataSource.cs" />
+    <Compile Include="DataSource\JoinedList.cs" />
     <Compile Include="DataSource\ListSlice.cs" />
     <Compile Include="DataSource\MsgPackSerializer.cs" />
     <Compile Include="Extension methods\ValueMethods.cs" />

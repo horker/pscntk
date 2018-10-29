@@ -28,13 +28,9 @@ namespace UnitTest
                 }
 
                 GC.Collect();
-                GC.Collect();
-                GC.Collect();
 
                 var value = new Value(a2);
 
-                GC.Collect();
-                GC.Collect();
                 GC.Collect();
 
                 var ds = DataSourceFactory.FromValue(value);

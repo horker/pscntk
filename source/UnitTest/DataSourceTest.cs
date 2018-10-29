@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using Horker.PSCNTK;
+using System.Collections.Generic;
 
 namespace UnitTest
 {
@@ -322,6 +323,29 @@ namespace UnitTest
 
             CollectionAssert.AreEqual(new int[] { 2, 2, 2 }, b.Shape.Dimensions);
             CollectionAssert.AreEqual(new int[] { 5, 6, 7, 8, 9, 10, 11, 12 }, b.TypedData.ToArray());
+        }
+
+        [TestMethod]
+        public void TestJoined()
+        {
+            var l1 = new List<int>() { 1 };
+            var l2 = new List<int>() { 2, 3 };
+            var l3 = new List<int>() { 4, 5, 6 };
+            var l4 = new List<int>() { 7, 8, 9, 10 };
+
+            var ds = DataSourceFactory.FromLists(new IList<int>[] { l1, l2, l3, l4 }, new int[] { 2, 5 });
+
+            CollectionAssert.AreEqual(new int[] { 2, 5 }, ds.Shape.Dimensions);
+            CollectionAssert.AreEqual(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, ds.Data.ToArray());
+            Assert.AreEqual(1, ds[0, 0]);
+            Assert.AreEqual(5, ds[0, 2]);
+            Assert.AreEqual(10, ds[1, 4]);
+
+            ds.SkipSamples(2);
+            CollectionAssert.AreEqual(new int[] { 2, 3 }, ds.Shape.Dimensions);
+            CollectionAssert.AreEqual(new int[] { 5, 6, 7, 8, 9, 10 }, ds.Data.ToArray());
+            Assert.AreEqual(5, ds[0, 0]);
+            Assert.AreEqual(8, ds[1, 1]);
         }
     }
 }

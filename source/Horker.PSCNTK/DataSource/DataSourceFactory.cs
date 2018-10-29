@@ -236,5 +236,11 @@ namespace Horker.PSCNTK
 
             return new DataSourceBase<T, T[]>(newData, newShape);
         }
+
+        public static JoinedDataSource<T> FromLists<T>(IList<IList<T>> lists, int[] dimensions = null)
+        {
+            var joined = new JoinedList<T>(lists);
+            return new JoinedDataSource<T>(joined, dimensions);
+        }
     }
 }
