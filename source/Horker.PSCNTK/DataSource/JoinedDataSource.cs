@@ -19,6 +19,12 @@ namespace Horker.PSCNTK
                 _stride = Shape.GetSize(-2);
         }
 
+        public void AddSamples(IList<T> list)
+        {
+            TypedData.AddList(list);
+            Shape.Dimensions[Shape.Dimensions.Length - 1] += list.Count;
+        }
+
         public void SkipSamples(int n)
         {
             TypedData.SkipElements(n * _stride);

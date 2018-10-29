@@ -43,6 +43,11 @@ namespace Horker.PSCNTK
 
         public int ListCount => _lists.Count;
 
+        public void AddList(IList<T> list)
+        {
+            _lists.Add(list);
+        }
+
         public void SkipElements(int n)
         {
             var offset = _offset += n;
@@ -82,7 +87,7 @@ namespace Horker.PSCNTK
 
         public void Add(T item)
         {
-            _lists.Last().Add(item);
+            throw new NotImplementedException();
         }
 
         public void Clear()
