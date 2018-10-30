@@ -105,7 +105,6 @@
     <Compile Include="General\DotGenerater.cs" />
     <Compile Include="General\NodeGroup.cs" />
     <Compile Include="General\NodeWalk.cs" />
-    <Compile Include="General\PinnedAddressAllocator.cs" />
     <Compile Include="General\Random.cs" />
     <Compile Include="Generated files\WrappedFunctionOperators.cs" />
     <Compile Include="Generated files\WrappedVariableOperators.cs" />
