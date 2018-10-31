@@ -66,11 +66,7 @@ namespace Horker.PSCNTK
                         while (stream.Position < stream.Length)
                         {
                             var dss = MsgPackSerializer.Deserialize(stream);
-                            if (!_parallelSampler.AddMinibatch(dss))
-                            {
-                                _canceled = true;
-                                break;
-                            }
+                            _parallelSampler.AddMinibatch(dss);
                         }
 
                         if (!_canceled)

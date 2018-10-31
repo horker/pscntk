@@ -10,39 +10,24 @@ namespace Horker.PSCNTK
 {
     public class ParallelSampler : ISampler
     {
-        private BlockingCollection<DataSourceSet> _dataQueue;
-
-        private bool _reuseSamples;
-        private RingBuffer<DataSourceSet> _ringBuffer;
-
+        private ParallelQueue<DataSourceSet> _dataQueue;
         private int _sampleCountPerEpoch;
-        private long _totalSampleCount;
+        private int _totalSampleCount;
         private int _epoch;
-
-        private long _readCount;
-        private long _writeCount;
-
-        private DataSourceSet _lastMinibatch;
-
-        private CancellationTokenSource _cancelTokenSourceForAdd;
-        private CancellationTokenSource _cancelTokenSourceForTake;
-
-        private int _timeoutForAdd;
-        private int _timeoutForTake;
 
         public int CountInQueue => _dataQueue.Count;
 
-        public bool ReuseSamples => _reuseSamples;
+        public bool ReuseSamples => _dataQueue.ReuseSamples;
 
         public int SampleCountPerEpoch => _sampleCountPerEpoch;
         public long TotalSampleCount => _totalSampleCount;
         public int Epoch => _epoch;
 
-        public long ReadCount => _readCount;
-        public long WriteCount => _writeCount;
+        public long ReadCount => _dataQueue.ReadCount;
+        public long WriteCount => _dataQueue.WriteCount;
 
-        public int TimeoutForAdd => _timeoutForAdd;
-        public int TimeoutForTake => _timeoutForTake;
+        public int TimeoutForAdd => _dataQueue.TimeoutForAdd;
+        public int TimeoutForTake => _dataQueue.TimeoutForTake;
 
         public ParallelSampler(int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 10 * 1000, int timeoutForTake = 60 * 60 * 10000)
         {
@@ -50,92 +35,37 @@ namespace Horker.PSCNTK
             _totalSampleCount = 0;
             _epoch = 0;
 
-            _readCount = _writeCount = 0;
-
-            _dataQueue = new BlockingCollection<DataSourceSet>(queueSize);
-
-            _lastMinibatch = null;
-
-            _cancelTokenSourceForAdd = new CancellationTokenSource();
-            _cancelTokenSourceForTake = new CancellationTokenSource();
-
-            _timeoutForAdd = timeoutForAdd;
-            _timeoutForTake = timeoutForTake;
-
-            _reuseSamples = reuseSamples;
-            if (reuseSamples)
-                _ringBuffer = new RingBuffer<DataSourceSet>(bufferSize);
+            _dataQueue = new ParallelQueue<DataSourceSet>(queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake);
         }
 
-        public bool AddMinibatch(DataSourceSet dataSourceSet)
+        public void AddMinibatch(DataSourceSet dataSourceSet)
         {
-            try
-            {
-                _cancelTokenSourceForAdd.CancelAfter(_timeoutForAdd);
-                _dataQueue.Add(dataSourceSet, _cancelTokenSourceForAdd.Token);
-                ++_writeCount;
-                return true;
-            }
-            catch (OperationCanceledException ex)
-            {
-                throw new TimeoutException("Posting data into queue timed out", ex);
-            }
+            _dataQueue.Add(dataSourceSet);
         }
 
         public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
-            DataSourceSet dataSourceSet = null;
+            var dataSourceSet = _dataQueue.Take();
+            _totalSampleCount += dataSourceSet.SampleCount;
 
-            if (_reuseSamples)
-            {
-                if (_dataQueue.TryTake(out dataSourceSet))
-                    _ringBuffer.WriteNext(dataSourceSet);
-                else
-                {
-                    if (_ringBuffer.Peek() != null)
-                        dataSourceSet = _ringBuffer.ReadNext();
-                }
-            }
-
-            if (dataSourceSet == null)
-            {
-                try
-                {
-                    _cancelTokenSourceForTake.CancelAfter(_timeoutForTake);
-                    dataSourceSet = _dataQueue.Take(_cancelTokenSourceForTake.Token);
-                }
-                catch (OperationCanceledException ex)
-                {
-                    throw new TimeoutException("Taking data from queue timed out", ex);
-                }
-            }
-
-            var minibatch = new Minibatch(dataSourceSet.Features, false, device);
-
-            _totalSampleCount += minibatch.SampleCount;
-
+            var sweepEnd = false;
             if ((int)Math.Floor((double)_totalSampleCount / _sampleCountPerEpoch) > _epoch)
             {
                 ++_epoch;
-                minibatch.SweepEnd = true;
+                sweepEnd = true;
             }
 
-            // Preserve the last data source until the next call to avoid it being garbage-collected.
-            _lastMinibatch = dataSourceSet;
-
-            ++_readCount;
-
-            return minibatch;
+            return new Minibatch(dataSourceSet.Features, sweepEnd, device);
         }
 
         public void CancelAdding()
         {
-            _cancelTokenSourceForAdd.Cancel();
+            _dataQueue.CancelAdding();
         }
 
         public void CancelTaking()
         {
-            _cancelTokenSourceForTake.Cancel();
+            _dataQueue.CancelTaking();
         }
     }
 }
