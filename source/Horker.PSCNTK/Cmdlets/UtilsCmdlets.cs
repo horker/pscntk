@@ -65,6 +65,7 @@ namespace Horker.PSCNTK
         protected override void EndProcessing()
         {
             SetFixedRandomSeed((uint)Value);
+            Random.SetRandomSeed(Value);
         }
     }
 
@@ -78,9 +79,15 @@ namespace Horker.PSCNTK
         protected override void EndProcessing()
         {
             if (MyInvocation.BoundParameters.ContainsKey("Value"))
+            {
                 CNTKLib.ResetRandomSeed((uint)Value);
+                Random.SetRandomSeed(Value);
+            }
             else
+            {
                 CNTKLib.ResetRandomSeed();
+                Random.ResetRandomSeed();
+            }
         }
     }
 

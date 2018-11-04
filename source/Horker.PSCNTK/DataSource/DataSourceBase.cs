@@ -195,16 +195,36 @@ namespace Horker.PSCNTK
             return GetSubsequences(subseqLength, step, sequenceAxis);
         }
 
-        public void Shuffle(int? seed = null)
+        public DataSourceBase<T, T[]> Shuffle()
+        {
+            int sampleCount = _shape[-1];
+            int chunkSize = _shape.GetSize(-2);
+
+            var random = Random.GetInstance();
+
+            var result = new T[_data.Count];
+            for (var i = 0; i < sampleCount; ++i)
+            {
+                var j = random.Next(i);
+                if (j != i)
+                    Copy(result, j * chunkSize, result, i * chunkSize, chunkSize);
+                Copy(result, i * chunkSize, result, j * chunkSize, chunkSize);
+            }
+
+            return DataSourceFactory.Create(result, _shape.Dimensions);
+        }
+
+        IDataSource<T> IDataSource<T>.Shuffle()
+        {
+            return Shuffle();
+        }
+
+        public void ShuffleInPlace()
         {
             int count = _shape[_shape.Rank - 1];
             int chunkSize = _shape.GetSize(_shape.Rank - 2);
 
-            System.Random random;
-            if (seed.HasValue)
-                random = Random.GetInstance(seed.Value);
-            else
-                random = Random.GetInstance();
+            var random = Random.GetInstance();
 
             var temp = new T[chunkSize];
             for (var i = 0; i < count; ++i)

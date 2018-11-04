@@ -21,7 +21,8 @@ namespace Horker.PSCNTK
         void Save(string path, bool compress = true);
         byte[] Serialize(bool compress = true);
 
-        void Shuffle(int? seed = null);
+        IDataSource<T> Shuffle();
+        void ShuffleInPlace();
         IDataSource<T> Slice(int offset, int count, int axis = -1);
         IDataSource<T>[] Split(params double[] rates);
         IDataSource<T> Transpose(params int[] order);
