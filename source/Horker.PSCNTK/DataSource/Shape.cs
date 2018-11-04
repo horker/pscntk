@@ -169,6 +169,24 @@ namespace Horker.PSCNTK
             return true;
         }
 
+        public bool EqualsExceptAxis(Shape other, int exceptionDimension)
+        {
+            if (Dimensions.Length != other.Dimensions.Length)
+                return false;
+            if (exceptionDimension < 0)
+                exceptionDimension += Dimensions.Length;
+
+            for (var i = 0; i < Dimensions.Length; ++i)
+            {
+                if (i == exceptionDimension)
+                    continue;
+                if (Dimensions[i] != other.Dimensions[i])
+                    return false;
+            }
+
+            return true;
+        }
+
         public override int GetHashCode()
         {
             int hash = 123456789;

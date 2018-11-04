@@ -62,7 +62,7 @@ namespace Horker.PSCNTK
             }
             catch (OperationCanceledException ex)
             {
-                throw new TimeoutException("Posting data into queue timed out", ex);
+                throw new TimeoutException("ParallelQueue.Add() canceled or timed out", ex);
             }
         }
 
@@ -90,7 +90,7 @@ namespace Horker.PSCNTK
                 }
                 catch (OperationCanceledException ex)
                 {
-                    throw new TimeoutException("Taking data from queue timed out", ex);
+                    throw new TimeoutException("ParallelQueue.Take() canceled or timed out", ex);
                 }
             }
 

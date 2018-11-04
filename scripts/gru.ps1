@@ -41,7 +41,7 @@ function New-CNTKGruCell {
     }
 
     $dim = $Operand.Shape.Dimensions[0]
-    $ht1 = cntk.placeholder $dim
+    $ht1 = cntk.placeholder $dim -WithSequenceAxis
 
     $wz = cntk.parameter ($dim, ($dim * 2)) -Initializer (cntk.init.glorotuniform) -Device $Device
     $bz = cntk.parameter $dim -Initializer (cntk.init.constant 1) # must be a large value

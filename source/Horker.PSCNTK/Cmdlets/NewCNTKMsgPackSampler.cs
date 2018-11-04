@@ -14,28 +14,31 @@ namespace Horker.PSCNTK
         public string Path;
 
         [Parameter(Position = 1, Mandatory = true)]
+        public int MinibatchSize;
+
+        [Parameter(Position = 2, Mandatory = true)]
         public int SampleCountPerEpoch;
 
-        [Parameter(Position = 2, Mandatory = false)]
+        [Parameter(Position = 3, Mandatory = false)]
         public int QueueSize = 100;
 
-        [Parameter(Position = 3, Mandatory = false)]
+        [Parameter(Position = 4, Mandatory = false)]
         public SwitchParameter ReuseSamples;
 
-        [Parameter(Position = 4, Mandatory = false)]
+        [Parameter(Position = 5, Mandatory = false)]
         public int BufferSize = 2000;
 
-        [Parameter(Position = 5, Mandatory = false)]
-        public int TimeoutForAdd = 10 * 1000;
-
         [Parameter(Position = 6, Mandatory = false)]
+        public int TimeoutForAdd = 60 * 60 * 1000;
+
+        [Parameter(Position = 7, Mandatory = false)]
         public int TimeoutForTake = 60 * 60 * 1000;
 
         protected override void EndProcessing()
         {
             Path = IO.GetAbsolutePath(this, Path);
 
-            var sampler = new MsgPackSampler(SampleCountPerEpoch, QueueSize, ReuseSamples, BufferSize, TimeoutForAdd, TimeoutForTake);
+            var sampler = new MsgPackSampler(MinibatchSize, SampleCountPerEpoch, QueueSize, ReuseSamples, BufferSize, TimeoutForAdd, TimeoutForTake);
             sampler.StartLoading(Path);
 
             WriteObject(sampler);

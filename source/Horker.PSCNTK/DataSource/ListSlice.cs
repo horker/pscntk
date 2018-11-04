@@ -15,6 +15,11 @@ namespace Horker.PSCNTK
 
         public ListSlice(IList<T> source, int offset, int count)
         {
+            if (offset >= source.Count)
+                throw new ArgumentOutOfRangeException("offset");
+            if (offset + count > source.Count)
+                throw new ArgumentOutOfRangeException("count");
+
             _list = source;
             _offset = offset;
             _count = count;

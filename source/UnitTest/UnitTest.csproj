@@ -83,6 +83,7 @@
     <Compile Include="ParallelSamplerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeriesCTFBuilderTest.cs" />
+    <Compile Include="SlidingListTest.cs" />
     <Compile Include="TrainingSessionTest.cs" />
     <Compile Include="WrapperTest.cs" />
   </ItemGroup>

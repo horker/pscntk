@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace Horker.PSCNTK
 {
-    public class JoinedDataSource<T> : DataSourceBase<T, JoinedList<T>>
+    public class SlidingDataSource<T> : DataSourceBase<T, SlidingList<T>>
     {
         private int _stride;
 
-        public JoinedDataSource(JoinedList<T> lists, int[] dimensions)
+        public SlidingDataSource(IList<IList<T>> lists, int[] dimensions)
+            : this(new SlidingList<T>(lists), dimensions)
+        {
+        }
+
+        public SlidingDataSource(SlidingList<T> lists, int[] dimensions)
             : base(lists, dimensions)
         {
             if (Shape.Rank == 1)
@@ -21,12 +26,18 @@ namespace Horker.PSCNTK
 
         public void AddSamples(IList<T> list)
         {
+            if (list.Count % _stride != 0)
+                throw new ArgumentException("Length of list should be a multiplication of the dimension of features");
+
             TypedData.AddList(list);
-            Shape.Dimensions[Shape.Dimensions.Length - 1] += list.Count / _stride;
+            Shape[-1] += list.Count / _stride;
         }
 
         public void SkipSamples(int n)
         {
+            if (n < 0 || Shape[-1] < n)
+                throw new ArgumentOutOfRangeException("n");
+
             TypedData.SkipElements(n * _stride);
             Shape[-1] -= n;
         }

@@ -326,14 +326,14 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestJoined()
+        public void TestSlidingDataSource()
         {
             var l1 = new List<int>() { 1 };
             var l2 = new List<int>() { 2, 3 };
             var l3 = new List<int>() { 4, 5, 6 };
             var l4 = new List<int>() { 7, 8, 9, 10 };
 
-            var ds = DataSourceFactory.FromLists(new IList<int>[] { l1, l2, l3, l4 }, new int[] { 2, 5 });
+            var ds = new SlidingDataSource<int>(new IList<int>[] { l1, l2, l3, l4 }, new int[] { 2, 5 });
 
             CollectionAssert.AreEqual(new int[] { 2, 5 }, ds.Shape.Dimensions);
             CollectionAssert.AreEqual(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, ds.Data.ToArray());

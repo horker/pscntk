@@ -7,24 +7,24 @@ using System.Threading.Tasks;
 
 namespace Horker.PSCNTK
 {
-    public class JoinedList<T> : IList<T>
+    public class SlidingList<T> : IList<T>
     {
         private List<IList<T>> _lists;
         private int _offset;
 
-        public JoinedList()
+        public SlidingList()
         {
             _lists = new List<IList<T>>();
             _offset = 0;
         }
 
-        public JoinedList(IList<IList<T>> lists)
+        public SlidingList(IList<IList<T>> lists)
         {
             _lists = new List<IList<T>>(lists);
             _offset = 0;
         }
 
-        internal Tuple<int, int> GetListIndex(int index)
+        internal Tuple<int, int> GetListIndexes(int index)
         {
             index += _offset;
             for (var i = 0; i < _lists.Count; ++i)
@@ -50,33 +50,50 @@ namespace Horker.PSCNTK
 
         public void SkipElements(int n)
         {
-            var offset = _offset += n;
+            var offset = _offset + n;
 
-            for (var i = 0; i < _lists.Count; ++i)
+            for (var i = 0; i < _lists.Count - 1; ++i)
             {
                 if (offset < _lists[i].Count)
                 {
                     _offset = offset;
-                    for (var j = 0; j < i; ++j)
-                        _lists.RemoveAt(0);
+                    if (i > 0)
+                        _lists.RemoveRange(0, i);
                     return;
                 }
 
                 offset -= _lists[i].Count;
             }
+
+            if (offset < _lists[_lists.Count - 1].Count)
+            {
+                _lists[0] = _lists[_lists.Count - 1];
+                _lists.RemoveRange(1, _lists.Count - 1);
+                _offset = offset;
+                return;
+            }
+
+            if (offset == _lists[_lists.Count - 1].Count)
+            {
+                _lists.Clear();
+                _offset = 0;
+                return;
+            }
+
+            throw new ArgumentOutOfRangeException("n");
         }
 
         public T this[int index]
         {
             get
             {
-                var indexes = GetListIndex(index);
+                var indexes = GetListIndexes(index);
                 return _lists[indexes.Item1][indexes.Item2];
             }
 
             set
             {
-                var indexes = GetListIndex(index);
+                var indexes = GetListIndexes(index);
                 _lists[indexes.Item1][indexes.Item2] = value;
             }
         }
@@ -106,6 +123,9 @@ namespace Horker.PSCNTK
 
         public void CopyTo(T[] array, int arrayIndex)
         {
+            if (Count == 0)
+                return;
+
             foreach (var e in this)
                 array[arrayIndex++] = e;
         }
@@ -122,7 +142,7 @@ namespace Horker.PSCNTK
 
         public void Insert(int index, T item)
         {
-            var indexes = GetListIndex(index);
+            var indexes = GetListIndexes(index);
             _lists[indexes.Item1].Insert(indexes.Item2, item);
         }
 
@@ -133,7 +153,7 @@ namespace Horker.PSCNTK
 
         public void RemoveAt(int index)
         {
-            var indexes = GetListIndex(index);
+            var indexes = GetListIndexes(index);
             _lists[indexes.Item1].RemoveAt(indexes.Item2);
         }
 
@@ -145,11 +165,11 @@ namespace Horker.PSCNTK
 
     public class JoinedListEnumerator<T> : IEnumerator<T>
     {
-        private JoinedList<T> _joinedList;
+        private SlidingList<T> _joinedList;
         private int _listIndex;
         private int _index;
 
-        public JoinedListEnumerator(JoinedList<T> joinedList)
+        public JoinedListEnumerator(SlidingList<T> joinedList)
         {
             _joinedList = joinedList;
             Reset();
@@ -180,9 +200,17 @@ namespace Horker.PSCNTK
 
         public void Reset()
         {
-            var indexes = _joinedList.GetListIndex(0);
-            _listIndex = indexes.Item1;
-            _index = indexes.Item2 - 1;
+            if (_joinedList.ListCount == 0)
+            {
+                _listIndex = 0;
+                _index = -1;
+            }
+            else
+            {
+                var indexes = _joinedList.GetListIndexes(0);
+                _listIndex = indexes.Item1;
+                _index = indexes.Item2 - 1;
+            }
         }
     }
 }

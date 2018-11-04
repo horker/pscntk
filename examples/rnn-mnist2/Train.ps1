@@ -10,7 +10,7 @@ $MNIST_TRAIN_MP = "$PSScriptRoot\mnist_seq2_train.msgpack"
 $MNIST_TEST_MP = "$PSScriptRoot\mnist_seq2_test.msgpack"
 
 $MODEL_FILE = "$PSScriptRoot\mnist_seq2.model"
-$LOG_FILE = "$PSScriptRoot\rnn-mnist2_$((Get-Date).ToString("yyyyMMddHHmmss")).log"
+$LOG_FILE = "$PSScriptRoot\log\rnn-mnist2_$((Get-Date).ToString("yyyyMMddHHmmss")).log"
 
 $OUT_CLASSES = 10
 $FEATURE_DIM = 28
@@ -31,8 +31,8 @@ Write-Host "Loading data..."
 #$sampler = cntk.sampler $trainData -MinibatchSize $MINIBATCH_SIZE
 #$testSampler = cntk.sampler $testData -MinibatchSize 16
 
-$sampler = cntk.msgPackSampler $MNIST_TRAIN_MP (60000 * .8) 100 -TimeoutForAdd (60 * 60 * 1000)
-$testSampler = cntk.msgPackSampler $MNIST_TEST_MP (60000 * .2) 100 -TimeoutForAdd (60 * 60 * 1000)
+$sampler = cntk.msgPackSampler $MNIST_TRAIN_MP -MinibatchSize $MINIBATCH_SIZE -SampleCountPerEpoch (60000 * .8)
+$testSampler = cntk.msgPackSampler $MNIST_TEST_MP -MinibatchSize 256 -SampleCountPerEpoch (60000 * .2)
 
 ############################################################
 # Model
