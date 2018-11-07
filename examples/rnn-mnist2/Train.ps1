@@ -31,7 +31,7 @@ Write-Host "Loading data..."
 #$sampler = cntk.sampler $trainData -MinibatchSize $MINIBATCH_SIZE
 #$testSampler = cntk.sampler $testData -MinibatchSize 16
 
-$sampler = cntk.msgPackSampler $MNIST_TRAIN_MP -MinibatchSize $MINIBATCH_SIZE -SampleCountPerEpoch (60000 * .8)
+$sampler = cntk.msgPackSampler $MNIST_TRAIN_MP -MinibatchSize $MINIBATCH_SIZE -SampleCountPerEpoch (60000 * .8) -Randomize
 $testSampler = cntk.msgPackSampler $MNIST_TEST_MP -MinibatchSize 256 -SampleCountPerEpoch (60000 * .2)
 
 ############################################################

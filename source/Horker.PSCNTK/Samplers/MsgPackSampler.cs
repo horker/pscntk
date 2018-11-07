@@ -24,6 +24,8 @@ namespace Horker.PSCNTK
         private Task _slicingTask;
         private bool _canceled;
 
+        private bool _randomize;
+
         private Exception _lastException;
 
         public int CountInQueue => _parallelSampler.CountInQueue;
@@ -43,9 +45,10 @@ namespace Horker.PSCNTK
 
         public Exception LastException => _lastException;
 
-        public MsgPackSampler(int minibatchSize, int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 60 * 60 * 1000, int timeoutForTake = 60 * 60 * 1000)
+        public MsgPackSampler(int minibatchSize, bool randomize, int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 60 * 60 * 1000, int timeoutForTake = 60 * 60 * 1000)
         {
             _minibatchSize = minibatchSize;
+            _randomize = randomize;
 
             _dataSourceQueue = new ParallelQueue<DataSourceSet>(queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake);
             _parallelSampler = new ParallelSampler(sampleCountPerEpoch, queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake);
@@ -90,6 +93,8 @@ namespace Horker.PSCNTK
                 {
                     _lastException = ex;
                     _canceled = true;
+                    _dataSourceQueue.CancelAdding();
+                    _dataSourceQueue.CancelTaking();
                     _parallelSampler.CancelAdding();
                     _parallelSampler.CancelTaking();
                 }
@@ -118,27 +123,39 @@ namespace Horker.PSCNTK
                         }
 
                         var sampleCount = _dataSourceBuffer.First().Value.Shape[-1];
-                        var i = 0;
-                        for (; i + _minibatchSize <= sampleCount; i += _minibatchSize)
+                        if (sampleCount >= _minibatchSize)
                         {
-                            var batch = new DataSourceSet();
+                            var batchCount = sampleCount / _minibatchSize;
+                            var order = RandomizedList<float>.GetRandomizedIndexes(sampleCount);
+                            var batches = new DataSourceSet[batchCount];
+                            for (var i = 0; i < batchCount; ++i)
+                                batches[i] = new DataSourceSet();
+
                             foreach (var entry in _dataSourceBuffer)
                             {
-                                var slice = entry.Value.Slice(i, _minibatchSize);
-                                // Data in SlidingDataSource must be copied because they become invalid with a data window sliding.
-                                var copy = DataSourceFactory.Create<float>(slice, slice.Shape.Dimensions);
-                                batch.Add(entry.Key, copy);
-                            }
-                            _parallelSampler.AddMinibatch(batch);
-                        }
+                                IDataSource<float> ds = entry.Value;
+                                if (_randomize)
+                                {
+                                    var stride = ds.Shape.GetSize(-2);
+                                    var randomized = new RandomizedList<float>(ds.Data, order, stride);
+                                    ds = new DataSourceBase<float, RandomizedList<float>>(randomized, ds.Shape.Dimensions);
+                                }
 
-                        if (i > 0)
-                        {
-                            foreach (var entry in _dataSourceBuffer)
-                                entry.Value.SkipSamples(i);
+                                for (var i = 0; i < batchCount; ++i)
+                                {
+                                    var slice = ds.Slice(i * _minibatchSize, _minibatchSize);
+                                    // Data in SlidingDataSource must be copied because they become invalid with a data window sliding.
+                                    var copy = DataSourceFactory.Copy<float, IList<float>>(slice.Data, slice.Shape.Dimensions);
+                                    batches[i].Add(entry.Key, copy);
+                                }
+
+                                entry.Value.SkipSamples(batchCount * _minibatchSize);
+                            }
+
+                            for (var i = 0; i < batchCount; ++i)
+                                _parallelSampler.AddMinibatch(batches[i]);
                         }
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -146,6 +163,8 @@ namespace Horker.PSCNTK
                     _canceled = true;
                     _dataSourceQueue.CancelAdding();
                     _dataSourceQueue.CancelTaking();
+                    _parallelSampler.CancelAdding();
+                    _parallelSampler.CancelTaking();
                 }
             });
         }

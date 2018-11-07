@@ -25,7 +25,7 @@ $MNIST_TEST_CTF = "$PSScriptRoot\mnist_seq2_test.ctf"
 $MNIST_TRAIN_MP = "$PSScriptRoot\mnist_seq2_train.msgpack"
 $MNIST_TEST_MP = "$PSScriptRoot\mnist_seq2_test.msgpack"
 
-$MINIBATCH_SIZE = 8
+$SPLIT_SIZE = 256
 
 ############################################################
 # Prepraring data
@@ -69,17 +69,17 @@ if (Test-Path $MNIST_TRAIN_MP) {
     Remove-Item $MNIST_TRAIN_MP
 }
 
-for ($i = 0; $i -lt $length * .8; $i += $MINIBATCH_SIZE) {
-    $slice = $set.Slice($i, $MINIBATCH_SIZE)
-    Add-CNTKMsgPack $slice $MNIST_TRAIN_MP
+for ($i = 0; $i -lt $length * .8; $i += $SPLIT_SIZE) {
+    $slice = $set.Slice($i, $SPLIT_SIZE)
+    Export-CNTKMsgPack $slice $MNIST_TRAIN_MP -Append
 }
 
 if (Test-Path $MNIST_TEST_MP) {
     Remove-Item $MNIST_TEST_MP
 }
 
-for ($i; $i -lt $length; $i += $MINIBATCH_SIZE) {
-    $size = [Math]::Min($MINIBATCH_SIZE, $length - $i)
+for ($i; $i -lt $length; $i += $SPLIT_SIZE) {
+    $size = [Math]::Min($SPLIT_SIZE, $length - $i)
     $slice = $set.Slice($i, $size)
-    Add-CNTKMsgPack $slice $MNIST_TEST_MP
+    Export-CNTKMsgPack $slice $MNIST_TEST_MP -Append
 }

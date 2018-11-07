@@ -76,6 +76,7 @@
     <Compile Include="CTFSamplerTest.cs" />
     <Compile Include="DataSourceCTFBuilderTest.cs" />
     <Compile Include="OnMemorySamplerTest.cs" />
+    <Compile Include="RandomizedListTest.cs" />
     <Compile Include="ShapeTest.cs" />
     <Compile Include="DataSourceTest.cs" />
     <Compile Include="FeatureCTFBuilderTest.cs" />

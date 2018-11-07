@@ -33,7 +33,7 @@ namespace UnitTest
                 }
             }
 
-            using (var sampler = new MsgPackSampler(1, 3, 10, false, 100))
+            using (var sampler = new MsgPackSampler(1, false, 3, 10, false, 100))
             {
                 sampler.StartLoading(file);
 
@@ -73,7 +73,7 @@ namespace UnitTest
                 }
             }
 
-            using (var sampler = new MsgPackSampler(1, 100, 100, true, 1000))
+            using (var sampler = new MsgPackSampler(1, false, 100, 100, true, 1000))
             {
                 sampler.StartLoading(file);
 
@@ -102,7 +102,7 @@ namespace UnitTest
                 }
             }
 
-            using (var sampler = new MsgPackSampler(1, 7, 10, false, 100))
+            using (var sampler = new MsgPackSampler(1, false, 7, 10, false, 100))
             {
                 sampler.StartLoading(file);
 
@@ -137,14 +137,14 @@ namespace UnitTest
             {
                 for (var i = 0; i < NUM_SAMPLES; ++i)
                 {
-                    var a = DataSourceFactory.Create(new float[] { 0, 1, 2 }, new int[] { 1, 1, 3 });
+                    var a = DataSourceFactory.Create(new float[] { i, i, i }, new int[] { 1, 1, 3 });
                     var dss = new DataSourceSet();
                     dss.Add("a", a);
                     MsgPackSerializer.Serialize(dss, stream);
                 }
             }
 
-            using (var sampler = new MsgPackSampler(5, 7, 10, false, 100))
+            using (var sampler = new MsgPackSampler(5, false, 7, 10, false, 100))
             {
                 sampler.StartLoading(file);
 
@@ -164,14 +164,60 @@ namespace UnitTest
                         Debug.WriteLine(string.Join(", ", ds));
                         CollectionAssert.AreEqual(new float[]
                         {
-                            count % 3,
-                            (count + 1) % 3,
-                            (count + 2) % 3,
-                            (count + 3) % 3,
-                            (count + 4) % 3,
+                            j * 5 / 3,
+                            (j * 5 + 1) / 3,
+                            (j * 5 + 2) / 3,
+                            (j * 5 + 3) / 3,
+                            (j * 5 + 4) / 3
                         }, ds);
                         count += 5;
                     }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void TestMsgPackSamplerRandomize()
+        {
+            const int NUM_CHUNKS = 30;
+            const int CHUNK_SIZE = 6;
+            const int MINIBATCH_SIZE = 2;
+
+            var data = new float[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            int FEATURE_DIM = data.Length / CHUNK_SIZE;
+
+            var file = Path.GetTempFileName();
+            using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+            {
+                for (var i = 0; i < NUM_CHUNKS; ++i)
+                {
+                    var a = DataSourceFactory.Create(data, new int[] { FEATURE_DIM, CHUNK_SIZE });
+                    var dss = new DataSourceSet();
+                    dss.Add("a", a);
+                    MsgPackSerializer.Serialize(dss, stream);
+                }
+            }
+
+            using (var sampler = new MsgPackSampler(MINIBATCH_SIZE, true, 10, 100, false, 100))
+            {
+                sampler.StartLoading(file);
+
+                for (var i = 0; i < NUM_CHUNKS; ++i)
+                {
+                    var values = new float[data.Length];
+                    for (var j = 0; j < data.Length; j += FEATURE_DIM * MINIBATCH_SIZE)
+                    {
+                        var batch = sampler.GetNextMinibatch();
+                        var value = DataSourceFactory.FromValue(batch["a"]);
+                        CollectionAssert.AreEqual(new int[] { FEATURE_DIM, MINIBATCH_SIZE }, value.Shape.Dimensions.ToArray());
+                        for (var k = 0; k < FEATURE_DIM * MINIBATCH_SIZE; ++k)
+                            values[j + k] = value[k];
+                    }
+
+                    CollectionAssert.AreNotEqual(data, values);
+                    var sorted = values.ToList();
+                    sorted.Sort();
+                    CollectionAssert.AreEqual(data, sorted);
                 }
             }
         }
