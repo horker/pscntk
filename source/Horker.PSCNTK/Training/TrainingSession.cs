@@ -101,7 +101,8 @@ namespace Horker.PSCNTK
 
                 SampleCount = (int)Trainer.PreviousMinibatchSampleCount();
                 Loss = Trainer.PreviousMinibatchLossAverage();
-                Metric = Trainer.PreviousMinibatchEvaluationAverage();
+                if (Trainer.EvaluationFunction() != null)
+                    Metric = Trainer.PreviousMinibatchEvaluationAverage();
 
                 yield return this;
 

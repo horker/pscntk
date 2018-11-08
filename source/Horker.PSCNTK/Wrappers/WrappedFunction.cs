@@ -129,16 +129,22 @@ namespace Horker.PSCNTK
 
         public static implicit operator Function(WrappedFunction f)
         {
+            if (f == null)
+                return null;
             return f._f;
         }
 
         public static implicit operator Variable(WrappedFunction f)
         {
+            if (f == null)
+                return null;
             return f._f;
         }
 
         public static implicit operator WrappedVariable(WrappedFunction f)
         {
+            if (f == null)
+                return null;
             return new WrappedVariable(f._f);
         }
 

@@ -22,7 +22,8 @@ namespace Horker.PSCNTK
         [Parameter(Position = 1, Mandatory = true)]
         public WrappedFunction LossFunction;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
+        [AllowNull()]
         public WrappedFunction EvaluationFunction;
 
         [Parameter(Position = 3, Mandatory = true)]
@@ -80,7 +81,8 @@ namespace Horker.PSCNTK
         [Parameter(Position = 1, Mandatory = true)]
         public WrappedFunction LossFunction;
 
-        [Parameter(Position = 2, Mandatory = true)]
+        [Parameter(Position = 2, Mandatory = false)]
+        [AllowNull()]
         public WrappedFunction EvaluationFunction;
 
         [Parameter(Position = 3, Mandatory = true)]
