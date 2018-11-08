@@ -124,6 +124,16 @@ namespace Horker.PSCNTK
             return new Constant(value);
         }
 
+        public static implicit operator WrappedVariable(DataSourceBase<float, float[]> value)
+        {
+            return new Constant(value.ToNDArrayView());
+        }
+
+        public static implicit operator WrappedVariable(DataSourceBase<float, IList<float>> value)
+        {
+            return new Constant(value.ToNDArrayView());
+        }
+
         #endregion
 
         #region Unary operators
