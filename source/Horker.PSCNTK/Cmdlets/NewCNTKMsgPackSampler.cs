@@ -16,8 +16,8 @@ namespace Horker.PSCNTK
         [Parameter(Position = 1, Mandatory = true)]
         public int MinibatchSize;
 
-        [Parameter(Position = 2, Mandatory = true)]
-        public int SampleCountPerEpoch;
+        [Parameter(Position = 2, Mandatory = false)]
+        public int SampleCountPerEpoch = int.MaxValue;
 
         [Parameter(Position = 3, Mandatory = false)]
         public int QueueSize = 100;
