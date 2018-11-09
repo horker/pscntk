@@ -39,9 +39,9 @@ namespace Horker.PSCNTK
                         p.Epoch = t.Epoch;
                         p.Iteration = t.Iteration;
                         p.SampleCount = sampleCount;
-                        p.Loss = Math.Round(loss / progressOutputStep, 5);
-                        p.Metric = Math.Round(metric / progressOutputStep, 5);
-                        p.Validation = Math.Round(t.GetValidationMetric(), 5);
+                        p.Loss = loss / progressOutputStep;
+                        p.Metric = metric / progressOutputStep;
+                        p.Validation = t.GetValidationMetric();
                         p.Elapsed = t.Elapsed;
 
                         if (logger != null)
