@@ -45,8 +45,8 @@ function Get-Model($in) {
 
     $n = $in
     $n = cntk.dense $n $CELL_DIM -Stabilize
-    $n = cntk.gru $n -ReturnSequences -InitialState $initialState -Stabilize
-    $n = cntk.gru $n -Stabilize
+    $n = cntk.gru $n -ReturnSequences -InitialState $initialState -Stabilize -DropoutRate .2
+    $n = cntk.gru $n -Stabilize -DropoutRate .2
     $n = cntk.dense $n $OUT_CLASSES -Stabilize
     $n
 }
@@ -72,7 +72,7 @@ cntk.starttraining `
     $learner `
     $sampler `
     $testSampler `
-    -MaxIteration 20000 `
+    -MaxIteration 50000 `
     -ProgressOutputStep 1000 `
     -LogFile $LOG_FILE
 
