@@ -132,10 +132,25 @@ namespace Horker.PSCNTK
             _shape.Reshape(dimensions, _data.Count);
         }
 
-        public void ApplyInPlace(Func<int, T, T> func)
+        public DataSourceBase<T, T[]> Apply(Func<T, int, T> func)
+        {
+            var data = new T[_data.Count];
+            _data.CopyTo(data, 0);
+            for (var i = 0; i < _data.Count; ++i)
+                data[i] = func.Invoke(_data[i], i);
+
+            return DataSourceFactory.Create(data, _shape);
+        }
+
+        IDataSource<T> IDataSource<T>.Apply(Func<T, int, T> func)
+        {
+            return Apply(func);
+        }
+
+        public void ApplyInPlace(Func<T, int, T> func)
         {
             for (var i = 0; i < _data.Count; ++i)
-                _data[i] = func.Invoke(i, _data[i]);
+                _data[i] = func.Invoke(_data[i], i);
         }
 
         internal static void Copy(IList<T> from, int fromOffset, IList<T> to, int toOffset, int size)
