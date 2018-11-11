@@ -29,7 +29,7 @@ namespace Horker.PSCNTK
         public string Activation = null;
 
         [Parameter(Position = 7, Mandatory = false)]
-        public SwitchParameter NoBias = false;
+        public bool Bias = true;
 
         [Parameter(Position = 8, Mandatory = false)]
         public CNTKDictionary biasInitializer = null;
@@ -57,7 +57,7 @@ namespace Horker.PSCNTK
                 NumFilters,              // int numFilters
                 Activation,              // string activation
                 Initializer,             // CNTKDictionary initializer
-                !NoBias,                 // bool hasBias
+                Bias,                    // bool hasBias
                 biasInitializer,         // CNTKDictionary biasInitializer
                 Strides,                 // int[] strides
                 Padding,                 // bool[] padding
@@ -99,7 +99,7 @@ namespace Horker.PSCNTK
         public string Activation = null;
 
         [Parameter(Position = 7, Mandatory = false)]
-        public SwitchParameter NoBias = false;
+        public bool Bias = true;
 
         [Parameter(Position = 8, Mandatory = false)]
         public CNTKDictionary biasInitializer = null;
@@ -132,7 +132,7 @@ namespace Horker.PSCNTK
                 NumFilters,              // int numFilters
                 Activation,              // string activation
                 Initializer,             // CNTKDictionary initializer
-                !NoBias,                 // bool hasBias
+                Bias,                    // bool hasBias
                 biasInitializer,         // CNTKDictionary biasInitializer
                 Strides,                 // int[] strides
                 Padding,                 // bool[] padding
@@ -174,7 +174,7 @@ namespace Horker.PSCNTK
         public string Activation = null;
 
         [Parameter(Position = 7, Mandatory = false)]
-        public SwitchParameter NoBias = false;
+        public bool Bias = true;
 
         [Parameter(Position = 8, Mandatory = false)]
         public CNTKDictionary biasInitializer = null;
@@ -207,7 +207,7 @@ namespace Horker.PSCNTK
                 NumFilters,              // int numFilters
                 Activation,              // string activation
                 Initializer,             // CNTKDictionary initializer
-                !NoBias,                 // bool hasBias
+                Bias,                    // bool hasBias
                 biasInitializer,         // CNTKDictionary biasInitializer
                 Strides,                 // int[] strides
                 Padding,                 // bool[] padding
@@ -249,7 +249,7 @@ namespace Horker.PSCNTK
         public string Activation = null;
 
         [Parameter(Position = 7, Mandatory = false)]
-        public SwitchParameter NoBias = false;
+        public bool Bias = true;
 
         [Parameter(Position = 8, Mandatory = false)]
         public CNTKDictionary biasInitializer = null;
@@ -282,7 +282,7 @@ namespace Horker.PSCNTK
                 NumFilters,              // int numFilters
                 Activation,              // string activation
                 Initializer,             // CNTKDictionary initializer
-                !NoBias,                 // bool hasBias
+                Bias,                    // bool hasBias
                 biasInitializer,         // CNTKDictionary biasInitializer
                 Strides,                 // int[] strides
                 Padding,                 // bool[] padding

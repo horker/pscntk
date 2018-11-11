@@ -20,7 +20,7 @@ namespace Horker.PSCNTK
         public string Activation = null;
 
         [Parameter(Position = 4, Mandatory = false)]
-        public SwitchParameter NoBias = false;
+        public bool Bias = true;
 
         [Parameter(Position = 5, Mandatory = false)]
         public CNTKDictionary BiasInitializer = null;
@@ -46,7 +46,7 @@ namespace Horker.PSCNTK
                 Input,           // Variable input,
                 Shape,           // Shape outputShape,
                 Initializer,     // CNTKDictionary initializer,
-                !NoBias,         // bool hasBias,
+                Bias,            // bool hasBias,
                 BiasInitializer, // CNTKDictionary biasInitializer,
                 Stabilize,       // bool stabilize,
                 Steepness,       // double steepness
