@@ -38,7 +38,7 @@ namespace Horker.PSCNTK
                     if (OmitFraction && size < SplitSize)
                         break;
 
-                    var chunk = DataSourceSet.Slice(i, size);
+                    var chunk = DataSourceSet.Subset(i, size);
                     MsgPackSerializer.Serialize(chunk, stream);
                 }
             }

@@ -315,11 +315,11 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestSlice()
+        public void TestSubset()
         {
             var a = DataSourceFactory.Create(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, new int[] { 2, 2, 3 });
 
-            var b = a.Slice(1, 2);
+            var b = a.Subset(1, 2);
 
             CollectionAssert.AreEqual(new int[] { 2, 2, 2 }, b.Shape.Dimensions);
             CollectionAssert.AreEqual(new int[] { 5, 6, 7, 8, 9, 10, 11, 12 }, b.TypedData.ToArray());

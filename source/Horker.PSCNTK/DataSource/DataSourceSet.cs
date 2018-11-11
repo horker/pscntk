@@ -101,14 +101,14 @@ namespace Horker.PSCNTK
             return results;
         }
 
-        public DataSourceSet Slice(int offset, int count, int axis = -1)
+        public DataSourceSet Subset(int offset, int count, int axis = -1)
         {
             var result = new DataSourceSet();
 
             foreach (var ds in _data)
             {
-                var slice = ds.Value.Slice(offset, count, axis);
-                result.Add(ds.Key, slice);
+                var subset = ds.Value.Subset(offset, count, axis);
+                result.Add(ds.Key, subset);
             }
 
             return result;

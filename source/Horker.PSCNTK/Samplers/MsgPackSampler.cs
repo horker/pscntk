@@ -143,7 +143,7 @@ namespace Horker.PSCNTK
 
                                 for (var i = 0; i < batchCount; ++i)
                                 {
-                                    var slice = ds.Slice(i * _minibatchSize, _minibatchSize);
+                                    var slice = ds.Subset(i * _minibatchSize, _minibatchSize);
                                     // Data in SlidingDataSource must be copied because they become invalid with a data window sliding.
                                     var copy = DataSourceFactory.Copy<float, IList<float>>(slice.Data, slice.Shape.Dimensions);
                                     batches[i].Add(entry.Key, copy);

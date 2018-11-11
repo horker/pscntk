@@ -12,7 +12,8 @@ namespace Horker.PSCNTK
 
         T this[params int[] indexes] { get; set; }
 
-        void ApplyInPlace(Func<int, T, T> func);
+        IDataSource<T> Apply(Func<T, int, T> func);
+        void ApplyInPlace(Func<T, int, T> func);
         string AsString();
         StreamConfiguration GetStreamConfiguration(string name, string alias = "");
         IDataSource<T> GetSubsequences(int subseqLength, int step = 1, int sequenceAxis = -1);
@@ -23,7 +24,7 @@ namespace Horker.PSCNTK
 
         IDataSource<T> Shuffle();
         void ShuffleInPlace();
-        IDataSource<T> Slice(int offset, int count, int axis = -1);
+        IDataSource<T> Subset(int offset, int count, int axis = -1);
         IDataSource<T>[] Split(params double[] rates);
         IDataSource<T> Transpose(params int[] order);
 

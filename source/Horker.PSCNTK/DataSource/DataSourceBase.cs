@@ -251,7 +251,7 @@ namespace Horker.PSCNTK
             }
         }
 
-        public DataSourceBase<T, ListSlice<T>> Slice(int offset, int count, int axis = -1)
+        public DataSourceBase<T, ListSlice<T>> Subset(int offset, int count, int axis = -1)
         {
             if (axis < 0)
                 axis = _shape.Rank + axis;
@@ -346,9 +346,9 @@ namespace Horker.PSCNTK
 
         T IDataSource<T>.this[params int[] indexes] { get => this[indexes]; set { this[indexes] = value; } }
 
-        IDataSource<T> IDataSource<T>.Slice(int offset, int count, int axis)
+        IDataSource<T> IDataSource<T>.Subset(int offset, int count, int axis)
         {
-            return Slice(offset, count, axis);
+            return Subset(offset, count, axis);
         }
 
         IDataSource<T>[] IDataSource<T>.Split(params double[] rates)

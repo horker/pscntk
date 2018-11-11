@@ -150,7 +150,7 @@ namespace Horker.PSCNTK
                         continue;
 
                     var ds = dss[name];
-                    dss.Features[name] = ds.Slice(start, end - start + 1, -2);
+                    dss.Features[name] = ds.Subset(start, end - start + 1, -2);
                 }
 
                 yield return new CTFSample()
