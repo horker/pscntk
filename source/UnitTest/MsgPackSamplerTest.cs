@@ -151,7 +151,7 @@ namespace UnitTest
                 int count = 0;
                 for (var i = 0; i < 10; ++i)
                 {
-                    for (var j = 0; j < NUM_SAMPLES * 3; ++j)
+                    for (var j = 0; j < NUM_SAMPLES * 3 / 5; ++j)
                     {
                         var batch = sampler.GetNextMinibatch();
                         Assert.AreEqual(1, batch.Features.Count);
