@@ -9,7 +9,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Serializable]
-    public class CTFSampler : ISampler
+    public class CTFSampler : SamplerBase
     {
         private int _minibatchSize;
         private List<StreamConfiguration> _streamConfigurations;
@@ -17,8 +17,8 @@ namespace Horker.PSCNTK
         private MinibatchSource _minibatchSource;
         private Dictionary<string, StreamInformation> _streamInfos;
 
-        public int MinibatchSize { get => _minibatchSize; }
-        public IList<StreamConfiguration> StreamConfigurations { get => _streamConfigurations; }
+        public int MinibatchSize => _minibatchSize;
+        public IList<StreamConfiguration> StreamConfigurations => _streamConfigurations;
 
         public CTFSampler(string path, int minibatchSize, bool randomize = true)
         {
@@ -44,6 +44,20 @@ namespace Horker.PSCNTK
             _streamInfos = new Dictionary<string, StreamInformation>();
             foreach (var name in elements.Keys)
                 _streamInfos.Add(name, _minibatchSource.StreamInfo(name));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var sc in _streamConfigurations)
+                    sc.Dispose();
+
+                foreach (var si in _streamInfos.Values)
+                    si.Dispose();
+
+                _minibatchSource.Dispose();
+            }
         }
 
         public static IDictionary<string, int> GuessDataFormat(string path, int readLineCount)
@@ -84,7 +98,7 @@ namespace Horker.PSCNTK
             }
         }
 
-        public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
+        public override Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();

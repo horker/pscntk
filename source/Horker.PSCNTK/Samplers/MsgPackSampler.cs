@@ -11,7 +11,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class MsgPackSampler : ISampler, IDisposable
+    public class MsgPackSampler : SamplerBase
     {
         public int _minibatchSize;
 
@@ -60,6 +60,35 @@ namespace Horker.PSCNTK
             _canceled = false;
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            _canceled = true;
+            if (disposing)
+            {
+                _dataSourceQueue.CancelAdding();
+                _dataSourceQueue.CancelTaking();
+                _parallelSampler.CancelAdding();
+                _parallelSampler.CancelTaking();
+
+                if (_loadingTask != null)
+                {
+                    _loadingTask.Wait();
+                    _loadingTask.Dispose();
+                }
+
+                if (_slicingTask != null)
+                {
+                    _slicingTask.Wait();
+                    _slicingTask.Dispose();
+                }
+
+                if (_stream != null)
+                    _stream.Dispose();
+
+                _parallelSampler.Dispose();
+            }
+        }
+
         public void StartLoading(string path)
         {
             _stream = new FileStream(path, FileMode.Open, FileAccess.Read);
@@ -68,7 +97,10 @@ namespace Horker.PSCNTK
 
         public void StartLoading(Stream stream)
         {
-            if (_loadingTask != null || _canceled)
+            if (Disposed)
+                throw new ObjectDisposedException("MsgPackSampler");
+
+            if (_loadingTask != null)
                 throw new InvalidOperationException("Loading already stared");
 
             _canceled = false;
@@ -171,43 +203,12 @@ namespace Horker.PSCNTK
 
         public void StopLoading()
         {
-            _canceled = true;
-            _dataSourceQueue.CancelAdding();
-            _dataSourceQueue.CancelTaking();
-            _parallelSampler.CancelAdding();
-            _parallelSampler.CancelTaking();
-
-            if (_loadingTask != null)
-            {
-                _loadingTask.Wait();
-                _loadingTask = null;
-            }
-
-            if (_slicingTask != null)
-            {
-                _slicingTask.Wait();
-                _slicingTask = null;
-            }
-
-            if (_stream != null)
-            {
-                _stream.Dispose();
-                _stream = null;
-            }
+            Dispose();
         }
 
-        public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
+        public override Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
             return _parallelSampler.GetNextMinibatch(device);
-        }
-
-        public void Dispose()
-        {
-            StopLoading();
-            if (_loadingTask != null)
-                ((IDisposable)_loadingTask).Dispose();
-            if (_slicingTask != null)
-                ((IDisposable)_slicingTask).Dispose();
         }
     }
 }

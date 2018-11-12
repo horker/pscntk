@@ -85,6 +85,7 @@
     <Compile Include="General\SwigMethods.cs" />
     <Compile Include="Samplers\MsgPackSampler.cs" />
     <Compile Include="Samplers\ParallelQueue.cs" />
+    <Compile Include="Samplers\SamplerBase.cs" />
     <Compile Include="Training\TrainingProgress.cs" />
     <Compile Include="Cmdlets\ValueCmdlets.cs" />
     <Compile Include="Cmdlets\CmdletHelpers.cs" />

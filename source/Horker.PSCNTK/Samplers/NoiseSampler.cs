@@ -7,7 +7,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class NoiseSampler : ISampler
+    public class NoiseSampler : SamplerBase
     {
         public string Name;
         public Shape Shape;
@@ -45,7 +45,12 @@ namespace Horker.PSCNTK
             Iterations = 0;
         }
 
-        public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
+        protected override void Dispose(bool disposing)
+        {
+            // Nothing to do.
+        }
+
+        public override Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();

@@ -7,8 +7,10 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class ExpressionSampler : ISampler
+    public class ExpressionSampler : SamplerBase
     {
+        private Value _initialValue;
+
         public string Name;
         public Variable Expression { get; }
         public int MinibatchSize;
@@ -25,6 +27,8 @@ namespace Horker.PSCNTK
             Expression = expression;
             InputVariable = inputVariable;
             MinibatchSize = minibatchSize;
+
+            _initialValue = initialValue;
 
             if (initialValue != null)
                 PrevValue = initialValue;
@@ -48,7 +52,16 @@ namespace Horker.PSCNTK
             Iterations = 0;
         }
 
-        public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (PrevValue != _initialValue)
+                    PrevValue.Dispose();
+            }
+        }
+
+        public override Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
             if (device == null)
                 device = DeviceDescriptor.UseDefaultDevice();

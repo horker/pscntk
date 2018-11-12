@@ -5,8 +5,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    [Serializable]
-    public class OnMemorySampler : ISampler
+    public class OnMemorySampler : SamplerBase
     {
         public Dictionary<string, IDataSource<float>> Features
         {
@@ -66,24 +65,9 @@ namespace Horker.PSCNTK
             WithSequenceAxis = withSequenceAxis;
         }
 
-        public static OnMemorySampler Load(byte[] data, bool decompress = true)
+        protected override void Dispose(bool disposing)
         {
-            return Serializer.Deserialize<OnMemorySampler>(data, decompress);
-        }
-
-        public static OnMemorySampler Load(string path, bool compress = true)
-        {
-            return Serializer.Deserialize<OnMemorySampler>(path, compress);
-        }
-
-        public byte[] Serialize(bool compress = true)
-        {
-            return Serializer.Serialize(this, compress);
-        }
-
-        public void Save(string path, bool compress = true)
-        {
-            Serializer.Serialize(this, path, compress);
+            // Nothing to do.
         }
 
         private void ResetInternalState()
@@ -168,7 +152,7 @@ namespace Horker.PSCNTK
             return batch;
         }
 
-        public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
+        public override Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
             InitializeOrder();
 

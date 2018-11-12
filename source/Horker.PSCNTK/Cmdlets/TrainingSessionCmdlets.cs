@@ -66,6 +66,9 @@ namespace Horker.PSCNTK
             {
                 if (logger != null)
                     logger.Writer.Close();
+
+                Sampler.Dispose();
+                ValidationSampler.Dispose();
             }
         }
     }

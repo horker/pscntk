@@ -8,7 +8,7 @@ using CNTK;
 namespace Horker.PSCNTK
 {
     [Serializable]
-    public class CompositeSampler : ISampler
+    public class CompositeSampler : SamplerBase
     {
         private ISampler[] _samplers;
 
@@ -19,9 +19,18 @@ namespace Horker.PSCNTK
             _samplers = samplers;
         }
 
-        public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
+        public override Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
             return new Minibatch(_samplers.Select(x => x.GetNextMinibatch(device)));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var s in _samplers)
+                    s.Dispose();
+            }
         }
     }
 }

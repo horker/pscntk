@@ -8,7 +8,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class ParallelSampler : ISampler
+    public class ParallelSampler : SamplerBase
     {
         private ParallelQueue<DataSourceSet> _dataQueue;
         private int _sampleCountPerEpoch;
@@ -38,12 +38,17 @@ namespace Horker.PSCNTK
             _dataQueue = new ParallelQueue<DataSourceSet>(queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            // Nothing to do.
+        }
+
         public void AddMinibatch(DataSourceSet dataSourceSet)
         {
             _dataQueue.Add(dataSourceSet);
         }
 
-        public Minibatch GetNextMinibatch(DeviceDescriptor device = null)
+        public override Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
             var dataSourceSet = _dataQueue.Take();
             _totalSampleCount += dataSourceSet.SampleCount;

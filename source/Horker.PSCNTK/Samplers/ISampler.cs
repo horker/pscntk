@@ -1,8 +1,9 @@
-﻿using CNTK;
+﻿using System;
+using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public interface ISampler
+    public interface ISampler : IDisposable
     {
         Minibatch GetNextMinibatch(DeviceDescriptor device = null);
     }
