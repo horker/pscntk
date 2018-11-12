@@ -13,7 +13,7 @@ namespace Horker.PSCNTK
 {
     public class MsgPackSampler : SamplerBase
     {
-        public int _minibatchSize;
+        private int _minibatchSize;
 
         private ParallelQueue<DataSourceSet> _dataSourceQueue;
         private ParallelSampler _parallelSampler;
@@ -45,19 +45,40 @@ namespace Horker.PSCNTK
 
         public Exception LastException => _lastException;
 
-        public MsgPackSampler(int minibatchSize, bool randomize, int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 60 * 60 * 1000, int timeoutForTake = 60 * 60 * 1000)
+        private MsgPackSampler(int minibatchSize, bool randomize, int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 60 * 60 * 1000, int timeoutForTake = 60 * 60 * 1000)
         {
             _minibatchSize = minibatchSize;
             _randomize = randomize;
 
             _dataSourceQueue = new ParallelQueue<DataSourceSet>(queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake);
-            _parallelSampler = new ParallelSampler(sampleCountPerEpoch, queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake);
             _dataSourceBuffer = new Dictionary<string, SlidingDataSource<float>>();
 
             _stream = null;
             _loadingTask = null;
             _slicingTask = null;
             _canceled = false;
+        }
+
+        public MsgPackSampler(Stream stream, int minibatchSize, bool randomize, int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 60 * 60 * 1000, int timeoutForTake = 60 * 60 * 1000)
+            : this(minibatchSize, randomize, sampleCountPerEpoch, queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake)
+        {
+            _parallelSampler = new ParallelSampler(sampleCountPerEpoch, queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake);
+            StartLoading(stream);
+        }
+
+        public MsgPackSampler(string path, int minibatchSize, bool randomize, int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 60 * 60 * 1000, int timeoutForTake = 60 * 60 * 1000)
+            : this(minibatchSize, randomize, sampleCountPerEpoch, queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake)
+        {
+            _stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+
+            if (sampleCountPerEpoch < 0)
+            {
+                sampleCountPerEpoch = ComputeSampleCountPerEpoch(_stream);
+                _stream.Position = 0;
+            }
+
+            _parallelSampler = new ParallelSampler(sampleCountPerEpoch, queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake);
+            StartLoading(_stream);
         }
 
         protected override void Dispose(bool disposing)
@@ -89,20 +110,20 @@ namespace Horker.PSCNTK
             }
         }
 
-        public void StartLoading(string path)
+        private int ComputeSampleCountPerEpoch(Stream stream)
         {
-            _stream = new FileStream(path, FileMode.Open, FileAccess.Read);
-            StartLoading(_stream);
+            int count = 0;
+            while (stream.Position < stream.Length)
+            {
+                var dss = MsgPackSerializer.Deserialize(stream);
+                count += dss.SampleCount;
+            }
+
+            return count;
         }
 
-        public void StartLoading(Stream stream)
+        private void StartLoading(Stream stream)
         {
-            if (Disposed)
-                throw new ObjectDisposedException("MsgPackSampler");
-
-            if (_loadingTask != null)
-                throw new InvalidOperationException("Loading already stared");
-
             _canceled = false;
             _lastException = null;
 

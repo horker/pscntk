@@ -17,7 +17,7 @@ namespace Horker.PSCNTK
         public int MinibatchSize;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public int SampleCountPerEpoch = int.MaxValue;
+        public int SampleCountPerEpoch = -1;
 
         [Parameter(Position = 3, Mandatory = false)]
         public int QueueSize = 100;
@@ -26,10 +26,10 @@ namespace Horker.PSCNTK
         public SwitchParameter Randomize = false;
 
         [Parameter(Position = 5, Mandatory = false)]
-        public SwitchParameter ReuseSamples;
+        public SwitchParameter ReuseSamples = false;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public int BufferSize = 2000;
+        public int BufferSize = 100;
 
         [Parameter(Position = 7, Mandatory = false)]
         public int TimeoutForAdd = 60 * 60 * 1000;
@@ -41,8 +41,7 @@ namespace Horker.PSCNTK
         {
             Path = IO.GetAbsolutePath(this, Path);
 
-            var sampler = new MsgPackSampler(MinibatchSize, Randomize, SampleCountPerEpoch, QueueSize, ReuseSamples, BufferSize, TimeoutForAdd, TimeoutForTake);
-            sampler.StartLoading(Path);
+            var sampler = new MsgPackSampler(Path, MinibatchSize, Randomize, SampleCountPerEpoch, QueueSize, ReuseSamples, BufferSize, TimeoutForAdd, TimeoutForTake);
 
             WriteObject(sampler);
         }

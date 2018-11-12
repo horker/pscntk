@@ -33,10 +33,8 @@ namespace UnitTest
                 }
             }
 
-            using (var sampler = new MsgPackSampler(1, false, 3, 10, false, 100))
+            using (var sampler = new MsgPackSampler(file, 1, false, 3, 10, false, 100))
             {
-                sampler.StartLoading(file);
-
                 for (var i = 0; i < 10; ++i)
                 {
                     for (var j = 0; j < NUM_SAMPLES; ++j)
@@ -50,7 +48,7 @@ namespace UnitTest
                         CollectionAssert.AreEqual(new int[] { 3, 1, 1 }, value.Shape.Dimensions.ToArray());
 
                         var ds = DataSourceFactory.FromValue(value).ToArray();
-//                        Debug.WriteLine(string.Join(", ", ds));
+                        //                        Debug.WriteLine(string.Join(", ", ds));
                         CollectionAssert.AreEqual(new float[] { j, j * 10, j * 100 }, ds);
 
                     }
@@ -73,10 +71,8 @@ namespace UnitTest
                 }
             }
 
-            using (var sampler = new MsgPackSampler(1, false, 100, 100, true, 1000))
+            using (var sampler = new MsgPackSampler(file, 1, false, 100, 100, true, 1000))
             {
-                sampler.StartLoading(file);
-
                 for (var i = 0; i < 10000; ++i)
                 {
                     var batch = sampler.GetNextMinibatch();
@@ -102,10 +98,8 @@ namespace UnitTest
                 }
             }
 
-            using (var sampler = new MsgPackSampler(1, false, 7, 10, false, 100))
+            using (var sampler = new MsgPackSampler(file, 1, false, 7, 10, false, 100))
             {
-                sampler.StartLoading(file);
-
                 for (var i = 0; i < 10; ++i)
                 {
                     for (var j = 0; j < NUM_SAMPLES * 3; ++j)
@@ -119,7 +113,7 @@ namespace UnitTest
                         CollectionAssert.AreEqual(new int[] { 1, 1, 1 }, value.Shape.Dimensions.ToArray());
 
                         var ds = DataSourceFactory.FromValue(value).ToArray();
-//                        Debug.WriteLine(string.Join(", ", ds));
+                        //                        Debug.WriteLine(string.Join(", ", ds));
                         CollectionAssert.AreEqual(new float[] { j / 3 + j % 3 }, ds);
 
                     }
@@ -144,10 +138,8 @@ namespace UnitTest
                 }
             }
 
-            using (var sampler = new MsgPackSampler(5, false, 7, 10, false, 100))
+            using (var sampler = new MsgPackSampler(file, 5, false, 7, 10, false, 100))
             {
-                sampler.StartLoading(file);
-
                 int count = 0;
                 for (var i = 0; i < 10; ++i)
                 {
@@ -198,10 +190,8 @@ namespace UnitTest
                 }
             }
 
-            using (var sampler = new MsgPackSampler(MINIBATCH_SIZE, true, 10, 100, false, 100))
+            using (var sampler = new MsgPackSampler(file, MINIBATCH_SIZE, true, 10, 100, false, 100))
             {
-                sampler.StartLoading(file);
-
                 for (var i = 0; i < NUM_CHUNKS; ++i)
                 {
                     var values = new float[data.Length];
@@ -219,6 +209,30 @@ namespace UnitTest
                     sorted.Sort();
                     CollectionAssert.AreEqual(data, sorted);
                 }
+            }
+        }
+
+        [TestMethod]
+        public void TestMsgPackSamplerSampleCountPerEpoch()
+        {
+            const int NUM_SAMPLES = 3;
+            const int NUM_CHUNKS = 100;
+
+            var file = Path.GetTempFileName();
+            using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+            {
+                for (var i = 0; i < NUM_CHUNKS; ++i)
+                {
+                    var a = DataSourceFactory.Create(new float[] { i, i * 10, i * 100 }, new int[] { 1, 1, NUM_SAMPLES });
+                    var dss = new DataSourceSet();
+                    dss.Add("a", a);
+                    MsgPackSerializer.Serialize(dss, stream);
+                }
+            }
+
+            using (var sampler = new MsgPackSampler(file, 1, false, -1, 10, false, 100))
+            {
+                Assert.AreEqual(NUM_SAMPLES * NUM_CHUNKS, sampler.SampleCountPerEpoch);
             }
         }
     }
