@@ -15,6 +15,7 @@ $LIB_DIR = "$PSScriptRoot\lib"
 ############################################################
 
 . "$PSScriptRoot\gru.ps1"
+. "$PSScriptRoot\permequiv.ps1"
 
 ############################################################
 # Extension methods
