@@ -46,7 +46,7 @@ function Get-Model($in) {
     $n = $in
     $n = cntk.dense $n $CELL_DIM -Stabilize
     $n = cntk.gru $n -ReturnSequences -InitialState $initialState -Stabilize -DropoutRate .2
-    $n = cntk.gru $n -Stabilize -DropoutRate .2
+    $n = cntk.gru $n -Stabilize -DropoutRate .2 -LayerNormalization
     $n = cntk.dense $n $OUT_CLASSES -Stabilize
     $n
 }

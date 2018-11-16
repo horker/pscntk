@@ -10,15 +10,18 @@ function New-CNTKGruCell {
         [double]$DropoutRate = [double]::NaN,
 
         [Parameter(Position = 2, Mandatory = $false)]
-        [switch]$Stabilize = $false,
+        [switch]$LayerNormalization = $false,
 
         [Parameter(Position = 3, Mandatory = $false)]
-        [double]$Steepness = 4,
+        [switch]$Stabilize = $false,
 
         [Parameter(Position = 4, Mandatory = $false)]
-        [CNTK.DeviceDescriptor]$Device = [CNTK.DeviceDescriptor]::UseDefaultDevice(),
+        [double]$Steepness = 4,
 
         [Parameter(Position = 5, Mandatory = $false)]
+        [CNTK.DeviceDescriptor]$Device = [CNTK.DeviceDescriptor]::UseDefaultDevice(),
+
+        [Parameter(Position = 6, Mandatory = $false)]
         [string]$Name = ""
     )
 
@@ -55,9 +58,18 @@ function New-CNTKGruCell {
     $w = cntk.parameter ($dim, ($dim * 2)) -Initializer (cntk.init.glorotUniform) -Device $Device
     $b = cntk.parameter $dim -Initializer (cntk.init.constant 0)
 
-    $zt = cntk.sigmoid ((cntk.times $wz (cntk.splice @((st $ht1), (st $xt)) 0)) + $bz)
-    $rt = cntk.sigmoid ((cntk.times $wr (cntk.splice @((st $ht1), (st $xt)) 0)) + $br)
-    $hhatt = cntk.tanh ((cntk.times $w (cntk.splice @((st ($rt * $ht1)), (st $xt)) 0)) + $b)
+    if ($LayerNormalization) {
+        $ht1_ln = cntk.meanVarianceNormalization $ht1 #-Epsilon 1e-5
+        $xt_ln = cntk.meanVarianceNormalization $xt -Epsilon 1e-5
+    }
+    else {
+        $ht1_ln = $ht1
+        $xt_ln = $xt
+    }
+
+    $zt = cntk.sigmoid ((cntk.times $wz (cntk.splice @((st $ht1_ln), (st $xt_ln)) 0)) + $bz)
+    $rt = cntk.sigmoid ((cntk.times $wr (cntk.splice @((st $ht1_ln), (st $xt_ln)) 0)) + $br)
+    $hhatt = cntk.tanh ((cntk.times $w (cntk.splice @((st ($rt * $ht1_ln)), (st $xt_ln)) 0)) + $b)
 
     if ($DropoutRate -ne [double]::NaN) {
         $hhatt = cntk.dropout -DropoutRate $DropoutRate $hhatt
@@ -83,22 +95,25 @@ function New-CNTKGru {
         [double]$DropoutRate = [double]::NaN,
 
         [Parameter(Position = 3, Mandatory = $false)]
-        [switch]$Stabilize = $false,
+        [switch]$LayerNormalization = $false,
 
         [Parameter(Position = 4, Mandatory = $false)]
-        [double]$Steepness = 4,
+        [switch]$Stabilize = $false,
 
         [Parameter(Position = 5, Mandatory = $false)]
-        [switch]$ReturnSequences,
+        [double]$Steepness = 4,
 
         [Parameter(Position = 6, Mandatory = $false)]
-        [CNTK.DeviceDescriptor]$Device = [CNTK.DeviceDescriptor]::UseDefaultDevice(),
+        [switch]$ReturnSequences,
 
         [Parameter(Position = 7, Mandatory = $false)]
+        [CNTK.DeviceDescriptor]$Device = [CNTK.DeviceDescriptor]::UseDefaultDevice(),
+
+        [Parameter(Position = 8, Mandatory = $false)]
         [string]$Name = ""
     )
 
-    $cell, $ht1 = New-CNTKGruCell $Operand -DropoutRate $Dropoutrate -Stabilize:$Stabilize -Steepness $Steepness -Device $Device
+    $cell, $ht1 = New-CNTKGruCell $Operand -DropoutRate $Dropoutrate -LayerNormalization:$LayerNormalization -Stabilize:$Stabilize -Steepness $Steepness -Device $Device
     $cell.ReplacePlaceholders(@{ $ht1 = (cntk.pastValue $cell $InitialState) })
 
     if (!$ReturnSequences) {
