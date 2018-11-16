@@ -144,7 +144,8 @@ namespace Horker.PSCNTK
                 }
                 catch (Exception ex)
                 {
-                    _lastException = ex;
+                    if (_lastException == null)
+                        _lastException = ex;
                     _canceled = true;
                     _dataSourceQueue.CancelAdding();
                     _dataSourceQueue.CancelTaking();
@@ -212,7 +213,8 @@ namespace Horker.PSCNTK
                 }
                 catch (Exception ex)
                 {
-                    _lastException = ex;
+                    if (_lastException == null)
+                        _lastException = ex;
                     _canceled = true;
                     _dataSourceQueue.CancelAdding();
                     _dataSourceQueue.CancelTaking();
@@ -229,7 +231,42 @@ namespace Horker.PSCNTK
 
         public override Minibatch GetNextMinibatch(DeviceDescriptor device = null)
         {
-            return _parallelSampler.GetNextMinibatch(device);
+            try
+            {
+                return _parallelSampler.GetNextMinibatch(device);
+            }
+            catch (OperationCanceledException)
+            {
+                if (_lastException != null)
+                    throw _lastException;
+                throw;
+            }
+            catch (TimeoutException)
+            {
+                if (_lastException != null)
+                    throw _lastException;
+                throw;
+            }
+        }
+
+        public DataSourceSet Deque()
+        {
+            try
+            {
+                return _parallelSampler.Deque();
+            }
+            catch (OperationCanceledException)
+            {
+                if (_lastException != null)
+                    throw _lastException;
+                throw;
+            }
+            catch (TimeoutException)
+            {
+                if (_lastException != null)
+                    throw _lastException;
+                throw;
+            }
         }
     }
 }

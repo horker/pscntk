@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Cmdlets\ConvertToCNTKDataSource.cs" />
     <Compile Include="Cmdlets\ExportCNTKPartitionedCTF.cs" />
+    <Compile Include="Cmdlets\ExportCNTKPartitionedMsgPack.cs" />
     <Compile Include="Cmdlets\ExporttCNTKTextFormat.cs" />
     <Compile Include="Cmdlets\ImportCNTKFunction.cs" />
     <Compile Include="Cmdlets\ImportCNTKTextFormat.cs" />
@@ -75,7 +76,7 @@
     <Compile Include="DataSource\IDataSource.cs" />
     <Compile Include="DataSource\RandomizedList.cs" />
     <Compile Include="DataSource\ListSlice.cs" />
-    <Compile Include="DataSource\MsgPackSerializer.cs" />
+    <Compile Include="MsgPack\MsgPackSerializer.cs" />
     <Compile Include="DataSource\SlidingDataSource.cs" />
     <Compile Include="DataSource\SlidingList.cs" />
     <Compile Include="Extension methods\ValueMethods.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="General\Logger.cs" />
     <Compile Include="General\RingBuffer.cs" />
     <Compile Include="General\SwigMethods.cs" />
+    <Compile Include="MsgPack\MsgPackTools.cs" />
     <Compile Include="Samplers\MsgPackSampler.cs" />
     <Compile Include="Samplers\ParallelQueue.cs" />
     <Compile Include="Samplers\SamplerBase.cs" />

@@ -68,6 +68,7 @@
     <Compile Include="MinibatchDataTest.cs" />
     <Compile Include="MsgPackSamplerTest.cs" />
     <Compile Include="MsgPackSerializerTest.cs" />
+    <Compile Include="MsgPackToolsTest.cs" />
     <Compile Include="NDArrayViewTest.cs" />
     <Compile Include="NodeGroupTest.cs" />
     <Compile Include="FunctionTest.cs" />

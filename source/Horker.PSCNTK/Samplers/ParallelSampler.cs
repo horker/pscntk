@@ -63,6 +63,11 @@ namespace Horker.PSCNTK
             return new Minibatch(dataSourceSet.Features, sweepEnd, device);
         }
 
+        public DataSourceSet Deque()
+        {
+            return _dataQueue.Take();
+        }
+
         public void CancelAdding()
         {
             _dataQueue.CancelAdding();
