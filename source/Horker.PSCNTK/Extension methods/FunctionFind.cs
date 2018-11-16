@@ -94,5 +94,11 @@ namespace Horker.PSCNTK
 
             return w._variables[0];
         }
+
+        public static IList<Variable> FindVariables(Function func, string name)
+        {
+            var w = new FunctionFind(func, name, true, true);
+            return w._variables;
+        }
     }
 }

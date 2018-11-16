@@ -11,12 +11,12 @@ namespace Horker.PSCNTK
 {
     public class DataNameToInputMap
     {
-        private Dictionary<string, Variable> _map;
+        private Dictionary<string, List<Variable>> _map;
         private Function[] _funcs;
 
         public DataNameToInputMap(Function[] funcs, Hashtable map = null)
         {
-            _map = new Dictionary<string, Variable>();
+            _map = new Dictionary<string, List<Variable>>();
 
             _funcs = funcs.Where(x => x != null).ToArray();
 
@@ -24,36 +24,52 @@ namespace Horker.PSCNTK
                 InitializeByUserGivenMap(map);
         }
 
-        private Variable FindVariable(string name)
+        private List<Variable> FindVariables(string name)
         {
+            var variables = new List<Variable>();
             foreach (var f in _funcs)
             {
-                var va = FunctionFind.FindVariable(f, name);
-                if (va != null)
-                    return va;
+                var v = FunctionFind.FindVariables(f, name);
+                variables.AddRange(v);
             }
 
-            return null;
+            return variables;
+        }
+
+        private void AddToMap(string key, Variable va)
+        {
+            List<Variable> variables;
+            _map.TryGetValue(key, out variables);
+            if (variables == null)
+                _map.Add(key, new List<Variable>() { va });
+            else
+            {
+                if (!variables.Contains(va))
+                    variables.Add(va);
+            }
         }
 
         private void InitializeByUserGivenMap(Hashtable map)
         {
             foreach (DictionaryEntry entry in map)
             {
+                string key = entry.Key.ToString();
                 object value = entry.Value;
                 if (value is PSObject)
                     value = (value as PSObject).BaseObject;
 
-                if (value is Variable)
-                    _map.Add(entry.Key.ToString(), entry.Value as Variable);
-                else if (value is WrappedVariable)
-                    _map.Add(entry.Key.ToString(), entry.Value as WrappedVariable);
+                if (value is Variable v)
+                    AddToMap(key, v);
+                else if (value is WrappedVariable wv)
+                    AddToMap(key, wv);
                 else
                 {
-                    var va = FindVariable(value.ToString());
-                    if (va == null)
+                    var variables = FindVariables(value.ToString());
+                    if (variables.Count == 0)
                         throw new ArgumentException(string.Format("Pair ({0}, {1}) in parameterMap doesn't match any variable in the model", entry.Key, value.ToString()));
-                    _map.Add(entry.Key.ToString(), va);
+
+                    foreach (var va in variables)
+                        AddToMap(key, va);
                 }
             }
         }
@@ -66,9 +82,12 @@ namespace Horker.PSCNTK
             foreach (var entry in batch.Features)
             {
                 var name = entry.Key;
-                var va = FindVariable(name);
-                if (va != null)
-                    _map.Add(name, va);
+                var variables = FindVariables(name);
+                if (variables != null)
+                {
+                    foreach (var va in variables)
+                        AddToMap(name, va);
+                }
             }
         }
 
@@ -77,9 +96,12 @@ namespace Horker.PSCNTK
             var arguments = new Dictionary<Variable, Value>();
             foreach (var entry in batch.Features)
             {
-                Variable v = null;
-                if (_map.TryGetValue(entry.Key, out v))
-                    arguments.Add(v, entry.Value);
+                List<Variable> variables = null;
+                if (_map.TryGetValue(entry.Key, out variables))
+                {
+                    foreach (var va in variables)
+                        arguments.Add(va, entry.Value);
+                }
             }
 
             if (arguments.Count == 0)
