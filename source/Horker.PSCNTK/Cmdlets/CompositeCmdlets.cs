@@ -10,8 +10,8 @@ namespace Horker.PSCNTK
         [Parameter(Position = 0, Mandatory = true)]
         public CNTK.Variable Input;
 
-        [Parameter(Position = 1, Mandatory = true)]
-        public int[] Shape;
+        [Parameter(Position = 1, Mandatory = false)]
+        public int[] Shape = null;
 
         [Parameter(Position = 2, Mandatory = false)]
         public CNTKDictionary Initializer = null;

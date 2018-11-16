@@ -13,6 +13,9 @@ namespace Horker.PSCNTK
             {
                 NodeGroup.EnterNewGroup(name);
 
+                if (outputShape == null)
+                    outputShape = new Shape(input.Shape.Dimensions.ToArray());
+
                 if (initializer == null)
                     initializer = CNTKLib.GlorotUniformInitializer();
 
