@@ -32,13 +32,13 @@ namespace Horker.PSCNTK
                     sampleCount += t.SampleCount;
                     loss += t.Loss;
                     metric += t.Metric;
-                    if (t.Iteration % progressOutputStep == 0 || t.Iteration == maxIteration)
+                    if (t.Iterations % progressOutputStep == 0 || t.Iterations == maxIteration)
                     {
                         var p = new TrainingProgress();
 
                         p.Epoch = t.Epoch;
-                        p.Iteration = t.Iteration;
-                        p.SampleCount = sampleCount;
+                        p.Iterations = t.Iterations;
+                        p.SampleCount += sampleCount;
                         p.Loss = loss / progressOutputStep;
                         p.Metric = metric / progressOutputStep;
                         p.Validation = t.GetValidationMetric();
@@ -49,7 +49,6 @@ namespace Horker.PSCNTK
 
                         yield return p;
 
-                        sampleCount = 0;
                         loss = 0.0;
                         metric = 0.0;
                     }

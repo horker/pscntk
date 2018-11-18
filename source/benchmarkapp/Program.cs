@@ -117,10 +117,10 @@ namespace benchmarkapp
                     progress.MoveNext();
                     var p = progress.Current;
 
-                    if (p.Iteration == 1 || p.Iteration % 100 == 0)
+                    if (p.Iterations == 1 || p.Iterations % 100 == 0)
                     {
                         Console.WriteLine(string.Format("Iteration: {0}  Loss: {1}  Metric: {2}  Validation: {3}  Elapsed: {4}  CountInQueue: {5}",
-                            p.Iteration, p.Loss, p.Metric, p.GetValidationMetric(), p.Elapsed, sampler.CountInQueue));
+                            p.Iterations, p.Loss, p.Metric, p.GetValidationMetric(), p.Elapsed, sampler.CountInQueue));
                     }
                 }
             }

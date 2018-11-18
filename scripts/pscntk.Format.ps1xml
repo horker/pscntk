@@ -117,7 +117,7 @@
                                 <PropertyName>Epoch</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>Iteration</PropertyName>
+                                <PropertyName>Iterations</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>SampleCount</PropertyName>

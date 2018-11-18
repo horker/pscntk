@@ -24,7 +24,7 @@ namespace Horker.PSCNTK
         public DeviceDescriptor TestDevice { get; private set; }
 
         public int Epoch { get; private set; }
-        public int Iteration { get; private set; }
+        public int Iterations { get; private set; }
         public bool EpochIncremented { get; private set; }
 
         public Minibatch Minibatch { get; private set; }
@@ -87,7 +87,7 @@ namespace Horker.PSCNTK
             Epoch = 1;
             EpochIncremented = false;
 
-            for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
+            for (Iterations = 1; Iterations <= maxIteration; ++Iterations)
             {
                 var minibatch = Sampler.GetNextMinibatch(TrainingDevice);
                 if (minibatch == null)
