@@ -7,14 +7,14 @@ namespace Horker.PSCNTK
 {
     public partial class Composite
     {
-        public static Function Dense(Variable input, Shape outputShape, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, bool stabilize, double steepness, string activation, DeviceDescriptor device, string name)
+        public static Function Dense(Variable input, int[] outputDimensions, CNTKDictionary initializer, bool useBias, CNTKDictionary biasInitializer, bool stabilize, double steepness, string activation, DeviceDescriptor device, string name)
         {
             try
             {
                 NodeGroup.EnterNewGroup(name);
 
-                if (outputShape == null)
-                    outputShape = new Shape(input.Shape.Dimensions.ToArray());
+                if (outputDimensions == null)
+                    outputDimensions = new Shape(input.Shape.Dimensions.ToArray());
 
                 if (initializer == null)
                     initializer = CNTKLib.GlorotUniformInitializer();
@@ -29,11 +29,11 @@ namespace Horker.PSCNTK
                     Register(input);
                 }
 
-                var inDim = input.Shape.Dimensions[0];
+                var inputDimensions = input.Shape.Dimensions[0];
 
-                int hiddenSize = outputShape.Dimensions.Aggregate((d1, d2) => d1 * d2);
+                int hiddenSize = outputDimensions.Aggregate((d1, d2) => d1 * d2);
 
-                var weight = new Parameter(new int[] { hiddenSize, inDim }, DataType.Float, initializer, device, name + "_w");
+                var weight = new Parameter(new int[] { hiddenSize, inputDimensions }, DataType.Float, initializer, device, name + "_w");
                 Register(weight);
 
                 Parameter bias = null;
@@ -48,9 +48,9 @@ namespace Horker.PSCNTK
 
                 var output = GetAffine(input, weight, bias);
 
-                if (outputShape.Rank > 1)
+                if (outputDimensions.Length > 1)
                 {
-                    output = CNTKLib.Reshape(output, outputShape.Dimensions);
+                    output = CNTKLib.Reshape(output, outputDimensions);
                     Register(output);
                 }
 
