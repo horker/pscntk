@@ -5,6 +5,7 @@ namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKAxis")]
     [Alias("cntk.axis")]
+    [OutputType(typeof(Axis))]
     public class NewCNTKAxis : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -19,6 +20,7 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKDynamicAxis")]
     [Alias("cntk.axis.dynamic")]
+    [OutputType(typeof(Axis))]
     public class NewCNTKDynamicAxis : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -36,6 +38,7 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKAllAxis")]
     [Alias("cntk.axis.all")]
+    [OutputType(typeof(Axis))]
     public class NewCNTKAllAxis : PSCmdlet
     {
         protected override void EndProcessing()
@@ -47,6 +50,7 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKAllStaticAxis")]
     [Alias("cntk.axis.allStatic")]
+    [OutputType(typeof(Axis))]
     public class NewCNTKStaticAxis : PSCmdlet
     {
         protected override void EndProcessing()
@@ -58,6 +62,7 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKDefaultBatchAxis")]
     [Alias("cntk.axis.defaultBatch")]
+    [OutputType(typeof(Axis))]
     public class NewCNTKDefaultBatchAxis : PSCmdlet
     {
         protected override void EndProcessing()
@@ -69,17 +74,19 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKDefaultInputVariableDynamicAxes")]
     [Alias("cntk.axis.defaultInputVariableDynamic")]
+    [OutputType(typeof(AxisVector))]
     public class NewCNTKDefaultDynamicAxes : PSCmdlet
     {
         protected override void EndProcessing()
         {
-            var axis = Axis.DefaultInputVariableDynamicAxes();
-            WriteObject(axis);
+            var axes = Axis.DefaultInputVariableDynamicAxes();
+            WriteObject(axes);
         }
     }
 
     [Cmdlet("New", "CNTKEndStaticAxis")]
     [Alias("cntk.axis.endStatic")]
+    [OutputType(typeof(Axis))]
     public class NewCNTKEndStaticAxis : PSCmdlet
     {
         protected override void EndProcessing()
@@ -91,6 +98,7 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKUniqueDynamicAxis")]
     [Alias("cntk.axis.uniqueDynamic")]
+    [OutputType(typeof(Axis))]
     public class NewCNTKUniqueDyanamicAxis : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -108,6 +116,7 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKOperandSequenceAxis")]
     [Alias("cntk.axis.operandSequence")]
+    [OutputType(typeof(Axis))]
     public class NewCNTKOperandSequenceAxis : PSCmdlet
     {
         protected override void EndProcessing()
@@ -119,6 +128,7 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKUnknownDynamicAxis")]
     [Alias("cntk.axis.unknownDynamic")]
+    [OutputType(typeof(AxisVector))]
     public class NewCNTKUnknownDynamicAxis : PSCmdlet
     {
         protected override void EndProcessing()

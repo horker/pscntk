@@ -5,6 +5,7 @@ namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKDense")]
     [Alias("cntk.dense")]
+    [OutputType(typeof(WrappedFunction))]
     public class NewCNTKDense : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -61,6 +62,7 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKMaxPooling")]
     [Alias("cntk.maxPooling")]
+    [OutputType(typeof(WrappedFunction))]
     public class NewCNTKMaxPooling : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -94,6 +96,7 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKAveragePooling")]
     [Alias("cntk.averagePooling")]
+    [OutputType(typeof(WrappedFunction))]
     public class NewCNTKAveragePooling : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -127,6 +130,7 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKBatchNorm")]
     [Alias("cntk.batchNorm")]
+    [OutputType(typeof(WrappedFunction))]
     public class NewCNTKBatchNorm : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -166,6 +170,7 @@ namespace Horker.PSCNTK
 
     [Cmdlet("New", "CNTKOptimizedRNNStack")]
     [Alias("cntk.rnnStack")]
+    [OutputType(typeof(WrappedFunction))]
     public class NewCNTKOptimizedRNNStack : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]

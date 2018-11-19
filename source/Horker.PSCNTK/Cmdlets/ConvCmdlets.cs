@@ -5,6 +5,7 @@ namespace Horker.PSCNTK
 {
     [Cmdlet("New", "CNTKConv")]
     [Alias("cntk.conv")]
+    [OutputType(typeof(WrappedFunction))]
     public class NewCNTKConv : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -69,12 +70,13 @@ namespace Horker.PSCNTK
                 Name                     // string name
             );
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
     [Cmdlet("New", "CNTKConv1D")]
     [Alias("cntk.conv1d")]
+    [OutputType(typeof(WrappedFunction))]
     public class NewCNTKConv1D : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -144,12 +146,13 @@ namespace Horker.PSCNTK
                 Name                     // string name
             );
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
     [Cmdlet("New", "CNTKConv2D")]
     [Alias("cntk.conv2d")]
+    [OutputType(typeof(WrappedFunction))]
     public class NewCNTKConv2D : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -219,12 +222,13 @@ namespace Horker.PSCNTK
                 Name                     // string name
             );
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 
     [Cmdlet("New", "CNTKConv3D")]
     [Alias("cntk.conv3d")]
+    [OutputType(typeof(WrappedFunction))]
     public class NewCNTKConv3D : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
@@ -294,7 +298,7 @@ namespace Horker.PSCNTK
                 Name                     // string name
             );
 
-            WriteObject(result);
+            WriteObject(new WrappedFunction(result));
         }
     }
 }
