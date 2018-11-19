@@ -41,10 +41,10 @@ namespace Horker.PSCNTK
         public WrappedFunction Clone(ParameterCloningMethod parameterCloneMethod, IDictionary<Variable, Variable> replacements) => _f.Clone(parameterCloneMethod, replacements);
         public WrappedFunction CloneFlattened() => _f.CloneFlattened();
         public WrappedFunction CloneFlattened(ParameterCloningMethod parameterCloningMethod) => _f.CloneFlattened(parameterCloningMethod);
-        public ConstantVector Constants() => _f.Constants();
+        public IList<WrappedVariable> Constants() => _f.Constants().Select(x => (WrappedVariable)x).ToList();
         public CNTKDictionary GetCustomAttributes() => _f.GetCustomAttributes();
-        public IList<Parameter> Parameters() => _f.Parameters();
-        public VariableVector Placeholders() => _f.Placeholders();
+        public IList<WrappedVariable> Parameters() => _f.Parameters().Select(x => (WrappedVariable)x).ToList();
+        public IList<WrappedVariable> Placeholders() => _f.Placeholders().Select(x => (WrappedVariable)x).ToList();
         public void ResetCustomAttributes() => _f.ResetCustomAttributes();
         public void Restore(string filepath) => _f.Restore(filepath);
         public byte[] Save() => _f.Save();
