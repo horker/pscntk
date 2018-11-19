@@ -119,9 +119,9 @@ function New-CNTKGru {
 
     if (!$ReturnSequences) {
         $cell = cntk.sequence.last $cell
+        $cell.SetName($Name)
     }
 
-    $cell.SetName($Name)
     $cell
 }
 
