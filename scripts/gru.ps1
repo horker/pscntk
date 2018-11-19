@@ -22,7 +22,7 @@ function New-CNTKGruCell {
         [CNTK.DeviceDescriptor]$Device = [CNTK.DeviceDescriptor]::UseDefaultDevice(),
 
         [Parameter(Position = 6, Mandatory = $false)]
-        [string]$Name = ""
+        [string]$Name = "gru"
     )
 
     # z_t = sigmoid(W_z x [h_t-1, x_t])
@@ -49,14 +49,15 @@ function New-CNTKGruCell {
     $dim = $Operand.Shape.Dimensions[0]
     $ht1 = cntk.placeholder $dim -WithSequenceAxis
 
-    $wz = cntk.parameter ($dim, ($dim * 2)) -Initializer (cntk.init.glorotUniform) -Device $Device
-    $bz = cntk.parameter $dim -Initializer (cntk.init.constant 1) # must be a large value
+    $wz = cntk.parameter ($dim, ($dim * 2)) -Initializer (cntk.init.glorotUniform) -Device $Device -Name ($Name + "/z/weight")
+    # Initial value must be large
+    $bz = cntk.parameter $dim -Initializer (cntk.init.constant 1) -Device $Device -Name ($Name + "/z/bias")
 
-    $wr = cntk.parameter ($dim, ($dim * 2)) -Initializer (cntk.init.glorotUniform) -Device $Device
-    $br = cntk.parameter $dim -Initializer (cntk.init.constant 0)
+    $wr = cntk.parameter ($dim, ($dim * 2)) -Initializer (cntk.init.glorotUniform) -Device $Device -Name ($Name + "/r/weight")
+    $br = cntk.parameter $dim -Initializer (cntk.init.constant 0) -Device $Device -Name ($Name + "/r/bias")
 
-    $w = cntk.parameter ($dim, ($dim * 2)) -Initializer (cntk.init.glorotUniform) -Device $Device
-    $b = cntk.parameter $dim -Initializer (cntk.init.constant 0)
+    $w = cntk.parameter ($dim, ($dim * 2)) -Initializer (cntk.init.glorotUniform) -Device $Device -Name ($Name + "/weight")
+    $b = cntk.parameter $dim -Initializer (cntk.init.constant 0) -Device $Device -Name ($Name + "/bias")
 
     if ($LayerNormalization) {
         $ht1_ln = cntk.meanVarianceNormalization $ht1 #-Epsilon 1e-5
@@ -110,10 +111,10 @@ function New-CNTKGru {
         [CNTK.DeviceDescriptor]$Device = [CNTK.DeviceDescriptor]::UseDefaultDevice(),
 
         [Parameter(Position = 8, Mandatory = $false)]
-        [string]$Name = ""
+        [string]$Name = "gru"
     )
 
-    $cell, $ht1 = New-CNTKGruCell $Operand -DropoutRate $Dropoutrate -LayerNormalization:$LayerNormalization -Stabilize:$Stabilize -Steepness $Steepness -Device $Device
+    $cell, $ht1 = New-CNTKGruCell $Operand -DropoutRate $Dropoutrate -LayerNormalization:$LayerNormalization -Stabilize:$Stabilize -Steepness $Steepness -Device $Device -Name $Name
     $cell.ReplacePlaceholders(@{ $ht1 = (cntk.pastValue $cell $InitialState) })
 
     if (!$ReturnSequences) {

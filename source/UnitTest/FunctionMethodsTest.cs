@@ -63,9 +63,9 @@ namespace UnitTest
 
             var obj = new PSObject(f);
 
-            var result = FunctionPSMethods.Find(new PSObject(f), "TestFind_w");
+            var result = FunctionPSMethods.Find(new PSObject(f), "TestFind/weight");
 
-            Assert.AreEqual("TestFind_w", ((Variable)result).Name);
+            Assert.AreEqual("TestFind/weight", ((Variable)result).Name);
         }
 
         [TestMethod]
@@ -86,10 +86,10 @@ namespace UnitTest
                 "    2 @Output [5]\r\n" +
                 "      3 Times \r\n" +
                 "          -> [5 x 1 x 1] [ [ [0 0 0 0 0] ] ]\r\n" +
-                "        4 @Parameter [5 x 2] <test_w>\r\n" +
+                "        4 @Parameter [5 x 2] <test/weight>\r\n" +
                 "            -> [5 x 2] [0 0 0 0 0...]\r\n" +
                 "        4 @Input [2] <input>\r\n" +
-                "    2 @Parameter [5] <test_b>\r\n" +
+                "    2 @Parameter [5] <test/bias>\r\n" +
                 "        -> [5] [0 0 0 0 0]\r\n";
 
             Assert.AreEqual(expected, result);

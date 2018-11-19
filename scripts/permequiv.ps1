@@ -16,7 +16,7 @@ function New-CNTKPermutationEquivariant {
         [CNTK.CNTKDictionary]$Initializer = $null,
 
         [Parameter(Position = 3, Mandatory = $false)]
-        [string]$Name = ""
+        [string]$Name = "permEquiv"
     )
 
     if ($Operand.Shape.Rank -ne 2) {
@@ -30,8 +30,8 @@ function New-CNTKPermutationEquivariant {
     $featureDim = $Operand.Shape[0]
     $setSize = $Operand.Shape[1]
 
-    $lambda = cntk.parameter -Dimensions ($OutFeatureDim, $featureDim) -Initializer $Initializer
-    $gamma = cntk.parameter -Dimensions ($OutFeatureDim, $featureDim) -Initializer $Initializer
+    $lambda = cntk.parameter -Dimensions ($OutFeatureDim, $featureDim) -Initializer $Initializer -Name ($Name + "/lambda/weight")
+    $gamma = cntk.parameter -Dimensions ($OutFeatureDim, $featureDim) -Initializer $Initializer -Name ($Name + "/gamma/weight")
 
     $columns = New-Object Horker.PSCNTK.WrappedVariable[] $setSize
     for ($i = 0; $i -lt $setSize; ++$i) {

@@ -15,9 +15,9 @@ namespace Horker.PSCNTK
 
                 var normShape = new int[] { CNTK.NDShape.InferredDimension };
 
-                var scale = new Parameter(normShape, DataType.Float, initScale, DeviceDescriptor.UseDefaultDevice(), name + "_w");
+                var scale = new Parameter(normShape, DataType.Float, initScale, DeviceDescriptor.UseDefaultDevice(), name + "/weight");
                 Register(scale);
-                var bias = new Parameter(normShape, DataType.Float, 0, DeviceDescriptor.UseDefaultDevice(), name + "_b");
+                var bias = new Parameter(normShape, DataType.Float, 0, DeviceDescriptor.UseDefaultDevice(), name + "/bias");
                 Register(bias);
 
                 var runningMean = new Constant(normShape, 0.0f, DeviceDescriptor.UseDefaultDevice());

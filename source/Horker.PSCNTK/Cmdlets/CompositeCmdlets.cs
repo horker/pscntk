@@ -35,7 +35,7 @@ namespace Horker.PSCNTK
         public DeviceDescriptor Device = null;
 
         [Parameter(Position = 9, Mandatory = false)]
-        public string Name = "Dense";
+        public string Name = "dense";
 
         protected override void EndProcessing()
         {
@@ -82,7 +82,7 @@ namespace Horker.PSCNTK
         public bool IncludePad = false;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public string Name = "MaxPooling";
+        public string Name = "maxPooling";
 
         protected override void EndProcessing()
         {
@@ -115,7 +115,7 @@ namespace Horker.PSCNTK
         public bool IncludePad = false;
 
         [Parameter(Position = 6, Mandatory = false)]
-        public string Name = "AveragePooling";
+        public string Name = "averagePooling";
 
         protected override void EndProcessing()
         {
@@ -154,7 +154,7 @@ namespace Horker.PSCNTK
         public SwitchParameter DisableRegularization = false;
 
         [Parameter(Position = 8, Mandatory = false)]
-        public string Name = "BatchNorm";
+        public string Name = "batchNorm";
 
         protected override void EndProcessing()
         {
@@ -185,7 +185,7 @@ namespace Horker.PSCNTK
         public string CellType = "lstm";
 
         [Parameter(Position = 5, Mandatory = false)]
-        public string Name = "OptimizedRNNStack";
+        public string Name = "optimizedRNNStack";
 
         protected override void EndProcessing()
         {

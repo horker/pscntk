@@ -12,7 +12,7 @@ namespace Horker.PSCNTK
 
             var initial = Math.Log(Math.Exp(steepness) - 1) / steepness;
 
-            var param = new Parameter(new NDShape(), DataType.Float, initial, device, name + "_param");
+            var param = new Parameter(new NDShape(), DataType.Float, initial, device, name + "/weight");
             var beta = CNTKLib.ElementTimes(fInv, CNTKLib.Softplus(CNTKLib.ElementTimes(f, param)));
             return CNTKLib.ElementTimes(beta, input, name);
         }

@@ -47,7 +47,7 @@ namespace Horker.PSCNTK
         public bool Sequential = false;
 
         [Parameter(Position = 13, Mandatory = false)]
-        public string Name = "Conv";
+        public string Name = "conv";
 
         protected override void EndProcessing()
         {
@@ -117,7 +117,7 @@ namespace Horker.PSCNTK
         public bool Sequential = false;
 
         [Parameter(Position = 13, Mandatory = false)]
-        public string Name = "Conv1d";
+        public string Name = "conv1d";
 
         [Parameter(Position = 14, Mandatory = false)]
         public SwitchParameter ChannelFirst = false;
@@ -192,7 +192,7 @@ namespace Horker.PSCNTK
         public bool Sequential = false;
 
         [Parameter(Position = 13, Mandatory = false)]
-        public string Name = "Conv2d";
+        public string Name = "conv2d";
 
         [Parameter(Position = 14, Mandatory = false)]
         public SwitchParameter ChannelFirst = false;
@@ -267,7 +267,7 @@ namespace Horker.PSCNTK
         public bool Sequential = false;
 
         [Parameter(Position = 13, Mandatory = false)]
-        public string Name = "Conv3d";
+        public string Name = "conv3d";
 
         [Parameter(Position = 14, Mandatory = false)]
         public SwitchParameter ChannelFirst = false;

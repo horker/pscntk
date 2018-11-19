@@ -33,18 +33,18 @@ namespace Horker.PSCNTK
 
                 int hiddenSize = outputDimensions.Aggregate((d1, d2) => d1 * d2);
 
-                var weight = new Parameter(new int[] { hiddenSize, inputDimensions }, DataType.Float, initializer, device, name + "_w");
+                var weight = new Parameter(new int[] { hiddenSize, inputDimensions }, DataType.Float, initializer, device, name + "/weight");
                 Register(weight);
 
                 Parameter bias = null;
                 if (useBias)
                 {
-                    bias = new Parameter(new int[] { hiddenSize }, DataType.Float, biasInitializer, device, name + "_b");
+                    bias = new Parameter(new int[] { hiddenSize }, DataType.Float, biasInitializer, device, name + "/bias");
                     Register(bias);
                 }
 
                 if (stabilize)
-                    input = Stabilize(input, steepness, device, name + "_st");
+                    input = Stabilize(input, steepness, device, name + "/stabilizer");
 
                 var output = GetAffine(input, weight, bias);
 
