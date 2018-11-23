@@ -89,7 +89,10 @@ namespace Horker.PSCNTK
                     key = va;
                 }
 
-                value = Converter.ToValue(entry.Value, key.Shape.Dimensions.ToArray());
+                if (entry.Value is IDataSource<float> ds)
+                    value = ds.ToValue(device);
+                else
+                    value = Converter.ToValue(entry.Value, key.Shape.Dimensions.ToArray());
 
                 inputs.Add(key, value);
             }
@@ -117,7 +120,7 @@ namespace Horker.PSCNTK
 
                 key = va;
 
-                value = entry.Value.ToValue();
+                value = entry.Value.ToValue(device);
 
                 inputs.Add(key, value);
             }

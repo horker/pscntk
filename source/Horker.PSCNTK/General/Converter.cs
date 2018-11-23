@@ -130,7 +130,7 @@ namespace Horker.PSCNTK
             return ds.ToValue();
         }
 
-        public static CNTK.NDArrayView ToNDArrayView(object value, int[] dimensions = null)
+        public static CNTK.NDArrayView ToNDArrayView(object value, int[] dimensions = null, CNTK.DeviceDescriptor device = null)
         {
             if (value is PSObject psobj)
                 value = psobj.BaseObject;
@@ -145,12 +145,12 @@ namespace Horker.PSCNTK
             {
                 if (dimensions != null)
                     ds.Reshape(dimensions);
-                return ds.ToNDArrayView();
+                return ds.ToNDArrayView(device);
             }
 
             if (value is float[] floatValues)
             {
-                return ArrayToNDArrayView(floatValues, dimensions);
+                return ArrayToNDArrayView(floatValues, dimensions, device);
             }
 
             if (value is double[] doubleValues)
@@ -158,7 +158,7 @@ namespace Horker.PSCNTK
                 var values = doubleValues.Select(x => (float)x).ToArray();
                 if (dimensions == null)
                     dimensions = new int[] { values.Length };
-                return ArrayToNDArrayView(values, dimensions);
+                return ArrayToNDArrayView(values, dimensions, device);
             }
 
             if (value is int[] intValues)
@@ -166,7 +166,7 @@ namespace Horker.PSCNTK
                 var values = intValues.Select(x => (float)x).ToArray();
                 if (dimensions == null)
                     dimensions = new int[] { values.Length };
-                return ArrayToNDArrayView(values, dimensions);
+                return ArrayToNDArrayView(values, dimensions, device);
             }
 
             if (value is object[] objs)
@@ -174,7 +174,7 @@ namespace Horker.PSCNTK
                 var values = objs.Select(x => Convert.ToSingle(x is PSObject ? (x as PSObject).BaseObject : x)).ToArray();
                 if (dimensions == null)
                     dimensions = new int[] { values.Length };
-                return ArrayToNDArrayView(values, dimensions);
+                return ArrayToNDArrayView(values, dimensions, device);
             }
 
             // Single value
@@ -182,10 +182,10 @@ namespace Horker.PSCNTK
             if (dimensions != null && (dimensions.Length != 1 || dimensions[0] != 1))
                 throw new ArgumentException("Dimensions exepct [1] is invalid because Value is a single value");
 
-            return new DataSourceBase<float, float[]>(new float[] { Convert.ToSingle(value is PSObject pso ? pso.BaseObject : value) }, new int[] { 1 }).ToNDArrayView();
+            return new DataSourceBase<float, float[]>(new float[] { Convert.ToSingle(value is PSObject pso ? pso.BaseObject : value) }, new int[] { 1 }).ToNDArrayView(device);
         }
 
-        public static CNTK.Value ToValue(object value, int[] dimensions = null)
+        public static CNTK.Value ToValue(object value, int[] dimensions = null, CNTK.DeviceDescriptor device = null)
         {
             if (value is PSObject psobj)
                 value = psobj.BaseObject;
@@ -193,7 +193,7 @@ namespace Horker.PSCNTK
             if (value is CNTK.Value v)
                 return v;
 
-            var a = ToNDArrayView(value, dimensions);
+            var a = ToNDArrayView(value, dimensions, device);
             return new CNTK.Value(a);
         }
 
