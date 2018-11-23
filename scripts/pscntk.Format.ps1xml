@@ -107,7 +107,7 @@
                         <Alignment>Right</Alignment>
                     </TableColumnHeader>
                     <TableColumnHeader>
-                        <Width>16</Width>
+                        <Width>18</Width>
                     </TableColumnHeader>
                 </TableHeaders>
                 <TableRowEntries>
