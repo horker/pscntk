@@ -13,6 +13,7 @@ namespace Horker.PSCNTK
         public TimeSpan Elapsed => _stopwatch.Elapsed;
 
         public Learner Learner { get; private set; }
+        public ILearningScheduler LearningRateScheduler { get; private set; }
 
         public Trainer Trainer { get; private set; }
 
@@ -33,9 +34,11 @@ namespace Horker.PSCNTK
         public double Loss { get; private set; }
         public double Metric { get; private set; }
 
-        public TrainingSession(WrappedFunction model, WrappedFunction lossFunction, WrappedFunction evaluationFunction, Learner learner, ISampler sampler, ISampler validationSampler, Hashtable dataNameToInputMap = null, DeviceDescriptor trainingDevice = null, DeviceDescriptor testDevice = null)
+        public TrainingSession(WrappedFunction model, WrappedFunction lossFunction, WrappedFunction evaluationFunction, Learner learner, ILearningScheduler scheduler, ISampler sampler, ISampler validationSampler, Hashtable dataNameToInputMap = null, DeviceDescriptor trainingDevice = null, DeviceDescriptor testDevice = null)
         {
             Learner = learner;
+            LearningRateScheduler = scheduler;
+
             Trainer = Trainer.CreateTrainer(model, lossFunction, evaluationFunction, new Learner[] { learner });
 
             Sampler = sampler;
@@ -105,6 +108,13 @@ namespace Horker.PSCNTK
                     Metric = Trainer.PreviousMinibatchEvaluationAverage();
 
                 yield return this;
+
+                if (LearningRateScheduler != null)
+                {
+                    bool update = LearningRateScheduler.UpdateLearningRate(Epoch, Iterations, Loss);
+                    if (update)
+                        Learner.ResetLearningRate(new TrainingParameterScheduleDouble(LearningRateScheduler.LearningRate));
+                }
 
                 EpochIncremented = false;
                 if (minibatch.SweepEnd)

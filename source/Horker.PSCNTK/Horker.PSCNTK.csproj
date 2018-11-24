@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cmdlets\LearningSchedulerCmdlets.cs" />
     <Compile Include="Cmdlets\ConvertToCNTKDataSource.cs" />
     <Compile Include="Cmdlets\ExportCNTKPartitionedCTF.cs" />
     <Compile Include="Cmdlets\ExportCNTKPartitionedMsgPack.cs" />
@@ -76,6 +77,11 @@
     <Compile Include="DataSource\IDataSource.cs" />
     <Compile Include="DataSource\RandomizedList.cs" />
     <Compile Include="DataSource\ListSlice.cs" />
+    <Compile Include="LearningSchedulers\ExponentialScheduler.cs" />
+    <Compile Include="LearningSchedulers\ILearningScheduler.cs" />
+    <Compile Include="LearningSchedulers\PerformanceScheduler.cs" />
+    <Compile Include="LearningSchedulers\PowerScheduler.cs" />
+    <Compile Include="LearningSchedulers\PredeterminedScheduler.cs" />
     <Compile Include="MsgPack\MsgPackSerializer.cs" />
     <Compile Include="DataSource\SlidingDataSource.cs" />
     <Compile Include="DataSource\SlidingList.cs" />

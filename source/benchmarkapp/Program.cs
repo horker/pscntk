@@ -109,7 +109,7 @@ namespace benchmarkapp
                 var lr = new TrainingParameterScheduleDouble(.05);
                 var learner = CNTKLib.SGDLearner(new ParameterVector(output.Parameters().ToArray()), lr);
 
-                var session = new TrainingSession(output, loss, metric, learner, sampler, null);
+                var session = new TrainingSession(output, loss, metric, learner, null, sampler, null);
 
                 var progress = session.GetIterator().GetEnumerator();
                 for (var i = 0; i < 10000; ++i)
