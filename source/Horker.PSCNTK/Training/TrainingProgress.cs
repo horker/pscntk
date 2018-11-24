@@ -10,6 +10,7 @@ namespace Horker.PSCNTK
         public double Loss;
         public double Metric;
         public double Validation;
+        public double LearningRate;
         public TimeSpan Elapsed;
     }
 }

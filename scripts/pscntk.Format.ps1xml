@@ -107,6 +107,10 @@
                         <Alignment>Right</Alignment>
                     </TableColumnHeader>
                     <TableColumnHeader>
+                        <Width>8</Width>
+                        <Alignment>Right</Alignment>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
                         <Width>18</Width>
                     </TableColumnHeader>
                 </TableHeaders>
@@ -132,6 +136,10 @@
                             </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>Validation</PropertyName>
+                                <FormatString>0.00000</FormatString>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>LearningRate</PropertyName>
                                 <FormatString>0.00000</FormatString>
                             </TableColumnItem>
                             <TableColumnItem>

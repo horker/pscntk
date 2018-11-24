@@ -42,6 +42,7 @@ namespace Horker.PSCNTK
                         p.Loss = loss / progressOutputStep;
                         p.Metric = metric / progressOutputStep;
                         p.Validation = t.GetValidationMetric();
+                        p.LearningRate = t.Learner.LearningRate();
                         p.Elapsed = t.Elapsed;
 
                         if (logger != null)
