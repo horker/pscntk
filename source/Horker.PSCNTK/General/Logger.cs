@@ -23,7 +23,7 @@ namespace Horker.PSCNTK
         public Logger(string logFile, bool append, string defaultSource = "")
         {
             _logFile = logFile;
-            _writer = new StreamWriter(logFile, true, new UTF8Encoding(false));
+            _writer = new StreamWriter(logFile, append, new UTF8Encoding(false));
             _defaultSource = defaultSource;
         }
 
@@ -83,6 +83,23 @@ namespace Horker.PSCNTK
                 _writer.Write("false");
         }
 
+        public void Write(IDictionary value)
+        {
+            bool first = true;
+            _writer.Write('{');
+            foreach (DictionaryEntry entry in value)
+            {
+                if (!first)
+                    _writer.Write(',');
+                first = false;
+
+                Write(entry.Key, false);
+                _writer.Write(':');
+                Write(entry.Value, false);
+            }
+            _writer.Write(']');
+        }
+
         public void Write(ICollection value)
         {
             bool first = true;
@@ -111,6 +128,7 @@ namespace Horker.PSCNTK
             if (value is double doubleValue) { Write(doubleValue); return; }
             if (value is string stringValue) { Write(stringValue); return; }
             if (value is bool boolValue) { Write(boolValue); return; }
+            if (value is IDictionary dictionaryValue) { Write(dictionaryValue); return; }
             if (value is ICollection collectionValue) { Write(collectionValue); return; }
             if (value is PSObject psObjectValue) { Write(psObjectValue); return; }
 
