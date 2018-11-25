@@ -68,6 +68,7 @@
     <Compile Include="Cmdlets\MeasureCNTKTextFormat.cs" />
     <Compile Include="Cmdlets\MsgPackCmdlets.cs" />
     <Compile Include="Cmdlets\NewCNTKAccuracy.cs" />
+    <Compile Include="Cmdlets\NewCNTKLogger.cs" />
     <Compile Include="Cmdlets\NewCNTKMsgPackSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKStabilize.cs" />
     <Compile Include="Composite functions\Stabilize.cs" />

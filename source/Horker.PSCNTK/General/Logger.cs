@@ -10,15 +10,39 @@ using System.Reflection;
 
 namespace Horker.PSCNTK
 {
-    public class Logger
+    public class Logger : IDisposable
     {
+        private string _logFile;
         private TextWriter _writer;
+        private string _defaultSource;
 
+        public string LogFile => _logFile;
         public TextWriter Writer => _writer;
+        public string DefaultSource => _defaultSource;
 
-        public Logger(TextWriter writer)
+        public Logger(string logFile, bool append, string defaultSource = "")
         {
+            _logFile = logFile;
+            _writer = new StreamWriter(logFile, true, new UTF8Encoding(false));
+            _defaultSource = defaultSource;
+        }
+
+        public Logger(TextWriter writer, string defaultSource = "")
+        {
+            _logFile = null;
             _writer = writer;
+            _defaultSource = defaultSource;
+        }
+
+        public void Dispose()
+        {
+            if (_logFile != null)
+                ((IDisposable)_writer).Dispose();
+        }
+
+        public void Close()
+        {
+            Dispose();
         }
 
         public void Write(int value)
@@ -159,41 +183,44 @@ namespace Horker.PSCNTK
             _writer.Flush();
         }
 
-        public void Log(string sevirity, object data, string category)
+        public void Log(string sevirity, object data, string source)
         {
             var date = DateTimeOffset.Now.ToString("O");
 
+            if (string.IsNullOrEmpty(source))
+                source = _defaultSource;
+
             _writer.Write(
-                string.Format("{{\"Timestamp\":\"{0}\",\"Severity\":\"{1}\",\"Category\":\"{2}\",DataType:\"{3}\",Data:",
-                date, sevirity, category, data == null ? "System.Object" : data.GetType().FullName));
+                string.Format("{{\"Timestamp\":\"{0}\",\"Severity\":\"{1}\",\"Source\":\"{2}\",DataType:\"{3}\",Data:",
+                date, sevirity, source, data == null ? "System.Object" : data.GetType().FullName));
             Write(data, false);
             _writer.Write('}');
             WriteLine();
         }
 
-        public void Info(object data, string category = "")
+        public void Info(object data, string source = "")
         {
-            Log("INFO", data, category);
+            Log("INFO", data, source);
         }
 
-        public void Warn(object data, string category = "")
+        public void Warn(object data, string source = "")
         {
-            Log("WARN", data, category);
+            Log("WARN", data, source);
         }
 
-        public void Error(object data, string category = "")
+        public void Error(object data, string source = "")
         {
-            Log("ERROR", data, category);
+            Log("ERROR", data, source);
         }
 
-        public void Fatal(object data, string category = "")
+        public void Fatal(object data, string source = "")
         {
-            Log("FATAL", data, category);
+            Log("FATAL", data, source);
         }
 
-        public void Debug(object data, string category = "")
+        public void Debug(object data, string source = "")
         {
-            Log("DEBUG", data, category);
+            Log("DEBUG", data, source);
         }
     }
 }

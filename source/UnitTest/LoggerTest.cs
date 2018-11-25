@@ -41,27 +41,27 @@ namespace UnitTest
             string expected;
 
             actual = OutputLog(11);
-            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Category\":\"\",DataType:\"System.Int32\",Data:11}\r\n";
+            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Source\":\"\",DataType:\"System.Int32\",Data:11}\r\n";
             Assert.AreEqual(expected, actual);
 
             actual = OutputLog(22.2);
-            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Category\":\"\",DataType:\"System.Double\",Data:22.2}\r\n";
+            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Source\":\"\",DataType:\"System.Double\",Data:22.2}\r\n";
             Assert.AreEqual(expected, actual);
 
             actual = OutputLog(33.3f);
-            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Category\":\"\",DataType:\"System.Single\",Data:33.3}\r\n";
+            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Source\":\"\",DataType:\"System.Single\",Data:33.3}\r\n";
             Assert.AreEqual(expected, actual);
 
             actual = OutputLog("hello");
-            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Category\":\"\",DataType:\"System.String\",Data:\"hello\"}\r\n";
+            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Source\":\"\",DataType:\"System.String\",Data:\"hello\"}\r\n";
             Assert.AreEqual(expected, actual);
 
             actual = OutputLog(true);
-            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Category\":\"\",DataType:\"System.Boolean\",Data:true}\r\n";
+            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Source\":\"\",DataType:\"System.Boolean\",Data:true}\r\n";
             Assert.AreEqual(expected, actual);
 
             actual = OutputLog(null);
-            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Category\":\"\",DataType:\"System.Object\",Data:null}\r\n";
+            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Source\":\"\",DataType:\"System.Object\",Data:null}\r\n";
             Assert.AreEqual(expected, actual);
 
             var testObject = new TestClass()
@@ -72,11 +72,11 @@ namespace UnitTest
             };
 
             actual = OutputLog(testObject);
-            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Category\":\"\",DataType:\"UnitTest.LoggerTest+TestClass\",Data:{\"Text\":\"text\",\"Number\":123,\"Inner\":\"test class\"}}\r\n";
+            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Source\":\"\",DataType:\"UnitTest.LoggerTest+TestClass\",Data:{\"Text\":\"text\",\"Number\":123,\"Inner\":\"test class\"}}\r\n";
             Assert.AreEqual(expected, actual);
 
             actual = OutputLog(new PSObject(testObject));
-            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Category\":\"\",DataType:\"System.Management.Automation.PSObject\",Data:{\"Text\":\"text\",\"Number\":123,\"Inner\":\"test class\"}}\r\n";
+            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Source\":\"\",DataType:\"System.Management.Automation.PSObject\",Data:{\"Text\":\"text\",\"Number\":123,\"Inner\":\"test class\"}}\r\n";
             Assert.AreEqual(expected, actual);
         }
 
@@ -95,7 +95,7 @@ namespace UnitTest
                 actual = Regex.Replace(s, "\"Timestamp\":\"[^\"]+\"", "\"Timestamp\":\"\"");
             }
 
-            expected = "{\"Timestamp\":\"\",\"Severity\":\"FATAL\",\"Category\":\"cat\",DataType:\"System.Int32\",Data:1234}\r\n";
+            expected = "{\"Timestamp\":\"\",\"Severity\":\"FATAL\",\"Source\":\"cat\",DataType:\"System.Int32\",Data:1234}\r\n";
 
             Assert.AreEqual(expected, actual);
         }
@@ -107,7 +107,7 @@ namespace UnitTest
             string expected;
 
             actual = OutputLog("abc\"def\"");
-            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Category\":\"\",DataType:\"System.String\",Data:\"abc\\\"def\\\"\"}\r\n";
+            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Source\":\"\",DataType:\"System.String\",Data:\"abc\\\"def\\\"\"}\r\n";
             Assert.AreEqual(expected, actual);
         }
     }

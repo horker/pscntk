@@ -90,7 +90,8 @@ namespace Horker.PSCNTK
             Epoch = 1;
             EpochIncremented = false;
 
-            Learner.ResetLearningRate(new TrainingParameterScheduleDouble(LearningRateScheduler.LearningRate));
+            if (LearningRateScheduler != null)
+                Learner.ResetLearningRate(new TrainingParameterScheduleDouble(LearningRateScheduler.LearningRate));
 
             for (Iterations = 1; Iterations <= maxIteration; ++Iterations)
             {

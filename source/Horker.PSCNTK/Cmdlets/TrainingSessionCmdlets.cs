@@ -48,28 +48,18 @@ namespace Horker.PSCNTK
         public int ProgressOutputStep = 100;
 
         [Parameter(Position = 10, Mandatory = false)]
-        public string LogFile = null;
+        public Logger Logger = null;
 
         protected override void EndProcessing()
         {
-            Logger logger = null;
-            if (LogFile != null)
-            {
-                var writer = new StreamWriter(IO.GetAbsolutePath(this, LogFile), true, new UTF8Encoding(false));
-                logger = new Logger(writer);
-            }
-
             try
             {
                 var session = new TrainingSession(Model, LossFunction, EvaluationFunction, Learner, LearningScheduler, Sampler, ValidationSampler, DataToInputMap, null, null);
-                foreach (var progress in TrainingLoop.Start(session, MaxIteration, ProgressOutputStep, logger))
+                foreach (var progress in TrainingLoop.Start(session, MaxIteration, ProgressOutputStep, Logger))
                     WriteObject(progress);
             }
             finally
             {
-                if (logger != null)
-                    logger.Writer.Close();
-
                 Sampler.Dispose();
                 ValidationSampler.Dispose();
             }

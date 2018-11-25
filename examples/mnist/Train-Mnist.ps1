@@ -13,6 +13,7 @@ $MNIST_DATA_FILE = "$PSScriptRoot\mnist_data.bin"
 $OUT_CLASSES = 10
 
 $MODEL_FILE = "$PSScriptRoot\mnist.model"
+$LOG_FILE = "$PSScriptRoot\mnist_log.log"
 
 Set-CNTKRandomSeed 1234
 
@@ -61,6 +62,8 @@ $label = cntk.input $OUT_CLASSES -Name label
 # Training
 ############################################################
 
+$logger = cntk.logger $LOG_FILE
+
 cntk.starttraining `
     -Model $out `
     -LossFunction (cntk.crossEntropyWithSoftmax $out $label) `
@@ -71,6 +74,7 @@ cntk.starttraining `
     -ValidationSampler $testSampler `
     -MaxIteration 20000 `
     -ProgressOutputStep 500 `
-    -LogFile "$PSScriptRoot\mnist_log.log"
+    -Logger $logger
 
 $out.Save($MODEL_FILE)
+$logger.Close()
