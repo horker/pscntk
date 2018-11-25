@@ -92,4 +92,40 @@ namespace Horker.PSCNTK
             WriteObject(scheduler);
         }
     }
+
+    [Cmdlet("New", "CNTKCosineAnnealingScheduler")]
+    [Alias("cntk.scheduler.cosineAnnealing")]
+    [OutputType(typeof(CosineAnealingScheduler))]
+    public class NewCNTKCosineAnnealingScheduler : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public double MinRate;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public double MaxRate;
+
+        [Parameter(Position = 2, Mandatory = true)]
+        public double TimeScale;
+
+        protected override void BeginProcessing()
+        {
+            var scheduler = new CosineAnealingScheduler(MinRate, MaxRate, TimeScale);
+            WriteObject(scheduler);
+        }
+    }
+
+    [Cmdlet("New", "CNTKCombinedScheduler")]
+    [Alias("cntk.scheduler.combined")]
+    [OutputType(typeof(CombinedScheduler))]
+    public class NewCNTKCombinedScheduler : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public ILearningScheduler[] Schedulers;
+
+        protected override void BeginProcessing()
+        {
+            var scheduler = new CombinedScheduler(Schedulers);
+            WriteObject(scheduler);
+        }
+    }
 }

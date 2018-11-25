@@ -36,8 +36,9 @@ namespace Horker.PSCNTK
         {
             _schedules.Add(new LearningSchedule(iterationSize, learningRate));
 
-            // Initialize _accumativeIterationSize every time
+            // Initialize then every time because there are no places to do
             _totalIterationSize = _schedules[0].IterationSize;
+            LearningRate = _schedules[0].LearningRate;
         }
 
         public bool UpdateLearningRate(int epoch, int iteration, double loss)

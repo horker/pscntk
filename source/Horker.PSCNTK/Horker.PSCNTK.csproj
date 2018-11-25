@@ -77,6 +77,8 @@
     <Compile Include="DataSource\IDataSource.cs" />
     <Compile Include="DataSource\RandomizedList.cs" />
     <Compile Include="DataSource\ListSlice.cs" />
+    <Compile Include="LearningSchedulers\CombinedScheduler.cs" />
+    <Compile Include="LearningSchedulers\CosineAnealingScheduler.cs" />
     <Compile Include="LearningSchedulers\ExponentialScheduler.cs" />
     <Compile Include="LearningSchedulers\ILearningScheduler.cs" />
     <Compile Include="LearningSchedulers\PerformanceScheduler.cs" />
