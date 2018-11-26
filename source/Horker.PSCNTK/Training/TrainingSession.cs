@@ -25,7 +25,7 @@ namespace Horker.PSCNTK
         public DeviceDescriptor TestDevice { get; private set; }
 
         public int Epoch { get; private set; }
-        public int Iterations { get; private set; }
+        public int Iteration { get; private set; }
         public bool EpochIncremented { get; private set; }
 
         public Minibatch Minibatch { get; private set; }
@@ -93,7 +93,7 @@ namespace Horker.PSCNTK
             if (LearningRateScheduler != null)
                 Learner.ResetLearningRate(new TrainingParameterScheduleDouble(LearningRateScheduler.LearningRate));
 
-            for (Iterations = 1; Iterations <= maxIteration; ++Iterations)
+            for (Iteration = 1; Iteration <= maxIteration; ++Iteration)
             {
                 var minibatch = Sampler.GetNextMinibatch(TrainingDevice);
                 if (minibatch == null)
@@ -114,7 +114,7 @@ namespace Horker.PSCNTK
 
                 if (LearningRateScheduler != null)
                 {
-                    bool update = LearningRateScheduler.UpdateLearningRate(Epoch, Iterations, Loss);
+                    bool update = LearningRateScheduler.UpdateLearningRate(Epoch, Iteration, Loss);
                     if (update)
                         Learner.ResetLearningRate(new TrainingParameterScheduleDouble(LearningRateScheduler.LearningRate));
                 }

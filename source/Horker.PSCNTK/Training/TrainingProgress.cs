@@ -5,7 +5,7 @@ namespace Horker.PSCNTK
     public class TrainingProgress
     {
         public int Epoch;
-        public int Iterations;
+        public int Iteration;
         public int SampleCount;
         public double Loss;
         public double Metric;

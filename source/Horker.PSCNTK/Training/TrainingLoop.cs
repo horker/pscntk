@@ -32,12 +32,12 @@ namespace Horker.PSCNTK
                     sampleCount += t.SampleCount;
                     loss += t.Loss;
                     metric += t.Metric;
-                    if (t.Iterations % progressOutputStep == 0 || t.Iterations == maxIteration)
+                    if (t.Iteration % progressOutputStep == 0 || t.Iteration == maxIteration)
                     {
                         var p = new TrainingProgress();
 
                         p.Epoch = t.Epoch;
-                        p.Iterations = t.Iterations;
+                        p.Iteration = t.Iteration;
                         p.SampleCount += sampleCount;
                         p.Loss = loss / progressOutputStep;
                         p.Metric = metric / progressOutputStep;
