@@ -34,10 +34,25 @@ namespace Horker.PSCNTK
 
         #region Accessors
 
+        // Note:
+        // PowerShell automatically decomposes multiple arguments of the [] indexer method.
+        // For example,
+        //     dataSource[1, 2]
+        // is rewritten into
+        //     new float[] { dataSource[1], dataSource[2] }
+        // This implies we can't call the [] method with multiple indexes.
+        // As workaround, call it with the Item method name explicitly like "dataSource.Item(1, 2)".
+        // If you want to set the value, use the SetItem method.
+
         public T this[params int[] indexes]
         {
             get => _data[_shape.GetSequentialIndex(indexes)];
             set { _data[_shape.GetSequentialIndex(indexes)] = value; }
+        }
+
+        public void SetItem(int[] indexes, T value)
+        {
+            this[indexes] = value;
         }
 
         public CNTK.StreamConfiguration GetStreamConfiguration(string name, string alias = "")

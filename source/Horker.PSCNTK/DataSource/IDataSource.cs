@@ -11,6 +11,7 @@ namespace Horker.PSCNTK
         IList<T> Data { get; }
 
         T this[params int[] indexes] { get; set; }
+        void SetItem(int[] indexes, T value);
 
         IDataSource<T> Apply(Func<T, int, T> func);
         void ApplyInPlace(Func<T, int, T> func);
