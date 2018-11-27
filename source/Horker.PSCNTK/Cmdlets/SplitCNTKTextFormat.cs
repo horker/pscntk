@@ -8,10 +8,10 @@ using System.IO;
 
 namespace Horker.PSCNTK
 {
-    [Cmdlet("Export", "CNTKPartitionedCTF")]
+    [Cmdlet("Split", "CNTKTextFormat")]
     [CmdletBinding(DefaultParameterSetName = "sequences")]
     [OutputType(typeof(void))]
-    public class ExportCNTKPartitionedCTF : PSCmdlet
+    public class SplitCNTKTextFormat : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "sequences")]
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "ratios")]

@@ -8,10 +8,10 @@ using System.IO;
 
 namespace Horker.PSCNTK
 {
-    [Cmdlet("Export", "CNTKPartitionedMsgPack")]
+    [Cmdlet("Split", "CNTKMsgPack")]
     [CmdletBinding(DefaultParameterSetName = "counts")]
     [OutputType(typeof(void))]
-    public class ExportCNTKPartitionedMsgPack : PSCmdlet
+    public class SplitCNTKMsgPack : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "counts")]
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "ratios")]

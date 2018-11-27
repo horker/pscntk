@@ -60,8 +60,6 @@
   <ItemGroup>
     <Compile Include="Cmdlets\LearningSchedulerCmdlets.cs" />
     <Compile Include="Cmdlets\ConvertToCNTKDataSource.cs" />
-    <Compile Include="Cmdlets\ExportCNTKPartitionedCTF.cs" />
-    <Compile Include="Cmdlets\ExportCNTKPartitionedMsgPack.cs" />
     <Compile Include="Cmdlets\ExporttCNTKTextFormat.cs" />
     <Compile Include="Cmdlets\ImportCNTKFunction.cs" />
     <Compile Include="Cmdlets\ImportCNTKTextFormat.cs" />
@@ -71,6 +69,8 @@
     <Compile Include="Cmdlets\NewCNTKLogger.cs" />
     <Compile Include="Cmdlets\NewCNTKMsgPackSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKStabilize.cs" />
+    <Compile Include="Cmdlets\SplitCNTKMsgPack.cs" />
+    <Compile Include="Cmdlets\SplitCNTKTextFormat.cs" />
     <Compile Include="Composite functions\Stabilize.cs" />
     <Compile Include="CTF\CTFTools.cs" />
     <Compile Include="DataSource\DataSourceBase.cs" />
