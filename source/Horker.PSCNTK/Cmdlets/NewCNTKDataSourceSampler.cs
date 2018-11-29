@@ -5,9 +5,9 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    [Cmdlet("New", "CNTKOnMemorySampler")]
-    [Alias("cntk.sampler")]
-    public class NewCNTKOneMemorySampler : PSCmdlet
+    [Cmdlet("New", "CNTKDataSourceSampler")]
+    [Alias("cntk.sampler", "cntk.dataSourceSampler")]
+    public class NewCNTKDataSourceSampler : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
         public DataSourceSet DataSourceSet;
@@ -16,14 +16,14 @@ namespace Horker.PSCNTK
         public int MinibatchSize = 32;
 
         [Parameter(Position = 2, Mandatory = false)]
-        public SwitchParameter NoRandomize = false;
+        public SwitchParameter Randomize = false;
 
         [Parameter(Position = 3, Mandatory = false)]
         public SwitchParameter WithSequenceAxis = false;
 
         protected override void EndProcessing()
         {
-            var sampler = new OnMemorySampler(DataSourceSet, MinibatchSize, !NoRandomize, WithSequenceAxis);
+            var sampler = new DataSourceSampler(DataSourceSet, MinibatchSize, Randomize, WithSequenceAxis);
             WriteObject(sampler);
         }
     }

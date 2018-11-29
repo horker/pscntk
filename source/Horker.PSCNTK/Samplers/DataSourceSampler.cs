@@ -5,7 +5,7 @@ using CNTK;
 
 namespace Horker.PSCNTK
 {
-    public class OnMemorySampler : SamplerBase
+    public class DataSourceSampler : SamplerBase
     {
         public Dictionary<string, IDataSource<float>> Features
         {
@@ -36,7 +36,7 @@ namespace Horker.PSCNTK
 
         private int[] _order;
 
-        public OnMemorySampler(DataSourceSet features, int minibatchSize, bool randomize = true, bool withSequenceAxis = false)
+        public DataSourceSampler(DataSourceSet features, int minibatchSize, bool randomize = true, bool withSequenceAxis = false)
         {
             var f = features.Features.Values.First();
 

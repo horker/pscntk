@@ -23,8 +23,8 @@ Set-CNTKRandomSeed 1234
 
 $data = cntk.datasourceset -Path $MNIST_DATA_FILE
 $trainData, $testData = $data.Split(@(.8, .2))
-$sampler = cntk.sampler $trainData -MinibatchSize 64
-$testSampler = cntk.sampler $testData -MinibatchSize 64 -NoRandomize
+$sampler = cntk.sampler $trainData -MinibatchSize 64 -Randomize
+$testSampler = cntk.sampler $testData -MinibatchSize 64
 
 ############################################################
 # Model

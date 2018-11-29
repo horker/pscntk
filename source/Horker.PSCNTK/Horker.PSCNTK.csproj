@@ -68,6 +68,7 @@
     <Compile Include="Cmdlets\MeasureCNTKTextFormat.cs" />
     <Compile Include="Cmdlets\MsgPackCmdlets.cs" />
     <Compile Include="Cmdlets\NewCNTKAccuracy.cs" />
+    <Compile Include="Cmdlets\NewCNTKDataSourceSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKLogger.cs" />
     <Compile Include="Cmdlets\NewCNTKMsgPackSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKStabilize.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="General\RingBuffer.cs" />
     <Compile Include="General\SwigMethods.cs" />
     <Compile Include="MsgPack\MsgPackTools.cs" />
+    <Compile Include="Samplers\DataSourceSampler.cs" />
     <Compile Include="Samplers\MsgPackSampler.cs" />
     <Compile Include="Samplers\ParallelQueue.cs" />
     <Compile Include="Samplers\SamplerBase.cs" />
@@ -151,7 +153,6 @@
     <Compile Include="Composite functions\Lstm.cs" />
     <Compile Include="Samplers\Minibatch.cs" />
     <Compile Include="Samplers\NoiseSampler.cs" />
-    <Compile Include="Samplers\OnMemorySampler.cs" />
     <Compile Include="Samplers\ParallelSampler.cs" />
     <Compile Include="DataSource\Serializer.cs" />
     <Compile Include="Training\DataNameToInputMap.cs" />
@@ -165,7 +166,6 @@
     <Compile Include="Cmdlets\NewCNTKDataSource.cs" />
     <Compile Include="Cmdlets\NewCNTKDataSourceSet.cs" />
     <Compile Include="Cmdlets\NewCNTKLstm.cs" />
-    <Compile Include="Cmdlets\NewCNTKOneMemorySampler.cs" />
     <Compile Include="Cmdlets\NewCNTKParallelSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKTrainer.cs" />
     <Compile Include="Cmdlets\TrainingSessionCmdlets.cs" />

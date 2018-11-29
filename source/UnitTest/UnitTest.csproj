@@ -63,6 +63,7 @@
     <Compile Include="BackgroundScriptRunnerTest.cs" />
     <Compile Include="ConverterTest.cs" />
     <Compile Include="CTFToolsTest.cs" />
+    <Compile Include="DataSourceSamplerTest.cs" />
     <Compile Include="ExpressionSamplerTest.cs" />
     <Compile Include="LoggerTest.cs" />
     <Compile Include="MinibatchDataTest.cs" />
@@ -76,7 +77,6 @@
     <Compile Include="CTFBuilderTest.cs" />
     <Compile Include="CTFSamplerTest.cs" />
     <Compile Include="DataSourceCTFBuilderTest.cs" />
-    <Compile Include="OnMemorySamplerTest.cs" />
     <Compile Include="PerformanceSchedulerTest.cs" />
     <Compile Include="RandomizedListTest.cs" />
     <Compile Include="ShapeTest.cs" />

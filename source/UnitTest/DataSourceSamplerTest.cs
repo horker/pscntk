@@ -10,9 +10,9 @@ using System.Linq;
 namespace UnitTest
 {
     [TestClass]
-    public class OnMemorySamplerTest
+    public class DataSourceSamplerTest
     {
-        public OnMemorySamplerTest()
+        public DataSourceSamplerTest()
         {
             UnmanagedDllLoader.Load(@"..\..\..\..\lib");
             DeviceDescriptor.TrySetDefaultDevice(DeviceDescriptor.CPUDevice);
@@ -24,7 +24,7 @@ namespace UnitTest
             var features = DataSourceFactory.Create(new float[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, new int[] { 2, 1, -1 });
 
             var dss = new Dictionary<string, IDataSource<float>>() { { "input", features } };
-            var sampler = new OnMemorySampler(dss, 2, false, true);
+            var sampler = new DataSourceSampler(dss, 2, false, true);
 
             {
                 var batch = sampler.GetNextMinibatch();
@@ -76,7 +76,7 @@ namespace UnitTest
             var features = DataSourceFactory.Create(new float[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new int[] { 2, 2, -1 });
 
             var ds = new Dictionary<string, IDataSource<float>>() { { "input", features } };
-            var sampler = new OnMemorySampler(ds, 2, false, true);
+            var sampler = new DataSourceSampler(ds, 2, false, true);
 
             var batch = sampler.GetNextMinibatch();
             Assert.AreEqual(2, batch.SampleCount);
