@@ -86,9 +86,12 @@ namespace Horker.PSCNTK
         [Parameter(Position = 2, Mandatory = true)]
         public int UpdateInterval;
 
+        [Parameter(Position = 3, Mandatory = false)]
+        public double Smoothing = double.NaN;
+
         protected override void BeginProcessing()
         {
-            var scheduler = new PerformanceScheduler(InitialRate, DecayRate, UpdateInterval);
+            var scheduler = new PerformanceScheduler(InitialRate, DecayRate, UpdateInterval, Smoothing);
             WriteObject(scheduler);
         }
     }

@@ -68,11 +68,11 @@ cntk.starttraining `
     -Model $out `
     -LossFunction (cntk.crossEntropyWithSoftmax $out $label) `
     -EvaluationFunction (cntk.classificationError $out $label) `
-    -Learner (cntk.momentumSgd $out .1) `
-    -LearningScheduler (cntk.scheduler.performance .1 .99 500) `
+    -Learner (cntk.momentumSgd $out 1) `
+    -LearningScheduler (cntk.scheduler.performance 1 .9 500) `
     -Sampler $sampler `
     -ValidationSampler $testSampler `
-    -MaxIteration 20000 `
+    -MaxIteration 50000 `
     -ProgressOutputStep 500 `
     -Logger $logger
 
