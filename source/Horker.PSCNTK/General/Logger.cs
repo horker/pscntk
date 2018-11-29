@@ -7,6 +7,8 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Web;
 
 namespace Horker.PSCNTK
 {
@@ -69,10 +71,7 @@ namespace Horker.PSCNTK
 
         public string EscapeString(string s)
         {
-            if (s.IndexOf('"') < 0)
-                return s;
-
-            return s.Replace("\"", "\\\"");
+            return HttpUtility.JavaScriptStringEncode(s);
         }
 
         public void Write(bool value)

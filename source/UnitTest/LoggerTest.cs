@@ -106,8 +106,8 @@ namespace UnitTest
             string actual;
             string expected;
 
-            actual = OutputLog("abc\"def\"");
-            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Source\":\"\",DataType:\"System.String\",Data:\"abc\\\"def\\\"\"}\r\n";
+            actual = OutputLog("abc\"def\"\r\nxyz");
+            expected = "{\"Timestamp\":\"\",\"Severity\":\"INFO\",\"Source\":\"\",DataType:\"System.String\",Data:\"abc\\\"def\\\"\\r\\nxyz\"}\r\n";
             Assert.AreEqual(expected, actual);
         }
     }
