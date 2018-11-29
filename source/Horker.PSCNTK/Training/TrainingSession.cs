@@ -149,12 +149,8 @@ namespace Horker.PSCNTK
                 if (testData == null)
                     break;
 
-                var map = new UnorderedMapVariableValuePtr();
-                var arguments = DataNameToInputMap.GetVariableValueMap(testData);
-                foreach (var entry in arguments)
-                    map.Add(entry.Key, entry.Value);
-
-                metric += Trainer.TestMinibatch(map, TestDevice);
+                var arguments = DataNameToInputMap.GetVariableValueMapAsCNTKUnorderedMap(testData);
+                metric += Trainer.TestMinibatch(arguments, TestDevice);
                 ++count;
             }
             while (!testData.SweepEnd);

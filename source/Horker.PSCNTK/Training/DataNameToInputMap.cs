@@ -109,5 +109,15 @@ namespace Horker.PSCNTK
 
             return arguments;
         }
+
+        public UnorderedMapVariableValuePtr GetVariableValueMapAsCNTKUnorderedMap(Minibatch batch)
+        {
+            var arguments = GetVariableValueMap(batch);
+            var map = new UnorderedMapVariableValuePtr();
+            foreach (var entry in arguments)
+                map.Add(entry.Key, entry.Value);
+
+            return map;
+        }
     }
 }

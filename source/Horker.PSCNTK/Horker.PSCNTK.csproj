@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cmdlets\InvokeCNTKFunction.cs" />
     <Compile Include="Cmdlets\LearningSchedulerCmdlets.cs" />
     <Compile Include="Cmdlets\ConvertToCNTKDataSource.cs" />
     <Compile Include="Cmdlets\ExporttCNTKTextFormat.cs" />
