@@ -235,5 +235,33 @@ namespace UnitTest
                 Assert.AreEqual(NUM_SAMPLES * NUM_CHUNKS, sampler.SampleCountPerEpoch);
             }
         }
+
+        [TestMethod]
+        public void TestMsgPackSamplerMultipleFiles()
+        {
+            var files = new string[2];
+
+            for (var i = 0; i < 2; ++i)
+            {
+                files[i] = Path.GetTempFileName();
+                var a = DataSourceFactory.Create(new float[] { i, i + 1, i + 2 }, new int[] { 3, 1 });
+                var dss = new DataSourceSet();
+                dss.Add("a", a);
+                using (var stream = new FileStream(files[i], FileMode.Create, FileAccess.Write))
+                {
+                    MsgPackSerializer.Serialize(dss, stream);
+                }
+            }
+
+            using (var sampler = new MsgPackSampler(files, 3, false, -1, 10, false, 10))
+            {
+                Assert.AreEqual(2, sampler.SampleCountPerEpoch);
+
+                var batch = sampler.GetNextMinibatch();
+                CollectionAssert.AreEqual(new int[] { 3, 3 }, batch.Features["a"].Shape.Dimensions.ToArray());
+                var values = DataSourceFactory.FromValue(batch.Features["a"]);
+                CollectionAssert.AreEqual(new float[] { 0, 1, 2, 1, 2, 3, 0, 1, 2 }, values.TypedData);
+            }
+        }
     }
 }

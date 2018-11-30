@@ -10,23 +10,26 @@ namespace Horker.PSCNTK
 {
     public class MsgPackTools
     {
-        public static int GetTotalSampleCount(Stream stream)
+        public static int GetTotalSampleCount(string file)
         {
-            int count = 0;
-            while (stream.Position < stream.Length)
+            using (var stream = new FileStream(file, FileMode.Open, FileAccess.Read))
             {
-                var dss = MsgPackSerializer.Deserialize(stream);
-                count += dss.SampleCount;
-            }
+                int count = 0;
+                while (stream.Position < stream.Length)
+                {
+                    var dss = MsgPackSerializer.Deserialize(stream);
+                    count += dss.SampleCount;
+                }
 
-            return count;
+                return count;
+            }
         }
 
-        public static IEnumerable<DataSourceSet> ReadDataSourceSet(Stream stream, int totalSampleCount, int splitCount)
+        public static IEnumerable<DataSourceSet> ReadDataSourceSet(string file, int totalSampleCount, int splitCount)
         {
             var device = DeviceDescriptor.CPUDevice;
 
-            using (var sampler = new MsgPackSampler(stream, splitCount, false, totalSampleCount, 1000, false))
+            using (var sampler = new MsgPackSampler(new string[] { file }, splitCount, false, totalSampleCount, 1000, false))
             {
                 for (var count = 0; count < totalSampleCount;)
                 {

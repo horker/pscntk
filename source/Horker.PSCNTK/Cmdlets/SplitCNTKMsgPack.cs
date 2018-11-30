@@ -33,81 +33,78 @@ namespace Horker.PSCNTK
 
         protected override void BeginProcessing()
         {
-            using (var inStream = new FileStream(IO.GetAbsolutePath(this, Path), FileMode.Open, FileAccess.Read))
+            Path = IO.GetAbsolutePath(this, Path);
+            var total = MsgPackTools.GetTotalSampleCount(Path);
+
+            // Convert ratios into sample counts
+
+            if (ParameterSetName == "ratios")
             {
-                var total = MsgPackTools.GetTotalSampleCount(inStream);
-                inStream.Position = 0;
+                SampleCounts = new int[Ratios.Length];
 
-                // Convert ratios into sample counts
-
-                if (ParameterSetName == "ratios")
+                for (var i = 0; i < Ratios.Length; ++i)
                 {
-                    SampleCounts = new int[Ratios.Length];
+                    if (Ratios[i] == -1)
+                        continue;
 
-                    for (var i = 0; i < Ratios.Length; ++i)
-                    {
-                        if (Ratios[i] == -1)
-                            continue;
-
-                        SampleCounts[i] = (int)(Ratios[i] * total);
-                    }
+                    SampleCounts[i] = (int)(Ratios[i] * total);
                 }
+            }
 
-                // Fix sample counts
+            // Fix sample counts
 
-                if (OutFiles.Length == SampleCounts.Length)
-                {
-                    for (var i = 0; i < SampleCounts.Length; ++i)
-                    {
-                        if (SampleCounts[i] == -1)
-                        {
-                            SampleCounts[i] = total - (SampleCounts.Sum() + 1);
-                            break;
-                        }
-                    }
-                }
-                else if (OutFiles.Length == SampleCounts.Length + 1)
-                {
-                    var lastCount = total - SampleCounts.Sum();
-                    var newSamples = new int[SampleCounts.Length + 1];
-
-                    SampleCounts.CopyTo(newSamples, 0);
-                    newSamples[newSamples.Length - 1] = lastCount;
-
-                    SampleCounts = newSamples;
-                }
-                else
-                {
-                    WriteError(new ErrorRecord(new ArgumentException("The number of SampleCounts/Ratios should match the number of OutFiles"), "", ErrorCategory.InvalidArgument, null));
-                    return;
-                }
-
+            if (OutFiles.Length == SampleCounts.Length)
+            {
                 for (var i = 0; i < SampleCounts.Length; ++i)
-                    WriteVerbose(string.Format("{0}-th sample count: {1}", i, SampleCounts[i]));
-
-                // Get absolute paths
-
-                for (var i = 0; i < OutFiles.Length; ++i)
-                    OutFiles[i] = IO.GetAbsolutePath(this, OutFiles[i]);
-
-                // Write partial files
-
-                var dssEnum = MsgPackTools.ReadDataSourceSet(inStream, total, SplitCount).GetEnumerator();
-                for (var i = 0; i < OutFiles.Length; ++i)
                 {
-                    using (var outStream = new FileStream(OutFiles[i], FileMode.Create, FileAccess.Write))
+                    if (SampleCounts[i] == -1)
                     {
-                        var count = 0;
-                        while (count < SampleCounts[i])
-                        {
-                            if (!dssEnum.MoveNext())
-                                break;
+                        SampleCounts[i] = total - (SampleCounts.Sum() + 1);
+                        break;
+                    }
+                }
+            }
+            else if (OutFiles.Length == SampleCounts.Length + 1)
+            {
+                var lastCount = total - SampleCounts.Sum();
+                var newSamples = new int[SampleCounts.Length + 1];
 
-                            var dss = dssEnum.Current;
-                            count += dss.SampleCount;
+                SampleCounts.CopyTo(newSamples, 0);
+                newSamples[newSamples.Length - 1] = lastCount;
 
-                            MsgPackSerializer.Serialize(dss, outStream);
-                        }
+                SampleCounts = newSamples;
+            }
+            else
+            {
+                WriteError(new ErrorRecord(new ArgumentException("The number of SampleCounts/Ratios should match the number of OutFiles"), "", ErrorCategory.InvalidArgument, null));
+                return;
+            }
+
+            for (var i = 0; i < SampleCounts.Length; ++i)
+                WriteVerbose(string.Format("{0}-th sample count: {1}", i, SampleCounts[i]));
+
+            // Get absolute paths
+
+            for (var i = 0; i < OutFiles.Length; ++i)
+                OutFiles[i] = IO.GetAbsolutePath(this, OutFiles[i]);
+
+            // Write partial files
+
+            var dssEnum = MsgPackTools.ReadDataSourceSet(Path, total, SplitCount).GetEnumerator();
+            for (var i = 0; i < OutFiles.Length; ++i)
+            {
+                using (var outStream = new FileStream(OutFiles[i], FileMode.Create, FileAccess.Write))
+                {
+                    var count = 0;
+                    while (count < SampleCounts[i])
+                    {
+                        if (!dssEnum.MoveNext())
+                            break;
+
+                        var dss = dssEnum.Current;
+                        count += dss.SampleCount;
+
+                        MsgPackSerializer.Serialize(dss, outStream);
                     }
                 }
             }

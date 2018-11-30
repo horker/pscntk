@@ -19,7 +19,8 @@ namespace Horker.PSCNTK
         private ParallelSampler _parallelSampler;
         private Dictionary<string, SlidingDataSource<float>> _dataSourceBuffer;
 
-        private Stream _stream;
+        private string[] _files;
+
         private Task _loadingTask;
         private Task _slicingTask;
         private bool _canceled;
@@ -53,33 +54,35 @@ namespace Horker.PSCNTK
             _dataSourceQueue = new ParallelQueue<DataSourceSet>(queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake);
             _dataSourceBuffer = new Dictionary<string, SlidingDataSource<float>>();
 
-            _stream = null;
+            _files = null;
             _loadingTask = null;
             _slicingTask = null;
             _canceled = false;
         }
 
-        public MsgPackSampler(Stream stream, int minibatchSize, bool randomize, int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 60 * 60 * 1000, int timeoutForTake = 60 * 60 * 1000)
+        public MsgPackSampler(string[] files, int minibatchSize, bool randomize, int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 60 * 60 * 1000, int timeoutForTake = 60 * 60 * 1000)
             : this(minibatchSize, randomize, sampleCountPerEpoch, queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake)
         {
-            _parallelSampler = new ParallelSampler(sampleCountPerEpoch, queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake);
-            StartLoading(stream);
-        }
-
-        public MsgPackSampler(string path, int minibatchSize, bool randomize, int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 60 * 60 * 1000, int timeoutForTake = 60 * 60 * 1000)
-            : this(minibatchSize, randomize, sampleCountPerEpoch, queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake)
-        {
-            _stream = new FileStream(path, FileMode.Open, FileAccess.Read);
-
             if (sampleCountPerEpoch < 0)
             {
-                sampleCountPerEpoch = ComputeSampleCountPerEpoch(_stream);
-                _stream.Position = 0;
+                sampleCountPerEpoch = 0;
+                foreach (var file in files)
+                {
+                    using (var stream = new FileStream(file, FileMode.Open, FileAccess.Read))
+                    {
+                        sampleCountPerEpoch += ComputeSampleCountPerEpoch(stream);
+                    }
+                }
             }
 
+            _files = files;
             _parallelSampler = new ParallelSampler(sampleCountPerEpoch, queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake);
-            StartLoading(_stream);
+            StartLoading();
         }
+
+        public MsgPackSampler(string file, int minibatchSize, bool randomize, int sampleCountPerEpoch, int queueSize, bool reuseSamples, int bufferSize = 1000, int timeoutForAdd = 60 * 60 * 1000, int timeoutForTake = 60 * 60 * 1000)
+            : this(new string[] { file }, minibatchSize, randomize, sampleCountPerEpoch, queueSize, reuseSamples, bufferSize, timeoutForAdd, timeoutForTake)
+        { }
 
         protected override void Dispose(bool disposing)
         {
@@ -103,9 +106,6 @@ namespace Horker.PSCNTK
                     _slicingTask.Dispose();
                 }
 
-                if (_stream != null)
-                    _stream.Dispose();
-
                 _parallelSampler.Dispose();
             }
         }
@@ -122,7 +122,7 @@ namespace Horker.PSCNTK
             return count;
         }
 
-        private void StartLoading(Stream stream)
+        private void StartLoading()
         {
             _canceled = false;
             _lastException = null;
@@ -132,14 +132,17 @@ namespace Horker.PSCNTK
                 {
                     while (!_canceled)
                     {
-                        while (stream.Position < stream.Length)
+                        for (var i = 0; i < _files.Length; ++i)
                         {
-                            var dss = MsgPackSerializer.Deserialize(stream);
-                            _dataSourceQueue.Add(dss);
+                            using (var stream = new FileStream(_files[i], FileMode.Open, FileAccess.Read))
+                            {
+                                while (stream.Position < stream.Length)
+                                {
+                                    var dss = MsgPackSerializer.Deserialize(stream);
+                                    _dataSourceQueue.Add(dss);
+                                }
+                            }
                         }
-
-                        if (!_canceled)
-                            stream.Position = 0;
                     }
                 }
                 catch (Exception ex)

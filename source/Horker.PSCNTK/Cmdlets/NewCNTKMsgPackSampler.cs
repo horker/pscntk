@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using CNTK;
 
@@ -11,7 +12,7 @@ namespace Horker.PSCNTK
     public class NewCNTKMsgPackSampler : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public string Path;
+        public string[] Path;
 
         [Parameter(Position = 1, Mandatory = true)]
         public int MinibatchSize;
@@ -39,7 +40,7 @@ namespace Horker.PSCNTK
 
         protected override void EndProcessing()
         {
-            Path = IO.GetAbsolutePath(this, Path);
+            Path = Path.Select(p => IO.GetAbsolutePath(this, p)).ToArray();
 
             var sampler = new MsgPackSampler(Path, MinibatchSize, Randomize, SampleCountPerEpoch, QueueSize, ReuseSamples, BufferSize, TimeoutForAdd, TimeoutForTake);
 
