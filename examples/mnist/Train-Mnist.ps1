@@ -12,7 +12,7 @@ $MNIST_DATA_FILE = "$PSScriptRoot\mnist_data.bin"
 
 $OUT_CLASSES = 10
 
-$MODEL_FILE = "$PSScriptRoot\mnist.model"
+$MODEL_FILE = "$PSScriptRoot\models\mnist.model"
 $LOG_FILE = "$PSScriptRoot\mnist_log.log"
 
 Set-CNTKRandomSeed 1234
@@ -63,6 +63,10 @@ $label = cntk.input $OUT_CLASSES -Name label
 ############################################################
 
 $logger = cntk.logger $LOG_FILE
+$saver = cntk.scriptCallback -Step 10000 {
+    param($session)
+    $session.Trainer.Model().Save("$PSScriptRoot\models\mnist$($session.Iteration).model")
+}
 
 cntk.starttraining `
     -Model $out `
@@ -74,7 +78,8 @@ cntk.starttraining `
     -ValidationSampler $testSampler `
     -MaxIteration 50000 `
     -ProgressOutputStep 500 `
-    -Logger $logger
+    -Logger $logger `
+    -Callbacks $saver
 
 $out.Save($MODEL_FILE)
 $logger.Close()

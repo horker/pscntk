@@ -34,7 +34,11 @@ namespace Horker.PSCNTK
         public double Loss { get; private set; }
         public double Metric { get; private set; }
 
-        public TrainingSession(WrappedFunction model, WrappedFunction lossFunction, WrappedFunction evaluationFunction, Learner learner, ILearningScheduler scheduler, ISampler sampler, ISampler validationSampler, Hashtable dataNameToInputMap = null, DeviceDescriptor trainingDevice = null, DeviceDescriptor testDevice = null)
+        public ICallback[] Callbacks;
+
+        private bool _stop;
+
+        public TrainingSession(WrappedFunction model, WrappedFunction lossFunction, WrappedFunction evaluationFunction, Learner learner, ILearningScheduler scheduler, ISampler sampler, ISampler validationSampler, Hashtable dataNameToInputMap = null, DeviceDescriptor trainingDevice = null, DeviceDescriptor testDevice = null, ICallback[] callbacks = null)
         {
             Learner = learner;
             LearningRateScheduler = scheduler;
@@ -55,6 +59,11 @@ namespace Horker.PSCNTK
             DataNameToInputMap = new DataNameToInputMap(
                 new Function[] { model, lossFunction, evaluationFunction },
                 dataNameToInputMap);
+
+            if (callbacks == null)
+                Callbacks = new ICallback[0];
+            else
+                Callbacks = callbacks;
         }
 
         private Variable FindVariable(string name)
@@ -86,6 +95,7 @@ namespace Horker.PSCNTK
         public IEnumerable<TrainingSession> GetIterator(int maxIteration = int.MaxValue)
         {
             _stopwatch = Stopwatch.StartNew();
+            _stop = false;
 
             Epoch = 1;
             EpochIncremented = false;
@@ -109,6 +119,12 @@ namespace Horker.PSCNTK
                 Loss = Trainer.PreviousMinibatchLossAverage();
                 if (Trainer.EvaluationFunction() != null)
                     Metric = Trainer.PreviousMinibatchEvaluationAverage();
+
+                foreach (var cb in Callbacks)
+                    cb.Run(this);
+
+                if (_stop)
+                    break;
 
                 yield return this;
 
@@ -156,6 +172,11 @@ namespace Horker.PSCNTK
             while (!testData.SweepEnd);
 
             return metric / count;
+        }
+
+        void Stop()
+        {
+            _stop = true;
         }
     }
 }

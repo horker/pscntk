@@ -50,11 +50,14 @@ namespace Horker.PSCNTK
         [Parameter(Position = 10, Mandatory = false)]
         public Logger Logger = null;
 
+        [Parameter(Position = 11, Mandatory = false)]
+        public ICallback[] Callbacks = null;
+
         protected override void EndProcessing()
         {
             try
             {
-                var session = new TrainingSession(Model, LossFunction, EvaluationFunction, Learner, LearningScheduler, Sampler, ValidationSampler, DataToInputMap, null, null);
+                var session = new TrainingSession(Model, LossFunction, EvaluationFunction, Learner, LearningScheduler, Sampler, ValidationSampler, DataToInputMap, null, null, Callbacks);
                 foreach (var progress in TrainingLoop.Start(session, MaxIteration, ProgressOutputStep, Logger))
                     WriteObject(progress);
             }
@@ -96,9 +99,12 @@ namespace Horker.PSCNTK
         [Parameter(Position = 7, Mandatory = false)]
         public Hashtable DataToInputMap = null;
 
+        [Parameter(Position = 8, Mandatory = false)]
+        public ICallback[] Callbacks = null;
+
         protected override void EndProcessing()
         {
-            var session = new TrainingSession(Model, LossFunction, EvaluationFunction, Learner, LearningScheduler, Sampler, ValidationSampler, DataToInputMap, null, null);
+            var session = new TrainingSession(Model, LossFunction, EvaluationFunction, Learner, LearningScheduler, Sampler, ValidationSampler, DataToInputMap, null, null, Callbacks);
             WriteObject(session);
         }
     }

@@ -71,6 +71,7 @@
     <Compile Include="Cmdlets\NewCNTKDataSourceSampler.cs" />
     <Compile Include="Cmdlets\NewCNTKLogger.cs" />
     <Compile Include="Cmdlets\NewCNTKMsgPackSampler.cs" />
+    <Compile Include="Cmdlets\NewCNTKScriptCallback.cs" />
     <Compile Include="Cmdlets\NewCNTKStabilize.cs" />
     <Compile Include="Cmdlets\SplitCNTKMsgPack.cs" />
     <Compile Include="Cmdlets\SplitCNTKTextFormat.cs" />
@@ -101,6 +102,8 @@
     <Compile Include="Samplers\MsgPackSampler.cs" />
     <Compile Include="Samplers\ParallelQueue.cs" />
     <Compile Include="Samplers\SamplerBase.cs" />
+    <Compile Include="Training\FunctionCallback.cs" />
+    <Compile Include="Training\ICallback.cs" />
     <Compile Include="Training\TrainingProgress.cs" />
     <Compile Include="Cmdlets\ValueCmdlets.cs" />
     <Compile Include="Cmdlets\CmdletHelpers.cs" />
