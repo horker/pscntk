@@ -132,9 +132,13 @@ namespace Horker.PSCNTK
                 {
                     while (!_canceled)
                     {
+                        int[] order = null;
+                        if (_randomize)
+                            order = Helpers.GetShuffledSequencse(_files.Length);
                         for (var i = 0; i < _files.Length; ++i)
                         {
-                            using (var stream = new FileStream(_files[i], FileMode.Open, FileAccess.Read))
+                            var index = _randomize ? order[i] : i;
+                            using (var stream = new FileStream(_files[index], FileMode.Open, FileAccess.Read))
                             {
                                 while (stream.Position < stream.Length)
                                 {

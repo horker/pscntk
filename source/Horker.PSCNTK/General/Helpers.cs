@@ -39,5 +39,21 @@ namespace Horker.PSCNTK
             throw new ArgumentException(string.Format(
                 "Function found ({0}), but the number of parameters doesn't match ({1} required, {2} actual)", name, parameterCount, p.Length));
         }
+
+        public static int[] GetShuffledSequencse(int count)
+        {
+            var random = Random.GetInstance();
+
+            var result = new int[count];
+            for (var i = 0; i < count; ++i)
+            {
+                var j = random.Next(i + 1);
+                if (j != i)
+                    result[i] = result[j];
+                result[j] = i;
+            }
+
+            return result;
+        }
     }
 }
