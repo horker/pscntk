@@ -102,17 +102,41 @@ namespace Horker.PSCNTK
     public class NewCNTKCosineAnnealingScheduler : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true)]
-        public double MinRate;
+        public double MinimumRate;
 
         [Parameter(Position = 1, Mandatory = true)]
-        public double MaxRate;
+        public double MaximumRate;
 
         [Parameter(Position = 2, Mandatory = true)]
-        public double TimeScale;
+        public double Step;
 
         protected override void BeginProcessing()
         {
-            var scheduler = new CosineAnealingScheduler(MinRate, MaxRate, TimeScale);
+            var scheduler = new CosineAnealingScheduler(MinimumRate, MaximumRate, Step);
+            WriteObject(scheduler);
+        }
+    }
+
+    [Cmdlet("New", "CNTKOneCycleScheduler")]
+    [Alias("cntk.scheduler.oneCycle")]
+    [OutputType(typeof(OneCycleScheduler))]
+    public class NewCNTKOneCycleScheduler : PSCmdlet
+    {
+        [Parameter(Position = 0, Mandatory = true)]
+        public double InitialRate;
+
+        [Parameter(Position = 1, Mandatory = true)]
+        public double MaximumRate;
+
+        [Parameter(Position = 2, Mandatory = true)]
+        public double MinimumRate;
+
+        [Parameter(Position = 3, Mandatory = true)]
+        public int Step;
+
+        protected override void BeginProcessing()
+        {
+            var scheduler = new OneCycleScheduler(InitialRate, MaximumRate, MinimumRate, Step);
             WriteObject(scheduler);
         }
     }

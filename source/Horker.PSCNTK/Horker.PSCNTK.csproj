@@ -86,6 +86,7 @@
     <Compile Include="LearningSchedulers\CosineAnealingScheduler.cs" />
     <Compile Include="LearningSchedulers\ExponentialScheduler.cs" />
     <Compile Include="LearningSchedulers\ILearningScheduler.cs" />
+    <Compile Include="LearningSchedulers\OneCycleScheduler.cs" />
     <Compile Include="LearningSchedulers\PerformanceScheduler.cs" />
     <Compile Include="LearningSchedulers\PowerScheduler.cs" />
     <Compile Include="LearningSchedulers\PredeterminedScheduler.cs" />

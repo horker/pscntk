@@ -12,22 +12,22 @@ namespace Horker.PSCNTK
 
     public class CosineAnealingScheduler : ILearningScheduler
     {
-        public double MinRate { get; private set; }
-        public double MaxRate { get; private set; }
-        public double TimeScale { get; }
+        public double MinimumRate { get; private set; }
+        public double MaximumRate { get; private set; }
+        public double Step { get; }
 
         public double LearningRate { get; private set; }
 
-        public CosineAnealingScheduler(double minRate, double maxRate, double timeScale)
+        public CosineAnealingScheduler(double minimumRate, double maximumRate, double step)
         {
-            MinRate = minRate;
-            LearningRate = MaxRate = maxRate;
-            TimeScale = timeScale;
+            MinimumRate = minimumRate;
+            LearningRate = MaximumRate = maximumRate;
+            Step = step;
         }
 
         public bool UpdateLearningRate(int epoch, int iteration, double loss)
         {
-            LearningRate = MinRate + .5 * (MaxRate - MinRate) * (1.0 + Math.Cos(Math.PI * iteration / TimeScale));
+            LearningRate = MinimumRate + .5 * (MaximumRate - MinimumRate) * (1.0 + Math.Cos(Math.PI * iteration / Step));
             return true;
         }
     }
