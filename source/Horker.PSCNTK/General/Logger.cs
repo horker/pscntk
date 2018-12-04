@@ -96,7 +96,7 @@ namespace Horker.PSCNTK
                 _writer.Write(':');
                 Write(entry.Value, false);
             }
-            _writer.Write(']');
+            _writer.Write('}');
         }
 
         public void Write(ICollection value)
